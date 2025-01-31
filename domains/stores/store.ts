@@ -52,7 +52,7 @@ export const useGetCarsResponses = create<GetCarsResponses>()((set) => ({
 export const useGetAmenitiesRequest = create<GetAmenitiesRequest>()((set) => ({
   index: 1,
   size: 10,
-  keyword: null,
+  keyword: "",
   setIndex: (index: number) => set({ index }),
   setSize: (size: number) => set({ size }),
   setKeyword: (keyword: string) => set({ keyword }),
@@ -106,7 +106,7 @@ export const useGetManufacturersRequest = create<GetManufacturersRequest>()(
   (set) => ({
     index: 1,
     size: 10,
-    keyword: null,
+    keyword: "",
     setIndex: (index: number) => set({ index }),
     setSize: (size: number) => set({ size }),
     setKeyword: (keyword: string) => set({ keyword }),

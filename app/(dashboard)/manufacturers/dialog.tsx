@@ -19,7 +19,7 @@ import { useState } from "react";
 
 export const ManufacturerDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
-    const { index, size, keyword, setIndex, setKeyword } = useGetManufacturersRequest();
+    const { setIndex, setKeyword } = useGetManufacturersRequest();
     // const { setItems, setHasNext, setPageNumber, setPageSize, setTotalItems } = useGetManufacturersResponses();
     const queryClient = new QueryClient();
     const { name, setName } = useCreateManufacturerRequest()
@@ -44,7 +44,7 @@ export const ManufacturerDialog = () => {
             setKeyword("");
             SetIsOpen(false);
             queryClient.invalidateQueries({
-                queryKey: ["manufacturers", index, size, keyword]
+                queryKey: ["manufacturers"]
             });
         }
     }

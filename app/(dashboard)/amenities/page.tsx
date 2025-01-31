@@ -2,7 +2,6 @@
 
 import { useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
 import { DataTable } from "./data-table";
-import { toast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
@@ -30,7 +29,6 @@ export default function AmenitiesPage() {
         queryFn: () =>
             AmenitiyApi.getAmenities(index, size, debouncedKeyword).then((res) => {
                 const carDatas = res as SharedResponse<GetAmenitiesResponses>;
-                toast({ title: carDatas.message });
                 setItems(carDatas.value!.items);
                 setHasNext(carDatas.value!.hasNext);
                 setPageNumber(carDatas.value!.pageNumber);
@@ -42,12 +40,12 @@ export default function AmenitiesPage() {
         <div className="container py-10">
             <DataTable
                 columns={columns}
-                data={isPending ? [] : items.map((item) => {
+                data={isPending ? [] : (items?.map((item) => {
                     return {
                         ...item,
                         createdAt: formatDate(item.createdAt)
                     }
-                })}
+                }) ?? [])}
                 hasNext={hasNext}
                 index={index}
                 isPending={isPending}

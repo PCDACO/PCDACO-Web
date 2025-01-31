@@ -30,7 +30,6 @@ export default function CarPage() {
         queryFn: () =>
             ManufacturerApi.getManufacturers(index, size, debouncedKeyword).then((res) => {
                 const carDatas = res as SharedResponse<GetAmenitiesResponses>;
-                toast({ title: carDatas.message });
                 setItems(carDatas.value!.items);
                 setHasNext(carDatas.value!.hasNext);
                 setPageNumber(carDatas.value!.pageNumber);
@@ -44,12 +43,12 @@ export default function CarPage() {
         <div className="container py-10">
             <DataTable
                 columns={columns}
-                data={isPending ? [] : items.map((item) => {
+                data={isPending ? [] : (items?.map((item) => {
                     return {
                         ...item,
                         createdAt: formatDate(item.createdAt)
                     }
-                })}
+                }) ?? [])}
                 hasNext={hasNext}
                 index={index}
                 isPending={isPending}

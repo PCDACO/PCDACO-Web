@@ -1,5 +1,5 @@
 export interface SharedResponse<T = undefined> {
-  value: T | null;
+  value: T;
   isSuccess: boolean;
   message: string;
 }

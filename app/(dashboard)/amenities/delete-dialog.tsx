@@ -9,7 +9,7 @@ import {
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 import { useDeleteAmenityRequest, useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 interface DeleteDialogProps {
@@ -23,25 +23,9 @@ export const AmenityDeleteDialog = (
         onClose,
     }: DeleteDialogProps
 ) => {
-    const [IsEnable, SetIsEnable] = useState(false);
-    const { index, size, keyword, setIndex, setKeyword } = useGetAmenitiesRequest();
-    const { setItems, setHasNext, setPageNumber, setPageSize, setTotalItems } = useGetAmenitiesResponses();
-    const query = useQuery({
-        queryKey: ["amenities", index, size, keyword],
-        queryFn: () =>
-            AmenitiyApi.getAmenities(index, size, keyword).then((res) => {
-                setItems(res.value!.items);
-                setHasNext(res.value!.hasNext);
-                setPageNumber(res.value!.pageNumber);
-                setPageSize(res.value!.pageSize);
-                setTotalItems(res.value!.totalItems);
-                query.isSuccess = false;
-                SetIsEnable(false);
-                return res.value!;
-            }),
-        enabled: IsEnable
-    })
+    const { setIndex, setKeyword } = useGetAmenitiesRequest();
     const { id } = useDeleteAmenityRequest()
+    const queryClient = new QueryClient();
     const mutation = useMutation({
         mutationFn: () => AmenitiyApi.deleteAmenity(id),
         onSuccess: (data) => {
@@ -50,7 +34,9 @@ export const AmenityDeleteDialog = (
             })
             setIndex(1);
             setKeyword("");
-            SetIsEnable(true);
+            queryClient.invalidateQueries({
+                queryKey: ["amenities"]
+            })
             onClose();
         },
         onError: (error) => {

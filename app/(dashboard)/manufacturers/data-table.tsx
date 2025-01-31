@@ -31,7 +31,7 @@ interface DataTableProps<TData, TValue> {
     index: number,
     isPending: boolean,
     hasNext: boolean
-    keyword: string | null
+    keyword: string
     setIndex: (index: number) => void
     setKeyword: (keyword: string) => void
 }
