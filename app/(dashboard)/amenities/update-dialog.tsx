@@ -9,9 +9,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
-import { useUpdateAmenityRequest } from "@/domains/stores/store";
+import { useGetAmenitiesRequest, useGetAmenitiesResponses, useUpdateAmenityRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -24,14 +25,36 @@ export const AmenityUpdateDialog = (
         onClose,
     }: DeleteDialogProps
 ) => {
+    const [IsEnable, SetIsEnable] = useState(false);
+    const { index, size, keyword, setIndex, setKeyword } = useGetAmenitiesRequest();
     const { name, description, id, setName, setDescription } = useUpdateAmenityRequest()
+    const { setItems, setHasNext, setPageNumber, setPageSize, setTotalItems } = useGetAmenitiesResponses();
+    const query = useQuery({
+        queryKey: ["amenities", index, size, keyword],
+        queryFn: () =>
+            AmenitiyApi.getAmenities(index, size, keyword).then((res) => {
+                setItems(res.value!.items);
+                setHasNext(res.value!.hasNext);
+                setPageNumber(res.value!.pageNumber);
+                setPageSize(res.value!.pageSize);
+                setTotalItems(res.value!.totalItems);
+                query.isSuccess = false;
+                SetIsEnable(false);
+                return res.value!;
+            }),
+        enabled: IsEnable
+    })
+
     const mutation = useMutation({
         mutationFn: () => AmenitiyApi.updateAmenity(id, name, description),
         onSuccess: (data) => {
             toast({
                 title: data.message
             })
-            window.location.reload();
+            setIndex(1);
+            setKeyword("");
+            SetIsEnable(true);
+            onClose();
         },
         onError: (error) => {
             console.error("Login failed", error);

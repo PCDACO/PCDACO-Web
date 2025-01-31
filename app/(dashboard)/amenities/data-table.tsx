@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button"
 
 import {
     ColumnDef,
-    ColumnFiltersState,
-    getFilteredRowModel,
     flexRender,
     getCoreRowModel,
     useReactTable,
@@ -31,7 +29,7 @@ interface DataTableProps<TData, TValue> {
     index: number,
     isPending: boolean,
     hasNext: boolean
-    keyword: string | null
+    keyword: string | null,
     setIndex: (index: number) => void
     setKeyword: (keyword: string) => void
 }

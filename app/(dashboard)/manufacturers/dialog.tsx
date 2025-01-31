@@ -11,32 +11,66 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ManufacturerApi } from "@/domains/services/manufacturer.service.ts/manufacturer.service";
-import { useCreateManufacturerRequest } from "@/domains/stores/store";
+import { useCreateManufacturerRequest, useGetManufacturersRequest, useGetManufacturersResponses } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+
 
 export const ManufacturerDialog = () => {
+    const [isOpen, SetIsOpen] = useState(false);
+    const [IsEnable, SetIsEnable] = useState(false);
+    const { index, size, keyword, setIndex, setKeyword } = useGetManufacturersRequest();
+    const { setItems, setHasNext, setPageNumber, setPageSize, setTotalItems } = useGetManufacturersResponses();
+    useQuery({
+        queryKey: ["manufacturers", index, size, keyword],
+        queryFn: () =>
+            ManufacturerApi.getManufacturers(index, size, keyword).then((res) => {
+                setItems(res.value!.items);
+                setHasNext(res.value!.hasNext);
+                setPageNumber(res.value!.pageNumber);
+                setPageSize(res.value!.pageSize);
+                setTotalItems(res.value!.totalItems);
+                SetIsEnable(false);
+                return res.value!;
+            }),
+        enabled: IsEnable
+    })
     const { name, setName } = useCreateManufacturerRequest()
+
+    const handleSubmitBtn = async () => {
+        if (name === "") {
+            toast({
+                title: "Please fill in all the fields"
+            })
+            return;
+        }
+        await mutation.mutateAsync();
+    }
+
     const mutation = useMutation({
         mutationFn: () => ManufacturerApi.createManufacturer(name),
         onSuccess: (data) => {
             toast({
                 title: data.message
             })
-            window.location.reload();
+            setIndex(1);
+            setKeyword("");
+            SetIsOpen(false);
+            SetIsEnable(true);
         }
     }
     );
     return (
-        <Dialog >
+        <Dialog open={isOpen} onOpenChange={SetIsOpen} >
             <DialogTrigger asChild>
-                <Button variant="outline">Add</Button>
+                <Button onClick={() => SetIsOpen(true)} variant="outline">Add</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Add</DialogTitle>
+                    <DialogTitle>Tạo</DialogTitle>
                     <DialogDescription>
-                        Make changes to your profile here. Click save when youre done.
+                        Tạo thêm nhà sản xuất ở đây
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -48,7 +82,7 @@ export const ManufacturerDialog = () => {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button onClick={() => mutation.mutate()} type="submit">
+                    <Button onClick={handleSubmitBtn} type="submit">
                         {
                             mutation.isPending
                                 ? (<div className="flex justify-center items-center space-x-2 animate-pulse">

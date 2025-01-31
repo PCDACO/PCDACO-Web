@@ -1,17 +1,17 @@
 "use client";
 
 import { useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
-import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { toast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { useDebounce } from "@/hooks/use-debounce";
+import { formatDate } from "@/lib/utils";
+import { columns } from "./columns";
 
-export default function CarPage() {
+export default function AmenitiesPage() {
     const { index, size, keyword, setIndex, setKeyword } = useGetAmenitiesRequest();
     const {
         items,
@@ -25,30 +25,29 @@ export default function CarPage() {
 
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
 
-    const { data, isPending, isSuccess } = useQuery({
+    const { isPending } = useQuery({
         queryKey: ["amenities", index, size, debouncedKeyword],
         queryFn: () =>
-            AmenitiyApi.getAmenities(index, size, debouncedKeyword)
+            AmenitiyApi.getAmenities(index, size, debouncedKeyword).then((res) => {
+                const carDatas = res as SharedResponse<GetAmenitiesResponses>;
+                toast({ title: carDatas.message });
+                setItems(carDatas.value!.items);
+                setHasNext(carDatas.value!.hasNext);
+                setPageNumber(carDatas.value!.pageNumber);
+                setPageSize(carDatas.value!.pageSize);
+                setTotalItems(carDatas.value!.totalItems);
+            })
     });
-
-    useEffect(() => {
-        if (isSuccess) {
-            const carDatas = data as SharedResponse<GetAmenitiesResponses>;
-            toast({ title: carDatas.message });
-            setItems(carDatas.value!.items);
-            setHasNext(carDatas.value!.hasNext);
-            setPageNumber(carDatas.value!.pageNumber);
-            setPageSize(carDatas.value!.pageSize);
-            setTotalItems(carDatas.value!.totalItems);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSuccess, data]);
-
     return (
         <div className="container py-10">
             <DataTable
                 columns={columns}
-                data={isPending ? [] : items}
+                data={isPending ? [] : items.map((item) => {
+                    return {
+                        ...item,
+                        createdAt: formatDate(item.createdAt)
+                    }
+                })}
                 hasNext={hasNext}
                 index={index}
                 isPending={isPending}

@@ -14,7 +14,7 @@ import { GetManufacturersResponse } from "@/domains/models/manufacturers/getManu
 import { useState } from "react";
 import { ManufacturerDeleteDialog } from "./delete-dialog";
 import { ManufacturerUpdateDialog } from "./update-dialog";
-import { useDeleteAmenityRequest, useDeleteManufacturerRequest, useUpdateAmenityRequest, useUpdateManufacturerRequest } from "@/domains/stores/store";
+import { useDeleteManufacturerRequest, useUpdateManufacturerRequest } from "@/domains/stores/store";
 
 
 export const columns: ColumnDef<GetManufacturersResponse>[] = [
@@ -27,23 +27,23 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
         header: "Name",
     },
     {
-        accessorKey: "description",
-        header: "Description",
-    },
-    {
         accessorKey: "createdAt",
         header: "Created At",
     },
     {
         id: "actions",
         cell: ({ row }) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const [IsDeleteOpen, SetIsDeleteOpen] = useState(false);
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const [IsUpdateOpen, SetIsUpdateOpen] = useState(false);
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const updateAmenityRequest = useUpdateManufacturerRequest();
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const deleteRequest = useDeleteManufacturerRequest();
             const data = row.original;
             const openDeleteDialog = () => SetIsDeleteOpen(true);  // Open dialog
-            const closeDeleteDialog = () => SetIsUpdateOpen(false);  // Close dialog
+            const closeDeleteDialog = () => SetIsDeleteOpen(false);  // Close dialog
             const openUpdateDialog = () => SetIsUpdateOpen(true);
             const closeUpdateDialog = () => SetIsUpdateOpen(false);
 
@@ -61,8 +61,8 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
                             updateAmenityRequest.setId(data.id);
                             updateAmenityRequest.setName(data.name);
                             openUpdateDialog();
-                        }} className="bg-red-700">
-                            <h2 className="text-white">
+                        }} >
+                            <h2 >
                                 Update
                             </h2>
                         </DropdownMenuItem>
@@ -70,13 +70,13 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
                         <DropdownMenuItem onClick={() => {
                             deleteRequest.setId(data.id);
                             openDeleteDialog();
-                        }} className="bg-yellow-600">
-                            <h2 className="text-white">
+                        }} >
+                            <h2 >
                                 Delete
                             </h2>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu >
                     <ManufacturerDeleteDialog isOpen={IsDeleteOpen} onClose={closeDeleteDialog} />
                     <ManufacturerUpdateDialog isOpen={IsUpdateOpen} onClose={closeUpdateDialog} />
                 </>
