@@ -11,31 +11,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ManufacturerApi } from "@/domains/services/manufacturer.service.ts/manufacturer.service";
-import { useCreateManufacturerRequest, useGetManufacturersRequest, useGetManufacturersResponses } from "@/domains/stores/store";
+import { useCreateManufacturerRequest, useGetManufacturersRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, } from "@tanstack/react-query";
 import { useState } from "react";
 
 
 export const ManufacturerDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
-    const [IsEnable, SetIsEnable] = useState(false);
     const { index, size, keyword, setIndex, setKeyword } = useGetManufacturersRequest();
-    const { setItems, setHasNext, setPageNumber, setPageSize, setTotalItems } = useGetManufacturersResponses();
-    useQuery({
-        queryKey: ["manufacturers", index, size, keyword],
-        queryFn: () =>
-            ManufacturerApi.getManufacturers(index, size, keyword).then((res) => {
-                setItems(res.value!.items);
-                setHasNext(res.value!.hasNext);
-                setPageNumber(res.value!.pageNumber);
-                setPageSize(res.value!.pageSize);
-                setTotalItems(res.value!.totalItems);
-                SetIsEnable(false);
-                return res.value!;
-            }),
-        enabled: IsEnable
-    })
+    // const { setItems, setHasNext, setPageNumber, setPageSize, setTotalItems } = useGetManufacturersResponses();
+    const queryClient = new QueryClient();
     const { name, setName } = useCreateManufacturerRequest()
 
     const handleSubmitBtn = async () => {
@@ -57,7 +43,9 @@ export const ManufacturerDialog = () => {
             setIndex(1);
             setKeyword("");
             SetIsOpen(false);
-            SetIsEnable(true);
+            queryClient.invalidateQueries({
+                queryKey: ["manufacturers", index, size, keyword]
+            });
         }
     }
     );

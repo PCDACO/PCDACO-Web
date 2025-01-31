@@ -11,31 +11,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
-import { useCreateAmenitiesRequest, useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
+import { useCreateAmenitiesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 export const AmenityDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
-    const [IsEnable, SetIsEnable] = useState(false);
-    const { index, size, keyword, setIndex, setKeyword } = useGetAmenitiesRequest();
-    const { setItems, setHasNext, setPageNumber, setPageSize, setTotalItems } = useGetAmenitiesResponses();
-    useQuery({
-        queryKey: ["manufacturers", index, size, keyword],
-        queryFn: () =>
-            AmenitiyApi.getAmenities(index, size, keyword).then((res) => {
-                setItems(res.value!.items);
-                setHasNext(res.value!.hasNext);
-                setPageNumber(res.value!.pageNumber);
-                setPageSize(res.value!.pageSize);
-                setTotalItems(res.value!.totalItems);
-                SetIsEnable(false);
-                return res.value!;
-            }),
-        enabled: IsEnable
-    })
     const { name, description, setName, setDescription } = useCreateAmenitiesRequest()
+    const queryClient = new QueryClient();
 
     const handleSubmitBtn = async () => {
         if (name === "" || description === "") {
@@ -53,10 +37,10 @@ export const AmenityDialog = () => {
             toast({
                 title: data.message
             })
-            setIndex(1);
-            setKeyword("");
+            queryClient.invalidateQueries({
+                queryKey: ["amenities"]
+            });
             SetIsOpen(false);
-            SetIsEnable(true);
         }
     }
     );
