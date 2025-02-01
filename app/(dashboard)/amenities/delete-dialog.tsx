@@ -7,10 +7,9 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
-import { useDeleteAmenityRequest, useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
+import { useDeleteAmenityRequest, useGetAmenitiesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 
 interface DeleteDialogProps {
     isOpen: boolean,

@@ -7,10 +7,9 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import { ManufacturerApi } from "@/domains/services/manufacturer.service.ts/manufacturer.service";
-import { useDeleteManufacturerRequest, useGetManufacturersRequest, useGetManufacturersResponses, useUpdateManufacturerRequest } from "@/domains/stores/store";
+import { useDeleteManufacturerRequest, useGetManufacturersRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 
 interface DeleteDialogProps {
     isOpen: boolean,

@@ -3,7 +3,6 @@
 import { useGetManufacturersRequest, useGetManufacturersResponses } from "@/domains/stores/store";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-import { toast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { ManufacturerApi } from "@/domains/services/manufacturer.service.ts/manufacturer.service";
 import { useDebounce } from "@/hooks/use-debounce";
