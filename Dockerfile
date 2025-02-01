@@ -39,7 +39,7 @@ RUN bun run build
 #################
 # Runner Image  #
 #################
-FROM jarredbun/bun:latest AS runner
+FROM oven/bun:canary AS runner
 WORKDIR /app
 
 # Set production environment
@@ -58,6 +58,9 @@ ENV NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+COPY --from=build /usr/src/app/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Start the Next.js server using Bun
-CMD ["bun", "server.js"]
+# CMD ["bun", "server.js"]
+CMD ["nginx", "-g", "daemon off;"]
