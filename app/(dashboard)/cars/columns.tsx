@@ -69,9 +69,10 @@ export const columns: ColumnDef<GetCarsResponse>[] = [
         // ),
         cell: ({ row }) => {
             const payment = row.original;
-            const { isOpen, setIsOpen } = useState(false);
-            const openDeleteDialog = () => setIsOpen(true);  // Open dialog
-            const closeDeleteDialog = () => setIsOpen(false);  // Close dialog
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            const [IsOpen, SetIsOpen] = useState(false);
+            const openDeleteDialog = () => SetIsOpen(true);  // Open dialog
+            const closeDeleteDialog = () => SetIsOpen(false);  // Close dialog
             return (
                 <><DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -101,7 +102,7 @@ export const columns: ColumnDef<GetCarsResponse>[] = [
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                    <AmenityDeleteDialog isOpen={isOpen} id={""} onClose={closeDeleteDialog} />
+                    <AmenityDeleteDialog isOpen={IsOpen} onClose={closeDeleteDialog} />
                 </>
             );
         },
