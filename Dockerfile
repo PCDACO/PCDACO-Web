@@ -54,13 +54,15 @@ ARG NEXT_PUBLIC_API_KEY
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 ENV NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}
 
+FROM nginx:alpine AS release
+
 # Copy built assets from builder stage
 COPY --from=builder /app/public ./public
 # COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-# COPY --from=builder /app/.next /usr/share/nginx/html
-# COPY --from=builder /app/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/.next /usr/share/nginx/html
+COPY --from=builder /app/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Start the Next.js server using Bun
-CMD ["bun", "server.js"]
-# CMD ["nginx", "-g", "daemon off;"]
+# CMD ["bun", "server.js"]
+CMD ["nginx", "-g", "daemon off;"]
