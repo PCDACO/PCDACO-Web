@@ -11,6 +11,7 @@ import {
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -56,6 +57,7 @@ export default function RootLayout({
           <main className="container mx-auto">
             <SidebarTrigger />
             <ReactQueryProvider>{children}</ReactQueryProvider>
+            <Toaster />
           </main>
         </SidebarProvider>
       </body>

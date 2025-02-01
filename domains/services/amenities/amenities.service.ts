@@ -6,7 +6,7 @@ export const AmenitiyApi = {
   getAmenities: async (
     index: number,
     size: number,
-    keyword: string | null
+    keyword: string
   ): Promise<SharedResponse<GetAmenitiesResponses>> => {
     // Construct the URL with conditional query parameters
     let url = `api/amenities?index=${index}&size=${size}`;

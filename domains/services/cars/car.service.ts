@@ -5,7 +5,7 @@ export const CarApi = {
   getCarForAdmin: async (
     index: number,
     size: number,
-    keyword: string | null
+    keyword: string
   ): Promise<SharedResponse<GetCarsResponses>> => {
     // Construct the URL with conditional query parameters
     let url = `api/cars/all?index=${index}&size=${size}`;

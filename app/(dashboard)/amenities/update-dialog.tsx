@@ -9,9 +9,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
-import { useUpdateAmenityRequest } from "@/domains/stores/store";
+import { useGetAmenitiesRequest, useUpdateAmenityRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -24,14 +24,22 @@ export const AmenityUpdateDialog = (
         onClose,
     }: DeleteDialogProps
 ) => {
+    const { setIndex, setKeyword } = useGetAmenitiesRequest();
     const { name, description, id, setName, setDescription } = useUpdateAmenityRequest()
+    const queryClient = new QueryClient();
+
     const mutation = useMutation({
         mutationFn: () => AmenitiyApi.updateAmenity(id, name, description),
         onSuccess: (data) => {
             toast({
                 title: data.message
             })
-            window.location.reload();
+            setIndex(1);
+            setKeyword("");
+            queryClient.invalidateQueries({
+                queryKey: ["amenities"]
+            })
+            onClose();
         },
         onError: (error) => {
             console.error("Login failed", error);

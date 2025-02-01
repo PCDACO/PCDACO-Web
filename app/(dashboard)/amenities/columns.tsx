@@ -39,14 +39,17 @@ export const columns: ColumnDef<GetAmenitiesResponse>[] = [
         cell: ({ row }) => {
             // eslint-disable-next-line react-hooks/rules-of-hooks
             const [IsDeleteOpen, SetIsDeleteOpen] = useState(false);
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const [IsUpdateOpen, SetIsUpdateOpen] = useState(false);
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const { setId, setDescription, setName } = useUpdateAmenityRequest();
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const deleteRequest = useDeleteAmenityRequest();
             const currentid = row.getValue("id") as string;
             const currentname = row.getValue("name") as string;
             const currentdescription = row.getValue("description") as string;
             const openDeleteDialog = () => SetIsDeleteOpen(true);  // Open dialog
-            const closeDeleteDialog = () => SetIsUpdateOpen(false);  // Close dialog
+            const closeDeleteDialog = () => SetIsDeleteOpen(false);  // Close dialog
             const openUpdateDialog = () => SetIsUpdateOpen(true);
             const closeUpdateDialog = () => SetIsUpdateOpen(false);
 
@@ -65,8 +68,8 @@ export const columns: ColumnDef<GetAmenitiesResponse>[] = [
                             setName(currentname);
                             setDescription(currentdescription);
                             openUpdateDialog();
-                        }} className="bg-red-700">
-                            <h2 className="text-white">
+                        }} >
+                            <h2 >
                                 Update
                             </h2>
                         </DropdownMenuItem>
@@ -74,13 +77,13 @@ export const columns: ColumnDef<GetAmenitiesResponse>[] = [
                         <DropdownMenuItem onClick={() => {
                             deleteRequest.setId(currentid);
                             openDeleteDialog();
-                        }} className="bg-yellow-600">
-                            <h2 className="text-white">
+                        }} >
+                            <h2 >
                                 Delete
                             </h2>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu >
                     <AmenityDeleteDialog isOpen={IsDeleteOpen} onClose={closeDeleteDialog} />
                     <AmenityUpdateDialog isOpen={IsUpdateOpen} onClose={closeUpdateDialog} />
                 </>

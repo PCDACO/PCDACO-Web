@@ -7,9 +7,10 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
-import { useDeleteAmenityRequest } from "@/domains/stores/store";
+import { useDeleteAmenityRequest, useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -22,17 +23,24 @@ export const AmenityDeleteDialog = (
         onClose,
     }: DeleteDialogProps
 ) => {
+    const { setIndex, setKeyword } = useGetAmenitiesRequest();
     const { id } = useDeleteAmenityRequest()
+    const queryClient = new QueryClient();
     const mutation = useMutation({
         mutationFn: () => AmenitiyApi.deleteAmenity(id),
         onSuccess: (data) => {
             toast({
                 title: data.message
             })
-            window.location.reload();
+            setIndex(1);
+            setKeyword("");
+            queryClient.invalidateQueries({
+                queryKey: ["amenities"]
+            })
+            onClose();
         },
         onError: (error) => {
-            console.error("Login failed", error);
+            console.error("Lỗi", error);
         }
     }
     );
@@ -40,7 +48,7 @@ export const AmenityDeleteDialog = (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Do you want to delete ?</DialogTitle>
+                    <DialogTitle>Bạn có muốn xóa tiện nghi này không ?</DialogTitle>
                 </DialogHeader>
                 <DialogFooter>
                     <Button onClick={onClose} type="submit">

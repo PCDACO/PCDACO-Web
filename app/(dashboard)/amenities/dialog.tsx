@@ -13,23 +13,41 @@ import { Label } from "@/components/ui/label";
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 import { useCreateAmenitiesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 export const AmenityDialog = () => {
+    const [isOpen, SetIsOpen] = useState(false);
     const { name, description, setName, setDescription } = useCreateAmenitiesRequest()
+    const queryClient = new QueryClient();
+
+    const handleSubmitBtn = async () => {
+        if (name === "" || description === "") {
+            toast({
+                title: "Please fill in all the fields"
+            })
+            return;
+        }
+        await mutation.mutateAsync();
+    }
+
     const mutation = useMutation({
         mutationFn: () => AmenitiyApi.createAmenities(name, description),
         onSuccess: (data) => {
             toast({
                 title: data.message
             })
+            queryClient.invalidateQueries({
+                queryKey: ["amenities"]
+            });
+            SetIsOpen(false);
         }
     }
     );
     return (
-        <Dialog >
+        <Dialog open={isOpen} onOpenChange={SetIsOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline">Add</Button>
+                <Button onClick={() => SetIsOpen(true)} variant="outline">Add</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -53,7 +71,7 @@ export const AmenityDialog = () => {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button onClick={() => mutation.mutate()} type="submit">
+                    <Button onClick={handleSubmitBtn} type="submit">
                         {
                             mutation.isPending
                                 ? (<div className="flex justify-center items-center space-x-2 animate-pulse">

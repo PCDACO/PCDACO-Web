@@ -6,7 +6,7 @@ export const ManufacturerApi = {
   getManufacturers: async (
     index: number,
     size: number,
-    keyword: string | null
+    keyword: string
   ): Promise<SharedResponse<GetManufacturersResponses>> => {
     // Construct the URL with conditional query parameters
     let url = `api/manufacturers?index=${index}&size=${size}`;
@@ -60,7 +60,10 @@ export const ManufacturerApi = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   },
 
-  updateManufacturer: async (id: string, name: string): Promise<SharedResponse> => {
+  updateManufacturer: async (
+    id: string,
+    name: string
+  ): Promise<SharedResponse> => {
     const response = axiosInstance
       .put(`api/manufacturers/${id}`, {
         name: name,
