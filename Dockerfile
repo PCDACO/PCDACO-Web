@@ -3,7 +3,7 @@
 ###############
 # Base Image  #
 ###############
-FROM jarredbun/bun:latest AS base
+FROM oven/bun:canary AS base
 WORKDIR /app
 
 ###############
