@@ -10,11 +10,13 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import {
-    LayoutDashboard,
     Car,
     HousePlus,
     Factory,
     LogOut,
+    FuelIcon,
+    AlignEndHorizontal,
+    Cog,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -23,7 +25,7 @@ const items = [
     {
         title: "Dashboard",
         url: "dashboard",
-        icon: LayoutDashboard,
+        icon: AlignEndHorizontal,
     },
     {
         title: "Cars",
@@ -39,6 +41,16 @@ const items = [
         title: "Manufacturers",
         url: "manufacturers",
         icon: Factory,
+    },
+    {
+        title: "Fuel Types",
+        url: "fuel-types",
+        icon: FuelIcon,
+    },
+    {
+        title: "Transmissions",
+        url: "transmissions",
+        icon: Cog,
     }
 ]
 

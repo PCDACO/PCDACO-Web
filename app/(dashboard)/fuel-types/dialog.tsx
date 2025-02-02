@@ -10,19 +10,18 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.service";
-import { useCreateManufacturerRequest, useGetManufacturersRequest } from "@/domains/stores/store";
+import { FuelTypesApi } from "@/domains/services/fuel-types/fuelTypes.service";
+import { useCreateFuelTypeRequest, useGetFuelTypesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { QueryClient, useMutation, } from "@tanstack/react-query";
 import { useState } from "react";
 
 
-export const ManufacturerDialog = () => {
+export const FuelTypeDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
-    const { setIndex, setKeyword } = useGetManufacturersRequest();
-    // const { setItems, setHasNext, setPageNumber, setPageSize, setTotalItems } = useGetManufacturersResponses();
+    const { setIndex, setKeyword } = useGetFuelTypesRequest();
     const queryClient = new QueryClient();
-    const { name, setName } = useCreateManufacturerRequest()
+    const { name, setName } = useCreateFuelTypeRequest()
 
     const handleSubmitBtn = async () => {
         if (name === "") {
@@ -35,7 +34,7 @@ export const ManufacturerDialog = () => {
     }
 
     const mutation = useMutation({
-        mutationFn: () => ManufacturerApi.createManufacturer(name),
+        mutationFn: () => FuelTypesApi.createFuelTypes(name),
         onSuccess: (data) => {
             toast({
                 title: data.message
@@ -44,7 +43,7 @@ export const ManufacturerDialog = () => {
             setKeyword("");
             SetIsOpen(false);
             queryClient.invalidateQueries({
-                queryKey: ["manufacturers"]
+                queryKey: ["fuel-types"]
             });
         }
     }
@@ -58,13 +57,13 @@ export const ManufacturerDialog = () => {
                 <DialogHeader>
                     <DialogTitle>Tạo</DialogTitle>
                     <DialogDescription>
-                        Tạo thêm nhà sản xuất ở đây
+                        Tạo thêm loại nhiên liệu ở đây
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="name" className="text-right">
-                            Name
+                            Tên loại nhiên liệu:
                         </Label>
                         <Input id="name" onChange={(e) => setName(e.target.value)} value={name} className="col-span-3" />
                     </div>
@@ -78,7 +77,7 @@ export const ManufacturerDialog = () => {
                                     <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
                                     <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
                                 </div>)
-                                : "Save changes"
+                                : "Tạo"
                         }
                     </Button>
                 </DialogFooter>

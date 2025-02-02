@@ -19,6 +19,24 @@ import { CreateManufacturerResponse } from "../models/manufacturers/createManufa
 import { UpdateAmenityRequest } from "../models/amenities/updateAmenities.request";
 import { UpdateManufacturerRequest } from "../models/manufacturers/updateManufacturer.request";
 import { DeleteAmenityRequest } from "../models/amenities/deleteAmenity.request";
+import { GetFuelTypesRequest } from "../models/fuel-types/getFuelTypes.request";
+import {
+  GetFuelTypesResponse,
+  GetFuelTypesResponses,
+} from "../models/fuel-types/getFuelTypes.response";
+import { CreateFuelTypeRequest } from "../models/fuel-types/createFuelType.request";
+import { CreateFuelTypeResponse } from "../models/fuel-types/createFuelType.response";
+import { UpdateFuelTypeRequest } from "../models/fuel-types/updateFuelType.request";
+import { DeleteFuelTypeRequest } from "../models/fuel-types/deleteFuelType.request";
+import { GetTransmissionsRequest } from "../models/transmissions/getTransmissions.request";
+import {
+  GetTransmissionResponse,
+  GetTransmissionsResponses,
+} from "../models/transmissions/getTransmissions.response";
+import { DeleteTransmissionRequest } from "../models/transmissions/deleteTransmission.request";
+import { UpdateTransmissionRequest } from "../models/transmissions/updateTransmission.request";
+import { CreateTransmissionRequest } from "../models/transmissions/createTransmission.request";
+import { CreateTransmissionResponse } from "../models/transmissions/createTransmission.response";
 // Auth
 export const useLoginRequest = create<LoginRequest>()((set) => ({
   email: "",
@@ -153,6 +171,110 @@ export const useGetManufacturersResponses = create<GetManufacturersResponses>()(
 export const useDeleteManufacturerRequest = create<DeleteAmenityRequest>(
   (set) => ({
     id: "",
+    setId: (id: string) => set({ id }),
+  })
+);
+// Fuel Types
+export const useGetFuelTypesRequest = create<GetFuelTypesRequest>((set) => ({
+  index: 1,
+  size: 10,
+  keyword: "",
+  setIndex: (index: number) => set({ index }),
+  setSize: (size: number) => set({ size }),
+  setKeyword: (keyword: string) => set({ keyword }),
+}));
+
+export const useGetFuelTypesResponses = create<GetFuelTypesResponses>()(
+  (set) => ({
+    items: [],
+    hasNext: false,
+    pageNumber: 1,
+    pageSize: 10,
+    totalItems: 0,
+    setItems: (items: GetFuelTypesResponse[]) => set({ items }),
+    setHasNext: (hasNext: boolean) => set({ hasNext }),
+    setPageNumber: (pageNumber: number) => set({ pageNumber }),
+    setPageSize: (pageSize: number) => set({ pageSize }),
+    setTotalItems: (totalItems: number) => set({ totalItems }),
+  })
+);
+
+export const useCreateFuelTypeRequest = create<CreateFuelTypeRequest>()(
+  (set) => ({
+    name: "",
+    setName: (name: string) => set({ name }),
+  })
+);
+export const useCreateFuelTypeResponse = create<CreateFuelTypeResponse>()(
+  (set) => ({
+    id: "",
+    setId: (id: string) => set({ id }),
+  })
+);
+
+export const useUpdateFuelTypeRequest = create<UpdateFuelTypeRequest>(
+  (set) => ({
+    id: "",
+    name: "",
+    setName: (name: string) => set({ name }),
+    setId: (id: string) => set({ id }),
+  })
+);
+export const useDeleteFuelTypeRequest = create<DeleteFuelTypeRequest>(
+  (set) => ({
+    id: "",
+    setId: (id: string) => set({ id }),
+  })
+);
+// Transmission
+export const useGetTransmissionsRequest = create<GetTransmissionsRequest>()(
+  (set) => ({
+    index: 1,
+    size: 10,
+    keyword: "",
+    setIndex: (index: number) => set({ index }),
+    setSize: (size: number) => set({ size }),
+    setKeyword: (keyword: string) => set({ keyword }),
+  })
+);
+
+export const useGetTransmissionsResponses = create<GetTransmissionsResponses>(
+  (set) => ({
+    items: [],
+    hasNext: false,
+    pageNumber: 1,
+    pageSize: 10,
+    totalItems: 0,
+    setItems: (items: GetTransmissionResponse[]) => set({ items }),
+    setHasNext: (hasNext: boolean) => set({ hasNext }),
+    setPageNumber: (pageNumber: number) => set({ pageNumber }),
+    setPageSize: (pageSize: number) => set({ pageSize }),
+    setTotalItems: (totalItems: number) => set({ totalItems }),
+  })
+);
+export const useCreateTransmissionRequest = create<CreateTransmissionRequest>()(
+  (set) => ({
+    name: "",
+    setName: (name: string) => set({ name }),
+  })
+);
+export const useCreateTransmissionResponse = create<CreateTransmissionResponse>(
+  (set) => ({
+    id: "",
+    setId: (id: string) => set({ id }),
+  })
+);
+export const useDeleteTransmissionRequest = create<DeleteTransmissionRequest>(
+  (set) => ({
+    id: "",
+    setId: (id: string) => set({ id }),
+  })
+);
+export const useUpdateTransmissionRequest = create<UpdateTransmissionRequest>(
+  (set) => ({
+    id: "",
+    name: "",
+    setName: (name: string) => set({ name }),
     setId: (id: string) => set({ id }),
   })
 );
