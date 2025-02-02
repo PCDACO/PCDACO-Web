@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ManufacturerApi } from "@/domains/services/manufacturer.service.ts/manufacturer.service";
+import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.service";
 import { useGetManufacturersRequest, useGetManufacturersResponses, useUpdateManufacturerRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation, useQuery } from "@tanstack/react-query";

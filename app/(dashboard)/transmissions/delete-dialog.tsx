@@ -6,27 +6,27 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.service";
-import { useDeleteManufacturerRequest, useGetManufacturersRequest } from "@/domains/stores/store";
+import { TransmissionApi } from "@/domains/services/transmissions/transmissions.service";
+import { useDeleteTransmissionRequest, useGetTransmissionsRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 
-interface DeleteDialogProps {
+interface TransmissionDeleteDialogProps {
     isOpen: boolean,
     onClose: () => void
 }
 
-export const ManufacturerDeleteDialog = (
+export const TransmissionDeleteDialog = (
     {
         isOpen,
         onClose,
-    }: DeleteDialogProps
+    }: TransmissionDeleteDialogProps
 ) => {
     const queryClient = new QueryClient();
-    const { setIndex, setKeyword } = useGetManufacturersRequest();
-    const { id } = useDeleteManufacturerRequest();
+    const { setIndex, setKeyword } = useGetTransmissionsRequest();
+    const { id } = useDeleteTransmissionRequest();
     const mutation = useMutation({
-        mutationFn: () => ManufacturerApi.deleteManufacturer(id),
+        mutationFn: () => TransmissionApi.deleteTransmission(id),
         onSuccess: (data) => {
             toast({
                 title: data.message
@@ -34,12 +34,12 @@ export const ManufacturerDeleteDialog = (
             setIndex(1);
             setKeyword("");
             queryClient.invalidateQueries({
-                queryKey: ["manufacturers"]
+                queryKey: ["transmissions"]
             })
             onClose();
         },
         onError: (error) => {
-            console.error("Login failed", error);
+            console.error("Failed !", error);
         }
     }
     );
@@ -47,7 +47,7 @@ export const ManufacturerDeleteDialog = (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Do you want to delete ?</DialogTitle>
+                    <DialogTitle>Bạn có muốn xóa không ?</DialogTitle>
                 </DialogHeader>
                 <DialogFooter>
                     <Button onClick={onClose} type="submit">
@@ -58,7 +58,7 @@ export const ManufacturerDeleteDialog = (
                                     <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
                                     <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
                                 </div>)
-                                : "No"
+                                : "Không"
                         }
                     </Button>
                     <Button onClick={() => mutation.mutate()} type="submit">
@@ -69,7 +69,7 @@ export const ManufacturerDeleteDialog = (
                                     <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
                                     <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
                                 </div>)
-                                : "Yes"
+                                : "Có"
                         }
                     </Button>
                 </DialogFooter>
