@@ -1,8 +1,8 @@
 "use client";
 
 import { useGetCarsRequest, useGetCarsResponses } from "@/domains/stores/store";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
+import { columns } from "@/components/cars/columns";
+import { DataTable } from "@/components/cars/data-table";
 import { CarApi } from "@/domains/services/cars/car.service";
 import { toast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";

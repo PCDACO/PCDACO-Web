@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { GetCarsResponse } from "@/domains/models/cars/getcars.response";
-import { AmenityDeleteDialog } from "../amenities/delete-dialog";
+import { AmenityDeleteDialog } from "@/components/amenities/delete-dialog";
 import { useState } from "react";
 
 

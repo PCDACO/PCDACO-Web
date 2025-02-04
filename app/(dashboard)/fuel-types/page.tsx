@@ -1,8 +1,8 @@
 "use client";
 
 import { useGetFuelTypesRequest, useGetFuelTypesResponses } from "@/domains/stores/store";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
+import { columns } from "@/components/fuel-types/columns";
+import { DataTable } from "@/components/fuel-types/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
 import { SharedResponse } from "@/domains/models/shared/shared.response";

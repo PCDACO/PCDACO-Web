@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
-import { TransmissionDeleteDialog } from "./delete-dialog";
-import { TransmissionUpdateDialog } from "./update-dialog";
+import { TransmissionDeleteDialog } from "@/components/transmissions/delete-dialog";
+import { TransmissionUpdateDialog } from "@/components/transmissions/update-dialog";
 import { useDeleteTransmissionRequest, useUpdateTransmissionRequest } from "@/domains/stores/store";
 import { GetTransmissionResponse } from "@/domains/models/transmissions/getTransmissions.response";
 

@@ -12,8 +12,8 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { GetAmenitiesResponse } from "@/domains/models/amenities/getamenities.response";
 import { useState } from "react";
-import { AmenityDeleteDialog } from "./delete-dialog";
-import { AmenityUpdateDialog } from "./update-dialog";
+import { AmenityDeleteDialog } from "@/components/amenities/delete-dialog";
+import { AmenityUpdateDialog } from "@/components/amenities/update-dialog";
 import { useDeleteAmenityRequest, useUpdateAmenityRequest } from "@/domains/stores/store";
 
 

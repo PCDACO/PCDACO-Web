@@ -1,8 +1,8 @@
 "use client";
 
 import { useGetTransmissionsRequest, useGetTransmissionsResponses } from "@/domains/stores/store";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
+import { columns } from "@/components/transmissions/columns";
+import { DataTable } from "@/components/transmissions/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
