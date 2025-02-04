@@ -1,8 +1,8 @@
 "use client";
 
 import { useGetManufacturersRequest, useGetManufacturersResponses } from "@/domains/stores/store";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
+import { columns } from "@/components/manufacturers/columns";
+import { DataTable } from "@/components/manufacturers/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.service";
 import { useDebounce } from "@/hooks/use-debounce";

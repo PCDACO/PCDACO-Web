@@ -1,14 +1,14 @@
 "use client";
 
 import { useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
-import { DataTable } from "./data-table";
+import { DataTable } from "@/components/amenities/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { useDebounce } from "@/hooks/use-debounce";
 import { formatDate } from "@/lib/utils";
-import { columns } from "./columns";
+import { columns } from "@/components/amenities/columns";
 
 export default function AmenitiesPage() {
     const { index, size, keyword, setIndex, setKeyword } = useGetAmenitiesRequest();

@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import React from "react"
-import { TransmissionDialog } from "./dialog"
+import { TransmissionDialog } from "@/components/transmissions/dialog"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]

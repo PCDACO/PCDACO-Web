@@ -10,14 +10,14 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { GetManufacturersResponse } from "@/domains/models/manufacturers/getManufacturers.response";
 import { useState } from "react";
-import { ManufacturerDeleteDialog } from "./delete-dialog";
-import { ManufacturerUpdateDialog } from "./update-dialog";
-import { useDeleteManufacturerRequest, useUpdateManufacturerRequest } from "@/domains/stores/store";
+import { FuelTypeDeleteDialog } from "@/components/fuel-types/delete-dialog";
+import { FuelTypeUpdateDialog } from "@/components/fuel-types/update-dialog";
+import { useDeleteFuelTypeRequest, useUpdateFuelTypeRequest } from "@/domains/stores/store";
+import { GetFuelTypesResponse } from "@/domains/models/fuel-types/getFuelTypes.response";
 
 
-export const columns: ColumnDef<GetManufacturersResponse>[] = [
+export const columns: ColumnDef<GetFuelTypesResponse>[] = [
     {
         accessorKey: "id",
         header: "ID",
@@ -38,9 +38,9 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
             // eslint-disable-next-line react-hooks/rules-of-hooks
             const [IsUpdateOpen, SetIsUpdateOpen] = useState(false);
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            const updateAmenityRequest = useUpdateManufacturerRequest();
+            const updateRequest = useUpdateFuelTypeRequest();
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            const deleteRequest = useDeleteManufacturerRequest();
+            const deleteRequest = useDeleteFuelTypeRequest();
             const data = row.original;
             const openDeleteDialog = () => SetIsDeleteOpen(true);  // Open dialog
             const closeDeleteDialog = () => SetIsDeleteOpen(false);  // Close dialog
@@ -58,8 +58,8 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => {
                             console.log(data);
-                            updateAmenityRequest.setId(data.id);
-                            updateAmenityRequest.setName(data.name);
+                            updateRequest.setId(data.id);
+                            updateRequest.setName(data.name);
                             openUpdateDialog();
                         }} >
                             <h2 >
@@ -77,8 +77,8 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu >
-                    <ManufacturerDeleteDialog isOpen={IsDeleteOpen} onClose={closeDeleteDialog} />
-                    <ManufacturerUpdateDialog isOpen={IsUpdateOpen} onClose={closeUpdateDialog} />
+                    <FuelTypeDeleteDialog isOpen={IsDeleteOpen} onClose={closeDeleteDialog} />
+                    <FuelTypeUpdateDialog isOpen={IsUpdateOpen} onClose={closeUpdateDialog} />
                 </>
             );
         },

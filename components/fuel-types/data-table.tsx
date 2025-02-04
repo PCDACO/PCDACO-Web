@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import React from "react"
-import { ManufacturerDialog } from "./dialog"
+import { FuelTypeDialog } from "@/components/fuel-types/dialog"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -70,7 +70,7 @@ export function DataTable<TData, TValue>({
                     onChange={(event) => setKeyword(event.target.value)}
                     className="max-w-sm"
                 />
-                <ManufacturerDialog />
+                <FuelTypeDialog />
             </div>
             <div className="rounded-md border">
                 <Table>
