@@ -1,37 +1,35 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const url = process.env.NEXT_PRIVATE_API_URL;
+import axiosInstance from "../../(config)/axios.server";
+import axios from "axios";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const PUT = async (req: Request, context: any) => {
   const { id } = await context.params;
   const { name } = await req.json();
-  const accessToken = (await cookies()).get("accessToken");
-  if (!accessToken) return NextResponse.json(null, { status: 401 });
-  const response = await fetch(`${url}/api/transmission-types/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken!.value}`,
-    },
-    body: JSON.stringify({
+  try {
+    const response = await axiosInstance.put(`/api/transmission-types/${id}`, {
       name,
-    }),
-  });
-  return NextResponse.json(await response.json(), { status: 204 });
+    });
+    return NextResponse.json(response.data, { status: 204 });
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      return NextResponse.json(null, { status: 401 });
+    }
+    return NextResponse.json(null, { status: 500 });
+  }
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const DELETE = async (_: Request, context: any) => {
   const { id } = await context.params;
-  const accessToken = (await cookies()).get("accessToken");
-  if (!accessToken) return NextResponse.json(null, { status: 401 });
-  const response = await fetch(`${url}/api/transmission-types/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken!.value}`,
-    },
-  });
-  return NextResponse.json(await response.json(), { status: 204 });
+  try {
+    const response = await axiosInstance.delete(
+      `/api/transmission-types/${id}`
+    );
+    return NextResponse.json(response.data, { status: 204 });
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      return NextResponse.json(null, { status: 401 });
+    }
+    return NextResponse.json(null, { status: 500 });
+  }
 };

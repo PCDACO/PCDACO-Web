@@ -1,4 +1,4 @@
-import axiosInstance from "@/configs/axios.config";
+import axiosInstance from "@/configs/axios.client";
 import { SharedResponse } from "../../models/shared/shared.response";
 import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
 import { CreateAmenitiesResponse } from "@/domains/models/amenities/createAmenities.response";

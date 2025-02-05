@@ -1,40 +1,39 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import axiosInstance from "../../(config)/axios.server";
+import { SharedResponse } from "@/domains/models/shared/shared.response";
+import axios from "axios";
 
 const url = `${process.env.NEXT_PRIVATE_API_URL}`;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const PUT = async (req: Request, context: any) => {
-  const { id } = await context.params;
+  const { id } = context.params;
   const { name, description } = await req.json();
-  const accessToken = (await cookies()).get("accessToken");
-  if (!accessToken) return NextResponse.json(null, { status: 401 });
-  const response = await fetch(`${url}/api/amenities/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken!.value}`,
-    },
-    body: JSON.stringify({
+  try {
+    const response = await axiosInstance.put(`${url}/api/amenities/${id}`, {
       name,
       description,
-    }),
-  });
-  return NextResponse.json(await response.json(), { status: response.status });
+    });
+    return NextResponse.json<SharedResponse>(response.data, {
+      status: response.status,
+    });
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      return NextResponse.json(null, { status: 401 });
+    }
+    return NextResponse.json(null, { status: 500 });
+  }
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const DELETE = async (_: Request, context: any) => {
   const { id } = await context.params;
-  console.log(id);
-  const accessToken = (await cookies()).get("accessToken");
-  if (!accessToken) return NextResponse.json(null, { status: 401 });
-  console.log(`${url}/api/amenities/${id}`);
-  const response = await fetch(`${url}/api/amenities/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken!.value}`,
-    },
-  });
-  return NextResponse.json(await response.json(), { status: response.status });
+  try {
+    const response = await axiosInstance.delete(`${url}/api/amenities/${id}`);
+    return NextResponse.json(response.data, { status: response.status });
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      return NextResponse.json(null, { status: 401 });
+    }
+    return NextResponse.json(null, { status: 500 });
+  }
 };

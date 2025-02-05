@@ -1,4 +1,4 @@
-import axiosInstance from "@/configs/axios.config";
+import axiosInstance from "@/configs/axios.client";
 import { SharedResponse } from "../../models/shared/shared.response";
 import { GetManufacturersResponses } from "@/domains/models/manufacturers/getManufacturers.response";
 import { CreateManufacturerResponse } from "@/domains/models/manufacturers/createManufacturer.response";

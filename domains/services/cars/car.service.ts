@@ -1,4 +1,4 @@
-import axiosInstance from "@/configs/axios.config";
+import axiosInstance from "@/configs/axios.client";
 import { SharedResponse } from "../../models/shared/shared.response";
 import { GetCarsResponses } from "../../models/cars/getcars.response";
 export const CarApi = {

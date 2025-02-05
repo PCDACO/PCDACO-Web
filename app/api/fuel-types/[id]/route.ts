@@ -1,42 +1,34 @@
 import { SharedResponse } from "@/domains/models/shared/shared.response";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const url = process.env.NEXT_PRIVATE_API_URL;
+import axiosInstance from "../../(config)/axios.server";
+import axios from "axios";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const PUT = async (req: Request, context: any) => {
   const { id } = await context.params;
   const { name } = await req.json();
-  const accessToken = (await cookies()).get("accessToken");
-  if (!accessToken) return NextResponse.json(null, { status: 401 });
-  const response = await fetch(`${url}/api/fuel-types/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken!.value}`,
-    },
-    body: JSON.stringify({
+  try {
+    const response = await axiosInstance.put(`/api/fuel-types/${id}`, {
       name,
-    }),
-  });
-  return NextResponse.json<SharedResponse>(await response.json(), {
-    status: response.status,
-  });
+    });
+    return NextResponse.json<SharedResponse>(response.data, {
+      status: response.status,
+    });
+  } catch (error) {
+    if (axios.isCancel(error)) return NextResponse.json(null, { status: 401 });
+    return NextResponse.json(null, { status: 500 });
+  }
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const DELETE = async (_: Request, context: any) => {
   const { id } = await context.params;
-  const accessToken = (await cookies()).get("accessToken");
-  if (!accessToken) return NextResponse.json(null, { status: 401 });
-  const response = await fetch(`${url}/api/fuel-types/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken!.value}`,
-    },
-  });
-  return NextResponse.json<SharedResponse>(await response.json(), {
-    status: response.status,
-  });
+  try {
+    const response = await axiosInstance.delete(`/api/fuel-types/${id}`);
+    return NextResponse.json<SharedResponse>(response.data, {
+      status: response.status,
+    });
+  } catch (error) {
+    if (axios.isCancel(error)) return NextResponse.json(null, { status: 401 });
+    return NextResponse.json(null, { status: 500 });
+  }
 };

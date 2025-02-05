@@ -1,17 +1,19 @@
-"use client";
+'use client'
 
-import { useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
+import { columns } from "@/components/amenities/columns";
 import { DataTable } from "@/components/amenities/data-table";
-import { useQuery } from "@tanstack/react-query";
+import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
+import { SharedResponse } from "@/domains/models/shared/shared.response";
+import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
+import { useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
 import { useDebounce } from "@/hooks/use-debounce";
 import { formatDate } from "@/lib/utils";
-import { columns } from "@/components/amenities/columns";
-import { SharedResponse } from "@/domains/models/shared/shared.response";
-import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 
-export default function AmenitiesPage() {
+export default function Table({
+    data
+}: { data: SharedResponse<GetAmenitiesResponses> }) {
     const { index, size, keyword, setRefetch, setIndex, setKeyword } = useGetAmenitiesRequest();
     const {
         items,
@@ -22,7 +24,6 @@ export default function AmenitiesPage() {
         setPageSize,
         setTotalItems
     } = useGetAmenitiesResponses();
-
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
 
     const { isPending, refetch } = useQuery({
@@ -36,6 +37,13 @@ export default function AmenitiesPage() {
             setPageSize(data.value!.pageSize);
             setTotalItems(data.value!.totalItems);
             setRefetch(refetch)
+        },
+        initialData: () => {
+            setItems(data.value!.items);
+            setHasNext(data.value!.hasNext);
+            setPageNumber(data.value!.pageNumber);
+            setPageSize(data.value!.pageSize);
+            setTotalItems(data.value!.totalItems);
         }
     });
     useEffect(() => {
@@ -43,18 +51,16 @@ export default function AmenitiesPage() {
         else setIndex(1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedKeyword])
-
-
     return (
         <div className="container py-10">
             <DataTable
                 columns={columns}
-                data={items?.map((item) => {
+                data={isPending ? [] : (items?.map((item) => {
                     return {
                         ...item,
                         createdAt: formatDate(item.createdAt)
                     }
-                }) ?? []}
+                }) ?? [])}
                 hasNext={hasNext}
                 index={index}
                 isPending={isPending}
