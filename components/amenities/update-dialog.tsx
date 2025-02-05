@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 import { useGetAmenitiesRequest, useUpdateAmenityRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -24,9 +24,8 @@ export const AmenityUpdateDialog = (
         onClose,
     }: DeleteDialogProps
 ) => {
-    const { setIndex, setKeyword } = useGetAmenitiesRequest();
+    const { setIndex, setKeyword, refetch } = useGetAmenitiesRequest();
     const { name, description, id, setName, setDescription } = useUpdateAmenityRequest()
-    const queryClient = new QueryClient();
 
     const mutation = useMutation({
         mutationFn: () => AmenitiyApi.updateAmenity(id, name, description),
@@ -36,9 +35,7 @@ export const AmenityUpdateDialog = (
             })
             setIndex(1);
             setKeyword("");
-            queryClient.invalidateQueries({
-                queryKey: ["amenities"]
-            })
+            refetch?.();
             onClose();
         },
         onError: (error) => {

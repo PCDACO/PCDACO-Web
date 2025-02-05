@@ -1,6 +1,5 @@
 'use client'
 
-import { AuthApi } from "@/domains/services/auth/auth.service";
 import { useLoginRequest } from "@/domains/stores/store";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,7 +7,9 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { SharedResponse } from "@/domains/models/shared/shared.response";
+import { LoginResponse } from "@/domains/models/auth/login.response";
+import { AuthApi } from "@/domains/services/auth/auth.service";
 
 
 export default function Home() {
@@ -18,20 +19,12 @@ export default function Home() {
     const mutation = useMutation({
         mutationKey: ["login"],
         mutationFn: () => AuthApi.login(email, password),
-        onSuccess: (data) => {
-            const accessToken = data.value?.accessToken;
-            const refreshToken = data.value?.refreshToken;
-            if (!accessToken || !refreshToken)
-                return;
+        onSuccess: async (response) => {
+            const data = response as SharedResponse<LoginResponse>;
             router.push("/dashboard");
             toast({
                 title: data.message
             });
-            localStorage.setItem("accessToken", accessToken);
-            localStorage.setItem("refreshToken", refreshToken);
-            console.log("Access token:", accessToken);
-            console.log("Refresh token:", refreshToken);
-            console.log("Login successful", data);
         },
         onError: (error) => {
             toast({
@@ -40,17 +33,11 @@ export default function Home() {
             console.error("Login failed", error);
         },
     });
-    useEffect(() => {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        console.log("Clear access token and refresh token");
-    }, [])
     return (
         <div className="h-full w-full flex items-center justify-center">
             <Card className="w-80 h-96 flex flex-col justify-around shadow-lg">
                 <h1 className="text-3xl text-center">LOGIN</h1>
                 <div className="[&_*]:mb-8">
-
                     <Input
                         placeholder="Enter Email"
                         type="text"

@@ -3,15 +3,16 @@
 import { useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
 import { DataTable } from "@/components/amenities/data-table";
 import { useQuery } from "@tanstack/react-query";
-import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
-import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
-import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { useDebounce } from "@/hooks/use-debounce";
 import { formatDate } from "@/lib/utils";
 import { columns } from "@/components/amenities/columns";
+import { SharedResponse } from "@/domains/models/shared/shared.response";
+import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
+import { useEffect } from "react";
+import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 
 export default function AmenitiesPage() {
-    const { index, size, keyword, setIndex, setKeyword } = useGetAmenitiesRequest();
+    const { index, size, keyword, setRefetch, setIndex, setKeyword } = useGetAmenitiesRequest();
     const {
         items,
         hasNext,
@@ -24,18 +25,28 @@ export default function AmenitiesPage() {
 
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
 
-    const { isPending } = useQuery({
-        queryKey: ["amenities", index, size, debouncedKeyword],
-        queryFn: () =>
-            AmenitiyApi.getAmenities(index, size, debouncedKeyword).then((res) => {
-                const carDatas = res as SharedResponse<GetAmenitiesResponses>;
-                setItems(carDatas.value!.items);
-                setHasNext(carDatas.value!.hasNext);
-                setPageNumber(carDatas.value!.pageNumber);
-                setPageSize(carDatas.value!.pageSize);
-                setTotalItems(carDatas.value!.totalItems);
-            })
+    const { isPending, refetch } = useQuery({
+        queryKey: ["amenities", size, index],
+        queryFn: async () => {
+            const response = await AmenitiyApi.getAmenities(index, size, debouncedKeyword);
+            const data = response as SharedResponse<GetAmenitiesResponses>;
+            setItems(data.value!.items);
+            setHasNext(data.value!.hasNext);
+            setPageNumber(data.value!.pageNumber);
+            setPageSize(data.value!.pageSize);
+            setTotalItems(data.value!.totalItems);
+            setRefetch(refetch)
+        }
     });
+    useEffect(() => {
+        if (index === 1) {
+            refetch();
+        }
+        setIndex(1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedKeyword])
+
+
     return (
         <div className="container py-10">
             <DataTable

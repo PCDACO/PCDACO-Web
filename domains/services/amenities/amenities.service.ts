@@ -9,12 +9,7 @@ export const AmenitiyApi = {
     keyword: string
   ): Promise<SharedResponse<GetAmenitiesResponses>> => {
     // Construct the URL with conditional query parameters
-    let url = `api/amenities?index=${index}&size=${size}`;
-
-    if (keyword) {
-      url += `&keyword=${encodeURIComponent(keyword)}`;
-    }
-
+    const url = `api/amenities?index=${index}&size=${size}&keyword=${keyword}`;
     const response = axiosInstance
       .get(url)
       .then((response) => {
@@ -25,7 +20,6 @@ export const AmenitiyApi = {
         throw error;
       });
     return response;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   },
 
   createAmenities: async (
@@ -45,7 +39,6 @@ export const AmenitiyApi = {
         throw error;
       });
     return response;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   },
 
   deleteAmenity: async (id: string): Promise<SharedResponse> => {
@@ -59,7 +52,6 @@ export const AmenitiyApi = {
         throw error;
       });
     return response;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   },
 
   updateAmenity: async (
@@ -80,6 +72,5 @@ export const AmenitiyApi = {
         throw error;
       });
     return response;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   },
 };

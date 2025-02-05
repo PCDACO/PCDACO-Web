@@ -71,9 +71,11 @@ export const useGetAmenitiesRequest = create<GetAmenitiesRequest>()((set) => ({
   index: 1,
   size: 10,
   keyword: "",
+  refetch: undefined,
   setIndex: (index: number) => set({ index }),
   setSize: (size: number) => set({ size }),
   setKeyword: (keyword: string) => set({ keyword }),
+  setRefetch: (refetch: () => void) => set({ refetch }),
 }));
 export const useGetAmenitiesResponses = create<GetAmenitiesResponses>()(
   (set) => ({
