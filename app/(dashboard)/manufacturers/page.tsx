@@ -9,9 +9,10 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { formatDate } from "@/lib/utils";
+import { useEffect } from "react";
 
 export default function CarPage() {
-    const { index, size, keyword, setIndex, setKeyword } = useGetManufacturersRequest();
+    const { index, size, keyword, setIndex, setKeyword, setRefetch } = useGetManufacturersRequest();
     const {
         items,
         hasNext,
@@ -24,8 +25,8 @@ export default function CarPage() {
 
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
 
-    const { isPending, isSuccess } = useQuery({
-        queryKey: ["manufacturers", index, size, debouncedKeyword],
+    const { isPending, refetch } = useQuery({
+        queryKey: ["manufacturers", index, size],
         queryFn: () =>
             ManufacturerApi.getManufacturers(index, size, debouncedKeyword).then((res) => {
                 const carDatas = res as SharedResponse<GetAmenitiesResponses>;
@@ -34,9 +35,15 @@ export default function CarPage() {
                 setPageNumber(carDatas.value!.pageNumber);
                 setPageSize(carDatas.value!.pageSize);
                 setTotalItems(carDatas.value!.totalItems);
+                setRefetch(refetch);
             })
     });
-    console.log("isSuccess", isSuccess);
+
+    useEffect(() => {
+        if (index === 1) refetch();
+        else setIndex(1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedKeyword]);
 
     return (
         <div className="container py-10">

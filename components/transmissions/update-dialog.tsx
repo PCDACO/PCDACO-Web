@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { TransmissionApi } from "@/domains/services/transmissions/transmissions.service";
 import { useGetTransmissionsRequest, useUpdateTransmissionRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 interface TransmissionUpdateDialogProps {
     isOpen: boolean,
@@ -24,9 +24,8 @@ export const TransmissionUpdateDialog = (
         onClose
     }: TransmissionUpdateDialogProps
 ) => {
-    const { setIndex, setKeyword } = useGetTransmissionsRequest();
+    const { setIndex, setKeyword, refetch } = useGetTransmissionsRequest();
     const { name, id, setName } = useUpdateTransmissionRequest();
-    const useQueryClient = new QueryClient();
     const mutation = useMutation({
         mutationFn: () => TransmissionApi.updateTransmission(id, name),
         onSuccess: (data) => {
@@ -35,9 +34,7 @@ export const TransmissionUpdateDialog = (
             })
             setIndex(1);
             setKeyword("");
-            useQueryClient.invalidateQueries({
-                queryKey: ["fuel-types"]
-            })
+            refetch?.();
             onClose();
         },
         onError: (error) => {

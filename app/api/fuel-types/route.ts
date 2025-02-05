@@ -1,22 +1,20 @@
-import { CreateAmenitiesResponse } from "@/domains/models/amenities/createAmenities.response";
-import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
+import { CreateFuelTypeResponse } from "@/domains/models/fuel-types/createFuelType.response";
+import { GetFuelTypesResponses } from "@/domains/models/fuel-types/getFuelTypes.response";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { generateGuid } from "@/lib/uuid";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
-const url = `${process.env.NEXT_PRIVATE_API_URL}`;
+
+const url = process.env.NEXT_PRIVATE_API_URL;
 
 export const GET = async (req: Request) => {
   const { searchParams } = new URL(req.url);
-  const index = Number(searchParams.get("index"));
-  const size = Number(searchParams.get("size"));
+  const index = Number(searchParams.get("index")) ?? 1;
+  const size = Number(searchParams.get("size")) ?? 10;
   const keyword = searchParams.get("keyword") ?? "";
-
   const accessToken = (await cookies()).get("accessToken");
-  if (!accessToken) return NextResponse.json(null, { status: 401 });
   const response = await fetch(
-    `${url}/api/amenities?index=${index}&size=${size}&keyword=${keyword}`,
+    `${url}/api/fuel-types?index=${index}&size=${size}&${keyword}`,
     {
       method: "GET",
       headers: {
@@ -25,20 +23,17 @@ export const GET = async (req: Request) => {
       },
     }
   );
-
-  return NextResponse.json<SharedResponse<GetAmenitiesResponses>>(
+  return NextResponse.json<SharedResponse<GetFuelTypesResponses>>(
     await response.json(),
-    {
-      status: response.status,
-    }
+    { status: response.status }
   );
 };
-
 export const POST = async (req: Request) => {
-  const { name, description } = await req.json();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { name } = await req.json();
   const accessToken = (await cookies()).get("accessToken");
-  if (!accessToken) redirect("/login");
-  const response = await fetch(`${url}/api/amenities`, {
+  if (!accessToken) return NextResponse.json(null, { status: 401 });
+  const response = await fetch(`${url}/api/fuel-types`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -47,10 +42,9 @@ export const POST = async (req: Request) => {
     },
     body: JSON.stringify({
       name,
-      description,
     }),
   });
-  return NextResponse.json<SharedResponse<CreateAmenitiesResponse>>(
+  return NextResponse.json<SharedResponse<CreateFuelTypeResponse>>(
     await response.json(),
     { status: response.status }
   );

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { useGetTransmissionsRequest, useGetTransmissionsResponses } from "@/domains/stores/store";
 import { columns } from "@/components/transmissions/columns";
@@ -9,9 +9,10 @@ import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { formatDate } from "@/lib/utils";
 import { TransmissionApi } from "@/domains/services/transmissions/transmissions.service";
 import { GetTransmissionsResponses } from "@/domains/models/transmissions/getTransmissions.response";
+import { useEffect } from "react";
 
 export default function CarPage() {
-    const { index, size, keyword, setIndex, setKeyword } = useGetTransmissionsRequest();
+    const { index, size, keyword, setIndex, setKeyword, setRefetch } = useGetTransmissionsRequest();
     const {
         items,
         hasNext,
@@ -24,8 +25,8 @@ export default function CarPage() {
 
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
 
-    const { isPending } = useQuery({
-        queryKey: ["transmissions", index, size, debouncedKeyword],
+    const { isPending, refetch } = useQuery({
+        queryKey: ["transmissions", index, size],
         queryFn: () =>
             TransmissionApi.getTransmissions(index, size, debouncedKeyword).then((res) => {
                 const fuelTypes = res as SharedResponse<GetTransmissionsResponses>;
@@ -34,8 +35,15 @@ export default function CarPage() {
                 setPageNumber(fuelTypes.value!.pageNumber);
                 setPageSize(fuelTypes.value!.pageSize);
                 setTotalItems(fuelTypes.value!.totalItems);
+                setRefetch(refetch);
             })
     });
+
+    useEffect(() => {
+        if (index === 1) refetch();
+        else setIndex(1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedKeyword])
 
     return (
         <div className="container py-10">

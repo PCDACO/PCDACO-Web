@@ -52,15 +52,7 @@ export const AmenityDeleteDialog = (
                 </DialogHeader>
                 <DialogFooter>
                     <Button onClick={onClose} type="submit">
-                        {
-                            mutation.isPending
-                                ? (<div className="flex justify-center items-center space-x-2 animate-pulse">
-                                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                </div>)
-                                : "No"
-                        }
+                        No
                     </Button>
                     <Button onClick={() => mutation.mutate()} type="submit">
                         {

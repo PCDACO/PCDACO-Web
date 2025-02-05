@@ -13,14 +13,13 @@ import { Label } from "@/components/ui/label";
 import { FuelTypesApi } from "@/domains/services/fuel-types/fuelTypes.service";
 import { useCreateFuelTypeRequest, useGetFuelTypesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation, } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 
 export const FuelTypeDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
-    const { setIndex, setKeyword } = useGetFuelTypesRequest();
-    const queryClient = new QueryClient();
+    const { setIndex, setKeyword, refetch } = useGetFuelTypesRequest();
     const { name, setName } = useCreateFuelTypeRequest()
 
     const handleSubmitBtn = async () => {
@@ -42,9 +41,7 @@ export const FuelTypeDialog = () => {
             setIndex(1);
             setKeyword("");
             SetIsOpen(false);
-            queryClient.invalidateQueries({
-                queryKey: ["fuel-types"]
-            });
+            refetch?.();
         }
     }
     );

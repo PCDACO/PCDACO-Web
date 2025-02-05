@@ -2,7 +2,7 @@ import axiosInstance from "@/configs/axios.config";
 
 export const TransmissionApi = {
   getTransmissions: async (index: number, size: number, keyword: string) => {
-    let url = `api/transmission-types?index=${index}&size=${size}`;
+    let url = `api/transmissions?index=${index}&size=${size}`;
     if (keyword) {
       url += `&keyword=${encodeURIComponent(keyword)}`;
     }
@@ -19,7 +19,7 @@ export const TransmissionApi = {
   },
   createTransmission: async (name: string) => {
     const response = axiosInstance
-      .post("api/transmission-types", {
+      .post("api/transmissions", {
         name: name,
       })
       .then((response) => {
@@ -33,7 +33,7 @@ export const TransmissionApi = {
   },
   updateTransmission: async (id: string, name: string) => {
     const response = axiosInstance
-      .put(`api/transmission-types/${id}`, {
+      .put(`api/transmissions/${id}`, {
         name: name,
       })
       .then((response) => {
@@ -47,7 +47,7 @@ export const TransmissionApi = {
   },
   deleteTransmission: async (id: string) => {
     const response = axiosInstance
-      .delete(`api/transmission-types/${id}`)
+      .delete(`api/transmissions/${id}`)
       .then((response) => {
         return response.data;
       })

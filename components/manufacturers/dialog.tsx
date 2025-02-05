@@ -64,7 +64,7 @@ export const ManufacturerDialog = () => {
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="name" className="text-right">
-                            Name
+                            Tên
                         </Label>
                         <Input id="name" onChange={(e) => setName(e.target.value)} value={name} className="col-span-3" />
                     </div>
@@ -78,7 +78,7 @@ export const ManufacturerDialog = () => {
                                     <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
                                     <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
                                 </div>)
-                                : "Save changes"
+                                : "Cập nhật"
                         }
                     </Button>
                 </DialogFooter>
