@@ -57,7 +57,6 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => {
-                            console.log(data);
                             updateAmenityRequest.setId(data.id);
                             updateAmenityRequest.setName(data.name);
                             openUpdateDialog();

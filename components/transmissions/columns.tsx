@@ -57,7 +57,6 @@ export const columns: ColumnDef<GetTransmissionResponse>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => {
-                            console.log(data);
                             updateRequest.setId(data.id);
                             updateRequest.setName(data.name);
                             openUpdateDialog();

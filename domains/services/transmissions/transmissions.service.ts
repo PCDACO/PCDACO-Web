@@ -1,4 +1,4 @@
-import axiosInstance from "@/configs/axios.config";
+import axiosInstance from "@/configs/axios.client";
 
 export const TransmissionApi = {
   getTransmissions: async (index: number, size: number, keyword: string) => {

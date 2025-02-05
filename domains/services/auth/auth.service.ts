@@ -1,4 +1,4 @@
-import axiosInstance from "@/configs/axios.config";
+import axiosInstance from "@/configs/axios.client";
 import { LoginResponse } from "../../models/auth/login.response";
 import { SharedResponse } from "../../models/shared/shared.response";
 
@@ -15,7 +15,6 @@ export const AuthApi = {
           password,
         }
       );
-      console.log(response.data);
       return response.data; // Return the response data directly
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

@@ -3,23 +3,8 @@ import { redirect } from "next/navigation";
 
 // This function can be marked `async` if using `await` inside
 export async function middleware() {
-  console.log("hit");
   const accessToken = (await cookies()).get("accessToken");
-  if (accessToken) {
-    const url = process.env.NEXT_PRIVATE_API_URL;
-    const response = await fetch(`${url}/api/auth/validate-token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken!.value}`,
-      },
-    });
-    if (response.status === 401) {
-      (await cookies()).delete("accessToken");
-      (await cookies()).delete("refreshToken");
-      redirect("/login");
-    }
-  }
+  if (!accessToken) return redirect("/login");
 }
 
 export const config = {

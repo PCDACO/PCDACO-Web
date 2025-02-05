@@ -42,7 +42,6 @@ export const TransmissionUpdateDialog = (
         }
     }
     );
-    console.log("name", name);
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
