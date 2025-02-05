@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { Context } from "vm";
 
 const url = `${process.env.NEXT_PRIVATE_API_URL}`;
 
-export const PUT = async (req: Request, context: Context) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const PUT = async (req: Request, context: any) => {
   const { id } = await context.params;
   const { name, description } = await req.json();
   const accessToken = (await cookies()).get("accessToken");
@@ -22,7 +22,8 @@ export const PUT = async (req: Request, context: Context) => {
   });
   return NextResponse.json(await response.json(), { status: response.status });
 };
-export const DELETE = async (_: Request, context: Context) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const DELETE = async (_: Request, context: any) => {
   const { id } = await context.params;
   console.log(id);
   const accessToken = (await cookies()).get("accessToken");
