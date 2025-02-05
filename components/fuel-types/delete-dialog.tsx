@@ -9,7 +9,7 @@ import {
 import { FuelTypesApi } from "@/domains/services/fuel-types/fuelTypes.service";
 import { useDeleteFuelTypeRequest, useGetFuelTypesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -22,8 +22,7 @@ export const FuelTypeDeleteDialog = (
         onClose,
     }: DeleteDialogProps
 ) => {
-    const queryClient = new QueryClient();
-    const { setIndex, setKeyword } = useGetFuelTypesRequest();
+    const { setIndex, setKeyword, refetch } = useGetFuelTypesRequest();
     const { id } = useDeleteFuelTypeRequest();
     const mutation = useMutation({
         mutationFn: () => FuelTypesApi.deleteFuelTypes(id),
@@ -33,9 +32,7 @@ export const FuelTypeDeleteDialog = (
             })
             setIndex(1);
             setKeyword("");
-            queryClient.invalidateQueries({
-                queryKey: ["fuel-types"]
-            })
+            refetch?.();
             onClose();
         },
         onError: (error) => {

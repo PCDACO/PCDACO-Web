@@ -36,13 +36,14 @@ export default function AmenitiesPage() {
             setPageSize(data.value!.pageSize);
             setTotalItems(data.value!.totalItems);
             setRefetch(refetch)
+        },
+        initialData: () => {
+            setItems([]);
         }
     });
     useEffect(() => {
-        if (index === 1) {
-            refetch();
-        }
-        setIndex(1);
+        if (index === 1) refetch();
+        else setIndex(1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedKeyword])
 

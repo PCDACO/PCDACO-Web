@@ -13,14 +13,13 @@ import { Label } from "@/components/ui/label";
 import { TransmissionApi } from "@/domains/services/transmissions/transmissions.service";
 import { useCreateTransmissionRequest, useGetTransmissionsRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation, } from "@tanstack/react-query";
+import { useMutation, } from "@tanstack/react-query";
 import { useState } from "react";
 
 
 export const TransmissionDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
-    const { setIndex, setKeyword } = useGetTransmissionsRequest();
-    const queryClient = new QueryClient();
+    const { setIndex, setKeyword, refetch } = useGetTransmissionsRequest();
     const { name, setName } = useCreateTransmissionRequest()
 
     const handleSubmitBtn = async () => {
@@ -41,10 +40,8 @@ export const TransmissionDialog = () => {
             })
             setIndex(1);
             setKeyword("");
+            refetch?.();
             SetIsOpen(false);
-            queryClient.invalidateQueries({
-                queryKey: ["transmission"]
-            });
         }
     }
     );

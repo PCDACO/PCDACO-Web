@@ -1,8 +1,4 @@
-export interface GetManufacturersRequest {
-  index: number;
-  size: number;
-  keyword: string;
-  setIndex: (index: number) => void;
-  setSize: (size: number) => void;
-  setKeyword: (keyword: string) => void;
-}
+import { OffsetPaginationRequest } from "../shared/offsetPagination.request";
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface GetManufacturersRequest extends OffsetPaginationRequest {}

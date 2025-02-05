@@ -9,7 +9,7 @@ import {
 import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.service";
 import { useDeleteManufacturerRequest, useGetManufacturersRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -22,8 +22,7 @@ export const ManufacturerDeleteDialog = (
         onClose,
     }: DeleteDialogProps
 ) => {
-    const queryClient = new QueryClient();
-    const { setIndex, setKeyword } = useGetManufacturersRequest();
+    const { setIndex, setKeyword, refetch } = useGetManufacturersRequest();
     const { id } = useDeleteManufacturerRequest();
     const mutation = useMutation({
         mutationFn: () => ManufacturerApi.deleteManufacturer(id),
@@ -33,9 +32,7 @@ export const ManufacturerDeleteDialog = (
             })
             setIndex(1);
             setKeyword("");
-            queryClient.invalidateQueries({
-                queryKey: ["manufacturers"]
-            })
+            refetch?.();
             onClose();
         },
         onError: (error) => {
@@ -51,15 +48,7 @@ export const ManufacturerDeleteDialog = (
                 </DialogHeader>
                 <DialogFooter>
                     <Button onClick={onClose} type="submit">
-                        {
-                            mutation.isPending
-                                ? (<div className="flex justify-center items-center space-x-2 animate-pulse">
-                                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                </div>)
-                                : "No"
-                        }
+                        No
                     </Button>
                     <Button onClick={() => mutation.mutate()} type="submit">
                         {

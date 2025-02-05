@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { useGetFuelTypesRequest, useGetFuelTypesResponses } from "@/domains/stores/store";
 import { columns } from "@/components/fuel-types/columns";
@@ -9,9 +9,10 @@ import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { formatDate } from "@/lib/utils";
 import { FuelTypesApi } from "@/domains/services/fuel-types/fuelTypes.service";
 import { GetFuelTypesResponses } from "@/domains/models/fuel-types/getFuelTypes.response";
+import { useEffect } from "react";
 
 export default function CarPage() {
-    const { index, size, keyword, setIndex, setKeyword } = useGetFuelTypesRequest();
+    const { index, size, keyword, setIndex, setKeyword, setRefetch } = useGetFuelTypesRequest();
     const {
         items,
         hasNext,
@@ -24,8 +25,8 @@ export default function CarPage() {
 
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
 
-    const { isPending } = useQuery({
-        queryKey: ["fuel-types", index, size, debouncedKeyword],
+    const { isPending, refetch } = useQuery({
+        queryKey: ["fuel-types", index, size],
         queryFn: () =>
             FuelTypesApi.getFuelTypes(index, size, debouncedKeyword).then((res) => {
                 const fuelTypes = res as SharedResponse<GetFuelTypesResponses>;
@@ -34,8 +35,15 @@ export default function CarPage() {
                 setPageNumber(fuelTypes.value!.pageNumber);
                 setPageSize(fuelTypes.value!.pageSize);
                 setTotalItems(fuelTypes.value!.totalItems);
+                setRefetch(refetch);
             })
     });
+
+    useEffect(() => {
+        if (index === 1) refetch();
+        else setIndex(1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedKeyword])
 
     return (
         <div className="container py-10">

@@ -9,11 +9,9 @@ export const ManufacturerApi = {
     keyword: string
   ): Promise<SharedResponse<GetManufacturersResponses>> => {
     // Construct the URL with conditional query parameters
-    let url = `api/manufacturers?index=${index}&size=${size}`;
-
-    if (keyword) {
-      url += `&keyword=${encodeURIComponent(keyword)}`;
-    }
+    const url = `api/manufacturers?index=${index}&size=${size}&keyword=${encodeURIComponent(
+      keyword
+    )}`;
 
     const response = axiosInstance
       .get(url)
@@ -43,7 +41,6 @@ export const ManufacturerApi = {
         throw error;
       });
     return response;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   },
 
   deleteManufacturer: async (id: string): Promise<SharedResponse> => {

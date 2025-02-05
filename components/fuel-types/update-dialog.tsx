@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { FuelTypesApi } from "@/domains/services/fuel-types/fuelTypes.service";
 import { useGetFuelTypesRequest, useUpdateFuelTypeRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 interface UpdateDialogProps {
     isOpen: boolean,
@@ -24,9 +24,8 @@ export const FuelTypeUpdateDialog = (
         onClose
     }: UpdateDialogProps
 ) => {
-    const { setIndex, setKeyword } = useGetFuelTypesRequest();
+    const { setIndex, setKeyword, refetch } = useGetFuelTypesRequest();
     const { name, id, setName } = useUpdateFuelTypeRequest();
-    const useQueryClient = new QueryClient();
     const mutation = useMutation({
         mutationFn: () => FuelTypesApi.updateFuelTypes(id, name),
         onSuccess: (data) => {
@@ -35,9 +34,7 @@ export const FuelTypeUpdateDialog = (
             })
             setIndex(1);
             setKeyword("");
-            useQueryClient.invalidateQueries({
-                queryKey: ["fuel-types"]
-            })
+            refetch?.();
             onClose();
         },
         onError: (error) => {

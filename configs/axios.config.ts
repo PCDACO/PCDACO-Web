@@ -20,7 +20,16 @@ const axiosInstance = axios.create({
 });
 
 // Request interceptor
-// axiosInstance.interceptors.request.use(async (config) => {});
+// axiosInstance.interceptors.request.use(async (config) => {
+//   const response = await fetch(`${getUrl()}/api/auth/validate-token`, {
+//     method: "POST",
+//   });
+//   if (!response.ok) {
+//     const router = useRouter();
+//     router.push("/login");
+//   }
+//   return config;
+// });
 
 // Response interceptor
 axiosInstance.interceptors.response.use(

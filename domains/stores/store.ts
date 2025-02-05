@@ -127,9 +127,11 @@ export const useGetManufacturersRequest = create<GetManufacturersRequest>()(
     index: 1,
     size: 10,
     keyword: "",
+    refetch: undefined,
     setIndex: (index: number) => set({ index }),
     setSize: (size: number) => set({ size }),
     setKeyword: (keyword: string) => set({ keyword }),
+    setRefetch: (refetch: () => void) => set({ refetch }),
   })
 );
 
@@ -181,9 +183,11 @@ export const useGetFuelTypesRequest = create<GetFuelTypesRequest>((set) => ({
   index: 1,
   size: 10,
   keyword: "",
+  refetch: undefined,
   setIndex: (index: number) => set({ index }),
   setSize: (size: number) => set({ size }),
   setKeyword: (keyword: string) => set({ keyword }),
+  setRefetch: (refetch: () => void) => set({ refetch }),
 }));
 
 export const useGetFuelTypesResponses = create<GetFuelTypesResponses>()(
@@ -234,9 +238,11 @@ export const useGetTransmissionsRequest = create<GetTransmissionsRequest>()(
     index: 1,
     size: 10,
     keyword: "",
+    refetch: undefined,
     setIndex: (index: number) => set({ index }),
     setSize: (size: number) => set({ size }),
     setKeyword: (keyword: string) => set({ keyword }),
+    setRefetch: (refetch: () => void) => set({ refetch }),
   })
 );
 

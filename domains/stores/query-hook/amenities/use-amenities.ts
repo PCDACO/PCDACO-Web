@@ -1,0 +1,3 @@
+interface SoftwareHook{
+    options?: 
+}
