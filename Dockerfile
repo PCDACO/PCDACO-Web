@@ -26,14 +26,10 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Accept build arguments for environment variables
-ARG NEXT_PUBLIC_API_URL
-ARG NEXT_PUBLIC_API_KEY
 ARG NEXT_PRIVATE_API_URL
 
 # Set build-time environment variables
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-ENV NEXT_PRIVATE_API_URL=${NEXT_PRIVATE_API_URL}
-ENV NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}
+ENV NEXT_PRIVATE_API_URL=${NEXT_PRIVATE_API_URLx}
 
 # Build the Next.js app using Bun
 RUN bun run build
@@ -49,13 +45,9 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # Accept build arguments again in the runner stage
-ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PRIVATE_API_URL
-ARG NEXT_PUBLIC_API_KEY
 
 # Set runtime environment variables
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-ENV NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}
 ENV NEXT_PRIVATE_API_URL=${NEXT_PRIVATE_API_URL}
 
 # FROM nginx:alpine AS release

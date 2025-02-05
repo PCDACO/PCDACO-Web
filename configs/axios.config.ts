@@ -1,11 +1,18 @@
-import { NEXT_PUBLIC_API_URL } from "@/lib/env";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
+const getUrl = () => {
+  if (typeof window === "undefined") {
+    // we are on the server
+    return process.env.NEXT_PUBLIC_API_URL || "";
+  }
 
+  // we are on the client
+  return "";
+};
 
 const axiosInstance = axios.create({
-  baseURL: NEXT_PUBLIC_API_URL,
+  baseURL: getUrl(),
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
