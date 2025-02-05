@@ -28,6 +28,7 @@ export const AmenityDeleteDialog = (
     const mutation = useMutation({
         mutationFn: () => AmenitiyApi.deleteAmenity(id),
         onSuccess: (data) => {
+            console.log("data", data);
             toast({
                 title: data.message
             })

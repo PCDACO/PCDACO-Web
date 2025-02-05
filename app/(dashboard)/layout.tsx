@@ -1,5 +1,3 @@
-'use client'
-
 // import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "../globals.css";
@@ -9,8 +7,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
@@ -34,19 +30,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const router = useRouter();
-
-  useEffect(() => {
-    // Check if running in the browser
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      router.push("/login");
-    } else {
-      setAccessToken(token); // Set access token if it exists
-    }
-  }, [router]);
   return (
     <html lang="en">
       <body

@@ -11,15 +11,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
-import { useCreateAmenitiesRequest } from "@/domains/stores/store";
+import { useCreateAmenitiesRequest, useGetAmenitiesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 export const AmenityDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
     const { name, description, setName, setDescription } = useCreateAmenitiesRequest()
-    const queryClient = new QueryClient();
+    const { refetch } = useGetAmenitiesRequest();
 
     const handleSubmitBtn = async () => {
         if (name === "" || description === "") {
@@ -32,14 +32,13 @@ export const AmenityDialog = () => {
     }
 
     const mutation = useMutation({
+        mutationKey: ["amenities"],
         mutationFn: () => AmenitiyApi.createAmenities(name, description),
         onSuccess: (data) => {
             toast({
                 title: data.message
             })
-            queryClient.invalidateQueries({
-                queryKey: ["amenities"]
-            });
+            refetch?.();
             SetIsOpen(false);
         }
     }

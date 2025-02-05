@@ -9,12 +9,13 @@ export const AuthApi = {
   ): Promise<SharedResponse<LoginResponse>> => {
     try {
       const response = await axiosInstance.post<SharedResponse<LoginResponse>>(
-        "api/users/login",
+        "api/auth/login",
         {
           email,
           password,
         }
       );
+      console.log(response.data);
       return response.data; // Return the response data directly
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
