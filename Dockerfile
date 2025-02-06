@@ -50,7 +50,6 @@ ARG NEXT_PRIVATE_API_URL
 # Set runtime environment variables
 ENV NEXT_PRIVATE_API_URL=${NEXT_PRIVATE_API_URL}
 
-# FROM nginx:alpine AS release
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -62,9 +61,7 @@ RUN chown nextjs:nodejs .next
 # Copy built assets from builder stage
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
-# COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-# COPY --from=builder /app/nginx/nginx.conf /usr/share/nginx/conf.d/default.conf
 
 # Start the Next.js server using Bun
 EXPOSE 3000
@@ -73,5 +70,3 @@ ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 # CMD ["bun", "server.js"]
 CMD ["node", "server.js"]
-
-# CMD ["nginx", "-g", "daemon off;"]
