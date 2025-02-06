@@ -2,8 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
-    DialogFooter,
-    DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
@@ -12,6 +10,9 @@ import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.s
 import { useGetManufacturersRequest, useUpdateManufacturerRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
+import { LoadingSpinner } from "../ui/loading-spinner";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 interface UpdateDialogProps {
     isOpen: boolean,
@@ -26,9 +27,19 @@ export const ManufacturerUpdateDialog = (
 ) => {
     const { setIndex, setKeyword, refetch } = useGetManufacturersRequest();
     const { name, id, setName } = useUpdateManufacturerRequest()
-    const mutation = useMutation({
+    const { register, handleSubmit, setValue } = useForm<{ formName: string }>({
+        defaultValues: {
+            formName: name
+        }
+    });
+    useEffect(() => {
+        setValue("formName", name);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [name])
+    const { isPending, mutate } = useMutation({
         mutationFn: () => ManufacturerApi.updateManufacturer(id, name),
         onSuccess: (data) => {
+            if (!data.isSuccess) return;
             toast({
                 title: data.message
             })
@@ -45,30 +56,31 @@ export const ManufacturerUpdateDialog = (
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Update Manufacturer</DialogTitle>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label className="text-right">
-                            Name
+                <DialogTitle className="text-xl text-start font-semibold">Cập nhật nhà sản xuất</DialogTitle>
+                <form onSubmit={handleSubmit((data) => {
+                    setName(data.formName);
+                    mutate();
+                })} className="space-y-5">
+                    <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                            Tên
                         </Label>
-                        <Input id="name" onChange={(e) => setName(e.target.value)} value={name} className="col-span-3" />
+                        <Input
+                            {...register("formName")}
+                            type="text"
+                            id="name"
+                            placeholder="Nhập "
+                            required
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
+                        />
                     </div>
-                </div>
-                <DialogFooter>
-                    <Button onClick={() => mutation.mutate()} type="submit">
-                        {
-                            mutation.isPending
-                                ? (<div className="flex justify-center items-center space-x-2 animate-pulse">
-                                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                </div>)
-                                : "Update"
-                        }
+                    <Button
+                        type="submit"
+                        className="w-full mt-8 bg-black text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                    >
+                        {isPending ? (<LoadingSpinner size={18} />) : "Tạo"}
                     </Button>
-                </DialogFooter>
+                </form>
             </DialogContent>
         </Dialog >
     );

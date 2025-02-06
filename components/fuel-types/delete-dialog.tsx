@@ -10,6 +10,7 @@ import { FuelTypesApi } from "@/domains/services/fuel-types/fuelTypes.service";
 import { useDeleteFuelTypeRequest, useGetFuelTypesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -27,6 +28,7 @@ export const FuelTypeDeleteDialog = (
     const mutation = useMutation({
         mutationFn: () => FuelTypesApi.deleteFuelTypes(id),
         onSuccess: (data) => {
+            if (!data.isSuccess) return;
             toast({
                 title: data.message
             })
@@ -34,9 +36,6 @@ export const FuelTypeDeleteDialog = (
             setKeyword("");
             refetch?.();
             onClose();
-        },
-        onError: (error) => {
-            console.error("Failed !", error);
         }
     }
     );
@@ -49,23 +48,14 @@ export const FuelTypeDeleteDialog = (
                 <DialogFooter>
                     <Button onClick={onClose} type="submit">
                         {
-                            mutation.isPending
-                                ? (<div className="flex justify-center items-center space-x-2 animate-pulse">
-                                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                </div>)
+                            mutation.isPending ? <LoadingSpinner size={18} />
                                 : "Không"
                         }
                     </Button>
                     <Button onClick={() => mutation.mutate()} type="submit">
                         {
                             mutation.isPending
-                                ? (<div className="flex justify-center items-center space-x-2 animate-pulse">
-                                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                </div>)
+                                ? <LoadingSpinner size={18} />
                                 : "Có"
                         }
                     </Button>

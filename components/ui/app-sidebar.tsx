@@ -13,12 +13,13 @@ import {
     Car,
     HousePlus,
     Factory,
-    LogOut,
+    // LogOut,
     FuelIcon,
     AlignEndHorizontal,
     Cog,
 } from "lucide-react"
-import Link from "next/link"
+// import Link from "next/link"
+import { LogoutButton } from "./LogoutButton"
 
 // Menu items.
 const items = [
@@ -81,10 +82,7 @@ export function AppSidebar() {
                             <SidebarMenu>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild size={"lg"}>
-                                        <Link href="/login">
-                                            <LogOut />
-                                            <span>Logout</span>
-                                        </Link>
+                                        <LogoutButton />
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             </SidebarMenu>

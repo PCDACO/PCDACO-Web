@@ -26,16 +26,18 @@ export default function AmenitiesPage() {
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
 
     const { isPending, refetch } = useQuery({
-        queryKey: ["amenities", size, index],
+        queryKey: ["amenities", index],
         queryFn: async () => {
             const response = await AmenitiyApi.getAmenities(index, size, debouncedKeyword);
-            const data = response as SharedResponse<GetAmenitiesResponses>;
-            setItems(data.value!.items);
-            setHasNext(data.value!.hasNext);
-            setPageNumber(data.value!.pageNumber);
-            setPageSize(data.value!.pageSize);
-            setTotalItems(data.value!.totalItems);
-            setRefetch(refetch)
+            if (response.isSuccess) {
+                const data = response as SharedResponse<GetAmenitiesResponses>;
+                setItems(data.value!.items);
+                setHasNext(data.value!.hasNext);
+                setPageNumber(data.value!.pageNumber);
+                setPageSize(data.value!.pageSize);
+                setTotalItems(data.value!.totalItems);
+                setRefetch(refetch)
+            }
         }
     });
     useEffect(() => {

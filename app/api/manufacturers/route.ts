@@ -22,8 +22,23 @@ export const GET = async (req: Request) => {
       { status: 200 }
     );
   } catch (error) {
-    if (axios.isCancel(error)) return NextResponse.json(null, { status: 401 });
-    return NextResponse.json(null, { status: 500 });
+    if (axios.isCancel(error))
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: error,
+          value: null,
+        },
+        { status: 401 }
+      );
+    return NextResponse.json(
+      {
+        isSuccess: false,
+        message: error,
+        value: null,
+      },
+      { status: 500 }
+    );
   }
 };
 
@@ -35,7 +50,22 @@ export const POST = async (req: Request) => {
     });
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
-    if (axios.isCancel(error)) return NextResponse.json(null, { status: 401 });
-    return NextResponse.json(null, { status: 500 });
+    if (axios.isCancel(error))
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: error,
+          value: null,
+        },
+        { status: 401 }
+      );
+    return NextResponse.json(
+      {
+        isSuccess: false,
+        message: error,
+        value: null,
+      },
+      { status: 500 }
+    );
   }
 };

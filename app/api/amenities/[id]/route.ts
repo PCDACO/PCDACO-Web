@@ -19,9 +19,23 @@ export const PUT = async (req: Request, context: any) => {
     });
   } catch (error) {
     if (axios.isCancel(error)) {
-      return NextResponse.json(null, { status: 401 });
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: error,
+          value: null,
+        },
+        { status: 401 }
+      );
     }
-    return NextResponse.json(null, { status: 500 });
+    return NextResponse.json(
+      {
+        isSuccess: false,
+        message: error,
+        value: null,
+      },
+      { status: 500 }
+    );
   }
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,8 +46,22 @@ export const DELETE = async (_: Request, context: any) => {
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
     if (axios.isCancel(error)) {
-      return NextResponse.json(null, { status: 401 });
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: error,
+          value: null,
+        },
+        { status: 401 }
+      );
     }
-    return NextResponse.json(null, { status: 500 });
+    return NextResponse.json(
+      {
+        isSuccess: false,
+        message: error,
+        value: null,
+      },
+      { status: 500 }
+    );
   }
 };

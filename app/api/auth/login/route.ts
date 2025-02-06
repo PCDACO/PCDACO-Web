@@ -12,7 +12,7 @@ export const POST = async (req: Request) => {
       email,
       password,
     });
-    if (response.status === 200) {
+    if (response.status) {
       const data = await response.data;
       (await cookies()).set("accessToken", data.value.accessToken, {
         maxAge: 30 * 60,
@@ -26,12 +26,36 @@ export const POST = async (req: Request) => {
         status: response.status,
       });
     } else {
-      return NextResponse.json(null, { status: 401 });
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: "Login failed",
+          value: null,
+        },
+        { status: 401 }
+      );
     }
   } catch (error) {
-    if (axios.isCancel(error)) {
-      return NextResponse.json(null, { status: 401 });
+    console.log("Login failed", error);
+    if (axios.isAxiosError(error)) {
+      if (axios.isCancel(error)) {
+        return NextResponse.json(
+          {
+            isSuccess: false,
+            message: error,
+            value: null,
+          },
+          { status: 401 }
+        );
+      }
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: error,
+          value: null,
+        },
+        { status: 500 }
+      );
     }
-    return NextResponse.json(null, { status: 500 });
   }
 };

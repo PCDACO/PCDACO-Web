@@ -16,10 +16,12 @@ const axiosInstance = axios.create({
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
+    console.log("Response success", response);
     return response;
   },
   (error) => {
-    if (error.response.status === 401) {
+    // console.error("Response failed", error);
+    if (error.status === 401) {
       const router = useRouter();
       router.push("/login");
     }

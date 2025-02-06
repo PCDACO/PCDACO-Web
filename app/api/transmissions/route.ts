@@ -10,17 +10,37 @@ export const GET = async (req: Request) => {
   const index = Number(searchParams.get("index")) ?? 1;
   const size = Number(searchParams.get("size")) ?? 10;
   const keyword = searchParams.get("keyword") ?? "";
-  const response = await axiosInstance.get(`/api/transmission-types`, {
-    params: {
-      index: index,
-      size: size,
-      keyword: keyword,
-    },
-  });
-  return NextResponse.json<SharedResponse<GetTransmissionsResponses>>(
-    response.data,
-    { status: response.status }
-  );
+  try {
+    const response = await axiosInstance.get(`/api/transmission-types`, {
+      params: {
+        index: index,
+        size: size,
+        keyword: keyword,
+      },
+    });
+    return NextResponse.json<SharedResponse<GetTransmissionsResponses>>(
+      response.data,
+      { status: response.status }
+    );
+  } catch (error) {
+    if (axios.isCancel(error))
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: error,
+          value: null,
+        },
+        { status: 401 }
+      );
+    return NextResponse.json(
+      {
+        isSuccess: false,
+        message: error,
+        value: null,
+      },
+      { status: 500 }
+    );
+  }
 };
 export const POST = async (req: Request) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -34,7 +54,22 @@ export const POST = async (req: Request) => {
       { status: response.status }
     );
   } catch (error) {
-    if (axios.isCancel(error)) return NextResponse.json(null, { status: 401 });
-    return NextResponse.json(null, { status: 500 });
+    if (axios.isCancel(error))
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: error,
+          value: null,
+        },
+        { status: 401 }
+      );
+    return NextResponse.json(
+      {
+        isSuccess: false,
+        message: error,
+        value: null,
+      },
+      { status: 500 }
+    );
   }
 };
