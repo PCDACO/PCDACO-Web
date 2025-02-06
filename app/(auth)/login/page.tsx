@@ -1,62 +1,86 @@
 'use client'
 
 import { useLoginRequest } from "@/domains/stores/store";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { LoginResponse } from "@/domains/models/auth/login.response";
 import { AuthApi } from "@/domains/services/auth/auth.service";
-
+import { useForm } from "react-hook-form";
+import { Label } from "@radix-ui/react-label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function Home() {
+    const { register, handleSubmit } = useForm<{
+        email: string,
+        password: string
+    }>();
     const { email, setEmail, password, setPassword } = useLoginRequest();
     const router = useRouter();
-    // Use useMutation for login requests
-    const mutation = useMutation({
+
+    const { mutate, isPending } = useMutation({
         mutationKey: ["login"],
         mutationFn: () => AuthApi.login(email, password),
-        onSuccess: async (response) => {
+        onSuccess: (response) => {
+            if (!response.isSuccess) {
+                toast({
+                    title: "Email hoặc mật khẩu không đúng"
+                });
+                return;
+            }
             const data = response as SharedResponse<LoginResponse>;
+            console.log(data);
             router.push("/dashboard");
             toast({
                 title: data.message
             });
-        },
-        onError: (error) => {
-            toast({
-                title: error.message
-            });
-            console.error("Login failed", error);
-        },
+        }
     });
+
     return (
-        <div className="h-full w-full flex items-center justify-center">
-            <Card className="w-80 h-96 flex flex-col justify-around shadow-lg">
-                <h1 className="text-3xl text-center">LOGIN</h1>
-                <div className="[&_*]:mb-8">
+        <div className="w-full max-w-xs mx-auto flex flex-col justify-center h-screen">
+            <h1 className="text-3xl text-center font-bold mb-8">Đăng nhập</h1>
+            <form onSubmit={handleSubmit((data) => {
+                setEmail(data.email);
+                setPassword(data.password);
+                mutate();
+            })} className="space-y-8">
+                <div className="space-y-2">
+                    <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                        Email
+                    </Label>
                     <Input
-                        placeholder="Enter Email"
-                        type="text"
-                        value={email}
-                        onChange={(e) => setEmail(e.currentTarget.value)}
+                        {...register("email")}
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                        className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
                     />
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                        Mật khẩu
+                    </Label>
                     <Input
-                        placeholder="Enter Password"
+                        {...register("password")}
                         type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.currentTarget.value)}
+                        id="password"
+                        placeholder="Nhập mật khẩu"
+                        required
+                        className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
                     />
                 </div>
-                <div className="mx-auto">
-                    <Button type="submit" onClick={() => mutation.mutate()} disabled={mutation.isPending}>
-                        {mutation.isPending ? "Logging in..." : "Login"}
-                    </Button>
-                </div>
-            </Card>
+                <Button
+                    type="submit"
+                    className="w-full mt-8 bg-black text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                >
+                    {isPending ? (<LoadingSpinner />) : "Đăng nhập"}
+                </Button>
+            </form>
         </div>
     );
 

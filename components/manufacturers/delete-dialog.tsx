@@ -10,6 +10,7 @@ import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.s
 import { useDeleteManufacturerRequest, useGetManufacturersRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -27,6 +28,7 @@ export const ManufacturerDeleteDialog = (
     const mutation = useMutation({
         mutationFn: () => ManufacturerApi.deleteManufacturer(id),
         onSuccess: (data) => {
+            if (!data.isSuccess) return;
             toast({
                 title: data.message
             })
@@ -48,18 +50,10 @@ export const ManufacturerDeleteDialog = (
                 </DialogHeader>
                 <DialogFooter>
                     <Button onClick={onClose} type="submit">
-                        No
+                        Không
                     </Button>
                     <Button onClick={() => mutation.mutate()} type="submit">
-                        {
-                            mutation.isPending
-                                ? (<div className="flex justify-center items-center space-x-2 animate-pulse">
-                                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                </div>)
-                                : "Yes"
-                        }
+                        {mutation.isPending ? <LoadingSpinner /> : "Có"}
                     </Button>
                 </DialogFooter>
             </DialogContent>

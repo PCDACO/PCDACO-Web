@@ -2,9 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
@@ -15,73 +12,89 @@ import { useCreateAmenitiesRequest, useGetAmenitiesRequest } from "@/domains/sto
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { LoadingSpinner } from "../ui/loading-spinner";
+import { useForm } from "react-hook-form";
 
 export const AmenityDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
-    const { name, description, setName, setDescription } = useCreateAmenitiesRequest()
     const { refetch } = useGetAmenitiesRequest();
+    const { name, description, setName, setDescription } = useCreateAmenitiesRequest()
+    const { register, handleSubmit } = useForm<{
+        formName: string;
+        formDescription: string;
+        // image: Blob;
+    }>();
 
-    const handleSubmitBtn = async () => {
-        if (name === "" || description === "") {
-            toast({
-                title: "Please fill in all the fields"
-            })
-            return;
-        }
-        await mutation.mutateAsync();
-    }
-
-    const mutation = useMutation({
+    const { isPending, mutate } = useMutation({
         mutationKey: ["amenities"],
         mutationFn: () => AmenitiyApi.createAmenities(name, description),
         onSuccess: (data) => {
+            if (!data.isSuccess) return;
             toast({
                 title: data.message
             })
             refetch?.();
             SetIsOpen(false);
         }
-    }
-    );
+    });
     return (
         <Dialog open={isOpen} onOpenChange={SetIsOpen}>
             <DialogTrigger asChild>
-                <Button onClick={() => SetIsOpen(true)} variant="outline">Add</Button>
+                <Button onClick={() => SetIsOpen(true)} variant="outline">Tạo mới</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Add</DialogTitle>
-                    <DialogDescription>
-                        Make changes to your profile here. Click save when youre done.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                            Name
+                <DialogTitle className="text-xl text-start font-semibold">Thêm tiện nghi</DialogTitle>
+                <form onSubmit={handleSubmit((data) => {
+                    setName(data.formName);
+                    setDescription(data.formDescription);
+                    mutate();
+                })} className="space-y-5">
+                    <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                            Tên
                         </Label>
-                        <Input id="name" onChange={(e) => setName(e.target.value)} value={name} className="col-span-3" />
+                        <Input
+                            {...register("formName")}
+                            type="text"
+                            id="name"
+                            placeholder="Nhập "
+                            required
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
+                        />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="description" className="text-right">
-                            Description
+                    <div className="space-y-2">
+                        <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                            Mô tả
                         </Label>
-                        <Input id="description" onChange={(e) => setDescription(e.target.value)} value={description} className="col-span-3" />
+                        <Input
+                            {...register("formDescription")}
+                            type="text"
+                            id="formDescription"
+                            placeholder="Nhập mô tả"
+                            required
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
+                        />
                     </div>
-                </div>
-                <DialogFooter>
-                    <Button onClick={handleSubmitBtn} type="submit">
-                        {
-                            mutation.isPending
-                                ? (<div className="flex justify-center items-center space-x-2 animate-pulse">
-                                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                </div>)
-                                : "Save changes"
-                        }
+                    {/* <div className="space-y-2">
+                        <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                            Mô tả
+                        </Label>
+                        <Input
+                            {...register("image")}
+                            type="file"
+                            id="image"
+                            placeholder="Nhập ảnh"
+                            required
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
+                        />
+                    </div> */}
+                    <Button
+                        type="submit"
+                        className="w-full mt-8 bg-black text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                    >
+                        {isPending ? (<LoadingSpinner size={18} />) : "Tạo"}
                     </Button>
-                </DialogFooter>
+                </form>
             </DialogContent>
         </Dialog >
     );

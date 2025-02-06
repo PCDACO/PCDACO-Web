@@ -2,9 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +9,10 @@ import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 import { useGetAmenitiesRequest, useUpdateAmenityRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
+import { LoadingSpinner } from "../ui/loading-spinner";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -26,56 +27,92 @@ export const AmenityUpdateDialog = (
 ) => {
     const { setIndex, setKeyword, refetch } = useGetAmenitiesRequest();
     const { name, description, id, setName, setDescription } = useUpdateAmenityRequest()
+    const { register, handleSubmit, setValue } = useForm<{
+        formName: string;
+        formDescription: string;
+        // image: Blob;
+    }>({
+        defaultValues: {
+            formName: name,
+            formDescription: description
+        }
+    });
 
-    const mutation = useMutation({
+    useEffect(() => {
+        setValue("formName", name);
+        setValue("formDescription", description);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [name, description])
+
+    const { isPending, mutate } = useMutation({
         mutationFn: () => AmenitiyApi.updateAmenity(id, name, description),
         onSuccess: (data) => {
-            toast({
-                title: data.message
-            })
+            if (!data.isSuccess) return;
+            onClose();
             setIndex(1);
             setKeyword("");
             refetch?.();
-            onClose();
-        },
-        onError: (error) => {
-            console.error("Login failed", error);
+            toast({
+                title: data.message
+            })
         }
     }
     );
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Update Amenity</DialogTitle>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label className="text-right">
-                            Name
+                <DialogTitle className="text-xl text-start font-semibold">Cập nhật tiện nghi</DialogTitle>
+                <form onSubmit={handleSubmit((data) => {
+                    setName(data.formName);
+                    setDescription(data.formDescription);
+                    mutate();
+                })} className="space-y-5">
+                    <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                            Tên
                         </Label>
-                        <Input id="name" onChange={(e) => setName(e.target.value)} value={name} className="col-span-3" />
+                        <Input
+                            {...register("formName", { value: name })}
+                            type="text"
+                            id="name"
+                            placeholder="Nhập "
+                            required
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
+                        />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="description" className="text-right">
-                            Description
+                    <div className="space-y-2">
+                        <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                            Mô tả
                         </Label>
-                        <Input id="description" onChange={(e) => setDescription(e.target.value)} value={description} className="col-span-3" />
+                        <Input
+                            {...register("formDescription")}
+                            type="text"
+                            id="formDescription"
+                            placeholder="Nhập mô tả"
+                            required
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
+                        />
                     </div>
-                </div>
-                <DialogFooter>
-                    <Button onClick={() => mutation.mutate()} type="submit">
-                        {
-                            mutation.isPending
-                                ? (<div className="flex justify-center items-center space-x-2 animate-pulse">
-                                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                </div>)
-                                : "Update"
-                        }
+                    {/* <div className="space-y-2">
+                                        <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                                            Mô tả
+                                        </Label>
+                                        <Input
+                                            {...register("image")}
+                                            type="file"
+                                            id="image"
+                                            placeholder="Nhập ảnh"
+                                            required
+                                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
+                                        />
+                                    </div> */}
+                    <Button
+                        type="submit"
+                        className="w-full mt-8 bg-black text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                    >
+                        {isPending ? (<LoadingSpinner size={18} />) : "Tạo"}
                     </Button>
-                </DialogFooter>
+                </form>
             </DialogContent>
         </Dialog >
     );

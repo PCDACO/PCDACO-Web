@@ -25,4 +25,17 @@ export const AuthApi = {
       };
     }
   },
+  logout: async () => {
+    try {
+      const response = await axiosInstance.post("api/auth/logout");
+      return response.data; // Return the response data directly
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return {
+        isSuccess: error.response.data.isSuccess,
+        message: error.response.data.message,
+        value: error.response.data.value,
+      };
+    }
+  },
 };

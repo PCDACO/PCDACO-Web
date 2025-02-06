@@ -1,10 +1,11 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { NextRequest, NextResponse } from "next/server";
 
 // This function can be marked `async` if using `await` inside
-export async function middleware() {
+export async function middleware(request: NextRequest) {
   const accessToken = (await cookies()).get("accessToken");
-  if (!accessToken) return redirect("/login");
+  if (!accessToken)
+    return NextResponse.redirect(new URL("/login", request.url));
 }
 
 export const config = {

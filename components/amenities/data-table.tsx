@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input"
 import React from "react"
 import { AmenityDialog } from "./dialog"
+import { LoadingSpinner } from "../ui/loading-spinner"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -100,12 +101,7 @@ export function DataTable<TData, TValue>({
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
                                     {
-                                        isPending && (
-                                            <div className="flex justify-center items-center space-x-2 animate-pulse">
-                                                <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                                <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                                <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                            </div>)
+                                        isPending && <LoadingSpinner size={36} />
                                     }
                                 </TableCell>
                             </TableRow>

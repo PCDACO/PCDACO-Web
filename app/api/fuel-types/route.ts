@@ -23,18 +23,53 @@ export const GET = async (req: Request) => {
       { status: response.status }
     );
   } catch (error) {
-    if (axios.isCancel(error)) return NextResponse.json(null, { status: 401 });
-    return NextResponse.json(null, { status: 500 });
+    if (axios.isCancel(error))
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: error,
+          value: null,
+        },
+        { status: 401 }
+      );
+    return NextResponse.json(
+      {
+        isSuccess: false,
+        message: error,
+        value: null,
+      },
+      { status: 500 }
+    );
   }
 };
 export const POST = async (req: Request) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { name } = await req.json();
-  const response = await axiosInstance.post(`/api/fuel-types`, {
-    name,
-  });
-  return NextResponse.json<SharedResponse<CreateFuelTypeResponse>>(
-    response.data,
-    { status: response.status }
-  );
+  try {
+    const response = await axiosInstance.post(`/api/fuel-types`, {
+      name,
+    });
+    return NextResponse.json<SharedResponse<CreateFuelTypeResponse>>(
+      response.data,
+      { status: response.status }
+    );
+  } catch (error) {
+    if (axios.isCancel(error))
+      return NextResponse.json(
+        {
+          isSuccess: false,
+          message: error,
+          value: null,
+        },
+        { status: 401 }
+      );
+    return NextResponse.json(
+      {
+        isSuccess: false,
+        message: error,
+        value: null,
+      },
+      { status: 500 }
+    );
+  }
 };

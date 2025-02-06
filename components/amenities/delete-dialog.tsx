@@ -9,7 +9,8 @@ import {
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 import { useDeleteAmenityRequest, useGetAmenitiesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -22,24 +23,19 @@ export const AmenityDeleteDialog = (
         onClose,
     }: DeleteDialogProps
 ) => {
-    const { setIndex, setKeyword } = useGetAmenitiesRequest();
+    const { setIndex, setKeyword, refetch } = useGetAmenitiesRequest();
     const { id } = useDeleteAmenityRequest()
-    const queryClient = new QueryClient();
     const mutation = useMutation({
         mutationFn: () => AmenitiyApi.deleteAmenity(id),
         onSuccess: (data) => {
+            if (!data.isSuccess) return;
             toast({
                 title: data.message
             })
             setIndex(1);
             setKeyword("");
-            queryClient.invalidateQueries({
-                queryKey: ["amenities"]
-            })
+            refetch?.();
             onClose();
-        },
-        onError: (error) => {
-            console.error("Lỗi", error);
         }
     }
     );
@@ -51,17 +47,13 @@ export const AmenityDeleteDialog = (
                 </DialogHeader>
                 <DialogFooter>
                     <Button onClick={onClose} type="submit">
-                        No
+                        Không
                     </Button>
                     <Button onClick={() => mutation.mutate()} type="submit">
                         {
                             mutation.isPending
-                                ? (<div className="flex justify-center items-center space-x-2 animate-pulse">
-                                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                </div>)
-                                : "Yes"
+                                ? <LoadingSpinner size={18} />
+                                : "Có"
                         }
                     </Button>
                 </DialogFooter>

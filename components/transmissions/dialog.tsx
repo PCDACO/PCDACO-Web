@@ -2,9 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
@@ -15,26 +12,22 @@ import { useCreateTransmissionRequest, useGetTransmissionsRequest } from "@/doma
 import { toast } from "@/hooks/use-toast";
 import { useMutation, } from "@tanstack/react-query";
 import { useState } from "react";
+import { LoadingSpinner } from "../ui/loading-spinner";
+import { useForm } from "react-hook-form";
 
 
 export const TransmissionDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
     const { setIndex, setKeyword, refetch } = useGetTransmissionsRequest();
     const { name, setName } = useCreateTransmissionRequest()
+    const { register, handleSubmit } = useForm<{
+        formName: string;
+    }>();
 
-    const handleSubmitBtn = async () => {
-        if (name === "") {
-            toast({
-                title: "Vui lòng điền hết yêu cầu"
-            })
-            return;
-        }
-        await mutation.mutateAsync();
-    }
-
-    const mutation = useMutation({
+    const { isPending, mutate } = useMutation({
         mutationFn: () => TransmissionApi.createTransmission(name),
         onSuccess: (data) => {
+            if (!data.isSuccess) return;
             toast({
                 title: data.message
             })
@@ -51,33 +44,31 @@ export const TransmissionDialog = () => {
                 <Button onClick={() => SetIsOpen(true)} variant="outline">Tạo mới</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Tạo</DialogTitle>
-                    <DialogDescription>
-                        Tạo thêm loại truyền độngupdatetrans ở đây
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                            Tên loại nhiên liệu:
+                <DialogTitle className="text-xl text-start font-semibold">Cập nhật tiện nghi</DialogTitle>
+                <form onSubmit={handleSubmit((data) => {
+                    setName(data.formName);
+                    mutate();
+                })} className="space-y-5">
+                    <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                            Tên
                         </Label>
-                        <Input id="name" onChange={(e) => setName(e.target.value)} value={name} className="col-span-3" />
+                        <Input
+                            {...register("formName")}
+                            type="text"
+                            id="name"
+                            placeholder="Nhập "
+                            required
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
+                        />
                     </div>
-                </div>
-                <DialogFooter>
-                    <Button onClick={handleSubmitBtn} type="submit">
-                        {
-                            mutation.isPending
-                                ? (<div className="flex justify-center items-center space-x-2 animate-pulse">
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                                    <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                                </div>)
-                                : "Tạo mới"
-                        }
+                    <Button
+                        type="submit"
+                        className="w-full mt-8 bg-black text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                    >
+                        {isPending ? (<LoadingSpinner size={18} />) : "Tạo"}
                     </Button>
-                </DialogFooter>
+                </form>
             </DialogContent>
         </Dialog >
     );

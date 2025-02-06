@@ -37,7 +37,7 @@ axiosInstance.interceptors.request.use(async (config) => {
       (await cookies()).delete("refreshToken");
       source.cancel("Request canceled due to invalid token.");
     } else {
-      if (config.method === "POST") {
+      if (config.method === "post") {
         config.headers["Idempotence-Key"] = generateGuid();
       }
       config.headers.Authorization = `Bearer ${accessToken!.value}`;
@@ -52,6 +52,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log("Response failed", error);
     if (axios.isCancel(error)) {
       console.log("Request canceled", error.message);
     }
