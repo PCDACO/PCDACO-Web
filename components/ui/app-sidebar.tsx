@@ -13,10 +13,10 @@ import {
     Car,
     HousePlus,
     Factory,
-    // LogOut,
     FuelIcon,
     AlignEndHorizontal,
     Cog,
+    Receipt,
 } from "lucide-react"
 // import Link from "next/link"
 import { LogoutButton } from "./LogoutButton"
@@ -52,6 +52,11 @@ const items = [
         title: "Transmissions",
         url: "transmissions",
         icon: Cog,
+    },
+    {
+        title: "Compensations Statuses",
+        url: "compensation-statuses",
+        icon: Receipt,
     }
 ]
 

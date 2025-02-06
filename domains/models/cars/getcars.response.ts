@@ -10,7 +10,6 @@ export interface GetCarsResponses {
   setPageSize: (pageSize: number) => void;
   setTotalItems: (totalItems: number) => void;
 }
-
 export interface GetCarsResponse {
   id: string;
   manufacturerId: string;
@@ -25,35 +24,25 @@ export interface GetCarsResponse {
   fuelType: string;
   fuelConsumption: number;
   requiresCollateral: boolean;
-  price: PriceDetail;
-  location: LocationDetail;
-  manufacturer: ManufacturerDetail;
-  images: ImageDetail[];
-  amenities: AmenityDetail[];
-}
-
-export interface PriceDetail {
-  perHour: number;
-  perDay: number;
-}
-
-export interface LocationDetail {
-  longitude: number;
-  latitude: number;
-}
-
-export interface ManufacturerDetail {
-  id: string;
-  name: string;
-}
-
-export interface ImageDetail {
-  id: string;
-  url: string;
-}
-
-export interface AmenityDetail {
-  id: string;
-  name: string;
-  description: string;
+  price: {
+    perHour: number;
+    perDay: number;
+  };
+  location: {
+    longitude: number;
+    latitude: number;
+  };
+  manufacturer: {
+    id: string;
+    name: string;
+  };
+  images: {
+    id: string;
+    url: string;
+  }[];
+  amenities: {
+    id: string;
+    name: string;
+    description: string;
+  }[];
 }

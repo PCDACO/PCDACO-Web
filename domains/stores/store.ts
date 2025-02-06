@@ -42,6 +42,11 @@ import {
   GetModelsResponse,
   GetModelsResponses,
 } from "../models/models/getModels.response";
+import { GetCompensationStatusesRequest } from "../models/compensation-statuses/getCompensationStatuses.request";
+import {
+  GetCompensationStatusesResponse,
+  GetCompensationStatusesResponses,
+} from "../models/compensation-statuses/getCompensationStatuses.response";
 // Auth
 export const useLoginRequest = create<LoginRequest>()((set) => ({
   email: "",
@@ -297,10 +302,12 @@ export const useGetModelsRequest = create<GetModelsRequest>((set) => ({
   size: 10,
   keyword: "",
   refetch: undefined,
+  manufacturerId: "",
   setIndex: (index: number) => set({ index }),
   setSize: (size: number) => set({ size }),
   setKeyword: (keyword: string) => set({ keyword }),
   setRefetch: (refetch: () => void) => set({ refetch }),
+  setManufacturerId: (manufacturerId: string) => set({ manufacturerId }),
 }));
 export const useGetModelsResponses = create<GetModelsResponses>((set) => ({
   items: [],
@@ -314,3 +321,29 @@ export const useGetModelsResponses = create<GetModelsResponses>((set) => ({
   setPageSize: (pageSize: number) => set({ pageSize }),
   setTotalItems: (totalItems: number) => set({ totalItems }),
 }));
+// Compensation Statuses
+export const useGetCompensationStatusesRequest =
+  create<GetCompensationStatusesRequest>((set) => ({
+    index: 1,
+    size: 10,
+    keyword: "",
+    refetch: undefined,
+    setIndex: (index: number) => set({ index }),
+    setSize: (size: number) => set({ size }),
+    setKeyword: (keyword: string) => set({ keyword }),
+    setRefetch: (refetch: () => void) => set({ refetch }),
+  }));
+
+export const useGetCompensationStatusesResponses =
+  create<GetCompensationStatusesResponses>((set) => ({
+    items: [],
+    hasNext: false,
+    pageNumber: 1,
+    pageSize: 10,
+    totalItems: 0,
+    setItems: (items: GetCompensationStatusesResponse[]) => set({ items }),
+    setHasNext: (hasNext: boolean) => set({ hasNext }),
+    setPageNumber: (pageNumber: number) => set({ pageNumber }),
+    setPageSize: (pageSize: number) => set({ pageSize }),
+    setTotalItems: (totalItems: number) => set({ totalItems }),
+  }));
