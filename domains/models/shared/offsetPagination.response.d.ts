@@ -1,7 +1,12 @@
 export interface OffsetPaginationResponse<T> {
-  value: T[];
-  index: number;
-  size: number;
+  items: T[];
   hasNext: boolean;
-  setValue: (value: T[]) => void;
+  pageNumber: number;
+  pageSize: number;
+  totalItems: number;
+  setItems: (items: T[]) => void;
+  setHasNext: (hasNext: boolean) => void;
+  setPageNumber: (pageNumber: number) => void;
+  setPageSize: (pageSize: number) => void;
+  setTotalItems: (totalItems: number) => void;
 }

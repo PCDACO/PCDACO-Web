@@ -3,6 +3,7 @@ import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { NextResponse } from "next/server";
 import axiosInstance from "../(config)/axios.server";
 import axios from "axios";
+import { ErrorResponses } from "../domains/responses/ErrorResponses";
 
 export const GET = async (req: Request) => {
   const { searchParams } = new URL(req.url);
@@ -23,22 +24,8 @@ export const GET = async (req: Request) => {
     );
   } catch (error) {
     if (axios.isCancel(error))
-      return NextResponse.json(
-        {
-          isSuccess: false,
-          message: error,
-          value: null,
-        },
-        { status: 401 }
-      );
-    return NextResponse.json(
-      {
-        isSuccess: false,
-        message: error,
-        value: null,
-      },
-      { status: 500 }
-    );
+      return NextResponse.json(ErrorResponses[401], { status: 401 });
+    return NextResponse.json(ErrorResponses[500], { status: 500 });
   }
 };
 
@@ -51,21 +38,7 @@ export const POST = async (req: Request) => {
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
     if (axios.isCancel(error))
-      return NextResponse.json(
-        {
-          isSuccess: false,
-          message: error,
-          value: null,
-        },
-        { status: 401 }
-      );
-    return NextResponse.json(
-      {
-        isSuccess: false,
-        message: error,
-        value: null,
-      },
-      { status: 500 }
-    );
+      return NextResponse.json(ErrorResponses[401], { status: 401 });
+    return NextResponse.json(ErrorResponses, { status: 500 });
   }
 };

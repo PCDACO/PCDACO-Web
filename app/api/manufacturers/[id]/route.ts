@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import axiosInstance from "../../(config)/axios.server";
 import axios from "axios";
+import { ErrorResponses } from "../../domains/responses/ErrorResponses";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const PUT = async (req: Request, context: any) => {
@@ -13,23 +14,9 @@ export const PUT = async (req: Request, context: any) => {
     return NextResponse.json(response.data, { status: 204 });
   } catch (error) {
     if (axios.isCancel(error)) {
-      return NextResponse.json(
-        {
-          isSuccess: false,
-          message: error,
-          value: null,
-        },
-        { status: 401 }
-      );
+      return NextResponse.json(ErrorResponses[401], { status: 401 });
     }
-    return NextResponse.json(
-      {
-        isSuccess: false,
-        message: error,
-        value: null,
-      },
-      { status: 500 }
-    );
+    return NextResponse.json(ErrorResponses[500], { status: 500 });
   }
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,22 +27,8 @@ export const DELETE = async (_: Request, context: any) => {
     return NextResponse.json(response.data, { status: 204 });
   } catch (error) {
     if (axios.isCancel(error)) {
-      return NextResponse.json(
-        {
-          isSuccess: false,
-          message: error,
-          value: null,
-        },
-        { status: 401 }
-      );
+      return NextResponse.json(ErrorResponses[401], { status: 401 });
     }
-    return NextResponse.json(
-      {
-        isSuccess: false,
-        message: error,
-        value: null,
-      },
-      { status: 500 }
-    );
+    return NextResponse.json(ErrorResponses[500], { status: 500 });
   }
 };
