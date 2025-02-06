@@ -9,9 +9,8 @@ export interface GetModelsResponse {
   name: string;
   releaseDate: string;
   createdAt: string;
-  manufacturerDetail: ManufacturerDetail;
-}
-interface ManufacturerDetail {
-  id: string;
-  name: string;
+  manufacturerDetail: {
+    id: string;
+    name: string;
+  };
 }

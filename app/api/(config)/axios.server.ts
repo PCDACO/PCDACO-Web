@@ -51,8 +51,14 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
+  async (error) => {
+    const source = CancelToken.source();
     console.log("Response failed", error);
+    if (error.status === 401) {
+      source.cancel("Request canceled due to invalid token.");
+      (await cookies()).delete("accessToken");
+      (await cookies()).delete("refreshToken");
+    }
     if (axios.isCancel(error)) {
       console.log("Request canceled", error.message);
     }
