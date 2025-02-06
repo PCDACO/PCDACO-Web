@@ -19,7 +19,7 @@ export default function Home() {
         password: string
     }>();
     const { email, setEmail, password, setPassword } = useLoginRequest();
-    const router = useRouter();
+    const { push } = useRouter();
 
     const { mutate, isPending } = useMutation({
         mutationKey: ["login"],
@@ -33,7 +33,7 @@ export default function Home() {
             }
             const data = response as SharedResponse<LoginResponse>;
             console.log(data);
-            router.push("/dashboard");
+            push("/dashboard");
             toast({
                 title: data.message
             });

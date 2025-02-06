@@ -15,6 +15,7 @@ import { useState } from "react";
 import { ManufacturerDeleteDialog } from "@/components/manufacturers/delete-dialog";
 import { ManufacturerUpdateDialog } from "@/components/manufacturers/update-dialog";
 import { useDeleteManufacturerRequest, useUpdateManufacturerRequest } from "@/domains/stores/store";
+import { redirect } from "next/navigation";
 
 
 export const columns: ColumnDef<GetManufacturersResponse>[] = [
@@ -33,6 +34,11 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
     {
         id: "actions",
         cell: ({ row }) => {
+            const handleRedirect = () => {
+                console.log("CON CAC");
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                redirect(`/manufacturers/${data.id}/models`);
+            }
             // eslint-disable-next-line react-hooks/rules-of-hooks
             const [IsDeleteOpen, SetIsDeleteOpen] = useState(false);
             // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -56,6 +62,9 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={handleRedirect}>
+                            Xem các mã xe
+                        </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {
                             updateAmenityRequest.setId(data.id);
                             updateAmenityRequest.setName(data.name);

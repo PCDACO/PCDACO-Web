@@ -3,7 +3,7 @@
 ###############
 # Base Image  #
 ###############
-FROM oven/bun:canary AS base
+FROM oven/bun:canary-alpine AS base
 WORKDIR /app
 
 ###############
@@ -37,7 +37,7 @@ RUN bun run build
 #################
 # Runner Image  #
 #################
-FROM oven/bun:canary AS runner
+FROM oven/bun:canary-alpine AS runner
 WORKDIR /app
 
 # Set production environment

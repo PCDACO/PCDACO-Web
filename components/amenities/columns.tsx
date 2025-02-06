@@ -73,7 +73,7 @@ export const columns: ColumnDef<GetAmenitiesResponse>[] = [
                   openUpdateDialog();
                 }}
               >
-                <h2>Update</h2>
+                <h2>Cập nhật</h2>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -82,7 +82,7 @@ export const columns: ColumnDef<GetAmenitiesResponse>[] = [
                   openDeleteDialog();
                 }}
               >
-                <h2>Delete</h2>
+                <h2>Xóa</h2>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

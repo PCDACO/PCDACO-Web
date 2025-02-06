@@ -22,8 +22,8 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // console.error("Response failed", error);
     if (error.status === 401) {
-      const router = useRouter();
-      router.push("/login");
+      const { push } = useRouter();
+      push("/login");
     }
     return Promise.reject(error);
   }

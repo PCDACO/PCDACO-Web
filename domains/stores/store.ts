@@ -37,6 +37,11 @@ import { DeleteTransmissionRequest } from "../models/transmissions/deleteTransmi
 import { UpdateTransmissionRequest } from "../models/transmissions/updateTransmission.request";
 import { CreateTransmissionRequest } from "../models/transmissions/createTransmission.request";
 import { CreateTransmissionResponse } from "../models/transmissions/createTransmission.response";
+import { GetModelsRequest } from "../models/models/getModels.request";
+import {
+  GetModelsResponse,
+  GetModelsResponses,
+} from "../models/models/getModels.response";
 // Auth
 export const useLoginRequest = create<LoginRequest>()((set) => ({
   email: "",
@@ -286,3 +291,26 @@ export const useUpdateTransmissionRequest = create<UpdateTransmissionRequest>(
     setId: (id: string) => set({ id }),
   })
 );
+// MODELS
+export const useGetModelsRequest = create<GetModelsRequest>((set) => ({
+  index: 1,
+  size: 10,
+  keyword: "",
+  refetch: undefined,
+  setIndex: (index: number) => set({ index }),
+  setSize: (size: number) => set({ size }),
+  setKeyword: (keyword: string) => set({ keyword }),
+  setRefetch: (refetch: () => void) => set({ refetch }),
+}));
+export const useGetModelsResponses = create<GetModelsResponses>((set) => ({
+  items: [],
+  hasNext: false,
+  pageNumber: 1,
+  pageSize: 10,
+  totalItems: 0,
+  setItems: (items: GetModelsResponse[]) => set({ items }),
+  setHasNext: (hasNext: boolean) => set({ hasNext }),
+  setPageNumber: (pageNumber: number) => set({ pageNumber }),
+  setPageSize: (pageSize: number) => set({ pageSize }),
+  setTotalItems: (totalItems: number) => set({ totalItems }),
+}));

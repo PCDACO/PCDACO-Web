@@ -9,13 +9,13 @@ import axiosInstance from "@/configs/axios.client"
 
 export function LogoutButton() {
     const [isLoading, setIsLoading] = useState(false)
-    const router = useRouter()
+    const {push} = useRouter()
 
     const mutation = async () => {
         setIsLoading(true)
         await axiosInstance.post("/api/auth/logout")
         setIsLoading(false)
-        router.push("/login")
+        push("/login")
     }
 
     return (

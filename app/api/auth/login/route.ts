@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import axiosInstance from "../../(config)/axios.server";
 import axios from "axios";
+import { ErrorResponses } from "../../domains/responses/ErrorResponses";
 
 export const POST = async (req: Request) => {
   const { email, password } = await req.json();
@@ -26,36 +27,17 @@ export const POST = async (req: Request) => {
         status: response.status,
       });
     } else {
-      return NextResponse.json(
-        {
-          isSuccess: false,
-          message: "Login failed",
-          value: null,
-        },
-        { status: 401 }
-      );
+      return NextResponse.json(ErrorResponses[401], { status: 401 });
     }
   } catch (error) {
     console.log("Login failed", error);
     if (axios.isAxiosError(error)) {
       if (axios.isCancel(error)) {
-        return NextResponse.json(
-          {
-            isSuccess: false,
-            message: error,
-            value: null,
-          },
-          { status: 401 }
-        );
+        return NextResponse.json(ErrorResponses[401], { status: 401 });
       }
-      return NextResponse.json(
-        {
-          isSuccess: false,
-          message: error,
-          value: null,
-        },
-        { status: 500 }
-      );
+      return NextResponse.json(ErrorResponses[500], {
+        status: 500,
+      });
     }
   }
 };
