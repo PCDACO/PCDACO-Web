@@ -18,16 +18,16 @@ import { useForm } from "react-hook-form";
 export const AmenityDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
     const { refetch } = useGetAmenitiesRequest();
-    const { name, description, setName, setDescription } = useCreateAmenitiesRequest()
+    const { name, description, icon, setName, setDescription, setIcon } = useCreateAmenitiesRequest()
     const { register, handleSubmit } = useForm<{
         formName: string;
         formDescription: string;
-        // image: Blob;
+        image: FileList;
     }>();
 
     const { isPending, mutate } = useMutation({
         mutationKey: ["amenities"],
-        mutationFn: () => AmenitiyApi.createAmenities(name, description),
+        mutationFn: () => AmenitiyApi.createAmenities({ name, description, icon }),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({
@@ -47,6 +47,7 @@ export const AmenityDialog = () => {
                 <form onSubmit={handleSubmit((data) => {
                     setName(data.formName);
                     setDescription(data.formDescription);
+                    setIcon(data.image);
                     mutate();
                 })} className="space-y-5">
                     <div className="space-y-2">
@@ -75,7 +76,7 @@ export const AmenityDialog = () => {
                             className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
                         />
                     </div>
-                    {/* <div className="space-y-2">
+                    <div className="space-y-2">
                         <Label htmlFor="password" className="text-sm font-medium text-gray-700">
                             Mô tả
                         </Label>
@@ -87,7 +88,7 @@ export const AmenityDialog = () => {
                             required
                             className="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black"
                         />
-                    </div> */}
+                    </div>
                     <Button
                         type="submit"
                         className="w-full mt-8 bg-black text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"

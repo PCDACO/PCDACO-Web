@@ -9,11 +9,19 @@ import { ErrorResponses } from "../../domains/responses/ErrorResponses";
 export const POST = async (req: Request) => {
   const { email, password } = await req.json();
   try {
-    const response = await axiosInstance.post(`/api/users/login`, {
-      email,
-      password,
-    });
-    if (response.status) {
+    const response = await axiosInstance.post(
+      `/api/users/login`,
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.status >= 200 && response.status < 300) {
       const data = await response.data;
       (await cookies()).set("accessToken", data.value.accessToken, {
         maxAge: 30 * 60,
@@ -24,7 +32,7 @@ export const POST = async (req: Request) => {
         httpOnly: true,
       });
       return NextResponse.json<SharedResponse<LoginResponse>>(data, {
-        status: response.status,
+        status: 200,
       });
     } else {
       return NextResponse.json(ErrorResponses[401], { status: 401 });

@@ -38,4 +38,16 @@ export const AuthApi = {
       };
     }
   },
+  checkToken: async () => {
+    try {
+      const response = await axiosInstance.get("api/auth/check-auth");
+      return response.data;
+    } catch {
+      return {
+        isSuccess: false,
+        message: "",
+        value: null,
+      };
+    }
+  },
 };

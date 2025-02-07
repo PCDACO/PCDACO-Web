@@ -22,23 +22,30 @@ export const AmenitiyApi = {
     return response;
   },
 
-  createAmenities: async (
-    name: string,
-    description: string
-  ): Promise<SharedResponse<CreateAmenitiesResponse>> => {
-    const response = axiosInstance
-      .post("api/amenities", {
-        name: name,
-        description: description,
-      })
-      .then((response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        console.error("Fetch failed", error);
-        throw error;
-      });
-    return response;
+  createAmenities: async ({
+    name,
+    description,
+    icon,
+  }: {
+    name: string;
+    description: string;
+    icon: FileList | undefined;
+  }): Promise<SharedResponse<CreateAmenitiesResponse>> => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    if (icon?.length ?? 0 > 0) {
+      formData.append("icon", icon![0]);
+    }
+
+    const response = await axiosInstance.post<
+      SharedResponse<CreateAmenitiesResponse>
+    >("/api/amenities", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
   },
 
   deleteAmenity: async (id: string): Promise<SharedResponse> => {

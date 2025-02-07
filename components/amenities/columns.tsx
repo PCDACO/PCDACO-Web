@@ -33,6 +33,10 @@ export const columns: ColumnDef<GetAmenitiesResponse>[] = [
     header: "Description",
   },
   {
+    accessorKey: "iconUrl",
+    header: "Icon URL",
+  },
+  {
     accessorKey: "createdAt",
     header: "Created At",
   },
