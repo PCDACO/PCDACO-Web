@@ -60,8 +60,9 @@ axiosInstance.interceptors.request.use(async (config) => {
 
       if (response.status === 200) {
         const data = await response.json();
-        cookieStore.set("accessToken", data.accessToken);
-        cookieStore.set("refreshToken", data.refreshToken);
+        cookieStore.set("accessToken", data.value.accessToken);
+        cookieStore.set("refreshToken", data.value.refreshToken);
+        config.headers.Authorization = `Bearer ${data.value.accessToken}`;
       } else {
         (await cookies()).delete("accessToken");
         (await cookies()).delete("refreshToken");
