@@ -6,11 +6,11 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.service";
 import { useDeleteManufacturerRequest, useGetManufacturersRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import { DeleteAmenity } from "@/app/(dashboard)/amenities/action";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -26,7 +26,7 @@ export const ManufacturerDeleteDialog = (
     const { setIndex, setKeyword, refetch } = useGetManufacturersRequest();
     const { id } = useDeleteManufacturerRequest();
     const mutation = useMutation({
-        mutationFn: () => ManufacturerApi.deleteManufacturer(id),
+        mutationFn: () => DeleteAmenity(id),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({

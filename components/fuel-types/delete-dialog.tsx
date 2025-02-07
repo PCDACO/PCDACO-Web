@@ -6,11 +6,11 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { FuelTypesApi } from "@/domains/services/fuel-types/fuelTypes.service";
 import { useDeleteFuelTypeRequest, useGetFuelTypesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import { DeleteFuelType } from "@/app/(dashboard)/fuel-types/action";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -25,8 +25,8 @@ export const FuelTypeDeleteDialog = (
 ) => {
     const { setIndex, setKeyword, refetch } = useGetFuelTypesRequest();
     const { id } = useDeleteFuelTypeRequest();
-    const mutation = useMutation({
-        mutationFn: () => FuelTypesApi.deleteFuelTypes(id),
+    const { isPending, mutate } = useMutation({
+        mutationFn: () => DeleteFuelType(id),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({
@@ -48,13 +48,13 @@ export const FuelTypeDeleteDialog = (
                 <DialogFooter>
                     <Button onClick={onClose} type="submit">
                         {
-                            mutation.isPending ? <LoadingSpinner size={18} />
+                            isPending ? <LoadingSpinner size={18} />
                                 : "Không"
                         }
                     </Button>
-                    <Button onClick={() => mutation.mutate()} type="submit">
+                    <Button onClick={() => mutate()} type="submit">
                         {
-                            mutation.isPending
+                            isPending
                                 ? <LoadingSpinner size={18} />
                                 : "Có"
                         }

@@ -6,11 +6,11 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { TransmissionApi } from "@/domains/services/transmissions/transmissions.service";
 import { useDeleteTransmissionRequest, useGetTransmissionsRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import { DeleteTransmission } from "@/app/(dashboard)/transmissions/action";
 
 interface TransmissionDeleteDialogProps {
     isOpen: boolean,
@@ -26,7 +26,7 @@ export const TransmissionDeleteDialog = (
     const { setIndex, setKeyword, refetch } = useGetTransmissionsRequest();
     const { id } = useDeleteTransmissionRequest();
     const mutation = useMutation({
-        mutationFn: () => TransmissionApi.deleteTransmission(id),
+        mutationFn: () => DeleteTransmission(id),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({

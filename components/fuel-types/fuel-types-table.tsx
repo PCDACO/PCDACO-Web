@@ -6,12 +6,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { formatDate } from "@/lib/utils";
-import { FuelTypesApi } from "@/domains/services/fuel-types/fuelTypes.service";
 import { GetFuelTypesResponse, GetFuelTypesResponses } from "@/domains/models/fuel-types/getFuelTypes.response";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
+import { GetFuelTypes } from "@/app/(dashboard)/fuel-types/action";
 
-export default function FuelTypesTable({ columns }: { columns: ColumnDef<GetFuelTypesResponse>[] }) {
+export default function FuelTypesTable({ columns, data }: { columns: ColumnDef<GetFuelTypesResponse>[], data: GetFuelTypesResponses }) {
     const { index, size, keyword, setIndex, setKeyword, setRefetch } = useGetFuelTypesRequest();
     const {
         items,
@@ -22,13 +22,16 @@ export default function FuelTypesTable({ columns }: { columns: ColumnDef<GetFuel
         setPageSize,
         setTotalItems
     } = useGetFuelTypesResponses();
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
 
     const { isPending, refetch } = useQuery({
-        queryKey: ["fuel-types", index, size],
+        queryKey: ["fuel-types", index],
         queryFn: () =>
-            FuelTypesApi.getFuelTypes(index, size, debouncedKeyword).then((res) => {
+            GetFuelTypes({
+                index, size, keyword: debouncedKeyword
+            }).then((res) => {
                 const fuelTypes = res as SharedResponse<GetFuelTypesResponses>;
                 setItems(fuelTypes.value!.items);
                 setHasNext(fuelTypes.value!.hasNext);
@@ -36,14 +39,29 @@ export default function FuelTypesTable({ columns }: { columns: ColumnDef<GetFuel
                 setPageSize(fuelTypes.value!.pageSize);
                 setTotalItems(fuelTypes.value!.totalItems);
                 setRefetch(refetch);
-            })
+            }),
+        enabled: false,
+        initialData: () => {
+            setItems(data.items);
+            setHasNext(data.hasNext);
+            setPageNumber(data.pageNumber);
+            setPageSize(data.pageSize);
+            setTotalItems(data.totalItems);
+            setTimeout(() => {
+                setIsLoaded(true)
+            }, 500);
+        }
     });
 
     useEffect(() => {
-        if (index === 1) refetch();
-        else setIndex(1);
+        if (isLoaded) refetch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedKeyword])
+    }, [index, debouncedKeyword])
+
+    useEffect(() => {
+        setRefetch(refetch);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className="container py-10">

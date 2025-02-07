@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ModelsDataTable } from "./data-table";
-import { ModelsApi } from "@/domains/services/models/models.service";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useGetModelsRequest, useGetModelsResponses } from "@/domains/stores/store";
@@ -10,8 +9,9 @@ import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { GetModelsResponse, GetModelsResponses } from "@/domains/models/models/getModels.response";
 import { formatDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
+import { GetModels } from "@/app/(dashboard)/manufacturers/[id]/models/action";
 
-export default function ModelsTable({ id,columns }: { id: string,columns:ColumnDef<GetModelsResponse>[] }) {
+export default function ModelsTable({ id, columns, data }: { id: string, columns: ColumnDef<GetModelsResponse>[], data: GetModelsResponses }) {
     const { index, size, keyword, setIndex, setKeyword, setRefetch } = useGetModelsRequest();
     const {
         items,
@@ -23,26 +23,48 @@ export default function ModelsTable({ id,columns }: { id: string,columns:ColumnD
         setTotalItems
     } = useGetModelsResponses();
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
-    console.log("id : " + id);
+    const [isLoaded, setIsLoaded] = useState(false);
     const { isPending, refetch } = useQuery({
-        queryKey: ["models", index, size],
+        queryKey: ["models", index, size, id],
         queryFn: () =>
-            ModelsApi.getModels(index, size, debouncedKeyword, id).then((res) => {
+            GetModels({ index, size, keyword: debouncedKeyword, manufacturerId: id }).then((res) => {
                 const modelDatas = res as SharedResponse<GetModelsResponses>;
                 setItems(modelDatas.value!.items);
                 setHasNext(modelDatas.value!.hasNext);
                 setPageNumber(modelDatas.value!.pageNumber);
                 setPageSize(modelDatas.value!.pageSize);
                 setTotalItems(modelDatas.value!.totalItems);
-                setRefetch(refetch);
-            })
+            }),
+        enabled: false,
+        initialData: () => {
+            setItems(data.items);
+            setHasNext(data.hasNext);
+            setPageNumber(data.pageNumber);
+            setPageSize(data.pageSize);
+            setTotalItems(data.totalItems);
+            setTimeout(() => {
+                setIsLoaded(true)
+            }, 500);
+        }
     });
 
     useEffect(() => {
-        if (index === 1) refetch();
-        else setIndex(1);
+        if (isLoaded) {
+            refetch();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [index]);
+    useEffect(() => {
+        if (isLoaded) {
+            setIndex(1)
+            refetch();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedKeyword]);
+    useEffect(() => {
+        setRefetch(refetch);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className="container py-10">

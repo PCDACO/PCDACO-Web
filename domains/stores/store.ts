@@ -62,9 +62,11 @@ export const useGetCarsRequest = create<GetCarsRequest>()((set) => ({
   index: 1,
   size: 10,
   keyword: "",
+  refetch: undefined,
   setIndex: (index: number) => set({ index }),
   setSize: (size: number) => set({ size }),
   setKeyword: (keyword: string) => set({ keyword }),
+  setRefetch: (refetch: () => void) => set({ refetch }),
 }));
 
 export const useGetCarsResponses = create<GetCarsResponses>()((set) => ({
@@ -127,9 +129,11 @@ export const useUpdateAmenityRequest = create<UpdateAmenityRequest>((set) => ({
   id: "",
   name: "",
   description: "",
+  icon: undefined,
   setName: (name: string) => set({ name }),
   setDescription: (description: string) => set({ description }),
   setId: (id: string) => set({ id }),
+  setIcon: (icon: FileList) => set({ icon }),
 }));
 
 export const useDeleteAmenityRequest = create<DeleteAmenityRequest>((set) => ({

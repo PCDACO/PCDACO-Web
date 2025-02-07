@@ -6,13 +6,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FuelTypesApi } from "@/domains/services/fuel-types/fuelTypes.service";
 import { useGetFuelTypesRequest, useUpdateFuelTypeRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { UpdateFuelType } from "@/app/(dashboard)/fuel-types/action";
 
 interface UpdateDialogProps {
     isOpen: boolean,
@@ -38,7 +38,7 @@ export const FuelTypeUpdateDialog = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [name])
     const { isPending, mutate } = useMutation({
-        mutationFn: () => FuelTypesApi.updateFuelTypes(id, name),
+        mutationFn: () => UpdateFuelType({ id, name }),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({

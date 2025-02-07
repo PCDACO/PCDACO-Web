@@ -2,21 +2,22 @@
 
 import { useGetCarsRequest, useGetCarsResponses } from "@/domains/stores/store";
 import { DataTable } from "@/components/cars/data-table";
-import { CarApi } from "@/domains/services/cars/car.service";
-import { toast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GetCarsResponse, GetCarsResponses } from "@/domains/models/cars/getcars.response";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { useDebounce } from "@/hooks/use-debounce";
 import { ColumnDef } from "@tanstack/react-table";
+import { GetCars } from "@/app/(dashboard)/cars/action";
 
 export default function CarTable({
-    columns
-}:{
-    columns: ColumnDef<GetCarsResponse>[]
+    columns,
+    data
+}: {
+    columns: ColumnDef<GetCarsResponse>[],
+    data: GetCarsResponses
 }) {
-    const { index, size, keyword, setIndex, setKeyword } = useGetCarsRequest();
+    const { index, size, keyword, setIndex, setKeyword,setRefetch } = useGetCarsRequest();
     const {
         items,
         hasNext,
@@ -28,25 +29,47 @@ export default function CarTable({
     } = useGetCarsResponses();
 
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
-
-    const { data, isPending, isSuccess } = useQuery({
+    const [isLoaded, setIsLoaded] = useState(false);
+    const { isPending, refetch } = useQuery({
         queryKey: ["cars", index, size, debouncedKeyword],
         queryFn: () =>
-            CarApi.getCarForAdmin(index, size, debouncedKeyword)
+            GetCars({ index, size, keyword: debouncedKeyword }).then((res) => {
+                const carDatas = res as SharedResponse<GetCarsResponses>;
+                setItems(carDatas.value!.items);
+                setHasNext(carDatas.value!.hasNext);
+                setPageNumber(carDatas.value!.pageNumber);
+                setPageSize(carDatas.value!.pageSize);
+                setTotalItems(carDatas.value!.totalItems);
+            }),
+        enabled: false,
+        initialData: () => {
+            setItems(data.items);
+            setHasNext(data.hasNext);
+            setPageNumber(data.pageNumber);
+            setPageSize(data.pageSize);
+            setTotalItems(data.totalItems);
+            setTimeout(() => setIsLoaded(true), 500);
+        }
     });
 
     useEffect(() => {
-        if (isSuccess) {
-            const carDatas = data as SharedResponse<GetCarsResponses>;
-            toast({ title: carDatas.message });
-            setItems(carDatas.value!.items);
-            setHasNext(carDatas.value!.hasNext);
-            setPageNumber(carDatas.value!.pageNumber);
-            setPageSize(carDatas.value!.pageSize);
-            setTotalItems(carDatas.value!.totalItems);
+        if (isLoaded) {
+            refetch();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSuccess]);
+    }, [index]);
+    useEffect(() => {
+        if (isLoaded) {
+            setIndex(1)
+            refetch();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedKeyword]);
+    useEffect(() => {
+        setRefetch(refetch);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
 
     return (
         <div className="container py-10">

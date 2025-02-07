@@ -4,18 +4,16 @@ import { LogOut } from "lucide-react"
 import { Button } from "./button"
 import { LoadingSpinner } from "./loading-spinner"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
-import axiosInstance from "@/configs/axios.client"
+import { Logout } from "@/app/(auth)/login/action"
 
 export function LogoutButton() {
     const [isLoading, setIsLoading] = useState(false)
-    const {push} = useRouter()
 
     const mutation = async () => {
         setIsLoading(true)
-        await axiosInstance.post("/api/auth/logout")
-        setIsLoading(false)
-        push("/login")
+        Logout().then(() => {
+            setIsLoading(false)
+        });
     }
 
     return (
