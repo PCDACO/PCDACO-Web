@@ -4,11 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
+  const cookieStore = await cookies();
   if (url.pathname === "/login") {
-    const accessToken = (await cookies()).get("accessToken");
+    const accessToken = cookieStore.get("accessToken");
     if (accessToken) return NextResponse.redirect(new URL("/", request.url));
   } else {
-    const accessToken = (await cookies()).get("accessToken");
+    const accessToken = cookieStore.get("accessToken");
     if (!accessToken)
       return NextResponse.redirect(new URL("/login", request.url));
   }

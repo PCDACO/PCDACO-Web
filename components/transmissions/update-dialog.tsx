@@ -6,13 +6,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TransmissionApi } from "@/domains/services/transmissions/transmissions.service";
 import { useGetTransmissionsRequest, useUpdateTransmissionRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { UpdateTransmission } from "@/app/(dashboard)/transmissions/action";
 
 interface TransmissionUpdateDialogProps {
     isOpen: boolean,
@@ -37,7 +37,7 @@ export const TransmissionUpdateDialog = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [name])
     const { isPending, mutate } = useMutation({
-        mutationFn: () => TransmissionApi.updateTransmission(id, name),
+        mutationFn: () => UpdateTransmission({ id, name }),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({

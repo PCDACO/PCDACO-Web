@@ -7,13 +7,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FuelTypesApi } from "@/domains/services/fuel-types/fuelTypes.service";
 import { useCreateFuelTypeRequest, useGetFuelTypesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { useForm } from "react-hook-form";
+import { CreateFuelType } from "@/app/(dashboard)/fuel-types/action";
 
 
 export const FuelTypeDialog = () => {
@@ -25,7 +25,7 @@ export const FuelTypeDialog = () => {
     }>();
 
     const { isPending, mutate } = useMutation({
-        mutationFn: () => FuelTypesApi.createFuelTypes(name),
+        mutationFn: () => CreateFuelType(name),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({

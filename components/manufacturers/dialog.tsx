@@ -7,13 +7,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.service";
 import { useCreateManufacturerRequest, useGetManufacturersRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation, } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import { CreateManufacturer } from "@/app/(dashboard)/manufacturers/action";
 
 
 export const ManufacturerDialog = () => {
@@ -26,7 +26,7 @@ export const ManufacturerDialog = () => {
 
 
     const { isPending, mutate } = useMutation({
-        mutationFn: () => ManufacturerApi.createManufacturer(name),
+        mutationFn: () => CreateManufacturer(name),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({

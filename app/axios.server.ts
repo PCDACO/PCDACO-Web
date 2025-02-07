@@ -1,3 +1,5 @@
+"use server";
+
 import { generateGuid } from "@/lib/uuid";
 import axios from "axios";
 import { cookies } from "next/headers";
@@ -23,7 +25,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(async (config) => {
   const source = CancelToken.source();
   config.cancelToken = source.token;
-  const accessToken = (await cookies()).get("accessToken");
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken");
   if (accessToken) {
     const response = await fetch(`${getUrl()}/api/auth/validate-token`, {
       method: "POST",
@@ -33,9 +36,15 @@ axiosInstance.interceptors.request.use(async (config) => {
       },
     });
     if (response.status === 401) {
-      (await cookies()).delete("accessToken");
-      (await cookies()).delete("refreshToken");
-      source.cancel("Request canceled due to invalid token.");
+      // TODO: add refresh token
+      //CALL REFRESH TOKEN API
+      // IF SUCCESS
+      // SET NEW ACCESS TOKEN
+      // THEN
+      // IF CONTINUE TO FALSE THEN
+      // (await cookies()).delete("accessToken");
+      // (await cookies()).delete("refreshToken");
+      // source.cancel("Request canceled due to invalid token.");
     } else {
       if (config.method === "post") {
         config.headers["Idempotence-Key"] = generateGuid();
@@ -49,16 +58,16 @@ axiosInstance.interceptors.request.use(async (config) => {
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log("AXIOS" + response.data);
     return response;
   },
   async (error) => {
+    const cookieStore = await cookies();
     const source = CancelToken.source();
     console.log("Response failed", error);
     if (error.status === 401) {
       source.cancel("Request canceled due to invalid token.");
-      (await cookies()).delete("accessToken");
-      (await cookies()).delete("refreshToken");
+      cookieStore.delete("accessToken");
+      cookieStore.delete("refreshToken");
     }
     if (axios.isCancel(error)) {
       console.log("Request canceled", error.message);

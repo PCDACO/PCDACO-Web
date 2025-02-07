@@ -7,13 +7,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TransmissionApi } from "@/domains/services/transmissions/transmissions.service";
 import { useCreateTransmissionRequest, useGetTransmissionsRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation, } from "@tanstack/react-query";
 import { useState } from "react";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { useForm } from "react-hook-form";
+import { CreateTransmission } from "@/app/(dashboard)/transmissions/action";
 
 
 export const TransmissionDialog = () => {
@@ -25,7 +25,7 @@ export const TransmissionDialog = () => {
     }>();
 
     const { isPending, mutate } = useMutation({
-        mutationFn: () => TransmissionApi.createTransmission(name),
+        mutationFn: () => CreateTransmission(name),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({

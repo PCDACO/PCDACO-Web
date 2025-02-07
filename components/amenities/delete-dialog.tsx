@@ -6,11 +6,11 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 import { useDeleteAmenityRequest, useGetAmenitiesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import { DeleteAmenity } from "@/app/(dashboard)/amenities/action";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -26,7 +26,7 @@ export const AmenityDeleteDialog = (
     const { setIndex, setKeyword, refetch } = useGetAmenitiesRequest();
     const { id } = useDeleteAmenityRequest()
     const mutation = useMutation({
-        mutationFn: () => AmenitiyApi.deleteAmenity(id),
+        mutationFn: () => DeleteAmenity(id),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({

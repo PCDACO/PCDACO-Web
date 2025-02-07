@@ -3,17 +3,21 @@
 import { useGetManufacturersRequest, useGetManufacturersResponses } from "@/domains/stores/store";
 import { DataTable } from "@/components/manufacturers/data-table";
 import { useQuery } from "@tanstack/react-query";
-import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.service";
 import { useDebounce } from "@/hooks/use-debounce";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { formatDate } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { GetManufacturersResponse, GetManufacturersResponses } from "@/domains/models/manufacturers/getManufacturers.response";
+import { GetManufacturers } from "@/app/(dashboard)/manufacturers/action";
 
 export default function ManufacturersTable({
-    columns
-}: { columns: ColumnDef<GetManufacturersResponse>[] }) {
+    columns,
+    data
+}: {
+    columns: ColumnDef<GetManufacturersResponse>[],
+    data: GetManufacturersResponses
+}) {
     const { index, size, keyword, setIndex, setKeyword, setRefetch } = useGetManufacturersRequest();
     const {
         items,
@@ -25,12 +29,17 @@ export default function ManufacturersTable({
         setTotalItems
     } = useGetManufacturersResponses();
 
+    const [isLoaded, setIsLoaded] = useState(false);
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
 
     const { isPending, refetch } = useQuery({
-        queryKey: ["manufacturers", index, size],
+        queryKey: ["manufacturers", index],
         queryFn: () =>
-            ManufacturerApi.getManufacturers(index, size, debouncedKeyword).then((res) => {
+            GetManufacturers({
+                index: index,
+                size: size,
+                keyword: debouncedKeyword
+            }).then((res) => {
                 const carDatas = res as SharedResponse<GetManufacturersResponses>;
                 setItems(carDatas.value!.items);
                 setHasNext(carDatas.value!.hasNext);
@@ -38,14 +47,31 @@ export default function ManufacturersTable({
                 setPageSize(carDatas.value!.pageSize);
                 setTotalItems(carDatas.value!.totalItems);
                 setRefetch(refetch);
-            })
+            }),
+        enabled: false,
+        initialData: () => {
+            setItems(data.items);
+            setHasNext(data.hasNext);
+            setPageNumber(data.pageNumber);
+            setPageSize(data.pageSize);
+            setTotalItems(data.totalItems);
+            setTimeout(() => {
+                setIsLoaded(true)
+            }, 500);
+        }   
     });
 
     useEffect(() => {
-        if (index === 1) refetch();
-        else setIndex(1);
+        if (isLoaded) {
+            refetch();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedKeyword]);
+    }, [index, debouncedKeyword]);
+
+    useEffect(() => {
+        setRefetch(refetch);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className="container py-10">

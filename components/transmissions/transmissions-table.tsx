@@ -6,12 +6,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { formatDate } from "@/lib/utils";
-import { TransmissionApi } from "@/domains/services/transmissions/transmissions.service";
 import { GetTransmissionResponse, GetTransmissionsResponses } from "@/domains/models/transmissions/getTransmissions.response";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
+import { GetTransmissions } from "@/app/(dashboard)/transmissions/action";
 
-export default function TransmissionTable({ columns }: { columns: ColumnDef<GetTransmissionResponse>[] }) {
+export default function TransmissionTable({ columns, data }: { columns: ColumnDef<GetTransmissionResponse>[], data: GetTransmissionsResponses }) {
     const { index, size, keyword, setIndex, setKeyword, setRefetch } = useGetTransmissionsRequest();
     const {
         items,
@@ -23,12 +23,13 @@ export default function TransmissionTable({ columns }: { columns: ColumnDef<GetT
         setTotalItems
     } = useGetTransmissionsResponses();
 
+    const [isLoaded, setIsLoaded] = useState(false);
     const debouncedKeyword = useDebounce(keyword, 500); // 500ms debounce delay
 
     const { isPending, refetch } = useQuery({
         queryKey: ["transmissions", index, size],
         queryFn: () =>
-            TransmissionApi.getTransmissions(index, size, debouncedKeyword).then((res) => {
+            GetTransmissions({ index, size, keyword: debouncedKeyword }).then((res) => {
                 const fuelTypes = res as SharedResponse<GetTransmissionsResponses>;
                 setItems(fuelTypes.value!.items);
                 setHasNext(fuelTypes.value!.hasNext);
@@ -36,14 +37,29 @@ export default function TransmissionTable({ columns }: { columns: ColumnDef<GetT
                 setPageSize(fuelTypes.value!.pageSize);
                 setTotalItems(fuelTypes.value!.totalItems);
                 setRefetch(refetch);
-            })
+            }),
+        enabled: false,
+        initialData: () => {
+            setItems(data.items);
+            setHasNext(data.hasNext);
+            setPageNumber(data.pageNumber);
+            setPageSize(data.pageSize);
+            setTotalItems(data.totalItems);
+            setTimeout(() => {
+                setIsLoaded(true)
+            }, 500);
+        }
     });
 
     useEffect(() => {
-        if (index === 1) refetch();
-        else setIndex(1);
+        if (isLoaded) refetch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedKeyword])
+
+    useEffect(() => {
+        setRefetch(refetch);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <div className="container py-10">

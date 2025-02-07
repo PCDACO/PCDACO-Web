@@ -6,13 +6,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.service";
 import { useGetManufacturersRequest, useUpdateManufacturerRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { UpdateManufacturer } from "@/app/(dashboard)/manufacturers/action";
 
 interface UpdateDialogProps {
     isOpen: boolean,
@@ -37,7 +37,7 @@ export const ManufacturerUpdateDialog = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [name])
     const { isPending, mutate } = useMutation({
-        mutationFn: () => ManufacturerApi.updateManufacturer(id, name),
+        mutationFn: () => UpdateManufacturer({ id, name }),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({

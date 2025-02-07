@@ -16,8 +16,10 @@ import { AmenityDeleteDialog } from "@/components/amenities/delete-dialog";
 import { AmenityUpdateDialog } from "@/components/amenities/update-dialog";
 import {
   useDeleteAmenityRequest,
+  useGetAmenitiesResponses,
   useUpdateAmenityRequest,
 } from "@/domains/stores/store";
+import { urlToFileList } from "@/lib/urlToFile";
 
 export const columns: ColumnDef<GetAmenitiesResponseRendered>[] = [
   {
@@ -49,12 +51,18 @@ export const columns: ColumnDef<GetAmenitiesResponseRendered>[] = [
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const [IsUpdateOpen, SetIsUpdateOpen] = useState(false);
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const { setId, setDescription, setName } = useUpdateAmenityRequest();
+      const { setId, setDescription, setName, setIcon } = useUpdateAmenityRequest();
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const deleteRequest = useDeleteAmenityRequest();
       const currentid = row.getValue("id") as string;
       const currentname = row.getValue("name") as string;
       const currentdescription = row.getValue("description") as string;
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { items } = useGetAmenitiesResponses();
+      let currenticon: FileList;
+      urlToFileList(items.find((item) => item.id === currentid)?.iconUrl as string, "icon").then((res) => {
+        currenticon = res;
+      });
       const openDeleteDialog = () => SetIsDeleteOpen(true); // Open dialog
       const closeDeleteDialog = () => SetIsDeleteOpen(false); // Close dialog
       const openUpdateDialog = () => SetIsUpdateOpen(true);
@@ -75,6 +83,7 @@ export const columns: ColumnDef<GetAmenitiesResponseRendered>[] = [
                   setId(currentid);
                   setName(currentname);
                   setDescription(currentdescription);
+                  setIcon(currenticon);
                   openUpdateDialog();
                 }}
               >

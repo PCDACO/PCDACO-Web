@@ -7,18 +7,17 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
-import { useCreateAmenitiesRequest, useGetAmenitiesRequest } from "@/domains/stores/store";
+import { useGetAmenitiesRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { useForm } from "react-hook-form";
+import { CreateAmenities } from "@/app/(dashboard)/amenities/action";
 
 export const AmenityDialog = () => {
     const [isOpen, SetIsOpen] = useState(false);
-    const { refetch } = useGetAmenitiesRequest();
-    const { name, description, icon, setName, setDescription, setIcon } = useCreateAmenitiesRequest()
+    const { refetch, setIndex, setKeyword } = useGetAmenitiesRequest();
     const { register, handleSubmit } = useForm<{
         formName: string;
         formDescription: string;
@@ -27,12 +26,20 @@ export const AmenityDialog = () => {
 
     const { isPending, mutate } = useMutation({
         mutationKey: ["amenities"],
-        mutationFn: () => AmenitiyApi.createAmenities({ name, description, icon }),
+        mutationFn: ({
+            name, description, icon
+        }: {
+            name: string;
+            description: string;
+            icon: FileList | undefined;
+        }) => CreateAmenities({ name, description, icon }),
         onSuccess: (data) => {
             if (!data.isSuccess) return;
             toast({
                 title: data.message
             })
+            setIndex(1);
+            setKeyword("");
             refetch?.();
             SetIsOpen(false);
         }
@@ -45,10 +52,11 @@ export const AmenityDialog = () => {
             <DialogContent className="sm:max-w-[425px]">
                 <DialogTitle className="text-xl text-start font-semibold">Thêm tiện nghi</DialogTitle>
                 <form onSubmit={handleSubmit((data) => {
-                    setName(data.formName);
-                    setDescription(data.formDescription);
-                    setIcon(data.image);
-                    mutate();
+                    mutate({
+                        name: data.formName,
+                        description: data.formDescription,
+                        icon: data.image
+                    });
                 })} className="space-y-5">
                     <div className="space-y-2">
                         <Label htmlFor="email" className="text-sm font-medium text-gray-700">
