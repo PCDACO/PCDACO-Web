@@ -15,7 +15,7 @@ const axiosInstance = axios.create({
   baseURL: getUrl(),
   timeout: 10000,
   headers: {
-    "Content-Type": "application/json",
+    Accept: "*/*",
   },
 });
 
@@ -49,6 +49,7 @@ axiosInstance.interceptors.request.use(async (config) => {
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
+    console.log("AXIOS" + response.data);
     return response;
   },
   async (error) => {

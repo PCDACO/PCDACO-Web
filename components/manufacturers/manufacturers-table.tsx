@@ -5,12 +5,11 @@ import { DataTable } from "@/components/manufacturers/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { ManufacturerApi } from "@/domains/services/manufacturers/manufacturer.service";
 import { useDebounce } from "@/hooks/use-debounce";
-import { GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { formatDate } from "@/lib/utils";
 import { useEffect } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { GetManufacturersResponse } from "@/domains/models/manufacturers/getManufacturers.response";
+import { GetManufacturersResponse, GetManufacturersResponses } from "@/domains/models/manufacturers/getManufacturers.response";
 
 export default function ManufacturersTable({
     columns
@@ -32,7 +31,7 @@ export default function ManufacturersTable({
         queryKey: ["manufacturers", index, size],
         queryFn: () =>
             ManufacturerApi.getManufacturers(index, size, debouncedKeyword).then((res) => {
-                const carDatas = res as SharedResponse<GetAmenitiesResponses>;
+                const carDatas = res as SharedResponse<GetManufacturersResponses>;
                 setItems(carDatas.value!.items);
                 setHasNext(carDatas.value!.hasNext);
                 setPageNumber(carDatas.value!.pageNumber);

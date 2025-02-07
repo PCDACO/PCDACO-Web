@@ -11,7 +11,10 @@ import {
 } from "../models/amenities/getamenities.response";
 import { GetAmenitiesRequest } from "../models/amenities/getamenities.request";
 import { GetManufacturersRequest } from "../models/manufacturers/getmanufacturers.request";
-import { GetManufacturersResponses } from "../models/manufacturers/getManufacturers.response";
+import {
+  GetManufacturersResponse,
+  GetManufacturersResponses,
+} from "../models/manufacturers/getManufacturers.response";
 import { CreateAmenitiesRequest } from "../models/amenities/createAmenities.request";
 import { CreateAmenitiesResponse } from "../models/amenities/createAmenities.response";
 import { CreateManufacturerRequest } from "../models/manufacturers/createManufacturer.request";
@@ -106,8 +109,10 @@ export const useCreateAmenitiesRequest = create<CreateAmenitiesRequest>()(
   (set) => ({
     name: "",
     description: "",
+    icon: undefined,
     setName: (name: string) => set({ name }),
     setDescription: (description: string) => set({ description }),
+    setIcon: (icon: FileList) => set({ icon }),
   })
 );
 
@@ -174,7 +179,7 @@ export const useGetManufacturersResponses = create<GetManufacturersResponses>()(
     pageNumber: 1,
     pageSize: 10,
     totalItems: 0,
-    setItems: (items: GetAmenitiesResponse[]) => set({ items }),
+    setItems: (items: GetManufacturersResponse[]) => set({ items }),
     setHasNext: (hasNext: boolean) => set({ hasNext }),
     setPageNumber: (pageNumber: number) => set({ pageNumber }),
     setPageSize: (pageSize: number) => set({ pageSize }),
