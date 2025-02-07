@@ -12,7 +12,6 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { useLayoutEffect } from "react";
 
 export default function Home() {
     const { register, handleSubmit } = useForm<{
@@ -40,13 +39,6 @@ export default function Home() {
             });
         }
     });
-
-    useLayoutEffect(() => {
-        AuthApi.checkToken().then((response) => {
-            if (response.isSuccess) push("/")
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     return (
         <div className="w-full max-w-xs mx-auto flex flex-col justify-center h-screen">

@@ -1,6 +1,6 @@
 'use client'
 
-import { GetAmenitiesResponse, GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
+import { GetAmenitiesResponseRendered, GetAmenitiesResponses } from "@/domains/models/amenities/getamenities.response";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { AmenitiyApi } from "@/domains/services/amenities/amenities.service";
 import { useGetAmenitiesRequest, useGetAmenitiesResponses } from "@/domains/stores/store";
@@ -10,8 +10,9 @@ import { useEffect } from "react";
 import { DataTable } from "./data-table";
 import { formatDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 
-export default function AmenitiesTable({ columns }: { columns: ColumnDef<GetAmenitiesResponse>[] }) {
+export default function AmenitiesTable({ columns }: { columns: ColumnDef<GetAmenitiesResponseRendered>[] }) {
     const { index, size, keyword, setRefetch, setIndex, setKeyword } = useGetAmenitiesRequest();
     const {
         items,
@@ -22,6 +23,14 @@ export default function AmenitiesTable({ columns }: { columns: ColumnDef<GetAmen
         setPageSize,
         setTotalItems
     } = useGetAmenitiesResponses();
+
+    const transformedData: GetAmenitiesResponseRendered[] = items?.map((item) => ({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        icon: <Image src={item.iconUrl} alt={`${item.name} icon`} width={25} height={25} />, // Convert to ReactElement
+        createdAt: formatDate(item.createdAt),
+    })) ?? [];
 
     const debouncedKeyword: string = useDebounce(keyword, 500); // 500ms debounce delay
 
@@ -51,12 +60,7 @@ export default function AmenitiesTable({ columns }: { columns: ColumnDef<GetAmen
         <div className="container py-10">
             <DataTable
                 columns={columns}
-                data={items?.map((item) => {
-                    return {
-                        ...item,
-                        createdAt: formatDate(item.createdAt)
-                    }
-                }) ?? []}
+                data={transformedData}
                 hasNext={hasNext}
                 index={index}
                 isPending={isPending}
