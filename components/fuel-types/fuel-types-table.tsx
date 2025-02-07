@@ -67,12 +67,12 @@ export default function FuelTypesTable({ columns, data }: { columns: ColumnDef<G
         <div className="container py-10">
             <DataTable
                 columns={columns}
-                data={isPending ? [] : (items?.map((item) => {
+                data={items?.map((item) => {
                     return {
                         ...item,
                         createdAt: formatDate(item.createdAt)
                     }
-                }) ?? [])}
+                })}
                 hasNext={hasNext}
                 index={index}
                 isPending={isPending}

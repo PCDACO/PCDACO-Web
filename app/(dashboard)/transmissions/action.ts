@@ -13,7 +13,7 @@ export async function GetTransmissions({
   size: number;
   keyword: string;
 }): Promise<SharedResponse<GetTransmissionsResponses>> {
-  const response = await axiosInstance.get("/api/transmissions", {
+  const response = await axiosInstance.get("/api/transmission-types", {
     params: {
       index: index,
       size: size,
@@ -24,14 +24,14 @@ export async function GetTransmissions({
 }
 
 export async function DeleteTransmission(id: string): Promise<SharedResponse> {
-  const response = await axiosInstance.delete(`/api/transmissions/${id}`);
+  const response = await axiosInstance.delete(`/api/transmission-types/${id}`);
   return response.data;
 }
 
 export async function CreateTransmission(
   name: string
 ): Promise<SharedResponse> {
-  const response = await axiosInstance.post("/api/transmissions", {
+  const response = await axiosInstance.post("/api/transmission-types", {
     name: name,
   });
   return response.data;
@@ -44,7 +44,7 @@ export async function UpdateTransmission({
   id: string;
   name: string;
 }): Promise<SharedResponse> {
-  const response = await axiosInstance.put(`/api/transmissions/${id}`, {
+  const response = await axiosInstance.put(`/api/transmission-types/${id}`, {
     name: name,
   });
   return response.data;
