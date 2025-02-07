@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 export interface GetAmenitiesResponses {
   items: GetAmenitiesResponse[];
   pageNumber: number;
@@ -16,5 +18,13 @@ export interface GetAmenitiesResponse {
   name: string;
   description: string;
   iconUrl: string;
+  createdAt: string;
+}
+
+export interface GetAmenitiesResponseRendered {
+  id: string;
+  name: string;
+  description: string;
+  icon: ReactElement;
   createdAt: string;
 }

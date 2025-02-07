@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { GetAmenitiesResponse } from "@/domains/models/amenities/getamenities.response";
+import { GetAmenitiesResponseRendered } from "@/domains/models/amenities/getamenities.response";
 import { useState } from "react";
 import { AmenityDeleteDialog } from "@/components/amenities/delete-dialog";
 import { AmenityUpdateDialog } from "@/components/amenities/update-dialog";
@@ -19,10 +19,15 @@ import {
   useUpdateAmenityRequest,
 } from "@/domains/stores/store";
 
-export const columns: ColumnDef<GetAmenitiesResponse>[] = [
+export const columns: ColumnDef<GetAmenitiesResponseRendered>[] = [
   {
     accessorKey: "id",
     header: "ID",
+  },
+  {
+    accessorKey: "icon",
+    header: "Icon",
+    cell: ({ row }) => row.original.icon, // Render the icon correctly
   },
   {
     accessorKey: "name",
@@ -31,10 +36,6 @@ export const columns: ColumnDef<GetAmenitiesResponse>[] = [
   {
     accessorKey: "description",
     header: "Description",
-  },
-  {
-    accessorKey: "iconUrl",
-    header: "Icon URL",
   },
   {
     accessorKey: "createdAt",

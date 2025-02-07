@@ -3,9 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  const accessToken = (await cookies()).get("accessToken");
-  if (!accessToken)
-    return NextResponse.redirect(new URL("/login", request.url));
+  const url = request.nextUrl;
+  if (url.pathname === "/login") {
+    const accessToken = (await cookies()).get("accessToken");
+    if (accessToken) return NextResponse.redirect(new URL("/", request.url));
+  } else {
+    const accessToken = (await cookies()).get("accessToken");
+    if (!accessToken)
+      return NextResponse.redirect(new URL("/login", request.url));
+  }
 }
 
 export const config = {
@@ -17,6 +23,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };
