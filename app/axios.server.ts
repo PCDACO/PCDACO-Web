@@ -42,9 +42,32 @@ axiosInstance.interceptors.request.use(async (config) => {
       // SET NEW ACCESS TOKEN
       // THEN
       // IF CONTINUE TO FALSE THEN
-      // (await cookies()).delete("accessToken");
-      // (await cookies()).delete("refreshToken");
-      // source.cancel("Request canceled due to invalid token.");
+      const refreshToken = cookieStore.get("refreshToken");
+      if (!refreshToken) {
+        (await cookies()).delete("accessToken");
+        (await cookies()).delete("refreshToken");
+        source.cancel("Request canceled due to invalid token.");
+      }
+      const response = await fetch(`${getUrl()}/api/auth/refresh-token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          refreshToken: refreshToken!.value,
+        }),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        cookieStore.set("accessToken", data.value.accessToken);
+        cookieStore.set("refreshToken", data.value.refreshToken);
+        config.headers.Authorization = `Bearer ${data.value.accessToken}`;
+      } else {
+        (await cookies()).delete("accessToken");
+        (await cookies()).delete("refreshToken");
+        source.cancel("Request canceled due to invalid token.");
+      }
     } else {
       if (config.method === "post") {
         config.headers["Idempotence-Key"] = generateGuid();

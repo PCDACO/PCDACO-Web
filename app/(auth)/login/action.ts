@@ -29,14 +29,8 @@ export async function Login({
       value: null,
     };
   }
-  cookieStore.set("accessToken", response.data.value.accessToken, {
-    maxAge: 30 * 60,
-    httpOnly: true,
-  });
-  cookieStore.set("refreshToken", response.data.value.refreshToken, {
-    maxAge: 30 * 60,
-    httpOnly: true,
-  });
+  cookieStore.set("accessToken", response.data.value.accessToken);
+  cookieStore.set("refreshToken", response.data.value.refreshToken);
   redirect("/");
 }
 

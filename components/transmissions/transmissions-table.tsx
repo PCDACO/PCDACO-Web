@@ -65,12 +65,12 @@ export default function TransmissionTable({ columns, data }: { columns: ColumnDe
         <div className="container py-10">
             <DataTable
                 columns={columns}
-                data={isPending ? [] : (items?.map((item) => {
+                data={items?.map((item) => {
                     return {
                         ...item,
                         createdAt: formatDate(item.createdAt)
                     }
-                }) ?? [])}
+                })}
                 hasNext={hasNext}
                 index={index}
                 isPending={isPending}

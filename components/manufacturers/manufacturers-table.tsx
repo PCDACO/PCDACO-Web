@@ -58,7 +58,7 @@ export default function ManufacturersTable({
             setTimeout(() => {
                 setIsLoaded(true)
             }, 500);
-        }   
+        }
     });
 
     useEffect(() => {
@@ -77,12 +77,12 @@ export default function ManufacturersTable({
         <div className="container py-10">
             <DataTable
                 columns={columns}
-                data={isPending ? [] : (items?.map((item) => {
+                data={items?.map((item) => {
                     return {
                         ...item,
                         createdAt: formatDate(item.createdAt)
                     }
-                }) ?? [])}
+                })}
                 hasNext={hasNext}
                 index={index}
                 isPending={isPending}
