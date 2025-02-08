@@ -52,8 +52,15 @@ import {
 } from "../models/compensation-statuses/getCompensationStatuses.response";
 import { GetCarStatusesRequest } from "../models/car-statuses/getCarStatuses.request";
 import { GetContractStatusesRequest } from "../models/contract-statuses/getContractStatuses.request";
-import { GetContractStatusResponse, GetContractStatusResponses } from "../models/contract-statuses/getContractStatuses.response";
-// Auth
+import {
+  GetContractStatusResponse,
+  GetContractStatusResponses,
+} from "../models/contract-statuses/getContractStatuses.response";
+import {
+  GetCarStatusesResponse,
+  GetCarStatusesResponses,
+} from "../models/car-statuses/getCarStatuses.response";
+
 export const useLoginRequest = create<LoginRequest>()((set) => ({
   email: "",
   password: "",
@@ -386,7 +393,7 @@ export const useGetContractStatusesRequest = create<GetContractStatusesRequest>(
   })
 );
 
-export const useGetContractStatusesResponses=
+export const useGetContractStatusesResponses =
   create<GetContractStatusResponses>((set) => ({
     items: [],
     hasNext: false,
@@ -398,4 +405,19 @@ export const useGetContractStatusesResponses=
     setPageNumber: (pageNumber: number) => set({ pageNumber }),
     setPageSize: (pageSize: number) => set({ pageSize }),
     setTotalItems: (totalItems: number) => set({ totalItems }),
-}))
+  }));
+
+export const useGetCarStatusResponse = create<GetCarStatusesResponses>(
+  (set) => ({
+    items: [],
+    hasNext: false,
+    pageNumber: 1,
+    pageSize: 10,
+    totalItems: 0,
+    setItems: (items: GetCarStatusesResponse[]) => set({ items }),
+    setHasNext: (hasNext: boolean) => set({ hasNext }),
+    setPageNumber: (pageNumber: number) => set({ pageNumber }),
+    setPageSize: (pageSize: number) => set({ pageSize }),
+    setTotalItems: (totalItems: number) => set({ totalItems }),
+  })
+);
