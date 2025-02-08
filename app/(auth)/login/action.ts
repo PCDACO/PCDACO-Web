@@ -16,7 +16,7 @@ export async function Login({
   const cookieStore = await cookies();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const response = await axiosInstance.post<SharedResponse<LoginResponse>>(
-    "api/users/login",
+    "api/auth/admin/login",
     {
       email,
       password,
@@ -29,6 +29,8 @@ export async function Login({
       value: null,
     };
   }
+  cookieStore.delete("accessToken");
+  cookieStore.delete("refreshToken");
   cookieStore.set("accessToken", response.data.value.accessToken);
   cookieStore.set("refreshToken", response.data.value.refreshToken);
   redirect("/");

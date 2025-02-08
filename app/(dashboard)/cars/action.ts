@@ -13,7 +13,7 @@ export const GetCars = async ({
   size: number;
   keyword: string;
 }): Promise<SharedResponse<GetCarsResponses>> => {
-  const response = await axiosInstance.get("/api/cars", {
+  const response = await axiosInstance.get("/api/cars/all", {
     params: {
       index: index,
       size: size,
