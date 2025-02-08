@@ -57,9 +57,15 @@ const items = [
         title: "Compensations Statuses",
         url: "compensation-statuses",
         icon: Receipt,
-    }, {
+    },
+    {
         title: "Contract Statuses",
         url: "contract-statuses",
+        icon: Receipt,
+    },
+    {
+        title: "Car Statuses",
+        url: "car-statuses",
         icon: Receipt,
     }
 ]
