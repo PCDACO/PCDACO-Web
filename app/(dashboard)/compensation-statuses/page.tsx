@@ -5,6 +5,6 @@ import { GetCompensationStatuses } from "./action";
 export default async function CompensationStatusPage() {
     const { value } = await GetCompensationStatuses({ index: 1, size: 10, keyword: "" });
     return (
-        <CompensationStatusesTable columns={columns} data={value} />
+        <CompensationStatusesTable columns={columns} data={value!} />
     )
 }

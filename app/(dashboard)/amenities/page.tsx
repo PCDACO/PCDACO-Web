@@ -5,6 +5,6 @@ import { GetAmenities } from "./action";
 export default async function AmenitiesPage() {
     const { value } = await GetAmenities({ index: 1, size: 10, keyword: "" });
     return (
-        <AmenitiesTable data={value} columns={columns} />
+        <AmenitiesTable data={value!} columns={columns} />
     )
 }

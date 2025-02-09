@@ -4,5 +4,5 @@ import { GetManufacturers } from "./action";
 
 export default async function ManufacturerPage() {
     const { value } = await GetManufacturers({ index: 1, size: 10, keyword: "" });
-    return (<ManufacturersTable columns={columns} data={value} />)
+    return (<ManufacturersTable columns={columns} data={value!} />)
 }

@@ -6,6 +6,6 @@ import { GetCars } from "./action";
 export default async function CarPage() {
     const { value } = await GetCars({ index: 1, size: 10, keyword: "" });
     return (
-        <CarTable columns={columns} data={value} />
+        <CarTable columns={columns} data={value!} />
     )
 }

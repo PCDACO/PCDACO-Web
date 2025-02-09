@@ -29,7 +29,6 @@ axiosInstance.interceptors.request.use(async (config) => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken");
   if (accessToken) {
-    console.log(accessToken.value);
     const response = await fetch(`${getUrl()}/api/auth/validate-token`, {
       method: "POST",
       headers: {
