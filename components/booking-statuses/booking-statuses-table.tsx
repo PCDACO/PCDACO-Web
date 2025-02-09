@@ -45,7 +45,7 @@ export default function CarStatusesTable({ columns, data }: {
         },
         enabled: false,
         initialData: () => {
-            setItems(data.items);
+            setItems(data.items ?? []);
             setHasNext(data.hasNext);
             setPageNumber(data.pageNumber);
             setPageSize(data.pageSize);
