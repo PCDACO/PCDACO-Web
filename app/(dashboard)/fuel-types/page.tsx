@@ -6,6 +6,6 @@ import { GetFuelTypes } from "./action";
 export default async function FuelTypePage() {
     const { value } = await GetFuelTypes({ index: 1, size: 10, keyword: "" });
     return (
-        <FuelTypesTable columns={columns} data={value} />
+        <FuelTypesTable columns={columns} data={value!} />
     )
 }

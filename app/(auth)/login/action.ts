@@ -15,27 +15,35 @@ export async function Login({
 }) {
   const cookieStore = await cookies();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const response = await axiosInstance.post<SharedResponse<LoginResponse>>(
-    "api/auth/admin/login",
-    {
-      email,
-      password,
+  try {
+    const response = await axiosInstance.post<SharedResponse<LoginResponse>>(
+      "api/auth/admin/login",
+      {
+        email,
+        password,
+      }
+      );
+      if (response.status !== 200) {
+      return {
+        isSuccess: false,
+        message: "Email hoặc mật khẩu không đúng",
+        value: null,
+      };
     }
-  );
-  if (response.status !== 200) {
+    cookieStore.delete("accessToken");
+    cookieStore.delete("refreshToken");
+    cookieStore.set("accessToken", response.data.value!.accessToken);
+    cookieStore.set("refreshToken", response.data.value!.refreshToken);
+    redirect("/");
+  } catch (error) {
+    console.log(error);
     return {
       isSuccess: false,
       message: "Email hoặc mật khẩu không đúng",
       value: null,
     };
   }
-  cookieStore.delete("accessToken");
-  cookieStore.delete("refreshToken");
-  cookieStore.set("accessToken", response.data.value.accessToken);
-  cookieStore.set("refreshToken", response.data.value.refreshToken);
-  redirect("/");
 }
-
 export async function Logout() {
   const cookieStore = await cookies();
   cookieStore.delete("accessToken");

@@ -13,14 +13,23 @@ export const GetCars = async ({
   size: number;
   keyword: string;
 }): Promise<SharedResponse<GetCarsResponses>> => {
-  const response = await axiosInstance.get("/api/cars/all", {
-    params: {
-      index: index,
-      size: size,
-      keyword: keyword,
-    },
-  });
-  return response.data;
+  try {
+    const response = await axiosInstance.get("/api/cars/all", {
+      params: {
+        index: index,
+        size: size,
+        keyword: keyword,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return {
+      isSuccess: false,
+      message: "Lỗi hệ thống",
+      value: null,
+    };
+  }
 };
 
 export const DeleteCar = async (id: string): Promise<SharedResponse> => {

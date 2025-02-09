@@ -4,16 +4,17 @@ import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { DataTable } from "./data-table";
 import { formatDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { useGetCarStatusResponse, useGetCompensationStatusesRequest } from "@/domains/stores/store";
 import { GetCompensationStatuses } from "@/app/(dashboard)/compensation-statuses/action";
-import { GetCarStatusesResponse, GetCarStatusesResponses } from "@/domains/models/car-statuses/getCarStatuses.response";
+import { GetCarStatusesResponses } from "@/domains/models/car-statuses/getCarStatuses.response";
+import { DataTable } from "./data-table";
+import { GetBookingStatusesResponse, GetBookingStatusesResponses } from "@/domains/models/booking-statuses/getBookingStatuses.response";
 
 export default function CarStatusesTable({ columns, data }: {
-    columns: ColumnDef<GetCarStatusesResponse>[],
-    data: GetCarStatusesResponses
+    columns: ColumnDef<GetBookingStatusesResponse>[],
+    data: GetBookingStatusesResponses
 }) {
     const { index, size, keyword, setRefetch, setIndex, setKeyword } = useGetCompensationStatusesRequest();
     const {

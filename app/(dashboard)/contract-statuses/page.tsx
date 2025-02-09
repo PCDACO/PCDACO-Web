@@ -5,6 +5,6 @@ import GetContractStatusTable from "@/components/contract-statuses/contract-stat
 export default async function ContractStatusPage() {
     const { value } = await GetContractStatus({ index: 1, size: 10, keyword: "" });
     return (
-        <GetContractStatusTable columns={columns} data={value} />
+        <GetContractStatusTable columns={columns} data={value!} />
     )
 }

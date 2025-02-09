@@ -60,6 +60,11 @@ import {
   GetCarStatusesResponse,
   GetCarStatusesResponses,
 } from "../models/car-statuses/getCarStatuses.response";
+import { GetBookingStatusesRequest } from "../models/booking-statuses/getBookingStatuses.request";
+import {
+  GetBookingStatusesResponse,
+  GetBookingStatusesResponses,
+} from "../models/booking-statuses/getBookingStatuses.response";
 
 export const useLoginRequest = create<LoginRequest>()((set) => ({
   email: "",
@@ -415,6 +420,34 @@ export const useGetCarStatusResponse = create<GetCarStatusesResponses>(
     pageSize: 10,
     totalItems: 0,
     setItems: (items: GetCarStatusesResponse[]) => set({ items }),
+    setHasNext: (hasNext: boolean) => set({ hasNext }),
+    setPageNumber: (pageNumber: number) => set({ pageNumber }),
+    setPageSize: (pageSize: number) => set({ pageSize }),
+    setTotalItems: (totalItems: number) => set({ totalItems }),
+  })
+);
+
+export const useBookingStatusesRequest = create<GetBookingStatusesRequest>(
+  (set) => ({
+    index: 1,
+    size: 10,
+    keyword: "",
+    refetch: undefined,
+    setIndex: (index: number) => set({ index }),
+    setSize: (size: number) => set({ size }),
+    setKeyword: (keyword: string) => set({ keyword }),
+    setRefetch: (refetch: () => void) => set({ refetch }),
+  })
+);
+
+export const useBookingStatusResponse = create<GetBookingStatusesResponses>(
+  (set) => ({
+    items: [],
+    hasNext: false,
+    pageNumber: 1,
+    pageSize: 10,
+    totalItems: 0,
+    setItems: (items: GetBookingStatusesResponse[]) => set({ items }),
     setHasNext: (hasNext: boolean) => set({ hasNext }),
     setPageNumber: (pageNumber: number) => set({ pageNumber }),
     setPageSize: (pageSize: number) => set({ pageSize }),
