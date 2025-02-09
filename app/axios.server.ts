@@ -40,6 +40,7 @@ axiosInstance.interceptors.request.use(async (config) => {
       const refreshToken = cookieStore.get("refreshToken");
       if (!refreshToken) {
         source.cancel("Request canceled due to invalid token.");
+        redirect("/login");
       }
       const response = await fetch(`${getUrl()}/api/auth/refresh-token`, {
         method: "POST",
