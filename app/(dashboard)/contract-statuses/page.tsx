@@ -2,6 +2,7 @@ import { columns } from "@/components/compensation-statuses/columns";
 import { GetContractStatus } from "./action";
 import GetContractStatusTable from "@/components/contract-statuses/contract-status-table";
 
+export const dynamic = "force-dynamic";
 export default async function ContractStatusPage() {
     const { value } = await GetContractStatus({ index: 1, size: 10, keyword: "" });
     return (

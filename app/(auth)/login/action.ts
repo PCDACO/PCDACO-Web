@@ -4,7 +4,6 @@ import axiosInstance from "@/app/axios.server";
 import { LoginResponse } from "@/domains/models/auth/login.response";
 import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export async function Login({
   email,
@@ -25,13 +24,11 @@ export async function Login({
   if (response.status !== 200) throw new Error();
   cookieStore.set("accessToken", response.data.value!.accessToken);
   cookieStore.set("refreshToken", response.data.value!.refreshToken);
-  redirect("/");
 }
 export async function Logout() {
   const cookieStore = await cookies();
   cookieStore.delete("accessToken");
   cookieStore.delete("refreshToken");
-  redirect("/login");
 }
 
 export async function ClearToken() {

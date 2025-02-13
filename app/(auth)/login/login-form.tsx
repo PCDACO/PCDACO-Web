@@ -9,6 +9,8 @@ import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+
 
 export default function LoginForm() {
     const { register, handleSubmit } = useForm<{
@@ -16,8 +18,12 @@ export default function LoginForm() {
         password: string
     }>();
 
+    const { push } = useRouter();
     const { mutate, isPending } = useMutation({
         mutationFn: ({ email, password }: { email: string, password: string }) => Login({ email, password }),
+        onSuccess: () => {
+            push("/");
+        },
         onError: () => {
             toast({ title: "Sai mật khẩu hoặc tài khoản" })
         }
@@ -31,7 +37,6 @@ export default function LoginForm() {
             <h1 className="text-3xl text-center font-bold mb-8">Đăng nhập</h1>
             <form onSubmit={handleSubmit((data) => {
                 mutate({ email: data.email, password: data.password });
-                Login({ email: data.email, password: data.password })
             })} className="space-y-8">
                 <div className="space-y-2">
                     <Label htmlFor="email" className="text-sm font-medium text-gray-700">
