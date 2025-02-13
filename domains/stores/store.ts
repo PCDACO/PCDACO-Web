@@ -65,7 +65,22 @@ import {
   GetBookingStatusesResponse,
   GetBookingStatusesResponses,
 } from "../models/booking-statuses/getBookingStatuses.response";
+import { GetTransactionStatusesRequest } from "../models/transaction-statuses/getTransactionStatuses.request";
+import {
+  GetTransactionStatusesResponse,
+  GetTransactionStatusesResponses,
+} from "../models/transaction-statuses/getTracsactionStatuses.response";
+import { CreateModelRequest } from "../models/models/createModels.request";
+import { UpdateModelRequest } from "../models/models/updateModel.request";
+import { DeleteModelRequest } from "../models/models/deleteModels.request";
+import { CreateModelResponse } from "../models/models/createModel.response";
+import { RedirectStatus } from "../models/redirect/redirect.status";
 
+// redirecting status
+export const useRedirectStatus = create<RedirectStatus>((set) => ({
+  isRedirecting: false,
+  setIsRedirecting: (isRedirecting: boolean) => set({ isRedirecting }),
+}));
 export const useLoginRequest = create<LoginRequest>()((set) => ({
   email: "",
   password: "",
@@ -345,6 +360,32 @@ export const useGetModelsResponses = create<GetModelsResponses>((set) => ({
   setPageSize: (pageSize: number) => set({ pageSize }),
   setTotalItems: (totalItems: number) => set({ totalItems }),
 }));
+export const useCreateModelRequest = create<CreateModelRequest>((set) => ({
+  name: "",
+  releaseDate: new Date(),
+  manufacturerId: "",
+  setName: (name: string) => set({ name }),
+  setReleaseDate: (releaseDate: Date) => set({ releaseDate }),
+  setManufacturerId: (manufacturerId: string) => set({ manufacturerId }),
+}));
+export const useCreateModelResponse = create<CreateModelResponse>((set) => ({
+  id: "",
+  setId: (id: string) => set({ id }),
+}));
+export const useUpdateModelRequest = create<UpdateModelRequest>((set) => ({
+  id: "",
+  name: "",
+  releaseDate: new Date(),
+  manufacturerId: "",
+  setId: (id: string) => set({ id }),
+  setName: (name: string) => set({ name }),
+  setReleaseDate: (releaseDate: Date) => set({ releaseDate }),
+  setManufacturerId: (manufacturerId: string) => set({ manufacturerId }),
+}));
+export const useDeleteModelRequest = create<DeleteModelRequest>((set) => ({
+  id: "",
+  setId: (id: string) => set({ id }),
+}));
 // Compensation Statuses
 export const useGetCompensationStatusesRequest =
   create<GetCompensationStatusesRequest>((set) => ({
@@ -454,3 +495,30 @@ export const useBookingStatusResponse = create<GetBookingStatusesResponses>(
     setTotalItems: (totalItems: number) => set({ totalItems }),
   })
 );
+
+// Transaction Status
+export const useGetTransactionStatusRequest =
+  create<GetTransactionStatusesRequest>((set) => ({
+    index: 1,
+    size: 10,
+    keyword: "",
+    refetch: undefined,
+    setIndex: (index: number) => set({ index }),
+    setSize: (size: number) => set({ size }),
+    setKeyword: (keyword: string) => set({ keyword }),
+    setRefetch: (refetch: () => void) => set({ refetch }),
+  }));
+
+export const useGetTransactionStatusesResponse =
+  create<GetTransactionStatusesResponses>((set) => ({
+    items: [],
+    hasNext: false,
+    pageNumber: 1,
+    pageSize: 10,
+    totalItems: 0,
+    setItems: (items: GetTransactionStatusesResponse[]) => set({ items }),
+    setHasNext: (hasNext: boolean) => set({ hasNext }),
+    setPageNumber: (pageNumber: number) => set({ pageNumber }),
+    setPageSize: (pageSize: number) => set({ pageSize }),
+    setTotalItems: (totalItems: number) => set({ totalItems }),
+  }));

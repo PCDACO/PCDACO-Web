@@ -16,7 +16,7 @@ export default function ManufacturersTable({
     data
 }: {
     columns: ColumnDef<GetManufacturersResponse>[],
-    data: GetManufacturersResponses
+    data: GetManufacturersResponses | null
 }) {
     const { index, size, keyword, setIndex, setKeyword, setRefetch } = useGetManufacturersRequest();
     const {
@@ -47,17 +47,22 @@ export default function ManufacturersTable({
                 setPageSize(carDatas.value!.pageSize);
                 setTotalItems(carDatas.value!.totalItems);
                 setRefetch(refetch);
+                return carDatas.value!.items;
             }),
         enabled: false,
         initialData: () => {
-            setItems(data.items);
-            setHasNext(data.hasNext);
-            setPageNumber(data.pageNumber);
-            setPageSize(data.pageSize);
-            setTotalItems(data.totalItems);
+            if (data) {
+                setItems(data.items);
+                setHasNext(data.hasNext);
+                setPageNumber(data.pageNumber);
+                setPageSize(data.pageSize);
+                setTotalItems(data.totalItems);
+            }
             setTimeout(() => {
                 setIsLoaded(true)
             }, 500);
+            if (data)
+                return data.items;
         }
     });
 

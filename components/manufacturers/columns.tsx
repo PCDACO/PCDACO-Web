@@ -14,8 +14,9 @@ import { GetManufacturersResponse } from "@/domains/models/manufacturers/getManu
 import { useState } from "react";
 import { ManufacturerDeleteDialog } from "@/components/manufacturers/delete-dialog";
 import { ManufacturerUpdateDialog } from "@/components/manufacturers/update-dialog";
-import { useDeleteManufacturerRequest, useUpdateManufacturerRequest } from "@/domains/stores/store";
+import { useDeleteManufacturerRequest, useRedirectStatus, useUpdateManufacturerRequest } from "@/domains/stores/store";
 import { redirect } from "next/navigation";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 
 export const columns: ColumnDef<GetManufacturersResponse>[] = [
@@ -34,8 +35,10 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
     {
         id: "actions",
         cell: ({ row }) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            const { isRedirecting, setIsRedirecting } = useRedirectStatus();
             const handleRedirect = () => {
-                console.log("CON CAC");
+                setIsRedirecting(true)
                 // eslint-disable-next-line react-hooks/rules-of-hooks
                 redirect(`/manufacturers/${data.id}/models`);
             }
@@ -63,7 +66,7 @@ export const columns: ColumnDef<GetManufacturersResponse>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={handleRedirect}>
-                            Xem các mã xe
+                            {isRedirecting ? (<LoadingSpinner />) : "Xem các mã xe"}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {
                             updateAmenityRequest.setId(data.id);

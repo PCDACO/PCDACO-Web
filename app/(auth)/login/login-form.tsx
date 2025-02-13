@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Login, } from "./action";
+import { ClearToken, Login } from "./action";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useEffect } from "react";
+import { toast } from "@/hooks/use-toast";
 
 export default function LoginForm() {
     const { register, handleSubmit } = useForm<{
@@ -15,11 +17,15 @@ export default function LoginForm() {
     }>();
 
     const { mutate, isPending } = useMutation({
-        mutationFn: ({ email, password }: { email: string, password: string }) => {
-            return Login({ email, password })
+        mutationFn: ({ email, password }: { email: string, password: string }) => Login({ email, password }),
+        onError: () => {
+            toast({ title: "Sai mật khẩu hoặc tài khoản" })
         }
     })
 
+    useEffect(() => {
+        ClearToken();
+    }, [])
     return (
         <div className="w-full max-w-xs mx-auto flex flex-col justify-center h-screen">
             <h1 className="text-3xl text-center font-bold mb-8">Đăng nhập</h1>

@@ -1,29 +1,23 @@
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+"use server";
 
-// This function can be marked `async` if using `await` inside
-export async function middleware(request: NextRequest) {
-  const url = request.nextUrl;
-  const cookieStore = await cookies();
-  if (url.pathname === "/login") {
-    const accessToken = cookieStore.get("accessToken");
-    if (accessToken) return NextResponse.redirect(new URL("/", request.url));
-  } else {
-    const accessToken = cookieStore.get("accessToken");
-    if (!accessToken)
-      return NextResponse.redirect(new URL("/login", request.url));
-  }
+export async function middleware() {
+  // const cookieStore = await cookies();
+  // const accessToken = cookieStore.get("accessToken");
+  // if (!accessToken) {
+  //   console.log("WHAT THE FUCKk");
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
+  //     const accessToken = cookieStore.get("accessToken");
+  //     if (accessToken) return NextResponse.redirect(new URL("/", request.url));
+  //   } else {
+  //     const accessToken = cookieStore.get("accessToken");
+  //     if (!accessToken)
+  //       return NextResponse.redirect(new URL("/login", request.url));
+  //   }
+  //   if (!cookieStore.get("accessToken"))
+  //     return NextResponse.redirect(new URL("/login", request.url));
+  // }
 }
-
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|login).*)"],
 };
