@@ -1,5 +1,6 @@
 import LoginForm from "./login-form";
 
-export default function LoginPage() {
+export const dynamic = "force-dynamic";
+export default async function LoginPage() {
     return <LoginForm />;
 }

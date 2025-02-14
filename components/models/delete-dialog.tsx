@@ -6,29 +6,30 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { useDeleteManufacturerRequest, useGetManufacturersRequest } from "@/domains/stores/store";
+import { useDeleteModelRequest, useGetModelsRequest } from "@/domains/stores/store";
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "../ui/loading-spinner";
-import { DeleteAmenity } from "@/app/(dashboard)/amenities/action";
+import { DeleteModels } from "@/app/(dashboard)/manufacturers/[id]/models/action";
 
 interface DeleteDialogProps {
     isOpen: boolean,
     onClose: () => void
 }
 
-export const ManufacturerDeleteDialog = (
+export const ModelDeleteDialog = (
     {
         isOpen,
         onClose,
     }: DeleteDialogProps
 ) => {
-    const { setIndex, setKeyword, refetch } = useGetManufacturersRequest();
-    const { id } = useDeleteManufacturerRequest();
-    const mutation = useMutation({
-        mutationFn: () => DeleteAmenity(id),
+    const { setIndex, setKeyword, refetch } = useGetModelsRequest();
+    const { id } = useDeleteModelRequest()
+    const { mutate, isPending } = useMutation({
+        mutationKey: ["models"],
+        mutationFn: () => DeleteModels(id),
         onSuccess: (data) => {
-            if (!data.isSuccess) return;
+            if (!data.isSuccess) console.log("Some error happened");
             toast({
                 title: data.message
             })
@@ -36,24 +37,26 @@ export const ManufacturerDeleteDialog = (
             setKeyword("");
             refetch?.();
             onClose();
-        },
-        onError: (error) => {
-            console.error("Login failed", error);
         }
     }
     );
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Do you want to delete ?</DialogTitle>
+                    <DialogTitle>Bạn có muốn xóa tiện nghi này không ?</DialogTitle>
                 </DialogHeader>
                 <DialogFooter>
                     <Button onClick={onClose} type="submit">
                         Không
                     </Button>
-                    <Button onClick={() => mutation.mutate()} type="submit">
-                        {mutation.isPending ? <LoadingSpinner /> : "Có"}
+                    <Button onClick={() => mutate()} type="submit">
+                        {
+                            isPending
+                                ? <LoadingSpinner size={18} />
+                                : "Có"
+                        }
                     </Button>
                 </DialogFooter>
             </DialogContent>

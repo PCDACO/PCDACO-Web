@@ -34,8 +34,9 @@ export default function ModelsTable({ id, columns, data }: { id: string, columns
                 setPageNumber(modelDatas.value!.pageNumber);
                 setPageSize(modelDatas.value!.pageSize);
                 setTotalItems(modelDatas.value!.totalItems);
+                return data.items;
             }),
-        enabled: false,
+        // enabled: false,
         initialData: () => {
             setItems(data.items);
             setHasNext(data.hasNext);
@@ -45,6 +46,7 @@ export default function ModelsTable({ id, columns, data }: { id: string, columns
             setTimeout(() => {
                 setIsLoaded(true)
             }, 500);
+            return data.items;
         }
     });
 

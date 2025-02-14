@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button"
 
 import {
     ColumnDef,
-    ColumnFiltersState,
-    getFilteredRowModel,
     flexRender,
     getCoreRowModel,
     useReactTable,
@@ -23,7 +21,6 @@ import {
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import React from "react"
-import { ManufacturerDialog } from "@/components/manufacturers/dialog"
 import { LoadingSpinner } from "../ui/loading-spinner"
 
 interface DataTableProps<TData, TValue> {
@@ -32,7 +29,7 @@ interface DataTableProps<TData, TValue> {
     index: number,
     isPending: boolean,
     hasNext: boolean
-    keyword: string
+    keyword: string,
     setIndex: (index: number) => void
     setKeyword: (keyword: string) => void
 }
@@ -47,19 +44,11 @@ export function DataTable<TData, TValue>({
     setIndex,
     setKeyword
 }: DataTableProps<TData, TValue>) {
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        onColumnFiltersChange: setColumnFilters,
-        getFilteredRowModel: getFilteredRowModel(),
-        state: {
-            columnFilters,
-        },
     })
 
     return (
@@ -71,7 +60,6 @@ export function DataTable<TData, TValue>({
                     onChange={(event) => setKeyword(event.target.value)}
                     className="max-w-sm"
                 />
-                <ManufacturerDialog />
             </div>
             <div className="rounded-md border">
                 <Table>
