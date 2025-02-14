@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { ManufacturerDialog } from "@/components/manufacturers/dialog";
 import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface DataTableProps<TData, TValue> {
@@ -70,7 +69,6 @@ export function ModelsDataTable<TData, TValue>({
           onChange={(event) => setKeyword(event.target.value)}
           className="max-w-sm"
         />
-        <ManufacturerDialog />
       </div>
       <div className="rounded-md border">
         <Table>
@@ -83,9 +81,9 @@ export function ModelsDataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}

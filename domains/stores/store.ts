@@ -75,6 +75,7 @@ import { UpdateModelRequest } from "../models/models/updateModel.request";
 import { DeleteModelRequest } from "../models/models/deleteModels.request";
 import { CreateModelResponse } from "../models/models/createModel.response";
 import { RedirectStatus } from "../models/redirect/redirect.status";
+import { ManufactureResponse } from "@/constants/models/manufacture.model";
 
 // redirecting status
 export const useRedirectStatus = create<RedirectStatus>((set) => ({
@@ -213,7 +214,7 @@ export const useGetManufacturersResponses = create<GetManufacturersResponses>()(
     pageNumber: 1,
     pageSize: 10,
     totalItems: 0,
-    setItems: (items: GetManufacturersResponse[]) => set({ items }),
+    setItems: (items: ManufactureResponse[]) => set({ items }),
     setHasNext: (hasNext: boolean) => set({ hasNext }),
     setPageNumber: (pageNumber: number) => set({ pageNumber }),
     setPageSize: (pageSize: number) => set({ pageSize }),
