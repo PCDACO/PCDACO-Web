@@ -42,8 +42,8 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem
           onClick={() => {
-            setOpen(true);
             setKeyword("update");
+            setOpen(true);
             setId(id);
             setData(payload);
           }}
@@ -53,9 +53,10 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
-            setOpen(true);
             setKeyword("delete");
+            setOpen(true);
             setId(id);
+            setData(payload);
           }}
         >
           Delete

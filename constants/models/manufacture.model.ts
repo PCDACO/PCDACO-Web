@@ -8,7 +8,7 @@ export interface ManufactureResponse {
   createdAt: Date;
 }
 
-export interface ManufactureParams extends RootRequest {}
+export type ManufactureParams = RootRequest;
 
 export interface ManufactureEditResponse {
   id: string;

@@ -10,6 +10,7 @@ import {
 } from "@/constants/models/manufacture.model";
 import { useDialogStore } from "@/stores/store";
 import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
+import { toast } from "../use-toast";
 
 interface ManufactureQuery {
   params?: ManufactureParams;
@@ -41,7 +42,9 @@ export const useManuFactureMutation = () => {
       setOpen(false);
       queryClient.fetchQuery({ queryKey: ["manufacturers"] });
     },
-    onError: () => {},
+    onError: () => {
+      toast({ title: "Không thể thêm nhà sản xuất" });
+    },
   });
 
   const updateManufacturerMutation = useMutation({
@@ -59,7 +62,9 @@ export const useManuFactureMutation = () => {
       setOpen(false);
       queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
     },
-    onError: () => {},
+    onError: () => {
+      toast({ title: "Không thể sửa nhà sản xuất này" });
+    },
   });
 
   const deleteManufacturerMutation = useMutation({
@@ -69,9 +74,12 @@ export const useManuFactureMutation = () => {
     },
     onSuccess: () => {
       setOpen(false);
+      toast({ title: "Xóa thành công" });
       queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
     },
-    onError: () => {},
+    onError: () => {
+      toast({ title: "Không thể xóa nhà sản xuất này" });
+    },
   });
 
   return {

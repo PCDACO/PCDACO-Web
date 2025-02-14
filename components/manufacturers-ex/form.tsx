@@ -22,47 +22,108 @@ import {
 interface ManufacturerFormProps {
   id: string;
   value: ManufacturePayload;
+  action: string;
 }
+type KeywordType = {
+  name: string;
+  value: string;
+  form: React.JSX.Element;
+};
 const ManufacturerForm = ({ id, value }: ManufacturerFormProps) => {
   const { keyword } = useKeywordStore();
-
   const { form, onSubmit, isLoading } = useManufacturerForm({
     id,
     value,
+    action: keyword
   });
 
+  const keywords: KeywordType[] = [
+    {
+      name: "create",
+      value: "Create Manufacturer",
+      form: (
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => {
+            return (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="text"
+                    placeholder="Name"
+                    className="w-full"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
+      )
+    },
+    {
+      name: "update",
+      value: "Update Manufacturer",
+      form: (
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => {
+            return (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="text"
+                    placeholder="Name"
+                    className="w-full"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
+      )
+    },
+    {
+      name: "delete",
+      value: "Delete Manufacturer",
+      form: (
+        <></>
+      )
+    }
+  ];
+  const GetTitle = (name: string) => {
+    const selected = keywords.find(k => k.name === name);
+    return selected ?
+      <DialogTitle>
+        {selected.value}
+      </DialogTitle>
+      : null;
+  };
+  const GetComponent = (name: string) => {
+    const selected = keywords.find(k => k.name === name);
+    return selected ?
+      <DialogTitle>
+        {selected.form}
+      </DialogTitle>
+      : null;
+  };
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="space-y-6">
         <DialogHeader>
-          <DialogTitle>
-            {keyword === "create"
-              ? "Create Manufacturer"
-              : "Update Manufacturer"}
-          </DialogTitle>
+          {GetTitle(keyword)}
           <DialogDescription>
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                        placeholder="Name"
-                        className="w-full"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
+            {keyword === 'delete' ? (<h1>Bạn có muốn xóa không</h1>) : <></>}
           </DialogDescription>
         </DialogHeader>
+        {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
             {isLoading ? "Loading..." : "Submit"}

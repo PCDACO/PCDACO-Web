@@ -11,11 +11,19 @@ import { ManufacturePayload } from "@/constants/models/manufacture.model";
 interface ManufacturerForm {
   id: string;
   value: ManufacturePayload;
+  action: string;
 }
 
-export const useManufacturerForm = ({ id, value }: ManufacturerForm) => {
-  const { updateManufacturerMutation, createManufacturerMutation } =
-    useManuFactureMutation();
+export const useManufacturerForm = ({
+  id,
+  value,
+  action,
+}: ManufacturerForm) => {
+  const {
+    updateManufacturerMutation,
+    createManufacturerMutation,
+    deleteManufacturerMutation,
+  } = useManuFactureMutation();
 
   // Memoize defaultValues to prevent recalculating it on each render
   const defaultValues = useMemo(() => {
@@ -30,10 +38,19 @@ export const useManufacturerForm = ({ id, value }: ManufacturerForm) => {
   });
 
   const onSubmit = form.handleSubmit(async (payload) => {
-    if (id) {
-      updateManufacturerMutation.mutate({ id, payload });
-    } else {
-      createManufacturerMutation.mutate(payload);
+    switch (action) {
+      case "create": {
+        createManufacturerMutation.mutate(payload);
+        break;
+      }
+      case "update": {
+        updateManufacturerMutation.mutate({ id, payload });
+        break;
+      }
+      case "delete": {
+        deleteManufacturerMutation.mutate(id);
+        break;
+      }
     }
   });
 

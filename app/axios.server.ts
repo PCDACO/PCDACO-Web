@@ -40,11 +40,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    if (error.status === 401) {
-    }
-    if (axios.isCancel(error)) {
-    }
-    return error;
+    Promise.reject(error);
   }
 );
 
