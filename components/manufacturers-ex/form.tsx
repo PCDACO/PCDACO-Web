@@ -22,7 +22,6 @@ import {
 interface ManufacturerFormProps {
   id: string;
   value: ManufacturePayload;
-  action: string;
 }
 type KeywordType = {
   name: string;

@@ -13,8 +13,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { UpdateModels } from "@/app/(dashboard)/manufacturers/[id]/models/action";
 import { useGetManufacturersResponses, useGetModelsRequest, useUpdateModelRequest } from "@/domains/stores/store";
 import { GetManufacturers } from "@/app/(dashboard)/manufacturers/action";
-import { SharedResponse } from "@/domains/models/shared/shared.response";
-import { GetManufacturersResponses } from "@/domains/models/manufacturers/getManufacturers.response";
 import { z } from "zod";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { updateFormSchema } from "@/domains/schemas/models/updateForm.schema";
@@ -23,6 +21,7 @@ import ManufacturerSelect from "./manufacturer-select";
 import ModelDateTimePicker from "./date-time-picker";
 import { Button } from "../ui/button";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import { ManufactureResponse } from "@/constants/models/manufacture.model";
 
 interface DeleteDialogProps {
     isOpen: boolean,
@@ -58,7 +57,7 @@ export const ModelUpdateDialog = (
         queryKey: ["manufacturers", 1, 1000],
         queryFn: () => GetManufacturers({ index: 1, size: 1000, keyword: "" })
             .then((res) => {
-                const data = res as SharedResponse<GetManufacturersResponses>
+                const data = res as RootResponse<Pagination<ManufactureResponse>>
                 if (!data) return;
                 setItems(data.value?.items ?? [])
             })

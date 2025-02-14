@@ -1,10 +1,12 @@
+import { ManufactureResponse } from "@/constants/models/manufacture.model";
+
 export interface GetManufacturersResponses {
-  items: GetManufacturersResponse[];
+  items: ManufactureResponse[];
   pageNumber: number;
   pageSize: number;
   totalItems: number;
   hasNext: boolean;
-  setItems: (items: GetManufacturersResponse[]) => void;
+  setItems: (items: ManufactureResponse[]) => void;
   setHasNext: (hasNext: boolean) => void;
   setPageNumber: (pageNumber: number) => void;
   setPageSize: (pageSize: number) => void;
