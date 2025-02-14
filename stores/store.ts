@@ -15,11 +15,35 @@ interface KeywordState {
   setKeyword: (keyword: "create" | "update" | "delete") => void;
 }
 
+interface KeyQuery {
+  keyword: string;
+  setKeyword: (keyword: string) => void;
+}
+
+interface ParamsStore {
+  value: RootRequest;
+  setValue: (payload: RootRequest) => void;
+}
+
 interface GenericState<T> {
   data: T | null;
   setData: (payload: T) => void;
   clearData: () => void;
 }
+
+export const useParamStore = create<ParamsStore>((set) => ({
+  value: {
+    index: 1,
+    size: 10,
+    keyword: "",
+  },
+  setValue: (payload: RootRequest) => set({ value: payload }),
+}));
+
+export const useKeyQueryStore = create<KeyQuery>((set) => ({
+  keyword: "",
+  setKeyword: (keyword) => set({ keyword }),
+}));
 
 export const createGenericStore = <T>() =>
   create<GenericState<T>>((set) => ({
