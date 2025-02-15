@@ -1,19 +1,19 @@
 "use server";
 
-
 import axiosInstance from "@/app/axios.server";
-import { GetFuelTypesResponses } from "@/domains/models/fuel-types/getFuelTypes.response";
-import { SharedResponse } from "@/domains/models/shared/shared.response";
+import {
+  FuelTypeCreateResponse,
+  FuelTypeEditResponse,
+  FuelTypeParams,
+  FuelTypePayload,
+  FuelTypeResponse,
+} from "@/constants/models/fuelType.model";
 
 export async function GetFuelTypes({
   index,
   size,
   keyword,
-}: {
-  index: number;
-  size: number;
-  keyword: string;
-}): Promise<SharedResponse<GetFuelTypesResponses>> {
+}: FuelTypeParams): Promise<RootResponse<Pagination<FuelTypeResponse>>> {
   const response = await axiosInstance.get("/api/fuel-types", {
     params: {
       index: index,
@@ -24,27 +24,26 @@ export async function GetFuelTypes({
   return response.data;
 }
 
-export async function DeleteFuelType(id: string): Promise<SharedResponse> {
+export async function DeleteFuelType(id: string): Promise<RootResponse<null>> {
   const response = await axiosInstance.delete(`/api/fuel-types/${id}`);
   return response.data;
 }
 
-export async function CreateFuelType(name: string): Promise<SharedResponse> {
+export async function CreateFuelType({
+  name,
+}: FuelTypePayload): Promise<RootResponse<FuelTypeCreateResponse>> {
   const response = await axiosInstance.post("/api/fuel-types", {
     name: name,
   });
   return response.data;
 }
 
-export async function UpdateFuelType({
-  id,
-  name,
-}: {
-  id: string;
-  name: string;
-}): Promise<SharedResponse> {
+export async function UpdateFuelType(
+  id: string,
+  payload: FuelTypePayload
+): Promise<RootResponse<FuelTypeEditResponse>> {
   const response = await axiosInstance.put(`/api/fuel-types/${id}`, {
-    name: name,
+    name: payload.name,
   });
   return response.data;
 }

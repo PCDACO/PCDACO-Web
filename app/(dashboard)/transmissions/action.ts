@@ -1,18 +1,21 @@
 "use server";
 
 import axiosInstance from "@/app/axios.server";
-import { SharedResponse } from "@/domains/models/shared/shared.response";
-import { GetTransmissionsResponses } from "@/domains/models/transmissions/getTransmissions.response";
+import {
+  TransmissionCreateResponse,
+  TransmissionEditResponse,
+  TransmissionParams,
+  TransmissionPayload,
+  TransmissionResponse,
+} from "@/constants/models/transmission.model";
 
 export async function GetTransmissions({
   index,
   size,
   keyword,
-}: {
-  index: number;
-  size: number;
-  keyword: string;
-}): Promise<SharedResponse<GetTransmissionsResponses>> {
+}: TransmissionParams): Promise<
+  RootResponse<Pagination<TransmissionResponse>>
+> {
   const response = await axiosInstance.get("/api/transmission-types", {
     params: {
       index: index,
@@ -23,29 +26,28 @@ export async function GetTransmissions({
   return response.data;
 }
 
-export async function DeleteTransmission(id: string): Promise<SharedResponse> {
+export async function DeleteTransmission(
+  id: string
+): Promise<RootResponse<null>> {
   const response = await axiosInstance.delete(`/api/transmission-types/${id}`);
   return response.data;
 }
 
-export async function CreateTransmission(
-  name: string
-): Promise<SharedResponse> {
+export async function CreateTransmission({
+  name,
+}: TransmissionPayload): Promise<RootResponse<TransmissionCreateResponse>> {
   const response = await axiosInstance.post("/api/transmission-types", {
     name: name,
   });
   return response.data;
 }
 
-export async function UpdateTransmission({
-  id,
-  name,
-}: {
-  id: string;
-  name: string;
-}): Promise<SharedResponse> {
+export async function UpdateTransmission(
+  id: string,
+  payload: TransmissionPayload
+): Promise<RootResponse<TransmissionEditResponse>> {
   const response = await axiosInstance.put(`/api/transmission-types/${id}`, {
-    name: name,
+    name: payload.name,
   });
   return response.data;
 }

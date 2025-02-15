@@ -1,17 +1,33 @@
-export async function urlToFileList(
+import { useState } from "react";
+export function urlToFileList(
   url: string,
   filename: string
-): Promise<FileList> {
-  const response = await fetch(url, {
+): {
+  FileList: FileList | null;
+  isSuccess: boolean;
+} {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [FileList, SetFileList] = useState<FileList | null>(null);
+  const response = fetch(url, {
     method: "GET",
     headers: {
       Accept: "*/*",
     },
-  });
-  const blob = await response.blob();
-  const file = new File([blob], filename, { type: blob.type });
-  // Convert File into FileList
-  const dataTransfer = new DataTransfer();
-  dataTransfer.items.add(file);
-  return dataTransfer.files; // FileList
+  })
+    .then((res) => {
+      console.log(typeof res.blob());
+      return res.blob();
+    })
+    .then((blob) => {
+      const dataTranfer = new DataTransfer();
+      dataTranfer.items.add(new File([blob], filename, { type: blob.type }));
+      SetFileList(dataTranfer.files);
+      setIsSuccess(true);
+    })
+    .then();
+  const [isSuccess, setIsSuccess] = useState(false);
+  return {
+    FileList,
+    isSuccess,
+  };
 }
