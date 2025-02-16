@@ -1,73 +1,52 @@
 "use server";
 import axiosInstance from "@/app/axios.server";
-import { CreateModelResponse } from "@/domains/models/models/createModel.response";
-import { GetModelsResponses } from "@/domains/models/models/getModels.response";
-import { SharedResponse } from "@/domains/models/shared/shared.response";
+import {
+  ModelCreateResponse,
+  ModelParams,
+  ModelPayLoad,
+  ModelResponse,
+} from "@/constants/models/model.model.ts";
 
-export const GetModels = async ({
-  index,
-  size,
-  keyword,
-  manufacturerId,
-}: {
-  index: number;
-  size: number;
-  keyword: string;
-  manufacturerId: string;
-}): Promise<SharedResponse<GetModelsResponses>> => {
+export const GetModels = async (
+  manufacturerId: string,
+  params: ModelParams
+): Promise<RootResponse<Pagination<ModelResponse>>> => {
   const response = await axiosInstance.get(
     `/api/manufacturers/${manufacturerId}/models`,
     {
-      params: {
-        index: index,
-        size: size,
-        keyword: keyword,
-      },
+      params,
     }
   );
   return response.data;
 };
 
-export const CreateModels = async ({
-  name,
-  releaseDate,
-  manufacturerId,
-}: {
-  name: string;
-  releaseDate: Date;
-  manufacturerId: string;
-}): Promise<SharedResponse<CreateModelResponse>> => {
+export const CreateModel = async (
+  payload: ModelPayLoad
+): Promise<RootResponse<ModelCreateResponse>> => {
   const response = await axiosInstance.post(`/api/models`, {
     body: {
-      name,
-      releaseDate,
-      manufacturerId,
+      name: payload.name,
+      releaseDate: payload.releaseDate,
+      manufacturerId: payload.manufacturerId,
     },
   });
   return response.data;
 };
-export const UpdateModels = async ({
-  id,
-  name,
-  releaseDate,
-  manufacturerId,
-}: {
-  id: string;
-  name: string;
-  releaseDate: Date;
-  manufacturerId: string;
-}): Promise<SharedResponse> => {
+export const UpdateModel = async (
+  id: string,
+  payload: ModelPayLoad
+): Promise<RootResponse<null>> => {
   const response = await axiosInstance.put(`/api/models/${id}`, {
     body: {
-      name,
-      releaseDate: releaseDate.toISOString(),
-      manufacturerId,
+      name: payload.name,
+      releaseDate: payload.releaseDate.toISOString(),
+      manufacturerId: payload.manufacturerId,
     },
   });
   return response.data;
 };
 
-export const DeleteModels = async (id: string): Promise<SharedResponse> => {
+export const DeleteModel = async (id: string): Promise<RootResponse<null>> => {
   const response = await axiosInstance.delete(`/api/models/${id}`);
   return response.data;
 };

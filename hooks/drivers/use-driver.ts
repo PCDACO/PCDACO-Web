@@ -24,7 +24,7 @@ export const useDriverQuery = ({ params }: DriverQuery) => {
 export const useDriverMutation = () => {
   const { setOpen } = useDialogStore();
   const queryClient = new QueryClient();
-  const deleteOwnerMutation = useMutation({
+  const deleteDriverMutation = useMutation({
     mutationKey: ["deleteDriver"],
     mutationFn: async (id: string) => {
       await DeleteDriver(id);
@@ -40,6 +40,6 @@ export const useDriverMutation = () => {
   });
 
   return {
-    deleteOwnerMutation,
+    deleteDriverMutation,
   };
 };

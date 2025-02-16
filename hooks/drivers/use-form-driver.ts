@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useOwnerMutation } from "./use-driver";
 import { DriverPayLoad } from "@/constants/models/driver.model";
 import {
   DriverPayloadSchema,
   DriverSchema,
 } from "@/domains/schemas/driver.schema";
+import { useDriverMutation } from "./use-driver";
 
 interface DriverFormProps {
   id: string;
@@ -15,7 +15,7 @@ interface DriverFormProps {
 }
 
 export const useDriverForm = ({ id, value, action }: DriverFormProps) => {
-  const { deleteOwnerMutation } = useOwnerMutation();
+  const { deleteDriverMutation } = useDriverMutation();
 
   // Memoize defaultValues to prevent recalculating it on each render
   const defaultValues = useMemo(() => {
@@ -38,7 +38,7 @@ export const useDriverForm = ({ id, value, action }: DriverFormProps) => {
   const onSubmit = form.handleSubmit(async () => {
     switch (action) {
       case "delete": {
-        deleteOwnerMutation.mutate(id);
+        deleteDriverMutation.mutate(id);
         break;
       }
     }
@@ -47,6 +47,6 @@ export const useDriverForm = ({ id, value, action }: DriverFormProps) => {
   return {
     form,
     onSubmit,
-    isLoading: deleteOwnerMutation.isPending,
+    isLoading: deleteDriverMutation.isPending,
   };
 };
