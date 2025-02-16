@@ -4,7 +4,6 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import MenuAction from "./menu-action";
 import { AmenityResponse } from "@/constants/models/amenity.model";
-import { urlToFileList } from "@/lib/urlToFile";
 
 export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
   {
@@ -12,8 +11,8 @@ export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
     header: "Icon",
     cell: ({ row }) => {
       const icon = row.original.iconUrl;
-      console.log(icon)
-      return <img src={icon} alt={row.original.name} />;
+      // eslint-disable-next-line @next/next/no-img-element
+      return <img className="w-48" src={icon} alt={row.original.name} />;
     }
   },
   {
@@ -31,14 +30,13 @@ export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const { FileList, isSuccess } = urlToFileList(row.original.iconUrl, row.original.name)
       return (
         <MenuAction
           id={row.original.id}
           payload={{
             name: row.original.name,
             description: row.original.description,
-            icon: isSuccess ? FileList ?? new DataTransfer().files : new DataTransfer().files
+            icon: new DataTransfer().files
           }}
         />
       );

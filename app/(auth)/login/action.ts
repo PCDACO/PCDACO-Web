@@ -1,8 +1,6 @@
 "use server";
 
 import axiosInstance from "@/app/axios.server";
-import { LoginResponse } from "@/domains/models/auth/login.response";
-import { SharedResponse } from "@/domains/models/shared/shared.response";
 import { cookies } from "next/headers";
 
 export async function Login({
@@ -14,16 +12,14 @@ export async function Login({
 }) {
   const cookieStore = await cookies();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const response = await axiosInstance.post<SharedResponse<LoginResponse>>(
-    "api/auth/admin/login",
-    {
-      email,
-      password,
-    }
-  );
+  const response = await axiosInstance.post("api/auth/admin/login", {
+    email,
+    password,
+  });
   if (response.status !== 200) throw new Error();
   cookieStore.set("accessToken", response.data.value!.accessToken);
   cookieStore.set("refreshToken", response.data.value!.refreshToken);
+  return {};
 }
 export async function Logout() {
   const cookieStore = await cookies();

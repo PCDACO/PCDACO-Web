@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { useManuFactureMutation } from "./use-manufacture";
 import {
   ManufacturerPayloadSchema,
   ManufacturerSchema,
 } from "@/domains/schemas/manufacturer.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ManufacturePayload } from "@/constants/models/manufacture.model";
+import { useTransmissionMutation } from "./use-transmission";
 
 interface TransmissionForm {
   id: string;
@@ -19,11 +19,8 @@ export const useTransmissionForm = ({
   value,
   action,
 }: TransmissionForm) => {
-  const {
-    updateManufacturerMutation,
-    createManufacturerMutation,
-    deleteManufacturerMutation,
-  } = useManuFactureMutation();
+  const { createTransmission, updateTransmission, deleteTransmission } =
+    useTransmissionMutation();
 
   // Memoize defaultValues to prevent recalculating it on each render
   const defaultValues = useMemo(() => {
@@ -40,15 +37,15 @@ export const useTransmissionForm = ({
   const onSubmit = form.handleSubmit(async (payload) => {
     switch (action) {
       case "create": {
-        createManufacturerMutation.mutate(payload);
+        createTransmission.mutate(payload);
         break;
       }
       case "update": {
-        updateManufacturerMutation.mutate({ id, payload });
+        updateTransmission.mutate({ id, payload });
         break;
       }
       case "delete": {
-        deleteManufacturerMutation.mutate(id);
+        deleteTransmission.mutate(id);
         break;
       }
     }
@@ -58,7 +55,8 @@ export const useTransmissionForm = ({
     form,
     onSubmit,
     isLoading:
-      createManufacturerMutation.isPending ||
-      updateManufacturerMutation.isPending,
+      createTransmission.isPending ||
+      updateTransmission.isPending ||
+      deleteTransmission.isPending,
   };
 };

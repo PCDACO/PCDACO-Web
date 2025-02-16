@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { GetCarsResponse } from "@/domains/models/cars/getcars.response";
-import { AmenityDeleteDialog } from "@/components/amenities/delete-dialog";
 import { useState } from "react";
 
 export const columns: ColumnDef<GetCarsResponse>[] = [
@@ -101,7 +100,7 @@ export const columns: ColumnDef<GetCarsResponse>[] = [
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <AmenityDeleteDialog isOpen={IsOpen} onClose={closeDeleteDialog} />
+          {/* <AmenityDeleteDialog isOpen={IsOpen} onClose={closeDeleteDialog} /> */}
         </>
       );
     },

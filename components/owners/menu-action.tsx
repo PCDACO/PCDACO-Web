@@ -15,20 +15,21 @@ import {
   useIdStore,
   useKeywordStore,
 } from "@/stores/store";
-import { AmenityPayLoad } from "@/constants/models/amenity.model";
+import { OwnerPayLoad } from "@/constants/models/owner.model";
 
 interface MenuActionProps {
   id: string;
-  payload: AmenityPayLoad;
+  payload: OwnerPayLoad;
 }
 
-export const useAmenityStore = createGenericStore<AmenityPayLoad>();
+export const useOwnerStore = createGenericStore<OwnerPayLoad>();
 
 const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
   const { setKeyword } = useKeywordStore();
   const { setOpen } = useDialogStore();
   const { setId } = useIdStore();
-  const { setData } = useAmenityStore();
+  const { setData } = useOwnerStore();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -45,7 +46,6 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
             setOpen(true);
             setId(id);
             setData(payload);
-
           }}
         >
           Update
