@@ -1,11 +1,8 @@
-import TransmissionTable from "@/components/transmissions/transmissions-table";
-import { columns } from "@/components/transmissions/columns";
-import { GetTransmissions } from "./action";
+import TransmissionTable from "@/components/transmission/table";
 
 export const dynamic = "force-dynamic";
 export default async function TransmissionPage() {
-    const { value } = await GetTransmissions({ index: 1, size: 10, keyword: "" });
     return (
-        <TransmissionTable data={value!} columns={columns} />
+        <TransmissionTable />
     )
 }

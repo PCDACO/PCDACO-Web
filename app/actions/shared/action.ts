@@ -47,3 +47,5 @@ export const ValidateToken = async ({
     value: null!,
   };
 };
+
+export const GetToken = () => {};

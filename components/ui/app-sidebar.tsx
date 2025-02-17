@@ -16,7 +16,7 @@ import {
   FuelIcon,
   AlignEndHorizontal,
   Cog,
-  Receipt,
+  PersonStandingIcon,
 } from "lucide-react";
 // import Link from "next/link"
 import { LogoutButton } from "./LogoutButton";
@@ -24,14 +24,24 @@ import { LogoutButton } from "./LogoutButton";
 // Menu items.
 const items = [
   {
-    title: "Dashboard",
+    title: "Thống Kê",
     url: "",
     icon: AlignEndHorizontal,
   },
   {
-    title: "Cars",
+    title: "Xe",
     url: "cars",
     icon: Car,
+  },
+  {
+    title: "Người Cho Thuê",
+    url: "owners",
+    icon: PersonStandingIcon,
+  },
+  {
+    title: "Người Thuê",
+    url: "drivers",
+    icon: PersonStandingIcon,
   },
   {
     title: "Amenities",
@@ -52,31 +62,6 @@ const items = [
     title: "Transmissions",
     url: "transmissions",
     icon: Cog,
-  },
-  {
-    title: "Compensations Statuses",
-    url: "compensation-statuses",
-    icon: Receipt,
-  },
-  {
-    title: "Contract Statuses",
-    url: "contract-statuses",
-    icon: Receipt,
-  },
-  {
-    title: "Car Statuses",
-    url: "car-statuses",
-    icon: Receipt,
-  },
-  {
-    title: "Booking Statuses",
-    url: "booking-statuses",
-    icon: Receipt,
-  },
-  {
-    title: "Transaction Statuses",
-    url: "transaction-statuses",
-    icon: Receipt,
   },
 ];
 
