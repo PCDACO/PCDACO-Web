@@ -16,6 +16,7 @@ import {
   FuelIcon,
   AlignEndHorizontal,
   Cog,
+  PersonStandingIcon,
 } from "lucide-react";
 // import Link from "next/link"
 import { LogoutButton } from "./LogoutButton";
@@ -23,14 +24,24 @@ import { LogoutButton } from "./LogoutButton";
 // Menu items.
 const items = [
   {
-    title: "Dashboard",
+    title: "Thống Kê",
     url: "",
     icon: AlignEndHorizontal,
   },
   {
-    title: "Cars",
+    title: "Xe",
     url: "cars",
     icon: Car,
+  },
+  {
+    title: "Người Cho Thuê",
+    url: "owners",
+    icon: PersonStandingIcon,
+  },
+  {
+    title: "Người Thuê",
+    url: "drivers",
+    icon: PersonStandingIcon,
   },
   {
     title: "Amenities",

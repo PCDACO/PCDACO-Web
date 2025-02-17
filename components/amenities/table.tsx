@@ -22,7 +22,6 @@ const AmenityTable = () => {
   const { listAmenityQuery } = useAmenityQuery({
     params: value,
   });
-
   const { id } = useIdStore();
   const { data } = useAmenityStore();
 
@@ -69,7 +68,7 @@ const AmenityTable = () => {
         <AmenityForm id={id} value={data || {
           name: "",
           description: "",
-          icon: new DataTransfer().files
+          icon: undefined
         }} />
       </DialogContent>
     </Dialog>

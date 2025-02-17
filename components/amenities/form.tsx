@@ -1,5 +1,5 @@
 import { useKeywordStore } from "@/stores/store";
-import React  from "react";
+import React from "react";
 import {
   Form,
   FormControl,
@@ -35,6 +35,7 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
     value,
     action: keyword
   });
+  const fileRef = form.register("icon");
   const keywords: KeywordType[] = [
     {
       name: "create",
@@ -84,29 +85,17 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
           <FormField
             control={form.control}
             name="icon"
-            render={({ field: { onChange, value, ...field } }) => {
+            render={() => {
               return (
                 <FormItem>
                   <FormLabel>Icon</FormLabel>
                   <FormControl>
                     <Input
-                      {...field}
                       type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const files = e.target.files;
-                        if (files?.length) {
-                          onChange(files[0]);
-                        }
-                      }}
                       className="w-full"
+                      {...fileRef}
                     />
                   </FormControl>
-                  {value && (
-                    <div className="mt-2">
-                      <p>Selected file: {value.item.name}</p>
-                    </div>
-                  )}
                   <FormMessage />
                 </FormItem>
               );
@@ -163,29 +152,17 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
           <FormField
             control={form.control}
             name="icon"
-            render={({ field: { onChange, value, ...field } }) => {
+            render={() => {
               return (
                 <FormItem>
                   <FormLabel>Icon</FormLabel>
                   <FormControl>
                     <Input
-                      {...field}
                       type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const files = e.target.files;
-                        if (files?.length) {
-                          onChange(files[0]);
-                        }
-                      }}
                       className="w-full"
+                      {...fileRef}
                     />
                   </FormControl>
-                  {value && (
-                    <div className="mt-2">
-                      <p>Selected file: {value.item.name}</p>
-                    </div>
-                  )}
                   <FormMessage />
                 </FormItem>
               );

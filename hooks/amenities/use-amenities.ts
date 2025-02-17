@@ -70,6 +70,7 @@ export const useAmenityMutation = () => {
   const deleteAmenity = useMutation({
     mutationKey: ["deleteAmenity"],
     mutationFn: async (id: string) => {
+      console.log("🔍 ~ hooks/amenities/use-amenities.ts:72 ~ id:", id);
       await DeleteAmenity(id);
     },
     onSuccess: () => {

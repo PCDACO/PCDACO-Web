@@ -12,20 +12,20 @@ export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
     cell: ({ row }) => {
       const icon = row.original.iconUrl;
       // eslint-disable-next-line @next/next/no-img-element
-      return <img className="w-48" src={icon} alt={row.original.name} />;
+      return <img className="w-32" src={icon} alt={row.original.name} />;
     }
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: "Tên",
   },
   {
     accessorKey: "description",
-    header: "description",
+    header: "Mô Tả",
   },
   {
     accessorKey: "createdAt",
-    header: "Created At",
+    header: "Ngày Tạo",
   },
   {
     id: "actions",
@@ -36,7 +36,7 @@ export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
           payload={{
             name: row.original.name,
             description: row.original.description,
-            icon: new DataTransfer().files
+            icon: undefined
           }}
         />
       );

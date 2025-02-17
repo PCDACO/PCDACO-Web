@@ -1,7 +1,7 @@
 export interface AmenityPayLoad {
   name: string;
   description: string;
-  icon: FileList;
+  icon?: FileList;
 }
 
 export interface AmenityResponse {
