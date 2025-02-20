@@ -1,5 +1,6 @@
 "use server";
 import axiosInstance from "@/app/axios.server";
+import { cookies } from "next/headers";
 
 export const ValidateToken = async ({
   accessToken,
@@ -48,4 +49,11 @@ export const ValidateToken = async ({
   };
 };
 
-export const GetToken = () => {};
+export const GetToken = async () => {
+  const cookieStore = await cookies();
+  return {
+    accessToken: cookieStore.get("accessToken"),
+    refreshToken: cookieStore.get("refreshToken"),
+    role: cookieStore.get("role"),
+  };
+};
