@@ -4,13 +4,12 @@ import { useForm } from "react-hook-form";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ClearToken, Login } from "./action";
+import { Login, Logout } from "./action";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-
 
 export default function LoginForm() {
     const { register, handleSubmit } = useForm<{
@@ -22,7 +21,7 @@ export default function LoginForm() {
     const { mutate, isPending } = useMutation({
         mutationFn: ({ email, password }: { email: string, password: string }) => Login({ email, password }),
         onSuccess: () => {
-            push("/");
+            push("/dashboard");
         },
         onError: () => {
             toast({ title: "Sai mật khẩu hoặc tài khoản" })
@@ -30,7 +29,7 @@ export default function LoginForm() {
     })
 
     useEffect(() => {
-        ClearToken();
+        Logout();
     }, [])
     return (
         <div className="w-full max-w-xs mx-auto flex flex-col justify-center h-screen">
@@ -73,5 +72,4 @@ export default function LoginForm() {
             </form>
         </div>
     );
-
 }
