@@ -1,3 +1,5 @@
-export default async function DashboardPage() {
-    return (<h1>Hello PCDACO</h1>)
+'use client'
+import DashboardStatistics from "@/components/dashboards/statistics"
+export default function DashboardPage() {
+    return <DashboardStatistics />
 }
