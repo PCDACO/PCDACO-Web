@@ -27,7 +27,7 @@ import { cookies } from "next/headers";
 const items = [
   {
     title: "Thống Kê",
-    url: "",
+    url: "dashboard",
     icon: AlignEndHorizontal,
     role: "Admin",
   },
@@ -87,7 +87,7 @@ const items = [
   },
   {
     title: "Lịch Kiểm Duyệt",
-    url: "inspection-schedule",
+    url: "technicians/todo",
     icon: Cog,
     role: "Technician",
   },
