@@ -2,7 +2,7 @@ import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
 import { CarParams } from "@/constants/models/car.model";
-import { DeleteCar, GetCars } from "@/app/(dashboard)/cars/action";
+import { DeleteCar, GetCars } from "@/app/(dashboard)/(admin)/cars/action";
 
 interface CarQuery {
   params?: CarParams;

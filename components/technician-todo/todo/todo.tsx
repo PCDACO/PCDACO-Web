@@ -1,5 +1,4 @@
 "use client"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
@@ -78,8 +77,8 @@ export default function DriverTodo() {
                                     <p className="text-sm text-gray-600">{task.address}</p>
                                 </div>
                                 <div>
+                                    <Button className="ml-3 bg-white text-black">Reject</Button>
                                     <Button className="ml-3 bg-white text-black">Complete</Button>
-                                    <Button className="ml-3 bg-white text-black">x</Button>
                                 </div>
                             </div>
                             <div className="mt-4">
@@ -100,7 +99,7 @@ export default function DriverTodo() {
                                 isOpen={isGpsAssignmentOpen}
                                 onClose={() => {
                                     setIsGpsAssignmentOpen(false)
-                                    setIsCarDetailsOpen(true) // Optionally reopen the car details dialog
+                                    setIsCarDetailsOpen(true)
                                 }}
                             />
                         </li>

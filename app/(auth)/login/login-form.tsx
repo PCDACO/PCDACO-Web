@@ -17,11 +17,11 @@ export default function LoginForm() {
         password: string
     }>();
 
-    const { push } = useRouter();
+    const { replace } = useRouter();
     const { mutate, isPending } = useMutation({
         mutationFn: ({ email, password }: { email: string, password: string }) => Login({ email, password }),
         onSuccess: () => {
-            push("/dashboard");
+            replace("/dashboard");
         },
         onError: () => {
             toast({ title: "Sai mật khẩu hoặc tài khoản" })

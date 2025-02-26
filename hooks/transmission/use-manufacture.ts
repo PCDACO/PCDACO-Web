@@ -10,7 +10,7 @@ import {
   DeleteTransmission,
   GetTransmissions,
   UpdateTransmission,
-} from "@/app/(dashboard)/transmissions/action";
+} from "@/app/(dashboard)/(admin)/transmissions/action";
 
 interface TransmissionQuery {
   params?: TransmissionParams;

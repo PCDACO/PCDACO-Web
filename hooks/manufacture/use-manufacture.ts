@@ -3,7 +3,7 @@ import {
   CreateManufacturer,
   DeleteManufacturer,
   UpdateManufacturer,
-} from "@/app/(dashboard)/manufacturers/action";
+} from "@/app/(dashboard)/(admin)/manufacturers/action";
 import {
   ManufactureParams,
   ManufacturePayload,

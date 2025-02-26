@@ -22,6 +22,7 @@ import {
 // import Link from "next/link"
 import { LogoutButton } from "./LogoutButton";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 // Menu items.
 const items = [
@@ -75,19 +76,13 @@ const items = [
   },
   {
     title: "Tổng Quan",
-    url: "overview",
-    icon: Cog,
-    role: "Technician",
-  },
-  {
-    title: "Báo cáo",
-    url: "",
+    url: "dashboard",
     icon: Cog,
     role: "Technician",
   },
   {
     title: "Lịch Kiểm Duyệt",
-    url: "technicians/todo",
+    url: "technician-todo",
     icon: Cog,
     role: "Technician",
   },
@@ -135,10 +130,10 @@ export async function AppSidebar() {
               {filteredItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild size={"lg"}>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

@@ -1,4 +1,4 @@
-enum UserRoleEnum {
+export enum UserRoleEnum {
   Driver = "Driver",
   Owner = "Owner",
   Consultant = "Consultant",

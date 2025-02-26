@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   transpilePackages: ["recharts", "react-smooth"],
   output: "standalone",
+  productionBrowserSourceMaps: false, // Disable source maps in development
   images: {
     remotePatterns: [
       {
@@ -13,5 +14,4 @@ const nextConfig: NextConfig = {
     ],
   },
 };
-
 export default nextConfig;

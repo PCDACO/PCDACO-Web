@@ -1,3 +1,4 @@
+"use server";
 import axiosInstance from "@/app/axios.server";
 import { CarParams, CarResponse } from "@/constants/models/car.model";
 import { GPSDeviceAssignPayload } from "@/constants/models/gps-device.model";
@@ -5,7 +6,7 @@ import { GPSDeviceAssignPayload } from "@/constants/models/gps-device.model";
 export const GetCars = async (
   params: CarParams
 ): Promise<RootResponse<Pagination<CarResponse>>> => {
-  const response = await axiosInstance.get("/api/cars", {
+  const response = await axiosInstance.get("/api/cars/admin", {
     params,
   });
   return response.data;
