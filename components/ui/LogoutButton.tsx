@@ -10,12 +10,12 @@ import { useRouter } from "next/navigation"
 export function LogoutButton() {
     const [isLoading, setIsLoading] = useState(false)
 
-    const { push } = useRouter();
+    const { replace } = useRouter();
     const mutation = async () => {
         setIsLoading(true)
         Logout().then(() => {
             setIsLoading(false)
-            push("/login");
+            replace("/login");
         });
     }
 

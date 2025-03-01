@@ -9,13 +9,14 @@ export interface CarResponse {
   licensePlate: string;
   color: string;
   seat: number;
+  status: string;
   description: string;
   transmissionType: string;
   fuelType: string;
   fuelComsumption: number;
   requiresCollateral: boolean;
   price: PriceDetail;
-  location: LocationDetail;
+  location?: LocationDetail;
   manufacturer: ManufacturerDetail;
   images: ImageDetail[];
   amenities: AmenityDetail;
@@ -45,7 +46,9 @@ interface AmenityDetail {
   name: string;
   description: string;
 }
-export type CarParams = RootRequest;
+export interface CarParams extends RootRequest {
+  status?: string;
+}
 
 export interface CarEditResponse {
   id: string;

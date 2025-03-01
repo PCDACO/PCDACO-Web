@@ -43,3 +43,4 @@ export const DeleteGPSDevice = async (
   const response = await axiosInstance.delete(`/api/gps-devices/${id}`);
   return response.data;
 };
+

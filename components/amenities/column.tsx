@@ -4,6 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import MenuAction from "./menu-action";
 import { AmenityResponse } from "@/constants/models/amenity.model";
+import Image from "next/image";
+import { formatDate } from "@/lib/utils";
 
 export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
   {
@@ -11,8 +13,7 @@ export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
     header: "Icon",
     cell: ({ row }) => {
       const icon = row.original.iconUrl;
-      // eslint-disable-next-line @next/next/no-img-element
-      return <img className="w-32" src={icon} alt={row.original.name} />;
+      return <Image width={32} height={32} src={icon} alt={row.original.name} />;
     }
   },
   {
@@ -25,7 +26,11 @@ export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "Ngày Tạo",
+    header: "Tạo Lúc",
+    cell: ({ row }) => {
+      const createdAt = row.original.createdAt;
+      return formatDate(createdAt.toString());
+    }
   },
   {
     id: "actions",

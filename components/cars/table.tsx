@@ -5,7 +5,6 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   useDialogStore,
   useIdStore,
-  useKeywordStore,
   useParamStore,
 } from "@/stores/store";
 import SearchInput from "@/components/input/search-input";
@@ -14,12 +13,17 @@ import { useCarQuery } from "@/hooks/cars/use-car";
 import { useCarStore } from "./menu-action";
 import CarForm from "./form";
 import { CarColumns } from "./column";
-const CarTable = () => {
+interface CarTableProps {
+  status: string;
+}
+const CarTable = ({ status }: CarTableProps) => {
   const { open, setOpen } = useDialogStore();
-  const { setKeyword } = useKeywordStore();
   const { value } = useParamStore();
   const { listCarQuery } = useCarQuery({
-    params: value,
+    params: {
+      ...value,
+      status: status,
+    },
   });
 
   const { id } = useIdStore();
@@ -35,7 +39,6 @@ const CarTable = () => {
       open={open}
       onOpenChange={() => {
         setOpen(!open);
-        setKeyword("create");
       }}
     >
       <div className="space-y-4">

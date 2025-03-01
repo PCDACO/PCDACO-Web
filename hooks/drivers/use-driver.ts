@@ -1,7 +1,7 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
-import { DeleteDriver, GetDrivers } from "@/app/(dashboard)/drivers/action";
+import { DeleteDriver, GetDrivers } from "@/app/(dashboard)/(admin)/drivers/action";
 import { DriverParams } from "@/constants/models/driver.model";
 
 interface DriverQuery {

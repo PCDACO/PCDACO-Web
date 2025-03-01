@@ -6,7 +6,7 @@ import {
   DeleteAmenity,
   GetAmenities,
   UpdateAmenity,
-} from "@/app/(dashboard)/amenities/action";
+} from "@/app/(dashboard)/(admin)/amenities/action";
 import {
   AmenityParams,
   AmenityPayLoad,
