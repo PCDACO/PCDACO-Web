@@ -11,19 +11,11 @@ import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Select, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
-interface Technician {
-  id: string
-  name: string
-}
 
-interface CreateInspectionFormProps {
-  technicians: Technician[]
-}
-
-export function CreateInspectionForm({ technicians }: CreateInspectionFormProps) {
+export function CreateInspectionForm() {
   const [date, setDate] = useState<Date>()
   const [technicianId, setTechnicianId] = useState("")
   const [time, setTime] = useState("")
@@ -67,11 +59,11 @@ export function CreateInspectionForm({ technicians }: CreateInspectionFormProps)
               <SelectValue placeholder="Select technician" />
             </SelectTrigger>
             <SelectContent>
-              {technicians.map((tech) => (
+              {/* {technicians.map((tech) => (
                 <SelectItem key={tech.id} value={tech.id}>
                   {tech.name}
                 </SelectItem>
-              ))}
+              ))} */}
             </SelectContent>
           </Select>
         </div>
