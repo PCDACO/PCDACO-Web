@@ -13,13 +13,16 @@ import { useCarQuery } from "@/hooks/cars/use-car";
 import { useCarStore } from "./menu-action";
 import CarForm from "./form";
 import { CarColumns } from "./column";
-const CarTable = () => {
+interface CarTableProps {
+  status: string;
+}
+const CarTable = ({ status }: CarTableProps) => {
   const { open, setOpen } = useDialogStore();
   const { value } = useParamStore();
   const { listCarQuery } = useCarQuery({
     params: {
       ...value,
-      statusName: "Available",
+      status: status,
     },
   });
 

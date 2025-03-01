@@ -47,7 +47,7 @@ interface AmenityDetail {
   description: string;
 }
 export interface CarParams extends RootRequest {
-  statusName?: string;
+  status?: string;
 }
 
 export interface CarEditResponse {

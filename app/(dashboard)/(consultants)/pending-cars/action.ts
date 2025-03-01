@@ -1,16 +1,32 @@
 "use server";
-
 import axiosInstance from "@/app/axios.server";
-import { DriverParams, DriverResponse } from "@/constants/models/driver.model";
+import { CarParams, CarResponse } from "@/constants/models/car.model";
+import { GPSDeviceAssignPayload } from "@/constants/models/gps-device.model";
 
-export const GetDrivers = async (
-  params: DriverParams
-): Promise<RootResponse<Pagination<DriverResponse>>> => {
-  const response = await axiosInstance.get("/api/users/drivers", { params });
+export const GetCars = async (
+  params: CarParams
+): Promise<RootResponse<Pagination<CarResponse>>> => {
+  const response = await axiosInstance.get("/api/cars/admin", {
+    params,
+  });
   return response.data;
 };
 
-export const DeleteDriver = async (id: string): Promise<RootResponse<null>> => {
-  const response = await axiosInstance.delete(`/api/users/drivers/${id}`);
+export const DeleteCar = async (id: string): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.delete(`/api/cars/${id}`);
+  return response.data;
+};
+
+export const AssignDeviceToCar = async ({
+  carId,
+  deviceId,
+  latitude,
+  longtitude,
+}: GPSDeviceAssignPayload): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.post(`/api/cars/${carId}`, {
+    deviceId,
+    latitude,
+    longtitude,
+  });
   return response.data;
 };

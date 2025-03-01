@@ -1,11 +1,9 @@
-import DriverTable from "@/components/drivers/table";
+import CarTable from "@/components/cars/table";
 
-export const dynamic = "force-dynamic";
-export default async function PendingCarsPage() {
-  return (
-    <main className="container">
-      <h1>Driver Manage</h1>
-      <DriverTable />
-    </main>
-  );
+export default async function CarPage() {
+    return (
+        <>
+            <CarTable status={"Pending"} />
+        </>
+    )
 }

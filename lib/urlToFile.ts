@@ -1,7 +1,8 @@
 export async function urlToFileList(
-  url: string,
-  filename: string
+  url?: string | undefined,
+  filename?: string
 ): Promise<FileList> {
+  if (!url || !filename) return new DataTransfer().files;
   const response = await fetch(url);
   const blob = await response.blob();
   const dataTransfer = new DataTransfer();
