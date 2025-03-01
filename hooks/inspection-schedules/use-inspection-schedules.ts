@@ -1,0 +1,83 @@
+import { useQuery } from "@tanstack/react-query";
+import { GetInspectionSchedules } from "@/app/(dashboard)/(consultants)/inspection-schedules/action";
+import { GetInspectionSchedulesParams } from "@/constants/models/inspection-schedule.model";
+
+interface InspectionSchedulesQuery {
+  params?: GetInspectionSchedulesParams;
+}
+
+export const useInspectionScheduleQuery = ({
+  params,
+}: InspectionSchedulesQuery) => {
+  if (params === undefined) {
+    params = { month: 3, year: 2025, technicianId: undefined };
+  }
+
+  const listInspectionSchedules = useQuery({
+    queryKey: ["inspection-schedules", params],
+    queryFn: () => GetInspectionSchedules(params),
+  });
+
+  return { listInspectionSchedules };
+};
+
+// export const useAmenityMutation = () => {
+//   const { setOpen } = useDialogStore();
+//   const queryClient = new QueryClient();
+
+//   const createAmentiy = useMutation({
+//     mutationKey: ["createAmenity"],
+//     mutationFn: async (payload: AmenityPayLoad) => {
+//       await CreateAmenities(payload);
+//     },
+//     onSuccess: () => {
+//       setOpen(false);
+//       queryClient.fetchQuery({ queryKey: ["amenities"] });
+//     },
+//     onError: () => {
+//       toast({ title: "Không thể thêm nhà sản xuất" });
+//     },
+//   });
+
+//   const updateAmenity = useMutation({
+//     mutationKey: ["updateAmenity"],
+//     mutationFn: async ({
+//       id,
+//       payload,
+//     }: {
+//       id: string;
+//       payload: AmenityPayLoad;
+//     }) => {
+//       await UpdateAmenity(id, payload);
+//     },
+//     onSuccess: () => {
+//       setOpen(false);
+//       queryClient.invalidateQueries({ queryKey: ["amenities"] });
+//     },
+//     onError: () => {
+//       toast({ title: "Không thể sửa nhà sản xuất này" });
+//     },
+//   });
+
+//   const deleteAmenity = useMutation({
+//     mutationKey: ["deleteAmenity"],
+//     mutationFn: async (id: string) => {
+//       console.log("🔍 ~ hooks/amenities/use-amenities.ts:72 ~ id:", id);
+//       await DeleteAmenity(id);
+//     },
+//     onSuccess: () => {
+//       setOpen(false);
+//       toast({ title: "Xóa thành công" });
+//       queryClient.invalidateQueries({ queryKey: ["amenities"] });
+//     },
+//     onError: () => {
+//       toast({ title: "Không thể xóa nhà sản xuất này" });
+//     },
+//   });
+
+//   return {
+//     createAmentiy,
+//     updateAmenity,
+//     deleteAmenity,
+//   };
+// };

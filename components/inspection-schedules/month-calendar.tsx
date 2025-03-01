@@ -6,30 +6,21 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
-interface Schedule {
-    id: number
-    technicianId: string
-    date: string
-    time: string
-    client: string
-    location: string
-}
+import { InspectionScheduleDetail } from "@/constants/models/inspection-schedule.model"
+import { formatDate, formatDateToHour } from "@/lib/utils"
 
 interface MonthCalendarProps {
     currentDate: Date
     onDateChange: (date: Date) => void
-    schedules: Schedule[]
+    schedules: InspectionScheduleDetail[]
 }
 
 export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCalendarProps) {
     const [calendarDays, setCalendarDays] = useState<Array<{ date: Date | null; isCurrentMonth: boolean }>>([])
-
     // Get days for the calendar grid
     useEffect(() => {
         const year = currentDate.getFullYear()
         const month = currentDate.getMonth()
-
         // First day of the month
         const firstDayOfMonth = new Date(year, month, 1)
         // Last day of the month
@@ -104,11 +95,13 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                             {day}
                         </div>
                     ))}
-
                     {calendarDays.map((day, index) => {
-                        if (!day.date) return <div key={index} className="h-24 border border-gray-100"></div>
-
-                        const daySchedules = schedules.filter((schedule) => schedule.date === day.date?.toISOString().split("T")[0])
+                        if (!day.date) {
+                            return <div key={index} className="h-24 border border-gray-100"></div>
+                        }
+                        const daySchedules = schedules.filter((schedule) => {
+                            return formatDate(schedule.inspectionDate.toString()) === formatDate(day.date?.toString() ?? "");
+                        })
                         const today = new Date()
                         const isToday =
                             day.date.getDate() === today.getDate() &&
@@ -118,31 +111,31 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                         return (
                             <div
                                 key={index}
-                                className={`h-24 p-1 border ${day.isCurrentMonth ? "bg-white" : "bg-gray-50"} 
-                  ${isToday ? "ring-2 ring-black" : ""} 
-                  ${!day.isCurrentMonth ? "text-gray-400" : ""}`}
+                                className={`min-h-24 h-auto p-1 border ${day.isCurrentMonth ? "bg-white" : "bg-gray-50"} 
+                                    ${isToday ? "ring-2 ring-black" : ""} 
+                                    ${!day.isCurrentMonth ? "text-gray-400" : ""}`}
                             >
                                 <div className="text-right mb-1">{day.date.getDate()}</div>
-                                <div className="overflow-y-auto max-h-16 space-y-1">
+                                <div className="overflow-y-hidden  space-y-1">
                                     {daySchedules.length > 0 ? (
                                         daySchedules.length <= 3 ? (
                                             daySchedules.map((schedule) => (
                                                 <Tooltip key={schedule.id}>
                                                     <TooltipTrigger asChild>
                                                         <Badge className="w-full justify-start truncate bg-black hover:bg-gray-800 cursor-pointer text-xs">
-                                                            {schedule.time} - {schedule.client}
+                                                            {`${schedule.inspectionDate.getHours().toString()}:${schedule.inspectionDate.getMinutes().toString()}`} - {schedule.carOwnerName}
                                                         </Badge>
                                                     </TooltipTrigger>
                                                     <TooltipContent>
                                                         <div className="text-sm">
                                                             <p>
-                                                                <strong>Client:</strong> {schedule.client}
+                                                                <strong>Owner:</strong> {schedule.carOwnerName}
                                                             </p>
                                                             <p>
-                                                                <strong>Time:</strong> {schedule.time}
+                                                                <strong>Time:</strong> {formatDateToHour(schedule.inspectionDate.toString())}
                                                             </p>
                                                             <p>
-                                                                <strong>Location:</strong> {schedule.location}
+                                                                <strong>Location:</strong> {schedule.inspectionAddress}
                                                             </p>
                                                         </div>
                                                     </TooltipContent>
@@ -154,19 +147,19 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                                                     <Tooltip key={schedule.id}>
                                                         <TooltipTrigger asChild>
                                                             <Badge className="w-full justify-start truncate bg-black hover:bg-gray-800 cursor-pointer text-xs">
-                                                                {schedule.time} - {schedule.client}
+                                                                {formatDateToHour(schedule.inspectionDate.toString())}     - {schedule.carOwnerName}
                                                             </Badge>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
                                                             <div className="text-sm">
                                                                 <p>
-                                                                    <strong>Client:</strong> {schedule.client}
+                                                                    <strong>Owner:</strong> {schedule.carOwnerName}
                                                                 </p>
                                                                 <p>
-                                                                    <strong>Time:</strong> {schedule.time}
+                                                                    <strong>Time:</strong> {formatDateToHour(schedule.inspectionDate.toString())}
                                                                 </p>
                                                                 <p>
-                                                                    <strong>Location:</strong> {schedule.location}
+                                                                    <strong>Address:</strong> {schedule.inspectionAddress}
                                                                 </p>
                                                             </div>
                                                         </TooltipContent>
@@ -184,10 +177,10 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                                                                 <div key={schedule.id} className="border-b pb-1 last:border-0 last:pb-0">
                                                                     <p>
                                                                         <strong>
-                                                                            {schedule.time} - {schedule.client}
+                                                                            {formatDateToHour(schedule.inspectionDate.toString())} - {schedule.carOwnerName}
                                                                         </strong>
                                                                     </p>
-                                                                    <p className="text-xs text-muted-foreground">{schedule.location}</p>
+                                                                    <p className="text-xs text-muted-foreground">{schedule.inspectionAddress}</p>
                                                                 </div>
                                                             ))}
                                                         </div>
@@ -205,8 +198,3 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
         </TooltipProvider>
     )
 }
-
-
-
-
-

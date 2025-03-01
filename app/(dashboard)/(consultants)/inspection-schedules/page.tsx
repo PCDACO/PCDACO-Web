@@ -1,6 +1,6 @@
 import InspectionSchedules from "@/components/inspection-schedules/inspection-schedules";
 
-export default function InspectionSchedulesPage() {
+export default async function InspectionSchedulesPage() {
     return (
         <InspectionSchedules />
     );

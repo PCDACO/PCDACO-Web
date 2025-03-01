@@ -13,7 +13,7 @@ interface CarDetailsDialogProps {
 export default function CarDetailsDialog({ car, isOpen, onClose, onOpenGpsAssignment }: CarDetailsDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+      <DialogContent className="max-w-4xl max-h-[90vh]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">{car.modelName}</DialogTitle>
         </DialogHeader>
@@ -56,17 +56,18 @@ export default function CarDetailsDialog({ car, isOpen, onClose, onOpenGpsAssign
             </section>
 
             {/* Car Images */}
-            <section>
+
+            {car.images.length !== 0 && (<section>
               <h3 className="font-semibold text-lg mb-2">Car Images</h3>
               <ImageGallery images={car.images.map(i => i.url)} />
-            </section>
-
+            </section>)}
             {/* Paperwork Images */}
-            <section>
-              <h3 className="font-semibold text-lg mb-2">Paperwork</h3>
-              <ImageGallery images={car.images.map(i => i.url)} />
-            </section>
-
+            {
+              car.images.length !== 0 && (<section>
+                <h3 className="font-semibold text-lg mb-2">Paperwork</h3>
+                <ImageGallery images={car.images.map(i => i.url)} />
+              </section>)
+            }
             {/* Amenities
             <section>
               <h3 className="font-semibold text-lg mb-2">Amenities</h3>

@@ -23,7 +23,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(async (config) => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken");
-
   if (accessToken) {
     config.headers["Authorization"] = `Bearer ${accessToken.value}`;
   }

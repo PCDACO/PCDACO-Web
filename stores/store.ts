@@ -1,3 +1,4 @@
+import { GetInspectionSchedulesParams } from "@/constants/models/inspection-schedule.model";
 import { create } from "zustand";
 
 interface DialogState {
@@ -24,6 +25,10 @@ interface ParamsStore {
   value: RootRequest;
   setValue: (payload: RootRequest) => void;
 }
+interface InspectionScheduleParamsStore {
+  value: GetInspectionSchedulesParams;
+  setValue: (payload: GetInspectionSchedulesParams) => void;
+}
 
 interface GenericState<T> {
   data: T | null;
@@ -39,6 +44,17 @@ export const useParamStore = create<ParamsStore>((set) => ({
   },
   setValue: (payload: RootRequest) => set({ value: payload }),
 }));
+
+export const useInspectionScheduleParamStore =
+  create<InspectionScheduleParamsStore>((set) => ({
+    value: {
+      month: 3,
+      year: 2025,
+      technicianId: undefined,
+    },
+    setValue: (payload: GetInspectionSchedulesParams) =>
+      set({ value: payload }),
+  }));
 
 export const useKeyQueryStore = create<KeyQuery>((set) => ({
   keyword: "",

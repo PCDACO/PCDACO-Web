@@ -2,17 +2,14 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
-import GpsAssignmentDialog from "../devices/assign-device"
 import CarDetailsDialog from "@/components/cars/detail-dialog"
 import { Button } from "@/components/ui/button"
 import { useTechnicianTaskQuery } from "@/hooks/technician-tasks/use-technician-tasks"
 import { formatDate } from "@/lib/utils"
 export default function TechnicianTodo() {
     const [isCarDetailsOpen, setIsCarDetailsOpen] = useState(false)
-    const [isGpsAssignmentOpen, setIsGpsAssignmentOpen] = useState(false);
     const { listTechnicianTasks } = useTechnicianTaskQuery();
     const handleOpenGpsAssignment = () => {
-        setIsGpsAssignmentOpen(true)
         setIsCarDetailsOpen(false) // Optionally close the car details dialog
     }
     return (
@@ -33,7 +30,6 @@ export default function TechnicianTodo() {
                                 </div>
                                 <div>
                                     <Button className="ml-3 bg-white text-black">Reject</Button>
-                                    <Button className="ml-3 bg-white text-black">Complete</Button>
                                 </div>
                             </div>
                             <div className="mt-4">
@@ -47,15 +43,6 @@ export default function TechnicianTodo() {
                                 isOpen={isCarDetailsOpen}
                                 onClose={() => setIsCarDetailsOpen(false)}
                                 onOpenGpsAssignment={handleOpenGpsAssignment}
-                            />
-                            <GpsAssignmentDialog
-                                carId={car.id}
-                                licensePlate={car.licensePlate}
-                                isOpen={isGpsAssignmentOpen}
-                                onClose={() => {
-                                    setIsGpsAssignmentOpen(false)
-                                    setIsCarDetailsOpen(true)
-                                }}
                             />
                         </li>
                     ))}
