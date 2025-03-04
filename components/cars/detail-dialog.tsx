@@ -1,7 +1,6 @@
 import Image from "next/image"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Button } from "@/components/ui/button"
 import { CarDetail } from "@/constants/models/technician-task.model"
 interface CarDetailsDialogProps {
   car: CarDetail
@@ -10,7 +9,7 @@ interface CarDetailsDialogProps {
   onOpenGpsAssignment: () => void
 }
 
-export default function CarDetailsDialog({ car, isOpen, onClose, onOpenGpsAssignment }: CarDetailsDialogProps) {
+export default function CarDetailsDialog({ car, isOpen, onClose }: CarDetailsDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh]">
@@ -77,18 +76,10 @@ export default function CarDetailsDialog({ car, isOpen, onClose, onOpenGpsAssign
                 <DetailItem label="Navigation" value={car.amenities.hasNavigation ? "Yes" : "No"} />
               </div>
             </section> */}
-
             {/* Location */}
             <section>
               <h3 className="font-semibold text-lg mb-2">Location</h3>
               <p>{car.inspectionAddress}</p>
-            </section>
-
-            {/* GPS Assignment Button */}
-            <section className="pt-4">
-              <Button onClick={onOpenGpsAssignment} className="w-full bg-black text-white hover:bg-gray-800">
-                Assign GPS Device
-              </Button>
             </section>
           </div>
         </ScrollArea>

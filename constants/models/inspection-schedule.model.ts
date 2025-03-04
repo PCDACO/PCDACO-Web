@@ -6,7 +6,6 @@ export interface GetInspectionSchedulesParams {
 export interface InspectionScheduleResponse {
   inspectionSchedules: InspectionScheduleDetail[];
 }
-
 export interface InspectionScheduleDetail {
   id: string;
   technicianId: string;
@@ -19,4 +18,14 @@ export interface InspectionScheduleDetail {
   inspectionAddress: string;
   inspectionDate: Date;
   createdAt: Date;
+}
+export interface InspectionSchedulePayload {
+  technicianId: string;
+  carId: string;
+  inspectionAddress: string;
+  inspectionDate: Date;
+}
+
+export interface InspectionScheduleCreateResponse {
+  id: string;
 }

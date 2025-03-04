@@ -1,15 +1,14 @@
 "use client"
 import { useState } from "react"
 import { Plus } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { MonthCalendar } from "@/components/inspection-schedules/month-calendar"
-import { CreateInspectionForm } from "@/components/inspection-schedules/create-inspection"
 import { useInspectionScheduleQuery } from "@/hooks/inspection-schedules/use-inspection-schedules"
 import { useInspectionScheduleParamStore } from "@/stores/store"
+import CreateInspectionForm from "./create-inspection-form"
 
 export default function TechnicianCalendarPage() {
     const [currentDate, setCurrentDate] = useState(new Date())
@@ -56,7 +55,14 @@ export default function TechnicianCalendarPage() {
                                 <DialogHeader>
                                     <DialogTitle>Schedule New Inspection</DialogTitle>
                                 </DialogHeader>
-                                <CreateInspectionForm />
+                                <CreateInspectionForm
+                                    id={""}
+                                    value={{
+                                        carId: "",
+                                        technicianId: "",
+                                        inspectionAddress: "",
+                                        inspectionDate: new Date()
+                                    }} />
                             </DialogContent>
                         </Dialog>
                     </div>

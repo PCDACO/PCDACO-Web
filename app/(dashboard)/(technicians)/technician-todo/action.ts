@@ -11,3 +11,17 @@ export const GetTechnicianTasks = async (): Promise<
   );
   return response.data;
 };
+
+export const RejectTechnicianTask = async (
+  id: string,
+  note: string
+): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.patch(
+    `/api/inspection-schedules/${id}/approve`,
+    {
+      note: note,
+      isApproved: false,
+    }
+  );
+  return response.data;
+};

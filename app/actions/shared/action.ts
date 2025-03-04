@@ -1,5 +1,9 @@
 "use server";
 import axiosInstance from "@/app/axios.server";
+import {
+  UserRoleParams,
+  UserRoleResponse,
+} from "@/constants/models/user-role.model";
 import { cookies } from "next/headers";
 
 export const ValidateToken = async ({
@@ -56,4 +60,12 @@ export const GetToken = async () => {
     refreshToken: cookieStore.get("refreshToken"),
     role: cookieStore.get("role"),
   };
+};
+
+export const GetUserRoles = async (
+  params: UserRoleParams
+): Promise<RootResponse<Pagination<UserRoleResponse>>> => {
+  console.log(params);
+  const response = await axiosInstance.get("/api/user-roles", { params });
+  return response.data;
 };
