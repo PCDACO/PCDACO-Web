@@ -22,7 +22,7 @@ const AmenityTable = () => {
   const { listAmenityQuery } = useAmenityQuery({
     params: value,
   });
-  const { id } = useIdStore();
+  const { id, setId } = useIdStore();
   const { data } = useAmenityStore();
 
   // do ui error
@@ -34,6 +34,7 @@ const AmenityTable = () => {
     <Dialog
       open={open}
       onOpenChange={() => {
+        setId("");
         setOpen(!open);
         setKeyword("create");
       }}

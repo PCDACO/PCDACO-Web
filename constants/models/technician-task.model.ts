@@ -6,6 +6,7 @@ export interface TechnicianTaskResponse {
 export interface CarDetail {
   id: string;
   modelId: string;
+  inspectionScheduleId: string;
   modelName: string;
   manufacturerName: string;
   licensePlate: string;

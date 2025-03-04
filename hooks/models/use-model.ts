@@ -36,7 +36,7 @@ export const useModelMutation = () => {
     onSuccess: () => {
       setOpen(false);
       toast({ title: "Xóa thành công" });
-      queryClient.invalidateQueries({ queryKey: ["models"] });
+      queryClient.refetchQueries({ queryKey: ["models"] });
     },
     onError: () => {
       toast({ title: "Không thể xóa mẫu này" });
