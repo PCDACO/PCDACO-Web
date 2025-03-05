@@ -20,15 +20,10 @@ export const GetInspectionSchedules =
         });
         return response.data;
     }
-
 export const CreateInspectionSchedules =
     async (payload: InspectionSchedulePayload): Promise<RootResponse<InspectionScheduleCreateResponse>> => {
         const response = await axiosInstance.post("/api/inspection-schedules", {
-            ...payload,
-            inspectionDate: () => {
-                const date = payload.inspectionDate;
-                return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}T${date.getHours}:${date.getMinutes}:${date.getSeconds}.000Z`
-            }
+            ...payload
         })
         return response.data;
     }
