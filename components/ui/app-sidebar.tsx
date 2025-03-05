@@ -19,6 +19,7 @@ import {
   Cog,
   PersonStandingIcon,
   Calendar,
+  CarIcon,
 } from "lucide-react";
 // import Link from "next/link"
 import { LogoutButton } from "./LogoutButton";
@@ -106,6 +107,12 @@ const items = [
     title: "Thống Kê",
     url: "/dashboard",
     icon: AlignEndHorizontal,
+    role: "Consultant",
+  },
+  {
+    title: "Xe cần được gọi",
+    url: "/pending-cars",
+    icon: CarIcon,
     role: "Consultant",
   },
   {

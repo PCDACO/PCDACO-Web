@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -18,6 +18,17 @@ export default function TechnicianCalendarPage() {
     const { replace } = useRouter();
     // Filter schedules when technician selection changes
 
+    useEffect(() => {
+        const date = new Date(currentDate.toString());
+        const month = date.getMonth();
+        const year = date.getFullYear();
+        setValue({
+            ...value,
+            month: month + 1,
+            year: year
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentDate])
     return (
         <div className="container mx-auto py-8 px-4">
             <div className="flex flex-col space-y-6">

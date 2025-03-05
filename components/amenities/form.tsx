@@ -77,12 +77,12 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="text"
-                      placeholder="Name"
+                      placeholder="Description"
                       className="w-full"
                     />
                   </FormControl>
@@ -96,17 +96,18 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
             name="icon"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Picture</FormLabel>
+                <FormLabel>Icon</FormLabel>
                 <FormControl>
                   <Input
                     type="file"
                     placeholder="Picture"
-                    accept="image/svg"
+                    accept="image/svg+xml"
                     onChange={(event) => {
                       const files = (event.target as HTMLInputElement).files;
                       if (!files) return;
                       const file = files && files[0];
-                      if (file.type !== "image/svg") return;
+                      console.log(file.type)
+                      if (file.type !== "image/svg+xml") return;
                       field.onChange(files); // Update form value
                       handleFileChange(file || null); // Update local URL
                     }}
