@@ -55,6 +55,10 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
         setCalendarDays(days)
     }, [currentDate])
 
+    const formatDateToHourMinutes = (inspectionDate: Date) => {
+        const date = new Date(inspectionDate.toString())
+        return `${new Date(date.toString()).getHours().toString()}:${(new Date(date)).getMinutes().toString()}`
+    }
 
     return (
         <TooltipProvider>
@@ -123,7 +127,7 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                                                 <Tooltip key={schedule.id}>
                                                     <TooltipTrigger asChild>
                                                         <Badge className="w-full justify-start truncate bg-black hover:bg-gray-800 cursor-pointer text-xs">
-                                                            {`${schedule.inspectionDate.getHours().toString()}:${schedule.inspectionDate.getMinutes().toString()}`} - {schedule.carOwnerName}
+                                                            {formatDateToHourMinutes(schedule.inspectionDate)} - {schedule.carOwnerName}
                                                         </Badge>
                                                     </TooltipTrigger>
                                                     <TooltipContent>

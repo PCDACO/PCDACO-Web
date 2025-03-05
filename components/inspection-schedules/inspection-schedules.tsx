@@ -3,12 +3,11 @@ import { useState } from "react"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { MonthCalendar } from "@/components/inspection-schedules/month-calendar"
 import { useInspectionScheduleQuery } from "@/hooks/inspection-schedules/use-inspection-schedules"
 import { useInspectionScheduleParamStore } from "@/stores/store"
-import CreateInspectionForm from "./create-inspection-form"
+import { useRouter } from "next/navigation"
 
 export default function TechnicianCalendarPage() {
     const [currentDate, setCurrentDate] = useState(new Date())
@@ -16,6 +15,7 @@ export default function TechnicianCalendarPage() {
     const { listInspectionSchedules } = useInspectionScheduleQuery({
         params: value
     });
+    const { replace } = useRouter();
     // Filter schedules when technician selection changes
 
     return (
@@ -44,27 +44,10 @@ export default function TechnicianCalendarPage() {
                                 </SelectContent>
                             </Select>
                         </div>
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button className="bg-black text-white hover:bg-gray-800">
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    New Inspection
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[500px]">
-                                <DialogHeader>
-                                    <DialogTitle>Schedule New Inspection</DialogTitle>
-                                </DialogHeader>
-                                <CreateInspectionForm
-                                    id={""}
-                                    value={{
-                                        carId: "",
-                                        technicianId: "",
-                                        inspectionAddress: "",
-                                        inspectionDate: new Date()
-                                    }} />
-                            </DialogContent>
-                        </Dialog>
+                        <Button onClick={() => replace("/inspection-schedules/create")} className="bg-black text-white hover:bg-gray-800">
+                            <Plus className="mr-2 h-4 w-4" />
+                            New Inspection
+                        </Button>
                     </div>
                 </div>
                 <Card className="border-black">

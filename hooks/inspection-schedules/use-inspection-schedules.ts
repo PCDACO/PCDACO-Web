@@ -9,6 +9,7 @@ import {
 } from "@/constants/models/inspection-schedule.model";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
+import { useRouter } from "next/navigation";
 
 interface InspectionSchedulesQuery {
   params?: GetInspectionSchedulesParams;
@@ -32,6 +33,7 @@ export const useInspectionScheduleQuery = ({
 export const useInspectionScheduleMutation = () => {
   const { setOpen } = useDialogStore();
   const queryClient = new QueryClient();
+  const { replace } = useRouter();
 
   const createInspectionSchedule = useMutation({
     mutationKey: ["createInspectionSchedule"],
@@ -41,6 +43,7 @@ export const useInspectionScheduleMutation = () => {
     onSuccess: () => {
       setOpen(false);
       queryClient.fetchQuery({ queryKey: ["inspection-schedules"] });
+      replace("/inspection-schedules");
     },
     onError: () => {
       toast({ title: "Không thể thêm nhà sản xuất" });
