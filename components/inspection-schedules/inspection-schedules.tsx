@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -17,6 +17,14 @@ export default function TechnicianCalendarPage() {
   });
   const { replace } = useRouter();
   // Filter schedules when technician selection changes
+  useEffect(() => {
+    const date = new Date(currentDate.toString());
+    setValue({
+      ...value,
+      month: date.getMonth() + 1,
+      year: date.getFullYear(),
+    })
+  }, [currentDate]);
 
   return (
     <div className="container mx-auto py-8 px-4">
