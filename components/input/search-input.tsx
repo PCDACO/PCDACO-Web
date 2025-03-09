@@ -58,7 +58,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ keyValue, ...props }) => {
         }}
         type="search"
         className="focus:outline-none focus:border-none"
-        placeholder="Search..."
+        placeholder="Tìm Kiếm.."
       />
     </div>
   );

@@ -4,6 +4,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import MenuAction from "./menu-action";
 import { TransmissionResponse } from "@/constants/models/transmission.model";
+import { formatDate } from "@/lib/utils";
 
 export const TransmissionColumns: ColumnDef<TransmissionResponse>[] = [
   {
@@ -13,6 +14,9 @@ export const TransmissionColumns: ColumnDef<TransmissionResponse>[] = [
   {
     accessorKey: "createdAt",
     header: "Created At",
+    cell: ({ row }) => {
+      return formatDate(row.original.createdAt.toString());
+    }
   },
   {
     id: "actions",
