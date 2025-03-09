@@ -15,6 +15,7 @@ import { useFuelTypeStore } from "./menu-action";
 import FuelTypeForm from "./form";
 import { useFuelTypeQuery } from "@/hooks/fuel-type/use-fuel-type";
 import { FuelTypeColumn } from "./column";
+import { PlusCircleIcon } from "lucide-react";
 const FuelTypeTable = () => {
   const { open, setOpen } = useDialogStore();
   const { setKeyword } = useKeywordStore();
@@ -55,7 +56,9 @@ const FuelTypeTable = () => {
               }
             />
             <DialogTrigger asChild>
-              <Button>Create</Button>
+              <Button>
+                <PlusCircleIcon />Tạo
+              </Button>
             </DialogTrigger>
           </div>
         </div>

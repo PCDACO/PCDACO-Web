@@ -16,6 +16,7 @@ import {
 import { useManuFactureStore } from "./menu-action";
 import SearchInput from "@/components/input/search-input";
 import PaginationTable from "../data-table/pagination";
+import { PlusCircleIcon } from "lucide-react";
 
 const ManufacturerTable = () => {
   const { open, setOpen } = useDialogStore();
@@ -62,7 +63,9 @@ const ManufacturerTable = () => {
               }
             />
             <DialogTrigger asChild>
-              <Button>Create</Button>
+              <Button>
+                <PlusCircleIcon />Tạo
+              </Button>
             </DialogTrigger>
           </div>
         </div>

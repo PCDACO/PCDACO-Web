@@ -21,7 +21,7 @@ export default function CarDetailsDialog({ car, isOpen, onClose }: CarDetailsDia
             {/* Owner Information */}
             <section className="flex items-center space-x-4">
               <Image
-                src={car.owner.avatarUrl || "/placeholder.svg"}
+                src={car.owner.avatarUrl !== "" ? car.owner.avatarUrl : "/dummy-avatar.webp"}
                 alt={car.owner.name}
                 width={64}
                 height={64}

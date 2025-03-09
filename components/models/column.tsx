@@ -7,12 +7,19 @@ import { formatDate } from "@/lib/utils";
 
 export const ModelColumns: ColumnDef<ModelResponse>[] = [
   {
+    accessorKey: "index",
+    header: "STT",
+    cell: ({ row }) => {
+      return row.index + 1
+    }
+  },
+  {
     accessorKey: "name",
     header: "Tên",
   },
   {
     accessorKey: "createdAt",
-    header: "Tạo Lúc",
+    header: "Ngày Tạo",
     cell: ({ row }) => {
       const createdAt = row.original.createdAt;
       return formatDate(createdAt.toString());
