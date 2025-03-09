@@ -16,6 +16,7 @@ import PaginationTable from "../data-table/pagination";
 import { useModelStore } from "./menu-action";
 import { ModelColumns } from "./column";
 import { useModelQuery } from "@/hooks/models/use-model";
+import { PlusCircleIcon } from "lucide-react";
 
 interface ModelTableProps {
   manufacturerId: string;
@@ -61,7 +62,9 @@ const ModelTable = ({ manufacturerId }: ModelTableProps) => {
               }
             />
             <DialogTrigger asChild>
-              <Button>Create</Button>
+              <Button>
+                <PlusCircleIcon />Tạo
+              </Button>
             </DialogTrigger>
           </div>
         </div>
@@ -75,7 +78,7 @@ const ModelTable = ({ manufacturerId }: ModelTableProps) => {
       <DialogContent>
         <ManufacturerForm id={id} value={data || { name: "" }} />
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 };
 

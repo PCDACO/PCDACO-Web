@@ -10,6 +10,7 @@ import { useTechnicianQuery } from "@/hooks/technicians/use-technician";
 import { TechnicianColumns } from "./column";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { PlusCircleIcon } from "lucide-react";
 const TechnicianTable = () => {
   const { value } = useParamStore();
   const { listTechnicians } = useTechnicianQuery({
@@ -39,7 +40,9 @@ const TechnicianTable = () => {
           />
           <Button onClick={() => {
             replace("/technicians/create")
-          }}>Create</Button>
+          }}>
+            <PlusCircleIcon />Tạo
+          </Button>
         </div>
       </div>
       <DataTable

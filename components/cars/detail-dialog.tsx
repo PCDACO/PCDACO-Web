@@ -21,7 +21,7 @@ export default function CarDetailsDialog({ car, isOpen, onClose }: CarDetailsDia
             {/* Owner Information */}
             <section className="flex items-center space-x-4">
               <Image
-                src={car.owner.avatarUrl || "/placeholder.svg"}
+                src={car.owner.avatarUrl !== "" ? car.owner.avatarUrl : "/dummy-avatar.webp"}
                 alt={car.owner.name}
                 width={64}
                 height={64}
@@ -37,20 +37,19 @@ export default function CarDetailsDialog({ car, isOpen, onClose }: CarDetailsDia
             <section>
               <h3 className="font-semibold text-lg mb-2">Car Details</h3>
               <div className="grid grid-cols-2 gap-4">
-                <DetailItem label="License Plate" value={car.licensePlate} />
-                <DetailItem label="Color" value={car.color} />
-                <DetailItem label="Seats" value={car.seat.toString()} />
-                <DetailItem label="Transmission" value={car.transmissionType} />
-                <DetailItem label="Fuel Type" value={car.fuelType} />
-                <DetailItem label="Fuel Consumption" value={`${car.fuelConsumption} L/100km`} />
-                <DetailItem label="Requires Collateral" value={car.requiresCollateral ? "Yes" : "No"} />
-                <DetailItem label="Price" value={`${car.price} Đồng`} />
+                <DetailItem label="Biển Số Xe" value={car.licensePlate} />
+                <DetailItem label="Màu" value={car.color} />
+                <DetailItem label="Số Ghế" value={car.seat.toString()} />
+                <DetailItem label="Hộp Số" value={car.transmissionType} />
+                <DetailItem label="Nhiên Liệu" value={car.fuelType} />
+                <DetailItem label="Consumption" value={`${car.fuelConsumption} L/100km`} />
+                <DetailItem label="Giá" value={`${car.price} Đồng`} />
               </div>
             </section>
 
             {/* Description */}
             <section>
-              <h3 className="font-semibold text-lg mb-2">Description</h3>
+              <h3 className="font-semibold text-lg mb-2">Mô Tả</h3>
               <p>{car.description}</p>
             </section>
 
@@ -78,7 +77,7 @@ export default function CarDetailsDialog({ car, isOpen, onClose }: CarDetailsDia
             </section> */}
             {/* Location */}
             <section>
-              <h3 className="font-semibold text-lg mb-2">Location</h3>
+              <h3 className="font-semibold text-lg mb-2">Địa Điểm</h3>
               <p>{car.inspectionAddress}</p>
             </section>
           </div>

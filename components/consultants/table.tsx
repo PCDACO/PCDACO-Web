@@ -10,6 +10,7 @@ import { ConsultantColumns } from "./column";
 import { Button } from "../ui/button";
 import { useConsultantQuery } from "@/hooks/consultants/use-consultant";
 import { useRouter } from "next/navigation";
+import { PlusCircleIcon } from "lucide-react";
 const ConsultantTable = () => {
   const { value } = useParamStore();
   const { listConsultants } = useConsultantQuery({
@@ -38,7 +39,9 @@ const ConsultantTable = () => {
           />
           <Button onClick={() => {
             replace("/consultants/create")
-          }}>Create</Button>
+          }}>
+            <PlusCircleIcon />Tạo
+          </Button>
         </div>
       </div>
       <DataTable

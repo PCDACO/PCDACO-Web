@@ -10,52 +10,51 @@ import { useInspectionScheduleParamStore } from "@/stores/store"
 import { useRouter } from "next/navigation"
 
 export default function TechnicianCalendarPage() {
-    const [currentDate, setCurrentDate] = useState(new Date())
-    const { value, setValue } = useInspectionScheduleParamStore();
-    const { listInspectionSchedules } = useInspectionScheduleQuery({
-        params: value
-    });
-    const { replace } = useRouter();
-    // Filter schedules when technician selection changes
+  const [currentDate, setCurrentDate] = useState(new Date())
+  const { value, setValue } = useInspectionScheduleParamStore();
+  const { listInspectionSchedules } = useInspectionScheduleQuery({
+    params: value
+  });
+  const { replace } = useRouter();
+  // Filter schedules when technician selection changes
 
-    return (
-        <div className="container mx-auto py-8 px-4">
-            <div className="flex flex-col space-y-6">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                            <Select onValueChange={(e) => setValue({
-                                ...value,
-                                technicianId: e
-                            })
-                            }>
-                                <SelectTrigger className="w-[200px]">
-                                    <SelectValue placeholder="Select technician" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">All Technicians</SelectItem>
-                                    {listInspectionSchedules.data?.value?.filter((item, index, arr) => {
-                                        return arr.findIndex(t => t.technicianId === item.technicianId) === index
-                                    }).map((tech) => (
-                                        <SelectItem key={tech.id} value={tech.technicianId}>
-                                            {tech.technicianName}
-                                        </SelectItem>
-                                    )) ?? []}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <Button onClick={() => replace("/inspection-schedules/create")} className="bg-black text-white hover:bg-gray-800">
-                            <Plus className="mr-2 h-4 w-4" />
-                            New Inspection
-                        </Button>
-                    </div>
-                </div>
-                <Card className="border-black">
-                    <CardContent className="p-0">
-                        <MonthCalendar currentDate={currentDate} onDateChange={setCurrentDate} schedules={listInspectionSchedules.data?.value ?? []} />
-                    </CardContent>
-                </Card>
+  return (
+    <div className="container mx-auto py-8 px-4">
+      <div className="flex flex-col space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Select onValueChange={(e) => setValue({
+                ...value,
+                technicianId: e
+              })
+              }>
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Select technician" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all"></SelectItem>
+                  {listInspectionSchedules.data?.value?.filter((item, index, arr) => {
+                    return arr.findIndex(t => t.technicianId === item.technicianId) === index
+                  }).map((tech) => (
+                    <SelectItem key={tech.id} value={tech.technicianId}>
+                      {tech.technicianName}
+                    </SelectItem>
+                  )) ?? []}
+                </SelectContent>
+              </Select>
             </div>
+            <Button onClick={() => replace("/inspection-schedules/create")} className="bg-black text-white hover:bg-gray-800">
+              <Plus className="mr-2 h-4 w-4" />Tạo
+            </Button>
+          </div>
         </div>
-    )
+        <Card className="border-black">
+          <CardContent className="p-0">
+            <MonthCalendar currentDate={currentDate} onDateChange={setCurrentDate} schedules={listInspectionSchedules.data?.value ?? []} />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
 }

@@ -9,6 +9,13 @@ import { formatDate } from "@/lib/utils";
 
 export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
   {
+    accessorKey: "index",
+    header: "STT",
+    cell: ({ row }) => {
+      return row.index + 1
+    }
+  },
+  {
     accessorKey: "iconUrl",
     header: "Icon",
     cell: ({ row }) => {

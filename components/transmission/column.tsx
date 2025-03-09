@@ -8,12 +8,19 @@ import { formatDate } from "@/lib/utils";
 
 export const TransmissionColumns: ColumnDef<TransmissionResponse>[] = [
   {
+    accessorKey: "index",
+    header: "STT",
+    cell: ({ row }) => {
+      return row.index + 1
+    }
+  },
+  {
     accessorKey: "name",
-    header: "Name",
+    header: "Tên",
   },
   {
     accessorKey: "createdAt",
-    header: "Created At",
+    header: "Ngày Tạo",
     cell: ({ row }) => {
       return formatDate(row.original.createdAt.toString());
     }
