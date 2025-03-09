@@ -2,6 +2,7 @@ import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import {
   CreateInspectionSchedules,
   GetInspectionSchedules,
+  RejectInspectionSchedules,
 } from "@/app/(dashboard)/(consultants)/inspection-schedules/action";
 import {
   GetInspectionSchedulesParams,
@@ -49,7 +50,23 @@ export const useInspectionScheduleMutation = () => {
       toast({ title: "Không thể thêm nhà sản xuất" });
     },
   });
+
+  const rejectInspectionSchedule = useMutation({
+    mutationKey: ["rejectInspectionSchedule"],
+    mutationFn: async (id: string) => {
+      await RejectInspectionSchedules(id);
+    },
+    onSuccess: () => {
+      queryClient.fetchQuery({ queryKey: ["inspection-schedules"] });
+      replace("/inspection-schedules");
+    },
+    onError: () => {
+      toast({ title: "Không thể thêm nhà sản xuất" });
+    },
+  });
   return {
     createInspectionSchedule,
-  };
-};
+    rejectInspectionSchedule
+  }
+}
+
