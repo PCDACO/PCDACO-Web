@@ -7,8 +7,15 @@ import { DriverResponse } from "@/constants/models/driver.model";
 
 export const DriverColumns: ColumnDef<DriverResponse>[] = [
   {
+    accessorKey: "index",
+    header: "STT",
+    cell: ({ row }) => {
+      return row.index + 1
+    }
+  },
+  {
     accessorKey: "name",
-    header: "Name",
+    header: "Tên",
   },
   {
     accessorKey: "email",
@@ -16,11 +23,11 @@ export const DriverColumns: ColumnDef<DriverResponse>[] = [
   },
   {
     accessorKey: "address",
-    header: "Address",
+    header: "Địa Chỉ",
   },
   {
     accessorKey: "dateOfBirth",
-    header: "DOB",
+    header: "Ngày Sinh",
     cell: ({ row }) => {
       return <h1>{formatDate(row.original.dateOfBirth.toString())}</h1>
     }

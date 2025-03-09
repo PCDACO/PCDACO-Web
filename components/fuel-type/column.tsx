@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import MenuAction from "./menu-action";
 import { FuelTypeResponse } from "@/constants/models/fuelType.model";
+import { formatDate } from "@/lib/utils";
 
 export const FuelTypeColumn: ColumnDef<FuelTypeResponse>[] = [
   {
@@ -13,6 +14,9 @@ export const FuelTypeColumn: ColumnDef<FuelTypeResponse>[] = [
   {
     accessorKey: "createdAt",
     header: "Created At",
+    cell: ({ row }) => {
+      return formatDate(row.original.createdAt.toString());
+    }
   },
   {
     id: "actions",

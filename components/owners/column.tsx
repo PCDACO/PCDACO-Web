@@ -1,6 +1,4 @@
 "use client";
-
-
 import { ColumnDef } from "@tanstack/react-table";
 import MenuAction from "./menu-action";
 import { OwnerResponse } from "@/constants/models/owner.model";
@@ -8,12 +6,15 @@ import { formatDate } from "@/lib/utils";
 
 export const OwnerColumns: ColumnDef<OwnerResponse>[] = [
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: "index",
+    header: "STT",
+    cell: ({ row }) => {
+      return row.index + 1
+    }
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: "Tên",
   },
   {
     accessorKey: "email",
@@ -21,11 +22,11 @@ export const OwnerColumns: ColumnDef<OwnerResponse>[] = [
   },
   {
     accessorKey: "address",
-    header: "Address",
+    header: "Địa Chỉ",
   },
   {
     accessorKey: "dateOfBirth",
-    header: "DOB",
+    header: "Ngày Sinh",
     cell: ({ row }) => {
       return <h1>{formatDate(row.original.dateOfBirth.toString())}</h1>
     }

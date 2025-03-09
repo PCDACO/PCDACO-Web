@@ -34,7 +34,7 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
       <PaginationContent>
         <Select onValueChange={(value) => setPageNumber(Number(value))}>
           <SelectTrigger className="w-[130px]">
-            <SelectValue placeholder="Pick page" />
+            <SelectValue placeholder="Trang" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -52,7 +52,7 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
         </Select>
         <Select onValueChange={(value) => setPageSize(Number(value))}>
           <SelectTrigger className="w-[150px]">
-            <SelectValue placeholder="Pick size page" />
+            <SelectValue placeholder="Số Lượng" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>

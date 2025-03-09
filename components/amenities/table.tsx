@@ -15,6 +15,7 @@ import PaginationTable from "../data-table/pagination";
 import { useAmenityQuery } from "@/hooks/amenities/use-amenities";
 import { useAmenityStore } from "./menu-action";
 import AmenityForm from "./form";
+import { PlusCircleIcon } from "lucide-react";
 const AmenityTable = () => {
   const { open, setOpen } = useDialogStore();
   const { setKeyword } = useKeywordStore();
@@ -55,7 +56,9 @@ const AmenityTable = () => {
               }
             />
             <DialogTrigger asChild>
-              <Button>Create</Button>
+              <Button>
+                <PlusCircleIcon /> Tạo Mới
+              </Button>
             </DialogTrigger>
           </div>
         </div>

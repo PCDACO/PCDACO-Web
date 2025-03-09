@@ -38,8 +38,8 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
           <MoreHorizontal />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+      <DropdownMenuContent align="end" >
+        <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
         <DropdownMenuItem
           onClick={() => {
             setKeyword("update");
@@ -48,10 +48,10 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
             setData(payload);
           }}
         >
-          Update
+          Cập Nhật
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem
+          className="bg-red-200"
           onClick={() => {
             setKeyword("delete");
             setOpen(true);
@@ -59,9 +59,9 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
             setData(payload);
           }}
         >
-          Delete
+          Xóa
         </DropdownMenuItem>
-      </DropdownMenuContent>
+      </DropdownMenuContent >
     </DropdownMenu>
   );
 };
