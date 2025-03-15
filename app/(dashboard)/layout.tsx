@@ -40,11 +40,13 @@ export default async function RootLayout({
           <AppSidebar />
           <main className="container mx-auto">
             <SidebarTrigger />
-            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <ReactQueryProvider>
+              {children}
+            </ReactQueryProvider>
             <Toaster />
           </main>
         </SidebarProvider>
       </body>
-    </html>
+    </html >
   );
 }

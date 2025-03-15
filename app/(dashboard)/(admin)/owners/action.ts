@@ -14,3 +14,8 @@ export const DeleteOwners = async (id: string): Promise<RootResponse<null>> => {
   const response = await axiosInstance.delete(`/api/users/owners/${id}`);
   return response.data;
 };
+
+export const GetOwner = async (id: string): Promise<RootResponse<OwnerResponse>> => {
+  const response = await axiosInstance.get(`/api/users/owners/${id}`);
+  return response.data;
+}

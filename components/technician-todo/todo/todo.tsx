@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 export default function TechnicianTodo() {
   const [isCarDetailsOpen, setIsCarDetailsOpen] = useState(false)
   const { listTechnicianTasks } = useTechnicianTaskQuery();
-  const { rejectTechnicianTask } = useTechnicianTaskMutation();
+  const { rejectTechnicianTask, approveTechnicianTask } = useTechnicianTaskMutation();
   const handleOpenGpsAssignment = () => {
     setIsCarDetailsOpen(false) // Optionally close the car details dialog
   }
@@ -53,7 +53,19 @@ export default function TechnicianTodo() {
                                         w-6 h-6 flex items-center justify-center p-0 border-none cursor-pointer text-xs "
                     aria-label="Reject"
                   >
-                    X
+                  </Button>
+                  <Button onClick={() => {
+                    approveTechnicianTask.mutate({
+                      id: car.inspectionScheduleId,
+                      note: Note[car.inspectionScheduleId] ?? "",
+                    });
+                    event!.stopPropagation();
+                  }
+                  } className=" 
+                                        w-6 h-6 flex items-center justify-center p-0 border-none cursor-pointer text-xs "
+                    aria-label="Reject"
+                  >
+                    Hoàn Thành
                   </Button>
                 </div>
               </div>

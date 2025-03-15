@@ -3,15 +3,17 @@ import { OwnerParams } from "@/constants/models/owner.model";
 import { useDialogStore } from "@/stores/store";
 import {
   DeleteOwners,
+  GetOwner,
   GetOwners,
 } from "@/app/(dashboard)/(admin)/owners/action";
 import { toast } from "../use-toast";
 
 interface OwnerQuery {
   params?: OwnerParams;
+  id?: string;
 }
 
-export const useOwnerQuery = ({ params }: OwnerQuery) => {
+export const useOwnerQuery = ({ params, id }: OwnerQuery) => {
   if (params === undefined) {
     params = { index: 1, size: 10 };
   }
@@ -21,7 +23,12 @@ export const useOwnerQuery = ({ params }: OwnerQuery) => {
     queryFn: () => GetOwners(params),
   });
 
-  return { listOwnerQuery };
+  const ownerQuery = useQuery({
+    queryKey: ["owner", id],
+    queryFn: () => GetOwner(id ?? ""),
+  });
+
+  return { listOwnerQuery, ownerQuery };
 };
 
 export const useOwnerMutation = () => {

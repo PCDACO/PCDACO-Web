@@ -24,6 +24,7 @@ export default function TechnicianCalendarPage() {
       month: date.getMonth() + 1,
       year: date.getFullYear(),
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentDate]);
 
   return (

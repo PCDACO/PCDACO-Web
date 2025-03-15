@@ -1,4 +1,6 @@
-import DashboardStatistics from "@/components/dashboards/statistics";
+import AdminStatistics from "@/components/dashboards/admin-statistics";
+import ConsultantStatistics from "@/components/dashboards/consultant-statistics";
+import TechnicianStatistics from "@/components/dashboards/technician-statistics";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
@@ -8,13 +10,13 @@ export default async function DashboardPage() {
     const role = cookieStore.get("role");
     switch (role?.value) {
         case "Admin": {
-            return <DashboardStatistics />
+            return <AdminStatistics />
         };
         case "Technician": {
-            return <DashboardStatistics />
+            return <TechnicianStatistics />
         };
         case "Consultant": {
-            return <DashboardStatistics />
+            return <ConsultantStatistics />
         };
         default: {
             return (<div>

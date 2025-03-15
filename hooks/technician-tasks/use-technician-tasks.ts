@@ -1,5 +1,6 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import {
+  ApproveTechnicianTask,
   GetTechnicianTasks,
   RejectTechnicianTask,
 } from "@/app/(dashboard)/(technicians)/technician-todo/action";
@@ -33,7 +34,23 @@ export const useTechnicianTaskMutation = () => {
     },
   });
 
+  const approveTechnicianTask = useMutation({
+    mutationKey: ["rejectTechnicianTask"],
+    mutationFn: async ({ id, note }: { id: string; note: string }) => {
+      await ApproveTechnicianTask(id, note);
+    },
+    onSuccess: () => {
+      setOpen(false);
+      toast({ title: "Cập nhật thành công" });
+      queryClient.refetchQueries({ queryKey: "tasks" });
+    },
+    onError: () => {
+      toast({ title: "Không thể xóa mẫu này" });
+    },
+  });
+
   return {
     rejectTechnicianTask,
+    approveTechnicianTask,
   };
 };

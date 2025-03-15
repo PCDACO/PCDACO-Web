@@ -14,3 +14,7 @@ export const DeleteDriver = async (id: string): Promise<RootResponse<null>> => {
   const response = await axiosInstance.delete(`/api/users/drivers/${id}`);
   return response.data;
 };
+
+// export const GetDriver = async (id: string): Promise<RootResponse<DriverResponse>> => {
+//
+// }
