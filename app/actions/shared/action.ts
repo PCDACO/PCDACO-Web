@@ -4,6 +4,7 @@ import {
   UserRoleParams,
   UserRoleResponse,
 } from "@/constants/models/user-role.model";
+import { CurrentUserResponse } from "@/constants/models/user.model";
 import { cookies } from "next/headers";
 
 export const ValidateToken = async ({
@@ -65,7 +66,11 @@ export const GetToken = async () => {
 export const GetUserRoles = async (
   params: UserRoleParams
 ): Promise<RootResponse<Pagination<UserRoleResponse>>> => {
-  console.log(params);
   const response = await axiosInstance.get("/api/user-roles", { params });
   return response.data;
 };
+
+export const GetCurrentUser = async (): Promise<RootResponse<CurrentUserResponse>> => {
+  const response = await axiosInstance.get("/api/users/current");
+  return response.data;
+}

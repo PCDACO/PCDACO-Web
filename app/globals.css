@@ -42,6 +42,7 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
@@ -80,7 +81,7 @@ body {
 
 :root {
   /* Your existing variables */
-  
+
   /* Chart colors */
   --chart-1: 200 100% 50%;
   --chart-2: 150 100% 50%;
@@ -101,7 +102,7 @@ body {
 
 .dark {
   /* Your existing dark mode variables */
-  
+
   /* Dark mode sidebar colors */
   --sidebar-background: 240 10% 3.9%;
   --sidebar-foreground: 0 0% 98%;
@@ -117,6 +118,7 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
