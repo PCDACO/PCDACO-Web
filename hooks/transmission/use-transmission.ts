@@ -2,7 +2,7 @@ import {
   CreateManufacturer,
   DeleteManufacturer,
   UpdateManufacturer,
-} from "@/app/(dashboard)/manufacturers/action";
+} from "@/app/(dashboard)/(admin)/manufacturers/action";
 import { useDialogStore } from "@/stores/store";
 import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
 import { toast } from "../use-toast";
@@ -10,7 +10,10 @@ import {
   TransmissionParams,
   TransmissionPayload,
 } from "@/constants/models/transmission.model";
-import { GetTransmissions, UpdateTransmission } from "@/app/(dashboard)/transmissions/action";
+import {
+  GetTransmissions,
+  UpdateTransmission,
+} from "@/app/(dashboard)/(admin)/transmissions/action";
 
 interface TransmissionQuery {
   params?: TransmissionParams;

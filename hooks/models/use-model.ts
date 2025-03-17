@@ -5,7 +5,7 @@ import { ModelParams } from "@/constants/models/model.model.ts";
 import {
   DeleteModel,
   GetModels,
-} from "@/app/(dashboard)/manufacturers/[id]/models/action";
+} from "@/app/(dashboard)/(admin)/manufacturers/[id]/models/action";
 
 interface ModelQuery {
   manufacturerId: string;

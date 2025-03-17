@@ -10,7 +10,7 @@ import {
   DeleteFuelType,
   GetFuelTypes,
   UpdateFuelType,
-} from "@/app/(dashboard)/fuel-types/action";
+} from "@/app/(dashboard)/(admin)/fuel-types/action";
 
 interface FuelTypeQuery {
   params?: FuelTypeParams;

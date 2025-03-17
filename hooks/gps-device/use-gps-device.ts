@@ -10,7 +10,7 @@ import {
   DeleteGPSDevice,
   GetGPSDevices,
   UpdateGPSDevice,
-} from "@/app/(dashboard)/gps-devices/action";
+} from "@/app/(dashboard)/(technicians)/gps-devices/action";
 
 interface GPSDeviceQuery {
   params?: GPSDeviceParams;

@@ -16,6 +16,7 @@ import {
   useKeywordStore,
 } from "@/stores/store";
 import { ManufacturePayload } from "@/constants/models/manufacture.model";
+import Link from "next/link";
 
 interface MenuActionProps {
   id: string;
@@ -40,6 +41,10 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem >
+          <Link href={`manufacturers/${id}/models`}>Danh Sách Dòng Xe</Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
             setKeyword("update");
@@ -50,7 +55,6 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
         >
           Update
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
             setKeyword("delete");

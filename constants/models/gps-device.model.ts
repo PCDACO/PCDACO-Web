@@ -1,6 +1,12 @@
 export interface GPSDevicePayload {
   name: string;
 }
+export interface GPSDeviceAssignPayload {
+  carId: string;
+  deviceId: string;
+  longtitude: number;
+  latitude: number;
+}
 
 export interface GPSDeviceResponse {
   id: string;

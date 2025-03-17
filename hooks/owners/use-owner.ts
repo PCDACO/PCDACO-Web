@@ -1,7 +1,10 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { OwnerParams } from "@/constants/models/owner.model";
 import { useDialogStore } from "@/stores/store";
-import { DeleteOwners, GetOwners } from "@/app/(dashboard)/owners/action";
+import {
+  DeleteOwners,
+  GetOwners,
+} from "@/app/(dashboard)/(admin)/owners/action";
 import { toast } from "../use-toast";
 
 interface OwnerQuery {
