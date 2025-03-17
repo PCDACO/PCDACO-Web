@@ -2,24 +2,23 @@
 import React from "react";
 import { DataTable } from "@/components/data-table";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import {
-  useDialogStore,
-  useIdStore,
-  useParamStore,
-} from "@/stores/store";
+import { useDialogStore, useIdStore, useParamStore } from "@/stores/store";
 import SearchInput from "@/components/input/search-input";
 import PaginationTable from "../data-table/pagination";
 import { useCarQuery } from "@/hooks/cars/use-car";
 import { useCarStore } from "./menu-action";
 import CarForm from "./form";
 import { CarColumns } from "./column";
-const CarTable = () => {
+interface CarTableProps {
+  status: string;
+}
+const CarTable = ({ status }: CarTableProps) => {
   const { open, setOpen } = useDialogStore();
   const { value } = useParamStore();
   const { listCarQuery } = useCarQuery({
     params: {
       ...value,
-      statusName: "Available",
+      status: status,
     },
   });
 
@@ -62,8 +61,7 @@ const CarTable = () => {
         />
       </div>
       <DialogContent>
-        <CarForm id={id} value={data || {
-        }} />
+        <CarForm id={id} value={data || {}} />
       </DialogContent>
     </Dialog>
   );

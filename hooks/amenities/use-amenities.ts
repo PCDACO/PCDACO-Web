@@ -1,5 +1,10 @@
 import { useDialogStore } from "@/stores/store";
-import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  QueryClient,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { toast } from "../use-toast";
 import {
   CreateAmenities,
@@ -31,7 +36,7 @@ export const useAmenityQuery = ({ params }: AmenityQuery) => {
 
 export const useAmenityMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const createAmentiy = useMutation({
     mutationKey: ["createAmenity"],
@@ -40,7 +45,7 @@ export const useAmenityMutation = () => {
     },
     onSuccess: () => {
       setOpen(false);
-      queryClient.fetchQuery({ queryKey: ["amenities"] });
+      queryClient.invalidateQueries({ queryKey: ["amenities"] });
     },
     onError: () => {
       toast({ title: "Không thể thêm nhà sản xuất" });

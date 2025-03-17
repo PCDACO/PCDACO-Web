@@ -1,5 +1,5 @@
 import { useKeywordStore } from "@/stores/store";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   Form,
   FormControl,
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { useAmenityForm } from "@/hooks/amenities/use-form-amenities";
 import { AmenityPayLoad } from "@/constants/models/amenity.model";
+import Image from "next/image";
 
 interface AmenityFormProps {
   id: string;
@@ -29,13 +30,21 @@ type KeywordType = {
   form: React.JSX.Element;
 };
 const AmenityForm = ({ id, value }: AmenityFormProps) => {
+  const [localUrl, setLocalUrl] = useState<string>('');
   const { keyword } = useKeywordStore();
   const { form, onSubmit, isLoading } = useAmenityForm({
     id,
     value,
     action: keyword
   });
-  const fileRef = form.register("icon");
+  const handleFileChange = useCallback((file: File | null) => {
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setLocalUrl(objectUrl);
+    } else {
+      setLocalUrl("");
+    }
+  }, []);
   const keywords: KeywordType[] = [
     {
       name: "create",
@@ -85,21 +94,35 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
           <FormField
             control={form.control}
             name="icon"
-            render={() => {
-              return (
-                <FormItem>
-                  <FormLabel>Icon</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      className="w-full"
-                      {...fileRef}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Picture</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    placeholder="Picture"
+                    accept="image/svg"
+                    onChange={(event) => {
+                      const files = (event.target as HTMLInputElement).files;
+                      if (!files) return;
+                      const file = files && files[0];
+                      if (file.type !== "image/svg") return;
+                      field.onChange(files); // Update form value
+                      handleFileChange(file || null); // Update local URL
+                    }}
+                  />
+                </FormControl>
+                {localUrl !== "" && (
+                  <Image src={localUrl}
+                    alt="Preview"
+                    width={320}
+                    height={240}
+                    objectFit="contain"
+                    layout="responsive" />
+                )}
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
       )
@@ -152,21 +175,35 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
           <FormField
             control={form.control}
             name="icon"
-            render={() => {
-              return (
-                <FormItem>
-                  <FormLabel>Icon</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      className="w-full"
-                      {...fileRef}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Picture</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    placeholder="Picture"
+                    accept="image/svg"
+                    onChange={(event) => {
+                      const files = (event.target as HTMLInputElement).files;
+                      if (!files) return;
+                      const file = files && files[0];
+                      if (file.type !== "image/svg") return;
+                      field.onChange(files); // Update form value
+                      handleFileChange(file || null); // Update local URL
+                    }}
+                  />
+                </FormControl>
+                {localUrl !== "" && (
+                  <Image src={localUrl}
+                    alt="Preview"
+                    width={320}
+                    height={240}
+                    objectFit="contain"
+                    layout="responsive" />
+                )}
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
       )

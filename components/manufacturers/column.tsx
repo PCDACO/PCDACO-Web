@@ -8,12 +8,19 @@ import { formatDate } from "@/lib/utils";
 
 export const ManufacturerColumns: ColumnDef<ManufactureResponse>[] = [
   {
+    accessorKey: "index",
+    header: "STT",
+    cell: ({ row }) => {
+      return row.index + 1
+    }
+  },
+  {
     accessorKey: "name",
-    header: "Name",
+    header: "Tên",
   },
   {
     accessorKey: "createdAt",
-    header: "Created At",
+    header: "Ngày Tạo",
     cell: ({ row }) => {
       const createdAt = row.original.createdAt;
       return formatDate(createdAt.toString());

@@ -16,6 +16,8 @@ export const useCarQuery = ({ params }: CarQuery) => {
   const listCarQuery = useQuery({
     queryKey: ["cars", params],
     queryFn: () => GetCars(params),
+    staleTime: 0,
+    retry: 1,
   });
 
   return { listCarQuery };

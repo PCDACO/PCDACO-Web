@@ -4,7 +4,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
@@ -37,21 +36,20 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
           <MoreHorizontal />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+      <DropdownMenuContent align="end" >
+        <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
         <DropdownMenuItem
           onClick={() => {
             setKeyword("update");
             setOpen(true);
             setId(id);
             setData(payload);
-
           }}
         >
-          Update
+          Cập Nhật
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem
+          className="bg-red-200"
           onClick={() => {
             setKeyword("delete");
             setOpen(true);
@@ -59,11 +57,10 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
             setData(payload);
           }}
         >
-          Delete
+          Xóa
         </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
-
+      </DropdownMenuContent >
+    </DropdownMenu >
+  )
+}
 export default MenuAction;

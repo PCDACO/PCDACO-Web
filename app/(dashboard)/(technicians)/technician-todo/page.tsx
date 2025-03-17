@@ -1,5 +1,5 @@
-import DriverTodo from "@/components/technician-todo/todo/todo";
+import TechnicianTodo from "@/components/technician-todo/todo/todo";
 
 export default async function TechnicianTodoPage() {
-    return <DriverTodo />
+    return <TechnicianTodo />
 }
