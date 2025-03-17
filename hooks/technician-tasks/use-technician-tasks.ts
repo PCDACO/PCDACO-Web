@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ApproveTechnicianTask,
   GetTechnicianTasks,
@@ -18,7 +18,7 @@ export const useTechnicianTaskQuery = () => {
 
 export const useTechnicianTaskMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const rejectTechnicianTask = useMutation({
     mutationKey: ["rejectTechnicianTask"],
     mutationFn: async ({ id, note }: { id: string; note: string }) => {
@@ -27,7 +27,7 @@ export const useTechnicianTaskMutation = () => {
     onSuccess: () => {
       setOpen(false);
       toast({ title: "Xóa thành công" });
-      queryClient.refetchQueries({ queryKey: "tasks" });
+      queryClient.invalidateQueries({ queryKey: "tasks" });
     },
     onError: () => {
       toast({ title: "Không thể xóa mẫu này" });
@@ -42,7 +42,7 @@ export const useTechnicianTaskMutation = () => {
     onSuccess: () => {
       setOpen(false);
       toast({ title: "Cập nhật thành công" });
-      queryClient.refetchQueries({ queryKey: "tasks" });
+      queryClient.invalidateQueries({ queryKey: "tasks" });
     },
     onError: () => {
       toast({ title: "Không thể xóa mẫu này" });

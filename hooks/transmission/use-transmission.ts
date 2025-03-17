@@ -1,16 +1,13 @@
-import {
-  CreateManufacturer,
-  DeleteManufacturer,
-  UpdateManufacturer,
-} from "@/app/(dashboard)/(admin)/manufacturers/action";
 import { useDialogStore } from "@/stores/store";
-import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../use-toast";
 import {
   TransmissionParams,
   TransmissionPayload,
 } from "@/constants/models/transmission.model";
 import {
+  CreateTransmission,
+  DeleteTransmission,
   GetTransmissions,
   UpdateTransmission,
 } from "@/app/(dashboard)/(admin)/transmissions/action";
@@ -34,16 +31,16 @@ export const useTransmissionQuery = ({ params }: TransmissionQuery) => {
 
 export const useTransmissionMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const createTransmission = useMutation({
     mutationKey: ["createTransmission"],
     mutationFn: async (payload: TransmissionPayload) => {
-      await CreateManufacturer(payload);
+      await CreateTransmission(payload);
     },
     onSuccess: () => {
       setOpen(false);
-      queryClient.fetchQuery({ queryKey: ["transmissions"] });
+      queryClient.invalidateQueries({ queryKey: ["transmissions"] });
     },
     onError: () => {
       toast({ title: "Không thể thêm nhà sản xuất" });
@@ -73,7 +70,7 @@ export const useTransmissionMutation = () => {
   const deleteTransmission = useMutation({
     mutationKey: ["deleteManufacturer"],
     mutationFn: async (id: string) => {
-      await DeleteManufacturer(id);
+      await DeleteTransmission(id);
     },
     onSuccess: () => {
       setOpen(false);
