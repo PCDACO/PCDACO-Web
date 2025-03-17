@@ -1,7 +1,7 @@
 "use server";
 
 import axiosInstance from "@/app/axios.server";
-import { OwnerParams, OwnerResponse } from "@/constants/models/owner.model";
+import { OwnerApprovalPayload, OwnerParams, OwnerResponse } from "@/constants/models/owner.model";
 
 export const GetOwners = async (
   params: OwnerParams
@@ -19,3 +19,12 @@ export const GetOwner = async (id: string): Promise<RootResponse<OwnerResponse>>
   const response = await axiosInstance.get(`/api/users/owners/${id}`);
   return response.data;
 }
+
+export const PatchOwnerLicense = async (id: string, payload: OwnerApprovalPayload): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.patch(`/api/users/${id}/license/approve`, {
+    isApproved: payload.isApproved,
+    rejectReason: payload.rejectReason,
+  });
+  return response.data;
+}
+

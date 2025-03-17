@@ -26,6 +26,7 @@ import {
   CarIcon,
   LucideProps,
   ChevronUp,
+  LucideIdCard,
 } from 'lucide-react';
 // import Link from "next/link"
 import { LogoutButton } from './LogoutButton';
@@ -93,6 +94,13 @@ const items: SideBarItem[] = [
     icon: Cog,
     role: 'Admin',
     group: 'Quản Lí Hệ Thống',
+  },
+  {
+    title: 'Xét Duyệt Người Dùng',
+    url: '/pending-approval',
+    icon: LucideIdCard,
+    role: 'Admin',
+    group: 'Người Dùng',
   },
   {
     title: 'Người Cho Thuê',
@@ -263,7 +271,7 @@ export async function AppSidebar() {
                   <span>Billing</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <span>Sign out</span>
+                  <LogoutButton />
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
