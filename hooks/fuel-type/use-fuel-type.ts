@@ -63,7 +63,7 @@ export const useFuelTypeMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
     },
     onError: () => {
-      toast({ title: "Không thể  sửa loại nhiên liệu" });
+      toast({ title: "Không thể sửa loại nhiên liệu" });
     },
   });
 

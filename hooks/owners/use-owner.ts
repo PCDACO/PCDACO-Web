@@ -8,7 +8,7 @@ import {
   PatchOwnerLicense,
 } from "@/app/(dashboard)/(admin)/owners/action";
 import { toast } from "../use-toast";
-import { GetOwnerPendingApproval, GetOwnerPendingApprovals } from "@/app/(dashboard)/(admin)/pending-approval/action";
+import { GetOwnerPendingApprovals } from "@/app/(dashboard)/(admin)/pending-approval/action";
 import { generateGuid } from "@/lib/uuid";
 
 interface OwnerQuery {
@@ -23,25 +23,20 @@ export const useOwnerQuery = ({ params, id }: OwnerQuery) => {
 
   const listOwnerQuery = useQuery({
     queryKey: ["owners", params],
-    queryFn: () => GetOwners(params)
+    queryFn: () => GetOwners(params),
   });
 
   const ownerQuery = useQuery({
     queryKey: ["owner", id],
-    queryFn: () => GetOwner(id ?? generateGuid())
+    queryFn: () => GetOwner(id ?? generateGuid()),
   });
 
   const listOwnerApprovalQuery = useQuery({
     queryKey: ["ownerApproval", params],
-    queryFn: () => GetOwnerPendingApprovals(params)
+    queryFn: () => GetOwnerPendingApprovals(params),
   });
 
-  const ownerApprovalQuery = useQuery({
-    queryKey: ["ownerApproval", id],
-    queryFn: () => GetOwnerPendingApproval(id ?? generateGuid())
-  });
-
-  return { listOwnerQuery, ownerQuery, listOwnerApprovalQuery, ownerApprovalQuery };
+  return { listOwnerQuery, ownerQuery, listOwnerApprovalQuery };
 };
 
 export const useOwnerMutation = () => {
