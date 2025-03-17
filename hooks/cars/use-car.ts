@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
 import { CarParams } from "@/constants/models/car.model";
@@ -25,7 +25,7 @@ export const useCarQuery = ({ params }: CarQuery) => {
 
 export const useCarMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const deleteCarMutation = useMutation({
     mutationKey: ["deleteCar"],
     mutationFn: async (id: string) => {

@@ -9,7 +9,7 @@ import {
   ManufacturePayload,
 } from "@/constants/models/manufacture.model";
 import { useDialogStore } from "@/stores/store";
-import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../use-toast";
 
 interface ManufactureQuery {
@@ -31,7 +31,7 @@ export const useManuFactureQuery = ({ params }: ManufactureQuery) => {
 
 export const useManuFactureMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const createManufacturerMutation = useMutation({
     mutationKey: ["createManufacturer"],
@@ -40,7 +40,8 @@ export const useManuFactureMutation = () => {
     },
     onSuccess: () => {
       setOpen(false);
-      queryClient.fetchQuery({ queryKey: ["manufacturers"] });
+      queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
+      toast({ title: "Tạo hãng xe thành công" });
     },
     onError: () => {
       toast({ title: "Không thể thêm nhà sản xuất" });

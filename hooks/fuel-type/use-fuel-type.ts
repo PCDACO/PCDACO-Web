@@ -1,5 +1,5 @@
 import { useDialogStore } from "@/stores/store";
-import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../use-toast";
 import {
   FuelTypeParams,
@@ -31,7 +31,7 @@ export const useFuelTypeQuery = ({ params }: FuelTypeQuery) => {
 
 export const useFuelTypeMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const createFuelType = useMutation({
     mutationKey: ["createFuelType"],
@@ -40,7 +40,7 @@ export const useFuelTypeMutation = () => {
     },
     onSuccess: () => {
       setOpen(false);
-      queryClient.fetchQuery({ queryKey: ["fueltypes"] });
+      queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
     },
     onError: () => {
       toast({ title: "Không thể thêm loại nhiên liệu" });

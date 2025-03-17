@@ -1,5 +1,5 @@
 import { useDialogStore } from "@/stores/store";
-import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../use-toast";
 import {
   GPSDeviceParams,
@@ -31,7 +31,7 @@ export const useGPSDeviceQuery = ({ params }: GPSDeviceQuery) => {
 
 export const useGPSDeviceMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const createGPSDeviceMutation = useMutation({
     mutationKey: ["createGPSDevice"],
@@ -40,7 +40,7 @@ export const useGPSDeviceMutation = () => {
     },
     onSuccess: () => {
       setOpen(false);
-      queryClient.fetchQuery({ queryKey: ["gps-devices"] });
+      queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
     },
     onError: () => {
       toast({ title: "Không thể tạo thiết bị" });

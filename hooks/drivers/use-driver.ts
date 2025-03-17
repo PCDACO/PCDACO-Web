@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
 import { DeleteDriver, GetDrivers } from "@/app/(dashboard)/(admin)/drivers/action";
@@ -23,7 +23,7 @@ export const useDriverQuery = ({ params }: DriverQuery) => {
 
 export const useDriverMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const deleteDriverMutation = useMutation({
     mutationKey: ["deleteDriver"],
     mutationFn: async (id: string) => {

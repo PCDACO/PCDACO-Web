@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
 import { ModelParams } from "@/constants/models/model.model.ts";
@@ -27,7 +27,7 @@ export const useModelQuery = ({ manufacturerId, params }: ModelQuery) => {
 
 export const useModelMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const deleteModelMutation = useMutation({
     mutationKey: ["deleteModel"],
     mutationFn: async (id: string) => {
@@ -36,7 +36,7 @@ export const useModelMutation = () => {
     onSuccess: () => {
       setOpen(false);
       toast({ title: "Xóa thành công" });
-      queryClient.refetchQueries({ queryKey: ["models"] });
+      queryClient.invalidateQueries({ queryKey: ["models"] });
     },
     onError: () => {
       toast({ title: "Không thể xóa mẫu này" });

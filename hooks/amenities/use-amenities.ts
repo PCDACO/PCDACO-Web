@@ -2,7 +2,6 @@ import { useDialogStore } from "@/stores/store";
 import {
   useQuery,
   useMutation,
-  QueryClient,
   useQueryClient,
 } from "@tanstack/react-query";
 import { toast } from "../use-toast";

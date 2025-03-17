@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { OwnerApprovalPayload, OwnerParams } from "@/constants/models/owner.model";
 import { useDialogStore } from "@/stores/store";
 import {
@@ -9,6 +9,7 @@ import {
 } from "@/app/(dashboard)/(admin)/owners/action";
 import { toast } from "../use-toast";
 import { GetOwnerPendingApproval, GetOwnerPendingApprovals } from "@/app/(dashboard)/(admin)/pending-approval/action";
+import { generateGuid } from "@/lib/uuid";
 
 interface OwnerQuery {
   params?: OwnerParams;
@@ -22,12 +23,12 @@ export const useOwnerQuery = ({ params, id }: OwnerQuery) => {
 
   const listOwnerQuery = useQuery({
     queryKey: ["owners", params],
-    queryFn: () => GetOwners(params),
+    queryFn: () => GetOwners(params)
   });
 
   const ownerQuery = useQuery({
     queryKey: ["owner", id],
-    queryFn: () => GetOwner(id ?? ""),
+    queryFn: () => GetOwner(id ?? generateGuid())
   });
 
   const listOwnerApprovalQuery = useQuery({
@@ -37,7 +38,7 @@ export const useOwnerQuery = ({ params, id }: OwnerQuery) => {
 
   const ownerApprovalQuery = useQuery({
     queryKey: ["ownerApproval", id],
-    queryFn: () => GetOwnerPendingApproval(id ?? "")
+    queryFn: () => GetOwnerPendingApproval(id ?? generateGuid())
   });
 
   return { listOwnerQuery, ownerQuery, listOwnerApprovalQuery, ownerApprovalQuery };
@@ -45,7 +46,7 @@ export const useOwnerQuery = ({ params, id }: OwnerQuery) => {
 
 export const useOwnerMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const deleteOwnerMutation = useMutation({
     mutationKey: ["deleteOwner"],
     mutationFn: async (id: string) => {
@@ -72,7 +73,7 @@ export const useOwnerMutation = () => {
     onSuccess: () => {
       setOpen(false);
       toast({ title: "Cập nhật thành công" });
-      queryClient.invalidateQueries({ queryKey: ["owners"] });
+      queryClient.invalidateQueries({ queryKey: ["ownerApproval"] });
     },
     onError: () => {
       toast({ title: "Không thể xóa chủ xe này" });

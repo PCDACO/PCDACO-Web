@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CreateInspectionSchedules,
   GetInspectionSchedules,
@@ -33,7 +33,7 @@ export const useInspectionScheduleQuery = ({
 
 export const useInspectionScheduleMutation = () => {
   const { setOpen } = useDialogStore();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const { replace } = useRouter();
 
   const createInspectionSchedule = useMutation({
@@ -43,7 +43,7 @@ export const useInspectionScheduleMutation = () => {
     },
     onSuccess: () => {
       setOpen(false);
-      queryClient.fetchQuery({ queryKey: ["inspection-schedules"] });
+      queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
       replace("/inspection-schedules");
     },
     onError: () => {
@@ -57,7 +57,7 @@ export const useInspectionScheduleMutation = () => {
       await RejectInspectionSchedules(id);
     },
     onSuccess: () => {
-      queryClient.fetchQuery({ queryKey: ["inspection-schedules"] });
+      queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
       replace("/inspection-schedules");
     },
     onError: () => {
