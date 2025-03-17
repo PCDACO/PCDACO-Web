@@ -6,9 +6,3 @@ export const GetOwnerPendingApprovals = async (params: OwnerParams): Promise<Roo
   const response = await axiosInstance.get("/api/users/license/approve", { params });
   return response.data;
 }
-
-export const GetOwnerPendingApproval = async (id: string): Promise<RootResponse<OwnerPendingApprovalResponse>> => {
-  if (id === "") throw Error;
-  const response = await axiosInstance.get(`/api/users/${id}/approval`);
-  return response.data;
-}

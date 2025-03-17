@@ -16,36 +16,35 @@ import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { useIdStore } from "@/stores/store"
-import { useOwnerMutation, useOwnerQuery } from "@/hooks/owners/use-owner"
+import { useOwnerMutation } from "@/hooks/owners/use-owner"
 import { formatDate } from "@/lib/utils"
+import { OwnerPendingApprovalResponse } from "@/constants/models/owner.model"
 
 interface LicenseDetailDialogProps {
+  id: string,
   isOpen: boolean,
   onClose: () => void,
+  approval: OwnerPendingApprovalResponse,
 }
 
 export default function LicenseDetailDialog(
   {
+    id,
     isOpen,
-    onClose
+    onClose,
+    approval
   }: LicenseDetailDialogProps
 ) {
   const { patchOwnerMutation } = useOwnerMutation();
   const [activeTab, setActiveTab] = useState("details")
   const [rejectionReason, setRejectionReason] = useState("")
   const [showRejectionForm, setShowRejectionForm] = useState(false)
-  const { id } = useIdStore();
 
-  const { ownerApprovalQuery } = useOwnerQuery({
-    id: id
-  });
 
   const handleReject = () => {
     if (showRejectionForm) {
       if (rejectionReason.trim()) {
         // Submit rejection with reason
-        console.log("Rejected with reason:", rejectionReason)
         onClose();
         patchOwnerMutation.mutate({
           id: id,
@@ -84,8 +83,8 @@ export default function LicenseDetailDialog(
               <User className="h-6 w-6 text-slate-600" />
             </div>
             <div>
-              <DialogTitle className="text-xl">{ownerApprovalQuery.data?.value.name}</DialogTitle>
-              <DialogDescription>Application submitted on {ownerApprovalQuery.data?.value && formatDate(ownerApprovalQuery.data.value.licenseImageUploadedAt.toString())}</DialogDescription>
+              <DialogTitle className="text-xl">{approval.name}</DialogTitle>
+              <DialogDescription>Application submitted on {approval && formatDate(approval.licenseImageUploadedAt.toString())}</DialogDescription>
             </div>
           </div>
         </DialogHeader>
@@ -104,7 +103,7 @@ export default function LicenseDetailDialog(
                   <h3 className="text-sm font-medium text-slate-500 mb-1">Email Address</h3>
                   <p className="flex items-center text-slate-900">
                     <Mail className="h-4 w-4 mr-2 text-slate-400" />
-                    {ownerApprovalQuery.data?.value.email}
+                    {approval.email}
                   </p>
                 </div>
 
@@ -112,7 +111,7 @@ export default function LicenseDetailDialog(
                   <h3 className="text-sm font-medium text-slate-500 mb-1">Phone Number</h3>
                   <p className="flex items-center text-slate-900">
                     <Phone className="h-4 w-4 mr-2 text-slate-400" />
-                    {ownerApprovalQuery.data?.value.phone}
+                    {approval.phone}
                   </p>
                 </div>
 
@@ -120,7 +119,7 @@ export default function LicenseDetailDialog(
                   <h3 className="text-sm font-medium text-slate-500 mb-1">Address</h3>
                   <p className="flex items-start text-slate-900">
                     <MapPin className="h-4 w-4 mr-2 text-slate-400 mt-0.5" />
-                    {ownerApprovalQuery.data?.value.address}
+                    {approval.address}
                   </p>
                 </div>
               </div>
@@ -130,7 +129,7 @@ export default function LicenseDetailDialog(
                   <h3 className="text-sm font-medium text-slate-500 mb-1">License Number</h3>
                   <p className="flex items-center text-slate-900">
                     <FileText className="h-4 w-4 mr-2 text-slate-400" />
-                    {ownerApprovalQuery.data?.value.licenseNumber}
+                    {approval.licenseNumber}
                   </p>
                 </div>
 
@@ -138,9 +137,9 @@ export default function LicenseDetailDialog(
                   <h3 className="text-sm font-medium text-slate-500 mb-1">Submission Date</h3>
                   <p className="flex items-center text-slate-900">
                     <Calendar className="h-4 w-4 mr-2 text-slate-400" />
-                    {ownerApprovalQuery.data?.value?.licenseImageUploadedAt
+                    {approval?.licenseImageUploadedAt
                       ? formatDate(
-                        ownerApprovalQuery.data?.value.licenseImageUploadedAt.toString()
+                        approval.licenseImageUploadedAt.toString()
                       ) : ""}
                   </p>
                 </div>
@@ -149,9 +148,9 @@ export default function LicenseDetailDialog(
                   <h3 className="text-sm font-medium text-slate-500 mb-1">Expiration Date</h3>
                   <p className="flex items-center text-slate-900">
                     <Clock className="h-4 w-4 mr-2 text-slate-400" />
-                    {ownerApprovalQuery.data?.value?.licenseExpiryDate
+                    {approval?.licenseExpiryDate
                       ? formatDate(
-                        ownerApprovalQuery.data?.value.licenseExpiryDate.toString()
+                        approval.licenseExpiryDate.toString()
                       )
                       : ""}
                   </p>
@@ -166,7 +165,7 @@ export default function LicenseDetailDialog(
                 <h3 className="text-sm font-medium text-slate-500">Front of ID/License</h3>
                 <div className="border rounded-lg overflow-hidden bg-slate-50 aspect-[4/3] relative">
                   <Image
-                    src={ownerApprovalQuery.data?.value.licenseImageFrontUrl ?? "/placeholder.svg?height=300&width=400"}
+                    src={approval.licenseImageFrontUrl ?? "/placeholder.svg?height=300&width=400"}
                     alt="Front of ID/License"
                     width={400}
                     height={300}
@@ -182,7 +181,7 @@ export default function LicenseDetailDialog(
                 <h3 className="text-sm font-medium text-slate-500">Back of ID/License</h3>
                 <div className="border rounded-lg overflow-hidden bg-slate-50 aspect-[4/3] relative">
                   <Image
-                    src={ownerApprovalQuery.data?.value.licenseImageBackUrl ?? "/placeholder.svg?height=300&width=400"}
+                    src={approval.licenseImageBackUrl ?? "/placeholder.svg?height=300&width=400"}
                     alt="Back of ID/License"
                     width={400}
                     height={300}
@@ -205,9 +204,9 @@ export default function LicenseDetailDialog(
                 <div>
                   <p className="text-sm font-medium">Application submitted</p>
                   <p className="text-xs text-slate-500">
-                    {ownerApprovalQuery.data?.value?.licenseImageUploadedAt
+                    {approval?.licenseImageUploadedAt
                       ? formatDate(
-                        ownerApprovalQuery.data?.value.licenseImageUploadedAt.toString()
+                        approval.licenseImageUploadedAt.toString()
                       )
                       : ""}
                   </p>

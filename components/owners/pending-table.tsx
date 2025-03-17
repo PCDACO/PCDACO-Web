@@ -2,7 +2,6 @@
 import React from "react";
 import {
   useDialogStore,
-  useIdStore,
   useParamStore,
 } from "@/stores/store";
 import { useOwnerQuery } from "@/hooks/owners/use-owner";
@@ -18,7 +17,6 @@ const PendingOwnerTable = () => {
   const { listOwnerApprovalQuery } = useOwnerQuery({
     params: value,
   });
-  const { setId } = useIdStore();
   const { open, setOpen } = useDialogStore();
 
   // do ui error
@@ -50,7 +48,7 @@ const PendingOwnerTable = () => {
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {listOwnerApprovalQuery.data?.value?.items.map((driver) => (
-              <>
+              <div key={driver.id}>
                 <Card
                   key={driver.id}
                   className="border-l-4 border-l-amber-500 shadow-sm hover:shadow-md transition-shadow"
@@ -80,7 +78,6 @@ const PendingOwnerTable = () => {
                     <Button
                       className="w-full bg-slate-800 hover:bg-slate-900"
                       onClick={() => {
-                        setId(driver.id);
                         setOpen(true);
                       }}
                     >
@@ -88,8 +85,8 @@ const PendingOwnerTable = () => {
                     </Button>
                   </CardFooter>
                 </Card>
-                <LicenseDetailDialog isOpen={open} onClose={() => setOpen(false)} />
-              </>
+                <LicenseDetailDialog approval={driver} isOpen={open} onClose={() => setOpen(false)} id={driver.id} />
+              </div>
             )) ?? []}
           </div>
         </div>
