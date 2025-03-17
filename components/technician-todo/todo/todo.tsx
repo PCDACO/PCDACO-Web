@@ -35,7 +35,7 @@ export default function TechnicianTodo() {
       <main>
         <ul className="space-y-6">
           {listTechnicianTasks.data?.value.cars.map((car) => (
-            <li key={car.inspectionScheduleId} className="border border-gray-300 p-4 rounded-lg">
+            <li key={car.inspectionScheduleId} className="border border-gray-300 p-4 rounded-lg hover:cursor-pointer">
               <div className="flex items-start justify-between mb-2" onClick={() => setIsCarDetailsOpen(true)}>
                 <div>
                   <h2 className="font-semibold">{car.modelName}-{car.licensePlate}</h2>

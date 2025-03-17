@@ -3,7 +3,6 @@ import "../globals.css";
 import ReactQueryProvider from "@/components/query-client-provider";
 import {
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import { Toaster } from "@/components/ui/toaster";
@@ -38,8 +37,7 @@ export default async function RootLayout({
       >
         <SidebarProvider>
           <AppSidebar />
-          <main className="container mx-auto">
-            <SidebarTrigger />
+          <main className="container mx-auto my-4">
             <ReactQueryProvider>
               {children}
             </ReactQueryProvider>
