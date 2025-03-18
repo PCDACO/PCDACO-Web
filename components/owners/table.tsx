@@ -25,11 +25,6 @@ const OwnerTable = () => {
   const { id } = useIdStore();
   const { data } = useOwnerStore();
 
-  // do ui error
-  if (listOwnerQuery.isError) {
-    return <div>Error...</div>;
-  }
-
   return (
     <Dialog
       open={open}

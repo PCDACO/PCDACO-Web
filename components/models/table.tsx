@@ -34,10 +34,6 @@ const ModelTable = ({ manufacturerId }: ModelTableProps) => {
   const { id } = useIdStore();
   const { data } = useModelStore();
 
-  if (listModelQuery.isError) {
-    return <div>Error...</div>;
-  }
-
   return (
     <Dialog
       open={open}
