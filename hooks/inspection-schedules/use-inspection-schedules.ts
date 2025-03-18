@@ -26,6 +26,7 @@ export const useInspectionScheduleQuery = ({
   const listInspectionSchedules = useQuery({
     queryKey: ["inspection-schedules", params],
     queryFn: () => GetInspectionSchedules(params),
+    retry: 1
   });
 
   return { listInspectionSchedules };

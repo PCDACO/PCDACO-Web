@@ -24,6 +24,7 @@ export const useOwnerQuery = ({ params, id }: OwnerQuery) => {
   const listOwnerQuery = useQuery({
     queryKey: ["owners", params],
     queryFn: () => GetOwners(params),
+    retry: 1
   });
 
   const ownerQuery = useQuery({

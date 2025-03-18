@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query"
 export const useStatisticsQuery = () => {
   const listStatisticsQuery = useQuery({
     queryKey: ["statistics"],
-    queryFn: () => GetStatistics()
+    queryFn: () => GetStatistics(),
+    retry: 1
   });
   return { listStatisticsQuery };
 }

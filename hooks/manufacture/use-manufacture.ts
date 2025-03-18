@@ -24,6 +24,7 @@ export const useManuFactureQuery = ({ params }: ManufactureQuery) => {
   const listManuFactureQuery = useQuery({
     queryKey: ["manufacturers", params],
     queryFn: () => GetManufacturers(params),
+    retry: 1
   });
 
   return { listManuFactureQuery };

@@ -24,6 +24,7 @@ export const useFuelTypeQuery = ({ params }: FuelTypeQuery) => {
   const listFuelTypeQuery = useQuery({
     queryKey: ["fueltypes", params],
     queryFn: () => GetFuelTypes(params),
+    retry: 1
   });
 
   return { listFuelTypeQuery };

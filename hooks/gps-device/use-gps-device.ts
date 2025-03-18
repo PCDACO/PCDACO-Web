@@ -24,6 +24,7 @@ export const useGPSDeviceQuery = ({ params }: GPSDeviceQuery) => {
   const listGPSDeviceQuery = useQuery({
     queryKey: ["gps-devices", params],
     queryFn: () => GetGPSDevices(params),
+    retry: 1
   });
 
   return { listGPSDeviceQuery };

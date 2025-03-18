@@ -84,16 +84,16 @@ export default function LicenseDetailDialog(
             </div>
             <div>
               <DialogTitle className="text-xl">{approval.name}</DialogTitle>
-              <DialogDescription>Application submitted on {approval && formatDate(approval.licenseImageUploadedAt.toString())}</DialogDescription>
+              <DialogDescription>Nộp lúc {approval && formatDate(approval.licenseImageUploadedAt.toString())}</DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
         <Tabs defaultValue="details" className="mt-2" onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="details">Details</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
-            <TabsTrigger value="history">History</TabsTrigger>
+            <TabsTrigger value="details">Chi tiết</TabsTrigger>
+            <TabsTrigger value="documents">Hình ảnh</TabsTrigger>
+            <TabsTrigger value="history">Trạng thái</TabsTrigger>
           </TabsList>
 
           <TabsContent value="details" className="space-y-4 pt-4">
@@ -162,7 +162,7 @@ export default function LicenseDetailDialog(
           <TabsContent value="documents" className="pt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <h3 className="text-sm font-medium text-slate-500">Front of ID/License</h3>
+                <h3 className="text-sm font-medium text-slate-500">Trước</h3>
                 <div className="border rounded-lg overflow-hidden bg-slate-50 aspect-[4/3] relative">
                   <Image
                     src={approval.licenseImageFrontUrl ?? "/placeholder.svg?height=300&width=400"}
@@ -171,14 +171,11 @@ export default function LicenseDetailDialog(
                     height={300}
                     className="object-contain w-full h-full"
                   />
-                  <Button size="sm" variant="secondary" className="absolute bottom-2 right-2">
-                    View Full Size
-                  </Button>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-sm font-medium text-slate-500">Back of ID/License</h3>
+                <h3 className="text-sm font-medium text-slate-500">Sau</h3>
                 <div className="border rounded-lg overflow-hidden bg-slate-50 aspect-[4/3] relative">
                   <Image
                     src={approval.licenseImageBackUrl ?? "/placeholder.svg?height=300&width=400"}
@@ -187,9 +184,6 @@ export default function LicenseDetailDialog(
                     height={300}
                     className="object-contain w-full h-full"
                   />
-                  <Button size="sm" variant="secondary" className="absolute bottom-2 right-2">
-                    View Full Size
-                  </Button>
                 </div>
               </div>
             </div>

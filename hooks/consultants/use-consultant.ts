@@ -10,7 +10,8 @@ export const useConsultantQuery = ({ params }: {
 }) => {
   const listConsultants = useQuery({
     queryKey: ["consultants", params],
-    queryFn: () => GetConsultants(params)
+    queryFn: () => GetConsultants(params),
+    retry: 1
   });
   return { listConsultants };
 }
