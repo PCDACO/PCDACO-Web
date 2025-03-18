@@ -64,7 +64,7 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            href="#"
+            className="hover:cursor-pointer"
             onClick={() =>
               setPageNumber((prev) => Math.max(prev - 1, 1))
             }
@@ -91,7 +91,7 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
 
         <PaginationItem>
           <PaginationNext
-            href="#"
+            className="hover:cursor-pointer"
             onClick={() =>
               setPageNumber((prev) => Math.min(prev + 1, totalPages))
             }
