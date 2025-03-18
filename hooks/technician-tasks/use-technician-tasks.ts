@@ -11,6 +11,7 @@ export const useTechnicianTaskQuery = () => {
   const listTechnicianTasks = useQuery({
     queryKey: ["tasks"],
     queryFn: () => GetTechnicianTasks(),
+    retry: 1
   });
 
   return { listTechnicianTasks };

@@ -16,11 +16,9 @@ const ConsultantTable = () => {
   const { listConsultants } = useConsultantQuery({
     params: value,
   });
+
   const { replace } = useRouter();
-  // do ui error
-  if (listConsultants.isError) {
-    return <div>Error...</div>;
-  }
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center w-full">

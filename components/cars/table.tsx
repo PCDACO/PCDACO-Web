@@ -25,11 +25,6 @@ const CarTable = ({ status }: CarTableProps) => {
   const { id } = useIdStore();
   const { data } = useCarStore();
 
-  // do ui error
-  if (listCarQuery.isError) {
-    return <div>Error...</div>;
-  }
-
   return (
     <Dialog
       open={open}

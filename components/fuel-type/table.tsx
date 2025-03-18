@@ -27,11 +27,6 @@ const FuelTypeTable = () => {
   const { id } = useIdStore();
   const { data } = useFuelTypeStore();
 
-  // do ui error
-  if (listFuelTypeQuery.isError) {
-    return <div>Error...</div>;
-  }
-
   return (
     <Dialog
       open={open}

@@ -20,6 +20,7 @@ export const useModelQuery = ({ manufacturerId, params }: ModelQuery) => {
   const listModelQuery = useQuery({
     queryKey: ["models", params],
     queryFn: () => GetModels(manufacturerId, params),
+    retry: 1
   });
 
   return { listModelQuery };

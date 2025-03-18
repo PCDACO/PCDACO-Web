@@ -219,7 +219,7 @@ export async function AppSidebar() {
           {Object.entries(groupedItems).map(([group, items]) => (
             <SidebarGroup key={group}>
               <SidebarGroupLabel asChild>
-                <SidebarMenuButton className="flex items-center justify-start font-bold w-full">
+                <SidebarMenuButton className="flex items-center justify-start font-bold w-full text-primary">
                   {group}
                 </SidebarMenuButton>
               </SidebarGroupLabel>
@@ -228,8 +228,8 @@ export async function AppSidebar() {
                   <SidebarMenuSubItem className="mt-1" key={item.title}>
                     <SidebarMenuSubButton asChild size={'md'}>
                       <Link href={item.url}>
-                        <item.icon className="mr-2 h-4 w-4" />
-                        <span>{item.title}</span>
+                        <item.icon className="mr-2 h-4 w-4 text-primary" />
+                        <span className=''>{item.title}</span>
                       </Link>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>

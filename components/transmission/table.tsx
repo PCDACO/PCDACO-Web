@@ -26,11 +26,6 @@ const TransmissionTable = () => {
   const { id } = useIdStore();
   const { data } = useTransmissionStore();
 
-  // do ui error
-  if (listTransmissionQuery.isError) {
-    return <div>Error...</div>;
-  }
-
   return (
     <Dialog
       open={open}

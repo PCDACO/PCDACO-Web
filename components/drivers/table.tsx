@@ -26,11 +26,6 @@ const DriverTable = () => {
   const { id } = useIdStore();
   const { data } = useDriverStore();
 
-  // do ui error
-  if (listDriverQuery.isError) {
-    return <div>Error...</div>;
-  }
-
   return (
     <Dialog
       open={open}

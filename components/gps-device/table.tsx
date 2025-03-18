@@ -27,16 +27,6 @@ const GPSDeviceTable = () => {
   const { id } = useIdStore();
   const { data } = useGPSDeviceStore();
 
-  // do ui error
-  if (listGPSDeviceQuery.isError) {
-    return <div>Error...</div>;
-  }
-
-  // do ui skeleton
-  // if (!listManuFactureQuery.data) {
-  //   return <div>No data</div>;
-  // }
-
   return (
     <Dialog
       open={open}

@@ -1,14 +1,13 @@
 import React from "react";
-import { Pagination, PaginationContent } from "@/components/ui/pagination";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { useParamStore } from "@/stores/store";
 
 interface IPaginationTable<T> {
@@ -17,60 +16,103 @@ interface IPaginationTable<T> {
 
 const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
   const [pageNumber, setPageNumber] = React.useState<number>(1);
-  const [pageSize, setPageSize] = React.useState<number>(10);
   const { setValue, value: params } = useParamStore();
 
   React.useEffect(() => {
     setValue({
       ...params,
       index: pageNumber,
-      size: pageSize,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNumber, pageSize]);
+  }, [pageNumber]);
+
+
+  const totalPages = Math.ceil(value.totalItems / 10);
+
+  const getPageNumbers = () => {
+    const pagesToShow = 5;
+    const currentPage = pageNumber;
+    let startPage = 1;
+    let endPage = totalPages;
+
+    if (totalPages <= pagesToShow) {
+      // less than or equal to the maximum number of pages to show
+      endPage = totalPages;
+    } else {
+      // more than the maximum number of pages to show
+      const middle = Math.ceil(pagesToShow / 2);
+      if (currentPage <= middle) {
+        startPage = 1;
+        endPage = pagesToShow;
+      } else if (currentPage + middle - 1 >= totalPages) {
+        startPage = totalPages - pagesToShow + 1;
+        endPage = totalPages;
+      } else {
+        startPage = currentPage - middle + 1;
+        endPage = currentPage + middle - 1;
+      }
+    }
+
+    return Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  };
 
   return (
-    <Pagination className=" justify-end">
+    <Pagination>
       <PaginationContent>
-        <Select onValueChange={(value) => setPageNumber(Number(value))}>
-          <SelectTrigger className="w-[130px]">
-            <SelectValue placeholder="Trang" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Page</SelectLabel>
-              {Array.from(
-                { length: Math.ceil(value.totalItems / value.pageSize) },
-                (_, i) => i + 1
-              ).map((item) => (
-                <SelectItem value={String(item)} key={item}>
-                  {item}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Select onValueChange={(value) => setPageSize(Number(value))}>
-          <SelectTrigger className="w-[150px]">
-            <SelectValue placeholder="Số Lượng" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Size page</SelectLabel>
-              {["1", "2", "6", "8", "50"].map((item) => (
-                <SelectItem value={item} key={item}>
-                  {item}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <div className="border border-slate-200 rounded-lg p-1.5 shadow-sm px-4">
-          <span>
-            {value.pageNumber} of {Math.ceil(value.totalItems / value.pageSize)}
-          </span>
-        </div>
+        <PaginationItem>
+          <PaginationPrevious
+            href="#"
+            onClick={() =>
+              setPageNumber((prev) => Math.max(prev - 1, 1))
+            }
+          />
+        </PaginationItem>
+
+        {getPageNumbers().map((page) => (
+          <PaginationItem key={page}>
+            <PaginationLink
+              href="#"
+              onClick={() => setPageNumber(page)}
+              className={page === pageNumber ? "bg-primary text-white" : undefined}
+            >
+              {page}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+
+        {totalPages > 5 && (
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+        )}
+
+        <PaginationItem>
+          <PaginationNext
+            href="#"
+            onClick={() =>
+              setPageNumber((prev) => Math.min(prev + 1, totalPages))
+            }
+          />
+        </PaginationItem>
       </PaginationContent>
+      {/* <Select onValueChange={(value) => handlePageSizeChange(Number(value))}> */}
+      {/*   <SelectTrigger className="w-[150px]"> */}
+      {/*     <SelectValue placeholder="Số Lượng" /> */}
+      {/*   </SelectTrigger> */}
+      {/*   <SelectContent> */}
+      {/*     <SelectGroup> */}
+      {/*       <SelectLabel>Size page</SelectLabel> */}
+      {/*       {["10", "20", "50", "100"].map((item) => ( */}
+      {/*         <SelectItem value={item} key={item}> */}
+      {/*           {item} */}
+      {/*         </SelectItem> */}
+      {/*       ))} */}
+      {/*     </SelectGroup> */}
+      {/*   </SelectContent> */}
+      {/* </Select> */}
     </Pagination>
   );
 };

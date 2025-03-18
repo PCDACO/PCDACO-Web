@@ -26,11 +26,6 @@ const AmenityTable = () => {
   const { id, setId } = useIdStore();
   const { data } = useAmenityStore();
 
-  // do ui error
-  if (listAmenityQuery.isError) {
-    return <div>Error...</div>;
-  }
-
   return (
     <Dialog
       open={open}

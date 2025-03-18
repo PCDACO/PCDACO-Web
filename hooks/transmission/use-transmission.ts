@@ -24,6 +24,7 @@ export const useTransmissionQuery = ({ params }: TransmissionQuery) => {
   const listTransmissionQuery = useQuery({
     queryKey: ["transmissions", params],
     queryFn: () => GetTransmissions(params),
+    retry: 1
   });
 
   return { listTransmissionQuery };

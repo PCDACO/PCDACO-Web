@@ -28,6 +28,7 @@ export const useAmenityQuery = ({ params }: AmenityQuery) => {
   const listAmenityQuery = useQuery({
     queryKey: ["amenities", params],
     queryFn: () => GetAmenities(params),
+    retry: 1
   });
 
   return { listAmenityQuery };

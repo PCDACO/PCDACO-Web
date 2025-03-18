@@ -10,7 +10,8 @@ export const useTechnicianQuery = ({ params }: {
 }) => {
   const listTechnicians = useQuery({
     queryKey: ["technicians", params],
-    queryFn: () => GetTechnicians(params)
+    queryFn: () => GetTechnicians(params),
+    retry: 1
   });
   return { listTechnicians };
 }

@@ -16,6 +16,7 @@ export const useDriverQuery = ({ params }: DriverQuery) => {
   const listDriverQuery = useQuery({
     queryKey: ["drivers", params],
     queryFn: () => GetDrivers(params),
+    retry: 1
   });
 
   return { listDriverQuery };

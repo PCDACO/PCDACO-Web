@@ -29,16 +29,6 @@ const ManufacturerTable = () => {
   const { id } = useIdStore();
   const { data } = useManuFactureStore();
 
-  // do ui error
-  if (listManuFactureQuery.isError) {
-    return <div>Error...</div>;
-  }
-
-  // do ui skeleton
-  // if (!listManuFactureQuery.data) {
-  //   return <div>No data</div>;
-  // }
-
   return (
     <Dialog
       open={open}
