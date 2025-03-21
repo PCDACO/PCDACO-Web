@@ -56,7 +56,6 @@ interface Props {
 export default function InspectionDetailPage({ id }: Props) {
   const { replace } = useRouter();
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false)
-  const [isRespondDialogOpen, setIsRespondDialogOpen] = useState(false)
   const [responseNote, setResponseNote] = useState("")
 
   const getStatusBadge = (status: string) => {
@@ -137,7 +136,7 @@ export default function InspectionDetailPage({ id }: Props) {
               </div>
               <div>
                 <p className="font-medium">Inspection Time</p>
-                <p className="text-sm text-muted-foreground">{format(inspectionDetail.inspectionDate, "h:mm a")}</p>
+                <p className="text-sm text-muted-foreground">{format(inspectionDetail.inspectionDate, "h:mm a ")}</p>
               </div>
             </div>
 
