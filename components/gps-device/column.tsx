@@ -2,10 +2,17 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import MenuAction from "./menu-action";
 import { GPSDeviceResponse } from "@/constants/models/gps-device.model";
+import { formatDate } from "@/lib/utils";
 
 export const GPSDeviceColumns: ColumnDef<GPSDeviceResponse>[] = [
+  {
+    accessorKey: "index",
+    header: "STT",
+    cell: ({ row }) => {
+      return row.index + 1
+    }
+  },
   {
     accessorKey: "name",
     header: "Name",
@@ -17,18 +24,21 @@ export const GPSDeviceColumns: ColumnDef<GPSDeviceResponse>[] = [
   {
     accessorKey: "createdAt",
     header: "Created At",
-  },
-  {
-    id: "actions",
     cell: ({ row }) => {
-      return (
-        <MenuAction
-          id={row.original.id}
-          payload={{
-            name: row.original.name,
-          }}
-        />
-      );
-    },
+      return formatDate(row.original.createdAt.toString());
+    }
   },
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     return (
+  //       <MenuAction
+  //         id={row.original.id}
+  //         payload={{
+  //           name: row.original.name,
+  //         }}
+  //       />
+  //     );
+  //   },
+  // },
 ];

@@ -5,12 +5,14 @@ import {
   RejectInspectionSchedules,
 } from "@/app/(dashboard)/(consultants)/inspection-schedules/action";
 import {
+  CarInspectionSchedulePayload,
   GetInspectionSchedulesParams,
   InspectionSchedulePayload,
 } from "@/constants/models/inspection-schedule.model";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
 import { useRouter } from "next/navigation";
+import { ApproveInspectionScheduleAction } from "@/app/(dashboard)/(technicians)/technician-todo/[id]/approve/action";
 
 interface InspectionSchedulesQuery {
   params?: GetInspectionSchedulesParams;
@@ -65,9 +67,30 @@ export const useInspectionScheduleMutation = () => {
       toast({ title: "Không thể thêm nhà sản xuất" });
     },
   });
+
+  const approveInspectionSchedule = useMutation({
+    mutationKey: ["rejectInspectionSchedule"],
+    mutationFn: async ({
+      id, payload
+    }: {
+      id: string,
+      payload: CarInspectionSchedulePayload
+    }) => {
+      await ApproveInspectionScheduleAction(id, payload);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
+      replace("/inspection-schedules");
+    },
+    onError: () => {
+      toast({ title: "Không thể thêm nhà sản xuất" });
+    },
+
+  });
   return {
     createInspectionSchedule,
-    rejectInspectionSchedule
+    rejectInspectionSchedule,
+    approveInspectionSchedule
   }
 }
 

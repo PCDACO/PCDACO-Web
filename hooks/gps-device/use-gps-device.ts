@@ -5,12 +5,7 @@ import {
   GPSDeviceParams,
   GPSDevicePayload,
 } from "@/constants/models/gps-device.model";
-import {
-  CreateGPSDevice,
-  DeleteGPSDevice,
-  GetGPSDevices,
-  UpdateGPSDevice,
-} from "@/app/(dashboard)/(technicians)/gps-devices/action";
+import { CreateGPSDevice, DeleteGPSDevice, GetGPSDevices, UpdateGPSDevice } from "@/app/(dashboard)/(admin)/gps-devices/action";
 
 interface GPSDeviceQuery {
   params?: GPSDeviceParams;

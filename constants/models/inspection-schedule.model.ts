@@ -26,6 +26,11 @@ export interface InspectionSchedulePayload {
   inspectionDate: Date;
 }
 
+export interface CarInspectionSchedulePayload {
+  photos: Record<string, File | null>,
+  note: string,
+}
+
 export interface InspectionScheduleCreateResponse {
   id: string;
 }

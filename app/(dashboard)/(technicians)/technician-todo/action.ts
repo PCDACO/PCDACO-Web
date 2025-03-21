@@ -7,7 +7,7 @@ export const GetTechnicianTasks = async (): Promise<
   RootResponse<TechnicianTaskResponse>
 > => {
   const response = await axiosInstance.get(
-    "/api/inspection-schedules/technician/today"
+    "/api/inspection-schedules/technician"
   );
   return response.data;
 };
@@ -36,6 +36,15 @@ export const ApproveTechnicianTask = async (
       note: note,
       isApproved: true,
     }
+  );
+  return response.data;
+};
+
+export const InProgressTechnicianTask = async (
+  id: string,
+): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.patch(
+    `/api/inspection-schedules/${id}/inprogress`,
   );
   return response.data;
 };
