@@ -3,18 +3,17 @@ import React from "react";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import ManufacturerForm from "./form";
 import {
   useDialogStore,
-  useIdStore,
   useKeywordStore,
   useParamStore,
 } from "@/stores/store";
 import SearchInput from "@/components/input/search-input";
 import PaginationTable from "../data-table/pagination";
-import { useGPSDeviceStore } from "./menu-action";
 import { useGPSDeviceQuery } from "@/hooks/gps-device/use-gps-device";
 import { GPSDeviceColumns } from "./column";
+import { PlusCircleIcon } from "lucide-react";
+import GPSDeviceForm from "./form";
 
 const GPSDeviceTable = () => {
   const { open, setOpen } = useDialogStore();
@@ -24,8 +23,6 @@ const GPSDeviceTable = () => {
     params: value,
   });
 
-  const { id } = useIdStore();
-  const { data } = useGPSDeviceStore();
 
   return (
     <Dialog
@@ -37,7 +34,7 @@ const GPSDeviceTable = () => {
     >
       <div className="space-y-4">
         <div className="flex justify-between items-center w-full">
-          <SearchInput keyValue="manufacture" />
+          <SearchInput keyValue="gps-device" />
           <div className="flex items-center space-x-4">
             <PaginationTable
               value={
@@ -51,7 +48,9 @@ const GPSDeviceTable = () => {
               }
             />
             <DialogTrigger asChild>
-              <Button>Create</Button>
+              <Button>
+                <PlusCircleIcon />Tạo
+              </Button>
             </DialogTrigger>
           </div>
         </div>
@@ -63,7 +62,9 @@ const GPSDeviceTable = () => {
         />
       </div>
       <DialogContent>
-        <ManufacturerForm id={id} value={data || { name: "" }} />
+        <GPSDeviceForm id={""} value={{
+          name: ""
+        }} />
       </DialogContent>
     </Dialog>
   );

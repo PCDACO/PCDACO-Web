@@ -4,11 +4,9 @@ import {
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useParamStore } from "@/stores/store";
+import { Button } from "../ui/button";
 
 interface IPaginationTable<T> {
   value: Pagination<T>;
@@ -63,23 +61,23 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious
-            className="hover:cursor-pointer"
+          <Button
+            className="hover:cursor-pointer bg-white text-black "
             onClick={() =>
               setPageNumber((prev) => Math.max(prev - 1, 1))
-            }
-          />
+            } >
+            {"<"}
+          </Button>
         </PaginationItem>
 
         {getPageNumbers().map((page) => (
           <PaginationItem key={page}>
-            <PaginationLink
-              href="#"
+            <Button
               onClick={() => setPageNumber(page)}
               className={page === pageNumber ? "bg-primary text-white" : undefined}
             >
               {page}
-            </PaginationLink>
+            </Button>
           </PaginationItem>
         ))}
 
@@ -90,12 +88,13 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
         )}
 
         <PaginationItem>
-          <PaginationNext
-            className="hover:cursor-pointer"
+          <Button
+            className="hover:cursor-pointer bg-white text-black"
             onClick={() =>
               setPageNumber((prev) => Math.min(prev + 1, totalPages))
-            }
-          />
+            } >
+            {">"}
+          </Button>
         </PaginationItem>
       </PaginationContent>
       {/* <Select onValueChange={(value) => handlePageSizeChange(Number(value))}> */}
@@ -113,7 +112,7 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
       {/*     </SelectGroup> */}
       {/*   </SelectContent> */}
       {/* </Select> */}
-    </Pagination>
+    </Pagination >
   );
 };
 

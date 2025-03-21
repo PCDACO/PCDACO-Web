@@ -6,10 +6,11 @@ import { formatDate } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import { Check, X } from "lucide-react"
 export default function TechnicianTodo() {
   const [isCarDetailsOpen, setIsCarDetailsOpen] = useState(false)
   const { listTechnicianTasks } = useTechnicianTaskQuery();
-  const { rejectTechnicianTask, approveTechnicianTask } = useTechnicianTaskMutation();
+  const { rejectTechnicianTask } = useTechnicianTaskMutation();
   const handleOpenGpsAssignment = () => {
     setIsCarDetailsOpen(false) // Optionally close the car details dialog
   }
@@ -41,7 +42,7 @@ export default function TechnicianTodo() {
                   <h2 className="font-semibold">{car.modelName}-{car.licensePlate}</h2>
                   <p className="text-sm text-gray-600">{car.inspectionAddress}</p>
                 </div>
-                <div>
+                <div className="flex gap-4">
                   <Button onClick={() => {
                     rejectTechnicianTask.mutate({
                       id: car.inspectionScheduleId,
@@ -53,9 +54,10 @@ export default function TechnicianTodo() {
                                         w-6 h-6 flex items-center justify-center p-0 border-none cursor-pointer text-xs "
                     aria-label="Reject"
                   >
+                    <X />
                   </Button>
                   <Button onClick={() => {
-                    approveTechnicianTask.mutate({
+                    rejectTechnicianTask.mutate({
                       id: car.inspectionScheduleId,
                       note: Note[car.inspectionScheduleId] ?? "",
                     });
@@ -65,7 +67,7 @@ export default function TechnicianTodo() {
                                         w-6 h-6 flex items-center justify-center p-0 border-none cursor-pointer text-xs "
                     aria-label="Reject"
                   >
-                    Hoàn Thành
+                    <Check />
                   </Button>
                 </div>
               </div>

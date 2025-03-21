@@ -27,6 +27,8 @@ import {
   LucideProps,
   ChevronUp,
   LucideIdCard,
+  LocateIcon,
+  SquareUserRoundIcon,
 } from 'lucide-react';
 // import Link from "next/link"
 import { LogoutButton } from './LogoutButton';
@@ -92,6 +94,13 @@ const items: SideBarItem[] = [
     title: 'Loại Truyền Động',
     url: '/transmissions',
     icon: Cog,
+    role: 'Admin',
+    group: 'Quản Lí Hệ Thống',
+  },
+  {
+    title: 'Thiết bị GPS',
+    url: '/gps-devices',
+    icon: LocateIcon,
     role: 'Admin',
     group: 'Quản Lí Hệ Thống',
   },
@@ -176,7 +185,7 @@ export async function AppSidebar() {
   if (!userRole)
     return (
       <Sidebar>
-        <SidebarContent className=" flex flex-col justify-between">
+        <SidebarContent className="flex flex-col justify-between">
           <SidebarGroup>
             <SidebarGroupLabel>PCDACO Admin Panel</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -265,10 +274,10 @@ export async function AppSidebar() {
                 className="w-[--radix-popper-anchor-width]"
               >
                 <DropdownMenuItem>
-                  <span>Account</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Billing</span>
+                  <Link href={"/profiles"} >
+                    <SquareUserRoundIcon className="h-4 w-4 text-primary" />
+                    <span className=''>Tài Khoản</span>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <LogoutButton />
