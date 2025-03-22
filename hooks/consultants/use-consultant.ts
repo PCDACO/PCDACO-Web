@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../use-toast";
 import { useDialogStore } from "@/stores/store";
-import { ConsultantParams, ConsultantPayload } from "@/constants/models/consultant.model";
+import { ConsultantParams, ConsultantPayload, ConsultantResponse } from "@/constants/models/consultant.model";
 import { CreateConsultant, GetConsultants } from "@/app/(dashboard)/(admin)/consultants/action";
 import { useRouter } from "next/navigation";
+import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 export const useConsultantQuery = ({ params }: {
   params: ConsultantParams
@@ -11,6 +12,7 @@ export const useConsultantQuery = ({ params }: {
   const listConsultants = useQuery({
     queryKey: ["consultants", params],
     queryFn: () => GetConsultants(params),
+    initialData: BaseResponseWithPagination<ConsultantResponse>,
     retry: 1
   });
   return { listConsultants };

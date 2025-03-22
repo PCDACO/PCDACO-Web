@@ -19,10 +19,6 @@ const PendingOwnerTable = () => {
   });
   const { open, setOpen } = useDialogStore();
 
-  // do ui error
-  if (listOwnerApprovalQuery.isError) {
-    return <div>Error...</div>;
-  }
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       <div className="flex-1 overflow-auto p-6">

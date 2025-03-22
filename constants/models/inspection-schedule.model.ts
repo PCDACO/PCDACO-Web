@@ -19,6 +19,7 @@ export interface InspectionScheduleDetail {
   inspectionDate: Date;
   createdAt: Date;
 }
+
 export interface InspectionSchedulePayload {
   technicianId: string;
   carId: string;
@@ -28,9 +29,56 @@ export interface InspectionSchedulePayload {
 
 export interface CarInspectionSchedulePayload {
   photos: Record<string, File | null>,
+  dates: Record<string, Date | undefined>,
   note: string,
 }
 
 export interface InspectionScheduleCreateResponse {
   id: string;
+}
+
+export interface InProgressInspectionScheduleResponse {
+  id: string;
+  date: Date;
+  ownerName: string;
+  address: string;
+  licensePlate: string;
+}
+
+export interface InspectionScheduleDetailResponse {
+  id: string;
+  date: Date;
+  address: string;
+  notes: string;
+  technician: TechnicianDetail;
+  owner: OwnerDetail;
+  car: CarDetail;
+  createdAt: Date;
+}
+
+interface CarDetail {
+  id: string,
+  modelId: string,
+  modelName: string,
+  fuelType: string,
+  transmissionType: string,
+  amenities: AmenityDetail[]
+}
+
+interface AmenityDetail {
+  id: string,
+  name: string,
+  iconUrl: string
+}
+
+interface OwnerDetail {
+  id: string,
+  name: string,
+  avatarUrl: string,
+  phone: string,
+}
+
+interface TechnicianDetail {
+  id: string,
+  name: string
 }

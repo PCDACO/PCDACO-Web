@@ -1,48 +1,18 @@
 "use client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useStatisticsQuery } from "../../hooks/statistics/use-statistics"
 import { Separator } from "@/components/ui/separator"
 import ActivityItem from "./activity-item"
 import InspectionTaskItem from "./inspection-task-item"
-export function useStatistics() {
-  // Mock data that matches the expected structure
-  const mockData = {
-    value: {
-      staffSalary: 5000000,
-      totalApprovedInspectionSchedule: 24,
-      totalRejectedInspectionSchedule: 8,
-      ongoingInspections: [
-        {
-          id: "insp-001",
-          address: "123 Nguyễn Huệ, Quận 1, TP.HCM",
-          ownerName: "Nguyễn Văn A",
-          licensePlate: "59F-12345",
-          scheduledTime: "10:30 AM - 12/04/2025",
-        },
-        // {
-        //   id: "insp-002",
-        //   address: "456 Lê Lợi, Quận 3, TP.HCM",
-        //   ownerName: "Trần Thị B",
-        //   licensePlate: "51G-67890",
-        //   scheduledTime: "2:15 PM - 12/04/2025",
-        // },
-      ],
-    },
-  }
+import { format } from "date-fns"
+import { InProgressInspectionScheduleResponse } from "@/constants/models/inspection-schedule.model"
+import { StatisticResponse } from "@/constants/models/statistic.model"
 
-  return {
-    listStatistics: {
-      data: mockData,
-      isLoading: false,
-      error: null,
-    },
-  }
+interface Props {
+  inProgressInspectionSchedule?: InProgressInspectionScheduleResponse;
+  statisticData?: StatisticResponse
 }
 
-export default function TechnicianStatistics() {
-  const { listStatistics } = useStatistics();
-  const { listStatisticsQuery } = useStatisticsQuery()
-  // const date = new Date()
+export default function TechnicianStatistics({ inProgressInspectionSchedule, statisticData }: Props) {
 
   return (
     <main className="flex-1 p-8 overflow-auto">
@@ -56,7 +26,7 @@ export default function TechnicianStatistics() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {listStatisticsQuery.data?.value?.staffSalary?.toLocaleString() ?? 0} Đồng
+                {statisticData?.staffSalary?.toLocaleString() ?? 0} Đồng
               </div>
               <p className="text-xs text-gray-500"></p>
             </CardContent>
@@ -67,7 +37,7 @@ export default function TechnicianStatistics() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {listStatisticsQuery.data?.value?.totalApprovedInspectionSchedule ?? 0} Cuộc Hẹn
+                {statisticData?.totalApprovedInspectionSchedule ?? 0} Cuộc Hẹn
               </div>
               <p className="text-xs text-gray-500"></p>
             </CardContent>
@@ -78,7 +48,7 @@ export default function TechnicianStatistics() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {listStatisticsQuery.data?.value?.totalRejectedInspectionSchedule ?? 0} Cuộc Hẹn
+                {statisticData?.totalRejectedInspectionSchedule ?? 0} Cuộc Hẹn
               </div>
               <p className="text-xs text-gray-500"></p>
             </CardContent>
@@ -94,17 +64,17 @@ export default function TechnicianStatistics() {
             <CardTitle>Lịch Kiểm Tra Đang Diễn Ra</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {listStatistics.data?.value?.ongoingInspections?.map((inspection) => (
-              <div key={inspection.id} className="mb-4">
+            {inProgressInspectionSchedule && (
+              <div key={inProgressInspectionSchedule.id} className="mb-4">
                 <InspectionTaskItem
-                  id={inspection.id}
-                  address={inspection.address}
-                  ownerName={inspection.ownerName}
-                  licensePlate={inspection.licensePlate}
-                  scheduledTime={inspection.scheduledTime}
+                  id={inProgressInspectionSchedule.id}
+                  address={inProgressInspectionSchedule.address}
+                  ownerName={inProgressInspectionSchedule.ownerName}
+                  licensePlate={inProgressInspectionSchedule.licensePlate}
+                  scheduledTime={format(inProgressInspectionSchedule.date, 'MM/dd/yyyy hh:mm a')}
                 />
               </div>
-            ))}
+            )}
           </CardContent>
         </Card>
 
@@ -152,4 +122,3 @@ export default function TechnicianStatistics() {
     </main>
   )
 }
-

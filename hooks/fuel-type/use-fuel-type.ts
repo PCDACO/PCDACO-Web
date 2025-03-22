@@ -4,6 +4,7 @@ import { toast } from "../use-toast";
 import {
   FuelTypeParams,
   FuelTypePayload,
+  FuelTypeResponse,
 } from "@/constants/models/fuelType.model";
 import {
   CreateFuelType,
@@ -11,6 +12,7 @@ import {
   GetFuelTypes,
   UpdateFuelType,
 } from "@/app/(dashboard)/(admin)/fuel-types/action";
+import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 interface FuelTypeQuery {
   params?: FuelTypeParams;
@@ -24,6 +26,7 @@ export const useFuelTypeQuery = ({ params }: FuelTypeQuery) => {
   const listFuelTypeQuery = useQuery({
     queryKey: ["fueltypes", params],
     queryFn: () => GetFuelTypes(params),
+    initialData: BaseResponseWithPagination<FuelTypeResponse>,
     retry: 1
   });
 

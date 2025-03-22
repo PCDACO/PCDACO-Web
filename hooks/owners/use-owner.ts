@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { OwnerApprovalPayload, OwnerParams } from "@/constants/models/owner.model";
+import { OwnerApprovalPayload, OwnerParams, OwnerPendingApprovalResponse, OwnerResponse } from "@/constants/models/owner.model";
 import { useDialogStore } from "@/stores/store";
 import {
   DeleteOwners,
@@ -10,6 +10,7 @@ import {
 import { toast } from "../use-toast";
 import { GetOwnerPendingApprovals } from "@/app/(dashboard)/(admin)/pending-approval/action";
 import { generateGuid } from "@/lib/uuid";
+import { BaseResponse, BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 interface OwnerQuery {
   params?: OwnerParams;
@@ -24,17 +25,20 @@ export const useOwnerQuery = ({ params, id }: OwnerQuery) => {
   const listOwnerQuery = useQuery({
     queryKey: ["owners", params],
     queryFn: () => GetOwners(params),
+    initialData: BaseResponseWithPagination<OwnerResponse>,
     retry: 1
   });
 
   const ownerQuery = useQuery({
     queryKey: ["owner", id],
     queryFn: () => GetOwner(id ?? generateGuid()),
+    initialData: BaseResponse<OwnerResponse>,
   });
 
   const listOwnerApprovalQuery = useQuery({
     queryKey: ["ownerApproval", params],
     queryFn: () => GetOwnerPendingApprovals(params),
+    initialData: BaseResponseWithPagination<OwnerPendingApprovalResponse>,
   });
 
   return { listOwnerQuery, ownerQuery, listOwnerApprovalQuery };

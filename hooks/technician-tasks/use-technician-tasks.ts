@@ -7,11 +7,14 @@ import {
 } from "@/app/(dashboard)/(technicians)/technician-todo/action";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
+import { BaseResponse } from "@/constants/responses/base-response";
+import { TechnicianTaskResponse } from "@/constants/models/technician-task.model";
 
 export const useTechnicianTaskQuery = () => {
   const listTechnicianTasks = useQuery({
     queryKey: ["tasks"],
     queryFn: () => GetTechnicianTasks(),
+    initialData: BaseResponse<TechnicianTaskResponse>,
     retry: 1
   });
 

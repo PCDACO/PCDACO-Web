@@ -1,6 +1,6 @@
 "use server"
 import axiosInstance from "@/app/axios.server";
-import { GetInspectionSchedulesParams, InspectionScheduleCreateResponse, InspectionScheduleDetail, InspectionSchedulePayload } from "@/constants/models/inspection-schedule.model";
+import { GetInspectionSchedulesParams, InProgressInspectionScheduleResponse, InspectionScheduleCreateResponse, InspectionScheduleDetail, InspectionSchedulePayload } from "@/constants/models/inspection-schedule.model";
 
 export const GetInspectionSchedules =
   async ({
@@ -20,6 +20,11 @@ export const GetInspectionSchedules =
     });
     return response.data;
   }
+
+export const GetInProgressInspectionSchedule = async (): Promise<RootResponse<InProgressInspectionScheduleResponse>> => {
+  const response = await axiosInstance.get("/api/inspection-schedules/in-progress");
+  return response.data;
+}
 export const CreateInspectionSchedules =
   async (payload: InspectionSchedulePayload): Promise<RootResponse<InspectionScheduleCreateResponse>> => {
     const response = await axiosInstance.post("/api/inspection-schedules", {

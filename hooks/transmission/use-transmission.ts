@@ -4,6 +4,7 @@ import { toast } from "../use-toast";
 import {
   TransmissionParams,
   TransmissionPayload,
+  TransmissionResponse,
 } from "@/constants/models/transmission.model";
 import {
   CreateTransmission,
@@ -11,6 +12,7 @@ import {
   GetTransmissions,
   UpdateTransmission,
 } from "@/app/(dashboard)/(admin)/transmissions/action";
+import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 interface TransmissionQuery {
   params?: TransmissionParams;
@@ -24,6 +26,7 @@ export const useTransmissionQuery = ({ params }: TransmissionQuery) => {
   const listTransmissionQuery = useQuery({
     queryKey: ["transmissions", params],
     queryFn: () => GetTransmissions(params),
+    initialData: BaseResponseWithPagination<TransmissionResponse>,
     retry: 1
   });
 

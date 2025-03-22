@@ -7,10 +7,12 @@ import {
 import {
   ManufactureParams,
   ManufacturePayload,
+  ManufactureResponse,
 } from "@/constants/models/manufacture.model";
 import { useDialogStore } from "@/stores/store";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../use-toast";
+import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 interface ManufactureQuery {
   params?: ManufactureParams;
@@ -24,6 +26,7 @@ export const useManuFactureQuery = ({ params }: ManufactureQuery) => {
   const listManuFactureQuery = useQuery({
     queryKey: ["manufacturers", params],
     queryFn: () => GetManufacturers(params),
+    initialData: BaseResponseWithPagination<ManufactureResponse>,
     retry: 1
   });
 
