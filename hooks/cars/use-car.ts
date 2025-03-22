@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
-import { CarParams } from "@/constants/models/car.model";
+import { CarParams, CarResponse } from "@/constants/models/car.model";
 import { DeleteCar, GetCars } from "@/app/(dashboard)/(admin)/cars/action";
+import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 interface CarQuery {
   params?: CarParams;
@@ -16,6 +17,7 @@ export const useCarQuery = ({ params }: CarQuery) => {
   const listCarQuery = useQuery({
     queryKey: ["cars", params],
     queryFn: () => GetCars(params),
+    initialData: BaseResponseWithPagination<CarResponse>,
     staleTime: 0,
     retry: 1,
   });

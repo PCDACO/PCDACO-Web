@@ -3,6 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   transpilePackages: ["recharts", "react-smooth"],
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "100mb",
+    }
+  },
   output: "standalone",
   productionBrowserSourceMaps: false, // Disable source maps in development
   images: {

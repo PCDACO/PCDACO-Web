@@ -1,9 +1,10 @@
 import { CreateTechnicians, GetTechnicians } from "@/app/(dashboard)/(admin)/technicians/action";
-import { TechnicianParams, TechnicianPayload } from "@/constants/models/technician.model";
+import { TechnicianParams, TechnicianPayload, TechnicianResponse } from "@/constants/models/technician.model";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../use-toast";
 import { useDialogStore } from "@/stores/store";
 import { useRouter } from "next/navigation";
+import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 export const useTechnicianQuery = ({ params }: {
   params: TechnicianParams
@@ -11,6 +12,7 @@ export const useTechnicianQuery = ({ params }: {
   const listTechnicians = useQuery({
     queryKey: ["technicians", params],
     queryFn: () => GetTechnicians(params),
+    initialData: BaseResponseWithPagination<TechnicianResponse>,
     retry: 1
   });
   return { listTechnicians };

@@ -1,21 +1,27 @@
-"usm client"
+"use client"
+
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { Camera, X } from "lucide-react"
+import { CalendarIcon, Camera, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
+import { format } from "date-fns"
 
 interface ImageUploaderProps {
   label: string
   photoType: string
   file: File | null
+  date: Date | undefined
   onChange: (file: File | null) => void
+  onDateChange: (date: Date | undefined) => void
 }
 
-export function ImageUploader({ label, photoType, file, onChange }: ImageUploaderProps) {
+export function ImageUploader({ label, photoType, file, date, onChange, onDateChange }: ImageUploaderProps) {
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -96,6 +102,25 @@ export function ImageUploader({ label, photoType, file, onChange }: ImageUploade
         </CardContent>
       </Card>
 
+      {file && (
+        <div className="mt-2">
+          <div className="font-medium whitespace-nowrap min-w-[80px]">Photo Date:</div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn("w-full justify-start text-left font-normal", !date && "text-muted-foreground")}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {date ? format(date, "PPP") : <span>Select date for this photo</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar mode="single" selected={date} onSelect={onDateChange} initialFocus />
+            </PopoverContent>
+          </Popover>
+        </div>
+      )}
     </div>
   )
 }

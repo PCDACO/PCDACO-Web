@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
 import { DeleteDriver, GetDrivers } from "@/app/(dashboard)/(admin)/drivers/action";
-import { DriverParams } from "@/constants/models/driver.model";
+import { DriverParams, DriverResponse } from "@/constants/models/driver.model";
+import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 interface DriverQuery {
   params?: DriverParams;
@@ -16,6 +17,7 @@ export const useDriverQuery = ({ params }: DriverQuery) => {
   const listDriverQuery = useQuery({
     queryKey: ["drivers", params],
     queryFn: () => GetDrivers(params),
+    initialData: BaseResponseWithPagination<DriverResponse>,
     retry: 1
   });
 

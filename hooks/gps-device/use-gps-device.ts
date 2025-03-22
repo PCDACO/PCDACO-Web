@@ -4,8 +4,10 @@ import { toast } from "../use-toast";
 import {
   GPSDeviceParams,
   GPSDevicePayload,
+  GPSDeviceResponse,
 } from "@/constants/models/gps-device.model";
 import { CreateGPSDevice, DeleteGPSDevice, GetGPSDevices, UpdateGPSDevice } from "@/app/(dashboard)/(admin)/gps-devices/action";
+import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 interface GPSDeviceQuery {
   params?: GPSDeviceParams;
@@ -19,6 +21,7 @@ export const useGPSDeviceQuery = ({ params }: GPSDeviceQuery) => {
   const listGPSDeviceQuery = useQuery({
     queryKey: ["gps-devices", params],
     queryFn: () => GetGPSDevices(params),
+    initialData: BaseResponseWithPagination<GPSDeviceResponse>,
     retry: 1
   });
 

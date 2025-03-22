@@ -7,7 +7,12 @@ export const GetTechnicianTasks = async (): Promise<
   RootResponse<TechnicianTaskResponse>
 > => {
   const response = await axiosInstance.get(
-    "/api/inspection-schedules/technician"
+    "/api/inspection-schedules/technician",
+    {
+      params: {
+        inspectionDate: new Date()
+      }
+    }
   );
   return response.data;
 };

@@ -10,7 +10,7 @@ import { Check, X } from "lucide-react"
 export default function TechnicianTodo() {
   const [isCarDetailsOpen, setIsCarDetailsOpen] = useState(false)
   const { listTechnicianTasks } = useTechnicianTaskQuery();
-  const { rejectTechnicianTask } = useTechnicianTaskMutation();
+  const { rejectTechnicianTask, inProgressTechnicianTask } = useTechnicianTaskMutation();
   const handleOpenGpsAssignment = () => {
     setIsCarDetailsOpen(false) // Optionally close the car details dialog
   }
@@ -30,12 +30,12 @@ export default function TechnicianTodo() {
     <div className="min-h-screen bg-white text-black p-4 md:p-8">
       <header className="mb-8">
         <h1 className="text-2xl font-bold">Lịch Làm Việc Trong Ngày</h1>
-        <p className="text-sm text-gray-600">{formatDate(listTechnicianTasks.data?.value.inspectionDate.toString() ?? "")}</p>
-        <p className="text-sm text-gray-600">Technician: {listTechnicianTasks.data?.value.technicianName}</p>
+        <p className="text-sm text-gray-600">{listTechnicianTasks.data.value && formatDate(listTechnicianTasks.data?.value.inspectionDate.toString() ?? "")}</p>
+        <p className="text-sm text-gray-600"> {listTechnicianTasks.data.value && "Technician: " + listTechnicianTasks.data?.value.technicianName}</p>
       </header>
       <main>
         <ul className="space-y-6">
-          {listTechnicianTasks.data?.value.cars.map((car) => (
+          {listTechnicianTasks.data?.value && listTechnicianTasks.data?.value.cars.map((car) => (
             <li key={car.inspectionScheduleId} className="border border-gray-300 p-4 rounded-lg hover:cursor-pointer">
               <div className="flex items-start justify-between mb-2" onClick={() => setIsCarDetailsOpen(true)}>
                 <div>
@@ -44,11 +44,11 @@ export default function TechnicianTodo() {
                 </div>
                 <div className="flex gap-4">
                   <Button onClick={() => {
+                    event!.stopPropagation();
                     rejectTechnicianTask.mutate({
                       id: car.inspectionScheduleId,
                       note: Note[car.inspectionScheduleId] ?? "",
                     });
-                    event!.stopPropagation();
                   }
                   } className=" 
                                         w-6 h-6 flex items-center justify-center p-0 border-none cursor-pointer text-xs "
@@ -57,11 +57,10 @@ export default function TechnicianTodo() {
                     <X />
                   </Button>
                   <Button onClick={() => {
-                    rejectTechnicianTask.mutate({
-                      id: car.inspectionScheduleId,
-                      note: Note[car.inspectionScheduleId] ?? "",
-                    });
                     event!.stopPropagation();
+                    inProgressTechnicianTask.mutate({
+                      id: car.inspectionScheduleId
+                    });
                   }
                   } className=" 
                                         w-6 h-6 flex items-center justify-center p-0 border-none cursor-pointer text-xs "

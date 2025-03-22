@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
 import { toast } from "../use-toast";
-import { ModelParams } from "@/constants/models/model.model.ts";
+import { ModelParams, ModelResponse } from "@/constants/models/model.model.ts";
 import {
   DeleteModel,
   GetModels,
 } from "@/app/(dashboard)/(admin)/manufacturers/[id]/models/action";
+import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 interface ModelQuery {
   manufacturerId: string;
@@ -20,6 +21,7 @@ export const useModelQuery = ({ manufacturerId, params }: ModelQuery) => {
   const listModelQuery = useQuery({
     queryKey: ["models", params],
     queryFn: () => GetModels(manufacturerId, params),
+    initialData: BaseResponseWithPagination<ModelResponse>,
     retry: 1
   });
 

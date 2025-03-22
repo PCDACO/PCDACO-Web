@@ -1,4 +1,5 @@
 "use client"
+
 import type React from "react"
 
 import { useState } from "react"
@@ -8,85 +9,149 @@ import { ImageUploader } from "@/components/ui/image-uploader"
 import { toast } from "@/hooks/use-toast"
 import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
 
+// Enum matching the one in the screenshot
+enum InspectionPhotoType {
+  ExteriorCar = "ExteriorCar",
+  FuelGauge = "FuelGauge",
+  ParkingLocation = "ParkingLocation",
+  CarKey = "CarKey",
+  TrunkSpace = "TrunkSpace",
+  FuelGaugeFinal = "FuelGaugeFinal",
+  Scratches = "Scratches",
+  Cleanliness = "Cleanliness",
+  TollFees = "TollFees",
+}
+
 // Helper to get human-readable labels
-const getPhotoTypeLabel = (type: string): string => {
+const getPhotoTypeLabel = (type: InspectionPhotoType): string => {
   const labels: Record<string, string> = {
-    "ExteriorCar": "Photo of the car exterior",
-    "FuelGauge": "Photo of the fuel gauge",
-    "ParkingLocation": "Photo of the parking location",
-    "CarKey": "Photo of the car key",
-    "TrunkSpace": "Photo of the trunk space",
-    "FuelGaugeFinal": "Photo of the final fuel gauge",
-    "Scratches": "Photo of scratches",
-    "Cleanliness": "Photo of the car cleanliness",
-    "TollFees": "Photo of toll fees",
+    [InspectionPhotoType.ExteriorCar.toString()]: "Photo of the car exterior",
+    [InspectionPhotoType.FuelGauge.toString()]: "Photo of the fuel gauge",
+    [InspectionPhotoType.ParkingLocation.toString()]: "Photo of the parking location",
+    [InspectionPhotoType.CarKey.toString()]: "Photo of the car key",
+    [InspectionPhotoType.TrunkSpace.toString()]: "Photo of the trunk space",
+    [InspectionPhotoType.Scratches.toString()]: "Photo of scratches",
+    [InspectionPhotoType.Cleanliness.toString()]: "Photo of the car cleanliness",
   }
   return labels[type]
 }
 
 // All photo types in a single array
 const ALL_PHOTOS = [
-  "ExteriorCar",
-  "FuelGauge",
-  "ParkingLocation",
-  "CarKey",
-  "TrunkSpace",
-  "FuelGaugeFinal",
-  "Scratches",
-  "Cleanliness",
-  "TollFees",
+  InspectionPhotoType.ExteriorCar,
+  InspectionPhotoType.FuelGauge,
+  InspectionPhotoType.ParkingLocation,
+  InspectionPhotoType.CarKey,
+  InspectionPhotoType.TrunkSpace,
+  InspectionPhotoType.Scratches,
+  InspectionPhotoType.Cleanliness,
 ]
-
 interface Props {
   id: string,
 }
 
-export default function CarInspectionForm({
-  id
-}: Props) {
-  const [photos, setPhotos] = useState<Record<string, File | null>>({
-    "ExteriorCar": null,
-    "FuelGauge": null,
-    "ParkingLocation": null,
-    "CarKey": null,
-    "TrunkSpace": null,
-    "FuelGaugeFinal": null,
-    "Scratches": null,
-    "Cleanliness": null,
-    "TollFees": null,
-  })
+export default function CarInspectionForm({ id }: Props) {
   const { approveInspectionSchedule } = useInspectionScheduleMutation();
-  const [note, setNote] = useState<string>();
+  const [photos, setPhotos] = useState<Record<string, File | null>>({
+    [InspectionPhotoType.ExteriorCar.toString()]: null,
+    [InspectionPhotoType.FuelGauge.toString()]: null,
+    [InspectionPhotoType.ParkingLocation.toString()]: null,
+    [InspectionPhotoType.CarKey.toString()]: null,
+    [InspectionPhotoType.TrunkSpace.toString()]: null,
+    [InspectionPhotoType.Scratches.toString()]: null,
+    [InspectionPhotoType.Cleanliness.toString()]: null,
+  })
 
-  const handleFileChange = (type: string, file: File | null) => {
+  const [dates, setDates] = useState<Record<string, Date | undefined>>({
+    [InspectionPhotoType.ExteriorCar.toString()]: undefined,
+    [InspectionPhotoType.FuelGauge.toString()]: undefined,
+    [InspectionPhotoType.ParkingLocation.toString()]: undefined,
+    [InspectionPhotoType.CarKey.toString()]: undefined,
+    [InspectionPhotoType.TrunkSpace.toString()]: undefined,
+    [InspectionPhotoType.Scratches.toString()]: undefined,
+    [InspectionPhotoType.Cleanliness.toString()]: undefined,
+  })
+  const [note, setNote] = useState<string>("");
+
+  const isDatesValid = () => {
+    // eslint-disable-next-line
+    Object.entries(dates).forEach(([_, date]) => {
+      if (date === undefined) {
+        return false;
+      }
+      return true;
+    });
+  };
+
+  const isPhotosValid = () => {
+    // eslint-disable-next-line 
+    Object.entries(photos).forEach(([_, photo]) => {
+      if (photo === null) {
+        return false;
+      }
+      return true;
+    });
+  };
+
+  const handleFileChange = (type: InspectionPhotoType, file: File | null) => {
     setPhotos((prev) => ({
       ...prev,
       [type]: file,
     }))
   }
+
+  const handleDateChange = (type: InspectionPhotoType, date: Date | undefined) => {
+    setDates((prev) => ({
+      ...prev,
+      [type]: date,
+    }))
+  }
+
   const handleNoteChange = (note: string) => setNote(note);
+
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault()
-    // validate
-    const missingPhotos = Object.entries(photos)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .filter(([_, file]) => file === null)
-      .map(([type]) => type)
-    if (missingPhotos.length > 0) {
+    console.log("SUBMITTED");
+
+    // Check if at least one photo is uploaded
+    // eslint-disable-next-line
+    const uploadedPhotos = Object.entries(photos).filter(([_, file]) => file !== null)
+
+    if (uploadedPhotos.length === 0) {
+      console.log("NOPHOTO");
       toast({
-        title: "Missing photos",
-        description: `Please upload all required inspection photos.`,
+        title: "No photos uploaded",
+        description: "Please upload at least one inspection photo.",
         variant: "destructive",
       })
-      return
+      return;
     }
-    // approve API
+    if (!isPhotosValid) {
+      console.log("THIEU PHOTO");
+      toast({
+        title: "Not enough photos",
+        description: "Please upload all inspection photos.",
+        variant: "destructive",
+      })
+      return;
+    }
+    if (!isDatesValid) {
+      console.log("THIEU DATE")
+      toast({
+        title: "Not enough dates",
+        description: "Please upload all dates.",
+        variant: "destructive",
+      })
+      return;
+    }
     approveInspectionSchedule.mutate({
       id: id,
       payload: {
-        note: note ?? "",
-        photos: photos
-      }
+        dates: dates,
+        photos: photos,
+        note: note,
+      },
     });
   }
 
@@ -95,7 +160,7 @@ export default function CarInspectionForm({
       <Card>
         <CardHeader>
           <CardTitle>Car Inspection Photos</CardTitle>
-          <CardDescription>Upload photos for car inspection</CardDescription>
+          <CardDescription>Upload only the photos you need and select dates for each uploaded photo</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {ALL_PHOTOS.map((type) => (
@@ -104,12 +169,13 @@ export default function CarInspectionForm({
               label={getPhotoTypeLabel(type)}
               photoType={type}
               file={photos[type]}
+              date={dates[type]}
               onChange={(file) => handleFileChange(type, file)}
+              onDateChange={(date) => handleDateChange(type, date)}
             />
           ))}
         </CardContent>
       </Card>
-
       <textarea
         className="w-full p-2 border rounded-md min-h-[80px] text-sm"
         placeholder="Add notes about this photo (optional)"
@@ -118,10 +184,9 @@ export default function CarInspectionForm({
       />
       <div className="mt-6 flex justify-end">
         <Button type="submit" size="lg">
-          Submit
+          Submit Inspection
         </Button>
       </div>
     </form>
   )
 }
-

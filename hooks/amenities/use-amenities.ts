@@ -14,7 +14,9 @@ import {
 import {
   AmenityParams,
   AmenityPayLoad,
+  AmenityResponse,
 } from "@/constants/models/amenity.model";
+import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 
 interface AmenityQuery {
   params?: AmenityParams;
@@ -28,6 +30,7 @@ export const useAmenityQuery = ({ params }: AmenityQuery) => {
   const listAmenityQuery = useQuery({
     queryKey: ["amenities", params],
     queryFn: () => GetAmenities(params),
+    initialData: BaseResponseWithPagination<AmenityResponse>,
     retry: 1
   });
 
