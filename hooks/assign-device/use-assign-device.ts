@@ -1,8 +1,8 @@
 import { useDialogStore } from "@/stores/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "../use-toast";
 import { GPSDeviceAssignPayload } from "@/constants/models/gps-device.model";
 import { AssignDeviceToCar } from "@/app/(dashboard)/(admin)/cars/action";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 export const useAssignDeviceMutation = () => {
   const { setOpen } = useDialogStore();
@@ -10,15 +10,16 @@ export const useAssignDeviceMutation = () => {
 
   const assignDeviceMutation = useMutation({
     mutationKey: ["assignDeviceMutation"],
-    mutationFn: async (payload: GPSDeviceAssignPayload) => {
-      await AssignDeviceToCar(payload);
+    mutationFn: async (payload: GPSDeviceAssignPayload) => await AssignDeviceToCar(payload),
+    onSuccess: (response) => {
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
+      }
+      toastResponse(response);
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể gán thiết bị" });
+    onError: (error) => {
+      toastError(error);
     },
   });
   return {

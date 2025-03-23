@@ -17,6 +17,7 @@ import { toast } from "../use-toast";
 import { useRouter } from "next/navigation";
 import { ApproveInspectionScheduleAction } from "@/app/(dashboard)/(technicians)/technician-todo/[id]/approve/action";
 import { BaseResponse } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface InspectionSchedulesQuery {
   params?: GetInspectionSchedulesParams;
@@ -53,30 +54,28 @@ export const useInspectionScheduleMutation = () => {
 
   const createInspectionSchedule = useMutation({
     mutationKey: ["createInspectionSchedule"],
-    mutationFn: async (payload: InspectionSchedulePayload) => {
-      await CreateInspectionSchedules(payload);
-    },
-    onSuccess: () => {
+    mutationFn: async (payload: InspectionSchedulePayload) => await CreateInspectionSchedules(payload),
+    onSuccess: (response) => {
       setOpen(false);
       queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
       replace("/inspection-schedules");
+      toastResponse(response);
     },
-    onError: () => {
-      toast({ title: "Không thể thêm nhà sản xuất" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
   const rejectInspectionSchedule = useMutation({
     mutationKey: ["rejectInspectionSchedule"],
-    mutationFn: async (id: string) => {
-      await RejectInspectionSchedules(id);
-    },
-    onSuccess: () => {
+    mutationFn: async (id: string) => await RejectInspectionSchedules(id),
+    onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
       replace("/inspection-schedules");
+      toastResponse(response);
     },
-    onError: () => {
-      toast({ title: "Không thể thêm nhà sản xuất" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
@@ -87,15 +86,16 @@ export const useInspectionScheduleMutation = () => {
     }: {
       id: string,
       payload: CarInspectionSchedulePayload
-    }) => {
-      await ApproveInspectionScheduleAction(id, payload);
+    }) => await ApproveInspectionScheduleAction(id, payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
+        replace("/inspection-schedules");
+      }
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
-      replace("/inspection-schedules");
-    },
-    onError: () => {
-      toast({ title: "Không thể thêm nhà sản xuất" });
+    onError: (error) => {
+      toastError(error);
     },
 
   });

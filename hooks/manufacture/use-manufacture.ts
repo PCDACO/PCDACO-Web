@@ -11,8 +11,8 @@ import {
 } from "@/constants/models/manufacture.model";
 import { useDialogStore } from "@/stores/store";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "../use-toast";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface ManufactureQuery {
   params?: ManufactureParams;
@@ -39,16 +39,16 @@ export const useManuFactureMutation = () => {
 
   const createManufacturerMutation = useMutation({
     mutationKey: ["createManufacturer"],
-    mutationFn: async (payload: ManufacturePayload) => {
-      await CreateManufacturer(payload);
+    mutationFn: async (payload: ManufacturePayload) => await CreateManufacturer(payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
-      toast({ title: "Tạo hãng xe thành công" });
-    },
-    onError: () => {
-      toast({ title: "Không thể thêm nhà sản xuất" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
@@ -60,30 +60,31 @@ export const useManuFactureMutation = () => {
     }: {
       id: string;
       payload: ManufacturePayload;
-    }) => {
-      await UpdateManufacturer(id, payload);
+    }) => await UpdateManufacturer(id, payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể sửa nhà sản xuất này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
   const deleteManufacturerMutation = useMutation({
     mutationKey: ["deleteManufacturer"],
-    mutationFn: async (id: string) => {
-      await DeleteManufacturer(id);
+    mutationFn: async (id: string) => await DeleteManufacturer(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      toast({ title: "Xóa thành công" });
-      queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể xóa nhà sản xuất này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 

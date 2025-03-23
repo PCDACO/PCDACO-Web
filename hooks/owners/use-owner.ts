@@ -11,6 +11,7 @@ import { toast } from "../use-toast";
 import { GetOwnerPendingApprovals } from "@/app/(dashboard)/(admin)/pending-approval/action";
 import { generateGuid } from "@/lib/uuid";
 import { BaseResponse, BaseResponseWithPagination } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface OwnerQuery {
   params?: OwnerParams;
@@ -49,16 +50,16 @@ export const useOwnerMutation = () => {
   const queryClient = useQueryClient();
   const deleteOwnerMutation = useMutation({
     mutationKey: ["deleteOwner"],
-    mutationFn: async (id: string) => {
-      await DeleteOwners(id);
+    mutationFn: async (id: string) => await DeleteOwners(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["owners"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      toast({ title: "Xóa thành công" });
-      queryClient.invalidateQueries({ queryKey: ["owners"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể xóa chủ xe này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
@@ -70,13 +71,15 @@ export const useOwnerMutation = () => {
       id: string,
       payload: OwnerApprovalPayload
     }) => await PatchOwnerLicense(id, payload),
-    onSuccess: () => {
-      setOpen(false);
-      toast({ title: "Cập nhật thành công" });
-      queryClient.invalidateQueries({ queryKey: ["ownerApproval"] });
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["owners"] });
+      }
     },
-    onError: () => {
-      toast({ title: "Không thể xóa chủ xe này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
   return {

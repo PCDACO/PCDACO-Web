@@ -1,6 +1,5 @@
 import { useDialogStore } from "@/stores/store";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "../use-toast";
 import {
   GPSDeviceParams,
   GPSDevicePayload,
@@ -8,6 +7,7 @@ import {
 } from "@/constants/models/gps-device.model";
 import { CreateGPSDevice, DeleteGPSDevice, GetGPSDevices, UpdateGPSDevice } from "@/app/(dashboard)/(admin)/gps-devices/action";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface GPSDeviceQuery {
   params?: GPSDeviceParams;
@@ -34,15 +34,16 @@ export const useGPSDeviceMutation = () => {
 
   const createGPSDeviceMutation = useMutation({
     mutationKey: ["createGPSDevice"],
-    mutationFn: async (payload: GPSDevicePayload) => {
-      await CreateGPSDevice(payload);
+    mutationFn: async (payload: GPSDevicePayload) => await CreateGPSDevice(payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể tạo thiết bị" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
@@ -54,30 +55,31 @@ export const useGPSDeviceMutation = () => {
     }: {
       id: string;
       payload: GPSDevicePayload;
-    }) => {
-      await UpdateGPSDevice(id, payload);
+    }) => await UpdateGPSDevice(id, payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể cập nhật thiết bị" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
   const deleteGPSDeviceMutation = useMutation({
     mutationKey: ["deleteGPSDevice"],
-    mutationFn: async (id: string) => {
-      await DeleteGPSDevice(id);
+    mutationFn: async (id: string) => await DeleteGPSDevice(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      toast({ title: "Xóa thành công" });
-      queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể xóa thiết bị" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 

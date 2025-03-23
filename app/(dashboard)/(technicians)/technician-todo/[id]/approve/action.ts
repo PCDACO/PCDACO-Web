@@ -3,7 +3,7 @@
 import axiosInstance from "@/app/axios.server"
 import { CarInspectionSchedulePayload } from "@/constants/models/inspection-schedule.model"
 
-export const ApproveInspectionScheduleAction = async (id: string, payload: CarInspectionSchedulePayload) => {
+export const ApproveInspectionScheduleAction = async (id: string, payload: CarInspectionSchedulePayload): Promise<RootResponse<null>> => {
   // check if there is any photo in record then upload it to server
   if (Object.keys(payload.photos).length !== 0) {
     for (const key in payload.photos) {

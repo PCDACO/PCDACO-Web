@@ -3,15 +3,12 @@ import { useForm } from "react-hook-form";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Login, Logout } from "./action";
+import { Logout } from "./action";
 import Image from "next/image";
-import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useAuth } from "@/hooks/auth/use-auth";
 
 export default function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
   const { register, handleSubmit } = useForm<{
@@ -19,16 +16,7 @@ export default function LoginForm({ className, ...props }: React.ComponentPropsW
     password: string
   }>();
 
-  const { replace } = useRouter();
-  const { mutate, isPending } = useMutation({
-    mutationFn: ({ email, password }: { email: string, password: string }) => Login({ email, password }),
-    onSuccess: () => {
-      replace("/dashboard");
-    },
-    onError: () => {
-      toast({ title: "Sai mật khẩu hoặc tài khoản" })
-    }
-  })
+  const { login } = useAuth();
 
   useEffect(() => {
     Logout();
@@ -47,9 +35,7 @@ export default function LoginForm({ className, ...props }: React.ComponentPropsW
               <CardDescription>Đăng nhập để truy cập hệ thống</CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit((data) => {
-                mutate({ email: data.email, password: data.password })
-              })} >
+              <form onSubmit={handleSubmit((data) => login.mutate({ email: data.email, password: data.password }))} >
                 <div className="grid gap-8">
                   <div className="grid gap-8">
                     <div className="grid gap-4">
@@ -67,7 +53,7 @@ export default function LoginForm({ className, ...props }: React.ComponentPropsW
                         id="password" type="password" required />
                     </div>
                     <Button type="submit" className="w-full">
-                      {isPending ? <LoadingSpinner /> : "Đăng nhập"}
+                      Đăng nhập
                     </Button>
                   </div>
                 </div>

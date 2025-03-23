@@ -4,7 +4,6 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { toast } from "../use-toast";
 import {
   CreateAmenities,
   DeleteAmenity,
@@ -17,6 +16,7 @@ import {
   AmenityResponse,
 } from "@/constants/models/amenity.model";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface AmenityQuery {
   params?: AmenityParams;
@@ -43,15 +43,16 @@ export const useAmenityMutation = () => {
 
   const createAmentiy = useMutation({
     mutationKey: ["createAmenity"],
-    mutationFn: async (payload: AmenityPayLoad) => {
-      await CreateAmenities(payload);
+    mutationFn: async (payload: AmenityPayLoad) => await CreateAmenities(payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["amenities"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["amenities"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể thêm nhà sản xuất" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
@@ -63,31 +64,31 @@ export const useAmenityMutation = () => {
     }: {
       id: string;
       payload: AmenityPayLoad;
-    }) => {
-      await UpdateAmenity(id, payload);
+    }) => await UpdateAmenity(id, payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["amenities"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["amenities"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể sửa nhà sản xuất này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
   const deleteAmenity = useMutation({
     mutationKey: ["deleteAmenity"],
-    mutationFn: async (id: string) => {
-      console.log("🔍 ~ hooks/amenities/use-amenities.ts:72 ~ id:", id);
-      await DeleteAmenity(id);
+    mutationFn: async (id: string) => await DeleteAmenity(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["amenities"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      toast({ title: "Xóa thành công" });
-      queryClient.invalidateQueries({ queryKey: ["amenities"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể xóa nhà sản xuất này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 

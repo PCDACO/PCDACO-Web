@@ -6,9 +6,9 @@ import {
   RejectTechnicianTask,
 } from "@/app/(dashboard)/(technicians)/technician-todo/action";
 import { useDialogStore } from "@/stores/store";
-import { toast } from "../use-toast";
 import { BaseResponse } from "@/constants/responses/base-response";
 import { TechnicianTaskResponse } from "@/constants/models/technician-task.model";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 export const useTechnicianTaskQuery = () => {
   const listTechnicianTasks = useQuery({
@@ -26,46 +26,40 @@ export const useTechnicianTaskMutation = () => {
   const queryClient = useQueryClient();
   const rejectTechnicianTask = useMutation({
     mutationKey: ["rejectTechnicianTask"],
-    mutationFn: async ({ id, note }: { id: string; note: string }) => {
-      await RejectTechnicianTask(id, note);
-    },
-    onSuccess: () => {
+    mutationFn: async ({ id, note }: { id: string; note: string }) => await RejectTechnicianTask(id, note),
+    onSuccess: (response) => {
       setOpen(false);
-      toast({ title: "Xóa thành công" });
       queryClient.invalidateQueries({ queryKey: "tasks" });
+      toastResponse(response);
     },
-    onError: () => {
-      toast({ title: "Không thể xóa mẫu này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
   const approveTechnicianTask = useMutation({
     mutationKey: ["rejectTechnicianTask"],
-    mutationFn: async ({ id, note }: { id: string; note: string }) => {
-      await ApproveTechnicianTask(id, note);
-    },
-    onSuccess: () => {
+    mutationFn: async ({ id, note }: { id: string; note: string }) => await ApproveTechnicianTask(id, note),
+    onSuccess: (response) => {
       setOpen(false);
-      toast({ title: "Cập nhật thành công" });
       queryClient.invalidateQueries({ queryKey: "tasks" });
+      toastResponse(response);
     },
-    onError: () => {
-      toast({ title: "Không thể xóa mẫu này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
   const inProgressTechnicianTask = useMutation({
     mutationKey: ["rejectTechnicianTask"],
-    mutationFn: async ({ id }: { id: string }) => {
-      await InProgressTechnicianTask(id);
-    },
-    onSuccess: () => {
+    mutationFn: async ({ id }: { id: string }) => await InProgressTechnicianTask(id),
+    onSuccess: (response) => {
       setOpen(false);
-      toast({ title: "Cập nhật thành công" });
       queryClient.invalidateQueries({ queryKey: "tasks" });
+      toastResponse(response);
     },
-    onError: () => {
-      toast({ title: "Không thể xóa mẫu này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 

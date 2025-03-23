@@ -24,8 +24,6 @@ export default async function DashboardPage() {
     };
     default: {
       return (<div>
-        <h1>Oops! You seem to be lost.</h1>
-        <p>Here are some helpful links:</p>
         <ul>
           <li><Link href={"/home"}>Home</Link></li>
           <li><Link href={"/blog"}>Blog</Link></li>

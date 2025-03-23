@@ -1,6 +1,5 @@
 import { useDialogStore } from "@/stores/store";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "../use-toast";
 import {
   TransmissionParams,
   TransmissionPayload,
@@ -13,6 +12,7 @@ import {
   UpdateTransmission,
 } from "@/app/(dashboard)/(admin)/transmissions/action";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface TransmissionQuery {
   params?: TransmissionParams;
@@ -39,15 +39,16 @@ export const useTransmissionMutation = () => {
 
   const createTransmission = useMutation({
     mutationKey: ["createTransmission"],
-    mutationFn: async (payload: TransmissionPayload) => {
-      await CreateTransmission(payload);
+    mutationFn: async (payload: TransmissionPayload) => await CreateTransmission(payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["transmissions"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["transmissions"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể thêm nhà sản xuất" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
@@ -59,30 +60,31 @@ export const useTransmissionMutation = () => {
     }: {
       id: string;
       payload: TransmissionPayload;
-    }) => {
-      await UpdateTransmission(id, payload);
+    }) => await UpdateTransmission(id, payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["transmissions"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["transmissions"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể sửa nhà sản xuất này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
   const deleteTransmission = useMutation({
     mutationKey: ["deleteManufacturer"],
-    mutationFn: async (id: string) => {
-      await DeleteTransmission(id);
+    mutationFn: async (id: string) => await DeleteTransmission(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["transmissions"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      toast({ title: "Xóa thành công" });
-      queryClient.invalidateQueries({ queryKey: ["transmissions"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể xóa nhà sản xuất này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 

@@ -1,6 +1,5 @@
 import { useDialogStore } from "@/stores/store";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "../use-toast";
 import {
   FuelTypeParams,
   FuelTypePayload,
@@ -13,6 +12,7 @@ import {
   UpdateFuelType,
 } from "@/app/(dashboard)/(admin)/fuel-types/action";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface FuelTypeQuery {
   params?: FuelTypeParams;
@@ -39,15 +39,16 @@ export const useFuelTypeMutation = () => {
 
   const createFuelType = useMutation({
     mutationKey: ["createFuelType"],
-    mutationFn: async (payload: FuelTypePayload) => {
-      await CreateFuelType(payload);
+    mutationFn: async (payload: FuelTypePayload) => await CreateFuelType(payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể thêm loại nhiên liệu" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
@@ -59,30 +60,31 @@ export const useFuelTypeMutation = () => {
     }: {
       id: string;
       payload: FuelTypePayload;
-    }) => {
-      await UpdateFuelType(id, payload);
+    }) => await UpdateFuelType(id, payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể sửa loại nhiên liệu" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
   const deleteFuelType = useMutation({
     mutationKey: ["deleteFuelType"],
-    mutationFn: async (id: string) => {
-      await DeleteFuelType(id);
+    mutationFn: async (id: string) => await DeleteFuelType(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      toast({ title: "Xóa thành công" });
-      queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể xóa loại nhiên liệu" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 
