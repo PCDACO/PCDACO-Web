@@ -11,7 +11,7 @@ export async function Login({
   password: string;
 }) {
   const cookieStore = await cookies();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line 
   const response = await axiosInstance.post("api/auth/admin/login", {
     email,
     password,
@@ -34,7 +34,7 @@ export async function Login({
     httpOnly: true,
     expires: new Date(Date.now() + 45 * 60 * 1000),
   });
-  return;
+  return response.data;
 }
 
 export const Logout = async () => {

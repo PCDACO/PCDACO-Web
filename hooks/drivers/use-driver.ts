@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
-import { toast } from "../use-toast";
 import { DeleteDriver, GetDrivers } from "@/app/(dashboard)/(admin)/drivers/action";
 import { DriverParams, DriverResponse } from "@/constants/models/driver.model";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface DriverQuery {
   params?: DriverParams;
@@ -29,16 +29,16 @@ export const useDriverMutation = () => {
   const queryClient = useQueryClient();
   const deleteDriverMutation = useMutation({
     mutationKey: ["deleteDriver"],
-    mutationFn: async (id: string) => {
-      await DeleteDriver(id);
+    mutationFn: async (id: string) => await DeleteDriver(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["drivers"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      toast({ title: "Xóa thành công" });
-      queryClient.invalidateQueries({ queryKey: ["drivers"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể xóa người thuê xe này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 

@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "../use-toast";
 import { useDialogStore } from "@/stores/store";
 import { ConsultantParams, ConsultantPayload, ConsultantResponse } from "@/constants/models/consultant.model";
 import { CreateConsultant, GetConsultants } from "@/app/(dashboard)/(admin)/consultants/action";
 import { useRouter } from "next/navigation";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 export const useConsultantQuery = ({ params }: {
   params: ConsultantParams
@@ -24,13 +24,16 @@ export const useConsultantMutation = () => {
   const createConsultant = useMutation({
     mutationKey: ["createConsultant"],
     mutationFn: (payload: ConsultantPayload) => CreateConsultant(payload),
-    onSuccess: () => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: "consultants" });
-      replace("/consultants");
+    onSuccess: (response) => {
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: "consultants" });
+        replace("/consultants");
+      }
+      toastResponse(response);
     },
-    onError: () => {
-      toast({ title: "Failed to create consultants" })
+    onError: (error) => {
+      toastError(error);
     }
   });
   return {

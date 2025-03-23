@@ -7,6 +7,7 @@ import {
   GetModels,
 } from "@/app/(dashboard)/(admin)/manufacturers/[id]/models/action";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface ModelQuery {
   manufacturerId: string;
@@ -33,16 +34,16 @@ export const useModelMutation = () => {
   const queryClient = useQueryClient();
   const deleteModelMutation = useMutation({
     mutationKey: ["deleteModel"],
-    mutationFn: async (id: string) => {
-      await DeleteModel(id);
+    mutationFn: async (id: string) => await DeleteModel(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["models"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      toast({ title: "Xóa thành công" });
-      queryClient.invalidateQueries({ queryKey: ["models"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể xóa mẫu này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 

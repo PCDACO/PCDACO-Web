@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
-import { toast } from "../use-toast";
 import { CarParams, CarResponse } from "@/constants/models/car.model";
 import { DeleteCar, GetCars } from "@/app/(dashboard)/(admin)/cars/action";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
+import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface CarQuery {
   params?: CarParams;
@@ -30,16 +30,16 @@ export const useCarMutation = () => {
   const queryClient = useQueryClient();
   const deleteCarMutation = useMutation({
     mutationKey: ["deleteCar"],
-    mutationFn: async (id: string) => {
-      await DeleteCar(id);
+    mutationFn: async (id: string) => await DeleteCar(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["cars"] });
+      }
     },
-    onSuccess: () => {
-      setOpen(false);
-      toast({ title: "Xóa thành công" });
-      queryClient.invalidateQueries({ queryKey: ["cars"] });
-    },
-    onError: () => {
-      toast({ title: "Không thể xóa xe này" });
+    onError: (error) => {
+      toastError(error);
     },
   });
 

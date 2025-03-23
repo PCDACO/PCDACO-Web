@@ -39,8 +39,15 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log(error.response);
-    Promise.reject(error);
+    console.log(error);
+    if (error.status < 500) {
+      return error.response ?? {
+        value: null,
+        isSuccess: false,
+        message: "Error !",
+      };
+    }
+    return Promise.reject(error);
   }
 );
 
