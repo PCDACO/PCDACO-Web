@@ -33,7 +33,16 @@ export const CreateInspectionSchedules =
     return response.data;
   }
 
-export const RejectInspectionSchedules = async (id: string): Promise<RootResponse<null>> => {
-  const response = await axiosInstance.delete(`/api/inspection-schedules/${id}`);
+export const RejectInspectionSchedules = async ({
+  id,
+  note
+}: {
+  id: string,
+  note: string,
+}): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.patch(`/api/inspection-schedules/${id}/approve`, {
+    note: note,
+    isApproved: false,
+  });
   return response.data;
 }

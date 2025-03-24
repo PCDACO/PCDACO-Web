@@ -75,7 +75,7 @@ export const useOwnerMutation = () => {
       toastResponse(response);
       if (response.isSuccess) {
         setOpen(false);
-        queryClient.invalidateQueries({ queryKey: ["owners"] });
+        queryClient.invalidateQueries({ queryKey: ["ownerApproval"] });
       }
     },
     onError: (error) => {

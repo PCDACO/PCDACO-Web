@@ -274,8 +274,8 @@ export async function AppSidebar() {
                 className="w-[--radix-popper-anchor-width]"
               >
                 <DropdownMenuItem>
-                  <Link href={"/profiles"} >
-                    <SquareUserRoundIcon className="h-4 w-4 text-primary" />
+                  <Link href={"/profiles"} className='flex w-full' >
+                    <SquareUserRoundIcon className="h-4 w-4 text-primary mr-2" />
                     <span className=''>Tài Khoản</span>
                   </Link>
                 </DropdownMenuItem>

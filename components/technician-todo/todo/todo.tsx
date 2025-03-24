@@ -7,9 +7,14 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Check, X } from "lucide-react"
-export default function TechnicianTodo() {
+import { Badge } from "@/components/ui/badge"
+import { TechnicianTaskResponse } from "@/constants/models/technician-task.model"
+
+interface Props {
+  tasks: TechnicianTaskResponse;
+}
+export default function TechnicianTodo({ tasks }: Props) {
   const [isCarDetailsOpen, setIsCarDetailsOpen] = useState(false)
-  const { listTechnicianTasks } = useTechnicianTaskQuery();
   const { rejectTechnicianTask, inProgressTechnicianTask } = useTechnicianTaskMutation();
   const handleOpenGpsAssignment = () => {
     setIsCarDetailsOpen(false) // Optionally close the car details dialog
@@ -29,13 +34,13 @@ export default function TechnicianTodo() {
   return (
     <div className="min-h-screen bg-white text-black p-4 md:p-8">
       <header className="mb-8">
-        <h1 className="text-2xl font-bold">Lịch Làm Việc Trong Ngày</h1>
-        <p className="text-sm text-gray-600">{listTechnicianTasks.data.value && formatDate(listTechnicianTasks.data?.value.inspectionDate.toString() ?? "")}</p>
-        <p className="text-sm text-gray-600"> {listTechnicianTasks.data.value && "Technician: " + listTechnicianTasks.data?.value.technicianName}</p>
+        <h1 className="text-2xl font-bold mb-4">Lịch Làm Việc Trong Ngày</h1>
+        <Badge className="text-sm text-white mr-4"> {tasks && tasks.technicianName}</Badge>
+        <Badge variant="default" className="text-sm text-white ">{tasks && formatDate(tasks.inspectionDate.toString() ?? "")}</Badge>
       </header>
       <main>
         <ul className="space-y-6">
-          {listTechnicianTasks.data?.value && listTechnicianTasks.data?.value.cars.map((car) => (
+          {tasks && tasks.cars?.map((car) => (
             <li key={car.inspectionScheduleId} className="border border-gray-300 p-4 rounded-lg hover:cursor-pointer">
               <div className="flex items-start justify-between mb-2" onClick={() => setIsCarDetailsOpen(true)}>
                 <div>

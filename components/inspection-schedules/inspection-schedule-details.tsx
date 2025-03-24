@@ -20,6 +20,8 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter } from "next/navigation"
 import { InspectionScheduleDetailResponse } from "@/constants/models/inspection-schedule.model"
+import { useInspectionScheduleForm } from "@/hooks/inspection-schedules/use-form-inspection-schedule"
+import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
 
 
 interface Props {
@@ -29,6 +31,7 @@ interface Props {
 
 export default function InspectionDetailPage({ id, data }: Props) {
   const { replace } = useRouter();
+  const { rejectInspectionSchedule } = useInspectionScheduleMutation();
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false)
   const [responseNote, setResponseNote] = useState("")
 
@@ -61,6 +64,7 @@ export default function InspectionDetailPage({ id, data }: Props) {
     // In a real app, this would call an API to update the inspection status
     console.log("Inspection rejected with note:", responseNote)
     setIsRejectDialogOpen(false)
+    rejectInspectionSchedule.mutate({ id, note: responseNote });
     setResponseNote("")
   }
 

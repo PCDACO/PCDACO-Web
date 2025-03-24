@@ -11,17 +11,21 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
+import { Label } from "./label"
+import { Textarea } from "./textarea"
 
 interface ImageUploaderProps {
   label: string
   photoType: string
   file: File | null
   date: Date | undefined
+  description: string
   onChange: (file: File | null) => void
   onDateChange: (date: Date | undefined) => void
+  onDescriptionChange: (description: string) => void
 }
 
-export function ImageUploader({ label, photoType, file, date, onChange, onDateChange }: ImageUploaderProps) {
+export function ImageUploader({ label, photoType, file, date, description, onChange, onDateChange, onDescriptionChange }: ImageUploaderProps) {
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -119,6 +123,12 @@ export function ImageUploader({ label, photoType, file, date, onChange, onDateCh
               <Calendar mode="single" selected={date} onSelect={onDateChange} initialFocus />
             </PopoverContent>
           </Popover>
+        </div>
+      )}
+      {file && (
+        <div className="*:not-first:mt-2">
+          <Label >Simple textarea</Label>
+          <Textarea onChange={(e) => onDescriptionChange(e.currentTarget.value)} placeholder="Leave a comment" />
         </div>
       )}
     </div>

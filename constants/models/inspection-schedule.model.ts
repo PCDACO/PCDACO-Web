@@ -30,6 +30,7 @@ export interface InspectionSchedulePayload {
 export interface CarInspectionSchedulePayload {
   photos: Record<string, File | null>,
   dates: Record<string, Date | undefined>,
+  descriptions: Record<string, string>,
   note: string,
 }
 

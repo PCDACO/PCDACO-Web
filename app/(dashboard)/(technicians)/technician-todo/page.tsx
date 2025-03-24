@@ -1,5 +1,8 @@
 import TechnicianTodo from "@/components/technician-todo/todo/todo";
+import { GetTechnicianTasks } from "./action";
 
 export default async function TechnicianTodoPage() {
-    return <TechnicianTodo />
+  const response = await GetTechnicianTasks();
+
+  return <TechnicianTodo tasks={response.value} />
 }

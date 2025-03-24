@@ -1,6 +1,6 @@
 import { useManufacturerForm } from "@/hooks/manufacture/use-form-manufacturer";
 import { useKeywordStore } from "@/stores/store";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   Form,
   FormControl,
@@ -18,6 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import Image from "next/image";
 
 interface ManufacturerFormProps {
   id: string;
@@ -29,64 +30,140 @@ type KeywordType = {
   form: React.JSX.Element;
 };
 const ManufacturerForm = ({ id, value }: ManufacturerFormProps) => {
+  const [localUrl, setLocalUrl] = useState<string>('');
   const { keyword } = useKeywordStore();
   const { form, onSubmit, isLoading } = useManufacturerForm({
     id,
     value,
     action: keyword
   });
-
+  const handleFileChange = useCallback((file: File | null) => {
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setLocalUrl(objectUrl);
+    } else {
+      setLocalUrl("");
+    }
+  }, []);
   const keywords: KeywordType[] = [
     {
       name: "create",
       value: "Create Manufacturer",
       form: (
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => {
-            return (
+        <>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      placeholder="Name"
+                      className="w-full"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="icon"
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Picture</FormLabel>
                 <FormControl>
                   <Input
-                    {...field}
-                    type="text"
-                    placeholder="Name"
-                    className="w-full"
+                    type="file"
+                    placeholder="Logo"
+                    accept="image/*"
+                    onChange={(event) => {
+                      const files = (event.target as HTMLInputElement).files;
+                      if (!files) return;
+                      const file = files && files[0];
+                      field.onChange(files); // Update form value
+                      handleFileChange(file || null); // Update local URL
+                    }}
                   />
                 </FormControl>
+                {localUrl !== "" && (
+                  <Image src={localUrl}
+                    alt="preview"
+                    width={320}
+                    height={240}
+                    objectFit="contain"
+                    layout="responsive" />
+                )}
                 <FormMessage />
               </FormItem>
-            );
-          }}
-        />
+            )}
+          />
+        </>
       )
     },
     {
       name: "update",
       value: "Update Manufacturer",
       form: (
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => {
-            return (
+        <>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      placeholder="Name"
+                      className="w-full"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="icon"
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Picture</FormLabel>
                 <FormControl>
                   <Input
-                    {...field}
-                    type="text"
-                    placeholder="Name"
-                    className="w-full"
+                    type="file"
+                    placeholder="Picture"
+                    accept="image/svg"
+                    onChange={(event) => {
+                      const files = (event.target as HTMLInputElement).files;
+                      if (!files) return;
+                      const file = files && files[0];
+                      field.onChange(files); // Update form value
+                      handleFileChange(file || null); // Update local URL
+                    }}
                   />
                 </FormControl>
+                {localUrl !== "" && (
+                  <Image src={localUrl}
+                    alt="preview"
+                    width={320}
+                    height={240}
+                    objectFit="contain"
+                    layout="responsive" />
+                )}
                 <FormMessage />
               </FormItem>
-            );
-          }}
-        />
+            )}
+          />
+        </>
       )
     },
     {

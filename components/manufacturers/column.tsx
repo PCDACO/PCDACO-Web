@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import MenuAction from "./menu-action";
 import { formatDate } from "@/lib/utils";
+import Image from "next/image";
 
 export const ManufacturerColumns: ColumnDef<ManufactureResponse>[] = [
   {
@@ -12,6 +13,13 @@ export const ManufacturerColumns: ColumnDef<ManufactureResponse>[] = [
     header: "STT",
     cell: ({ row }) => {
       return row.index + 1
+    }
+  },
+  {
+    accessorKey: "logoUrl",
+    header: "Logo",
+    cell: ({ row }) => {
+      return <Image width={32} height={32} src={row.original.logoUrl} alt={row.original.name} />;
     }
   },
   {
