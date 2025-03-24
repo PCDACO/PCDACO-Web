@@ -20,7 +20,6 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter } from "next/navigation"
 import { InspectionScheduleDetailResponse } from "@/constants/models/inspection-schedule.model"
-import { useInspectionScheduleForm } from "@/hooks/inspection-schedules/use-form-inspection-schedule"
 import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
 
 

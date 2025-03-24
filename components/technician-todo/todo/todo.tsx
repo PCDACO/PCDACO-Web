@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import CarDetailsDialog from "@/components/cars/detail-dialog"
-import { useTechnicianTaskMutation, useTechnicianTaskQuery } from "@/hooks/technician-tasks/use-technician-tasks"
+import { useTechnicianTaskMutation } from "@/hooks/technician-tasks/use-technician-tasks"
 import { formatDate } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
