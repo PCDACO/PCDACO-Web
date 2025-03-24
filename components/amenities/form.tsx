@@ -77,12 +77,12 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="text"
-                      placeholder="Name"
+                      placeholder="Description"
                       className="w-full"
                     />
                   </FormControl>
@@ -106,7 +106,6 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
                       const files = (event.target as HTMLInputElement).files;
                       if (!files) return;
                       const file = files && files[0];
-                      if (file.type !== "image/svg") return;
                       field.onChange(files); // Update form value
                       handleFileChange(file || null); // Update local URL
                     }}
@@ -158,12 +157,12 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="text"
-                      placeholder="Name"
+                      placeholder="Description"
                       className="w-full"
                     />
                   </FormControl>
@@ -187,7 +186,6 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
                       const files = (event.target as HTMLInputElement).files;
                       if (!files) return;
                       const file = files && files[0];
-                      if (file.type !== "image/svg") return;
                       field.onChange(files); // Update form value
                       handleFileChange(file || null); // Update local URL
                     }}

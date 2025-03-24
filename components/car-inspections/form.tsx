@@ -71,6 +71,15 @@ export default function CarInspectionForm({ id }: Props) {
     [InspectionPhotoType.Scratches.toString()]: undefined,
     [InspectionPhotoType.Cleanliness.toString()]: undefined,
   })
+  const [descriptions, setDescriptions] = useState<Record<string, string>>({
+    [InspectionPhotoType.ExteriorCar.toString()]: "",
+    [InspectionPhotoType.FuelGauge.toString()]: "",
+    [InspectionPhotoType.ParkingLocation.toString()]: "",
+    [InspectionPhotoType.CarKey.toString()]: "",
+    [InspectionPhotoType.TrunkSpace.toString()]: "",
+    [InspectionPhotoType.Scratches.toString()]: "",
+    [InspectionPhotoType.Cleanliness.toString()]: "",
+  })
   const [note, setNote] = useState<string>("");
 
   const isDatesValid = () => {
@@ -93,6 +102,7 @@ export default function CarInspectionForm({ id }: Props) {
     });
   };
 
+
   const handleFileChange = (type: InspectionPhotoType, file: File | null) => {
     setPhotos((prev) => ({
       ...prev,
@@ -104,6 +114,13 @@ export default function CarInspectionForm({ id }: Props) {
     setDates((prev) => ({
       ...prev,
       [type]: date,
+    }))
+  }
+
+  const handleDescriptionChange = (type: InspectionPhotoType, description: string) => {
+    setDescriptions((prev) => ({
+      ...prev,
+      [type]: description,
     }))
   }
 
@@ -150,6 +167,7 @@ export default function CarInspectionForm({ id }: Props) {
       payload: {
         dates: dates,
         photos: photos,
+        descriptions: descriptions,
         note: note,
       },
     });
@@ -170,9 +188,10 @@ export default function CarInspectionForm({ id }: Props) {
               photoType={type}
               file={photos[type]}
               date={dates[type]}
+              description={descriptions[type]}
               onChange={(file) => handleFileChange(type, file)}
               onDateChange={(date) => handleDateChange(type, date)}
-            />
+              onDescriptionChange={(description) => handleDescriptionChange(type, description)} />
           ))}
         </CardContent>
       </Card>

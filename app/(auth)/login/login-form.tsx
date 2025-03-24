@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Logout } from "./action";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/auth/use-auth";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
   const { register, handleSubmit } = useForm<{
@@ -17,6 +18,7 @@ export default function LoginForm({ className, ...props }: React.ComponentPropsW
   }>();
 
   const { login } = useAuth();
+
 
   useEffect(() => {
     Logout();
@@ -53,7 +55,7 @@ export default function LoginForm({ className, ...props }: React.ComponentPropsW
                         id="password" type="password" required />
                     </div>
                     <Button type="submit" className="w-full">
-                      Đăng nhập
+                      {login.isPending ? <LoadingSpinner /> : "Đăng nhập"}
                     </Button>
                   </div>
                 </div>

@@ -9,6 +9,7 @@ import { useDialogStore } from "@/stores/store";
 import { BaseResponse } from "@/constants/responses/base-response";
 import { TechnicianTaskResponse } from "@/constants/models/technician-task.model";
 import { toastError, toastResponse } from "@/lib/toast-error";
+import { useRouter } from "next/navigation";
 
 export const useTechnicianTaskQuery = () => {
   const listTechnicianTasks = useQuery({
@@ -22,6 +23,7 @@ export const useTechnicianTaskQuery = () => {
 };
 
 export const useTechnicianTaskMutation = () => {
+  const { replace } = useRouter();
   const { setOpen } = useDialogStore();
   const queryClient = useQueryClient();
   const rejectTechnicianTask = useMutation({
@@ -51,12 +53,15 @@ export const useTechnicianTaskMutation = () => {
   });
 
   const inProgressTechnicianTask = useMutation({
-    mutationKey: ["rejectTechnicianTask"],
+    mutationKey: ["inprogressTechnicianTask"],
     mutationFn: async ({ id }: { id: string }) => await InProgressTechnicianTask(id),
     onSuccess: (response) => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: "tasks" });
       toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: "tasks" });
+        replace("/dashboard");
+      }
     },
     onError: (error) => {
       toastError(error);

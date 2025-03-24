@@ -56,10 +56,12 @@ export const useInspectionScheduleMutation = () => {
     mutationKey: ["createInspectionSchedule"],
     mutationFn: async (payload: InspectionSchedulePayload) => await CreateInspectionSchedules(payload),
     onSuccess: (response) => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
-      replace("/inspection-schedules");
       toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
+        replace("/inspection-schedules");
+      }
     },
     onError: (error) => {
       toastError(error);
@@ -68,11 +70,17 @@ export const useInspectionScheduleMutation = () => {
 
   const rejectInspectionSchedule = useMutation({
     mutationKey: ["rejectInspectionSchedule"],
-    mutationFn: async (id: string) => await RejectInspectionSchedules(id),
+    mutationFn: async ({
+      id, note
+    }: {
+      id: string, note: string
+    }) => await RejectInspectionSchedules({ id, note }),
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
-      replace("/inspection-schedules");
       toastResponse(response);
+      if (response.isSuccess) {
+        queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
+        replace("/inspection-schedules");
+      }
     },
     onError: (error) => {
       toastError(error);

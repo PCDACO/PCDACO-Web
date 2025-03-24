@@ -24,7 +24,6 @@ import {
 import { useInspectionScheduleForm } from "@/hooks/inspection-schedules/use-form-inspection-schedule"
 import { LoadingSpinner } from "../ui/loading-spinner"
 import { InspectionSchedulePayload } from "@/constants/models/inspection-schedule.model"
-import { useCarQuery } from "@/hooks/cars/use-car"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
@@ -32,31 +31,19 @@ import { CalendarIcon } from "lucide-react"
 import { Calendar } from "../ui/calendar"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { Card, CardContent, CardHeader } from "../ui/card"
-import { useTechnicianQuery } from "@/hooks/technicians/use-technician"
+import { CarResponse } from "@/constants/models/car.model"
+import { TechnicianResponse } from "@/constants/models/technician.model"
 
 interface InspectionScheduleFormProps {
   id: string;
   value: InspectionSchedulePayload;
+  cars: CarResponse[];
+  technicians: TechnicianResponse[];
 }
-export default function CreateInspectionForm({ id, value }: InspectionScheduleFormProps) {
+export default function CreateInspectionForm({ id, value, cars, technicians }: InspectionScheduleFormProps) {
   const { form, isLoading, onSubmit } = useInspectionScheduleForm({
     id, value
   });
-  const { listCarQuery } = useCarQuery({
-    params: {
-      index: 1,
-      size: 1000,
-      keyword: "",
-      status: "Pending"
-    }
-  });
-  const { listTechnicians } = useTechnicianQuery({
-    params: {
-      index: 1,
-      size: 1000,
-      keyword: "",
-    }
-  })
 
   function handleDateSelect(date: Date | undefined) {
     if (date) {
@@ -107,7 +94,7 @@ export default function CreateInspectionForm({ id, value }: InspectionScheduleFo
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {listTechnicians.data?.value.items?.map(item => (
+                          {technicians.map(item => (
                             <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
                           )
                           ) ?? []}
@@ -132,7 +119,7 @@ export default function CreateInspectionForm({ id, value }: InspectionScheduleFo
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {listCarQuery.data?.value.items?.map(item => (
+                      {cars.map(item => (
                         <SelectItem key={item.id} value={item.id}>{item.licensePlate}</SelectItem>
                       )) ?? []}
                     </SelectContent>

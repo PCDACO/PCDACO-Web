@@ -10,7 +10,7 @@ import { useCarStore } from "./menu-action";
 import CarForm from "./form";
 import { CarColumns } from "./column";
 interface CarTableProps {
-  status: string;
+  status?: number;
 }
 const CarTable = ({ status }: CarTableProps) => {
   const { open, setOpen } = useDialogStore();
