@@ -25,7 +25,10 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
 
   const handleDeleteClick = (id: string) => {
     timerId = setTimeout(() => {
-      rejectInspectionSchedule.mutate(id);
+      rejectInspectionSchedule.mutate({
+        id: id,
+        note: "",
+      });
     }, holdTime);
   }
 
