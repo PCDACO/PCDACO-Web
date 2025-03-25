@@ -10,4 +10,9 @@ export const DriverSchema = z.object({
   createdAt: z.date(),
 });
 
+export const BanDriverSchema = z.object({
+  reason: z.string().min(1, "Reason is required"),
+});
+
 export type DriverPayloadSchema = z.infer<typeof DriverSchema>;
+export type BanDriverPayloadSchema = z.infer<typeof BanDriverSchema>;

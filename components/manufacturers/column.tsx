@@ -6,6 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import MenuAction from "./menu-action";
 import { formatDate } from "@/lib/utils";
 import Image from "next/image";
+import { ImageIcon } from "lucide-react";
 
 export const ManufacturerColumns: ColumnDef<ManufactureResponse>[] = [
   {
@@ -19,7 +20,9 @@ export const ManufacturerColumns: ColumnDef<ManufactureResponse>[] = [
     accessorKey: "logoUrl",
     header: "Logo",
     cell: ({ row }) => {
-      return <Image width={32} height={32} src={row.original.logoUrl} alt={row.original.name} />;
+      const logo = row.original.logoUrl;
+      return logo !== "" ?
+        (<Image width={32} height={32} src={row.original.logoUrl} alt={row.original.name} />) : <ImageIcon />
     }
   },
   {

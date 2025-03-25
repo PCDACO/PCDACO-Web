@@ -8,11 +8,9 @@ interface Props {
 export const useWithdrawRequestQuery = ({ params }: Props) => {
   if (!params) {
     params = {
-      fromDate: new Date("0001-01-01T00:00:00Z"),
-      toDate: new Date("3000-12-30T00:00:00Z"),
-      limit: 10,
-      status: 0,
-      searchTerm: "",
+      index: 1,
+      size: 10,
+      keyword: ""
     };
   }
   const listWithdrawRequest = useQuery({

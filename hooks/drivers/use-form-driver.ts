@@ -1,8 +1,10 @@
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DriverPayLoad } from "@/constants/models/driver.model";
+import { DriverBanPayload, DriverPayLoad } from "@/constants/models/driver.model";
 import {
+  BanDriverPayloadSchema,
+  BanDriverSchema,
   DriverPayloadSchema,
   DriverSchema,
 } from "@/domains/schemas/driver.schema";
@@ -12,6 +14,11 @@ interface DriverFormProps {
   id: string;
   value: DriverPayLoad;
   action: string;
+}
+
+interface BanDriverFormProps {
+  id: string;
+  value: DriverBanPayload;
 }
 
 export const useDriverForm = ({ id, value, action }: DriverFormProps) => {
@@ -50,3 +57,25 @@ export const useDriverForm = ({ id, value, action }: DriverFormProps) => {
     isLoading: deleteDriverMutation.isPending,
   };
 };
+
+export const useBanDriverForm = ({ id, value }: BanDriverFormProps) => {
+  const defaultValues = useMemo(() => {
+    return {
+      reason: "",
+    }
+  }, [id, value]);
+
+  const form = useForm<BanDriverPayloadSchema>({
+    resolver: zodResolver(BanDriverSchema),
+    defaultValues,
+  });
+
+  const onSubmit = form.handleSubmit(() => {
+
+  });
+  return {
+    form,
+    onSubmit,
+    // isLoading:
+  }
+}

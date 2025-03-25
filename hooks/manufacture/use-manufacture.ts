@@ -27,7 +27,10 @@ export const useManuFactureQuery = ({ params }: ManufactureQuery) => {
     queryKey: ["manufacturers", params],
     queryFn: () => GetManufacturers(params),
     initialData: BaseResponseWithPagination<ManufactureResponse>,
-    retry: 1
+    retry: 1,
+    refetchOnWindowFocus: true,
+    refetchInterval: 60000,
+    refetchOnReconnect: true,
   });
 
   return { listManuFactureQuery };

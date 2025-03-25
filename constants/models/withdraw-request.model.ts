@@ -1,10 +1,7 @@
-export interface WithdrawRequestParams {
-  limit: number,
-  lastId?: string,
-  searchTerm?: string,
-  status: number,
-  fromDate: Date,
-  toDate: Date
+export interface WithdrawRequestParams extends RootRequest {
+  status?: number,
+  fromDate?: Date,
+  toDate?: Date
 }
 export interface WithdrawRequestResponse {
   id: string,

@@ -3,7 +3,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
@@ -18,16 +17,14 @@ import { OwnerPayLoad } from "@/constants/models/owner.model";
 
 interface MenuActionProps {
   id: string;
-  payload: OwnerPayLoad;
 }
 
 export const useOwnerStore = createGenericStore<OwnerPayLoad>();
 
-const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
+const MenuAction: React.FC<MenuActionProps> = ({ id }) => {
   const { setKeyword } = useKeywordStore();
   const { setOpen } = useDialogStore();
   const { setId } = useIdStore();
-  const { setData } = useOwnerStore();
 
   return (
     <DropdownMenu>
@@ -38,27 +35,15 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" >
-        <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
-        <DropdownMenuItem
-          onClick={() => {
-            setKeyword("update");
-            setOpen(true);
-            setId(id);
-            setData(payload);
-          }}
-        >
-          Cập Nhật
-        </DropdownMenuItem>
         <DropdownMenuItem
           className="bg-red-200"
           onClick={() => {
             setKeyword("delete");
             setOpen(true);
             setId(id);
-            setData(payload);
           }}
         >
-          Xóa
+          Chặn người dùng
         </DropdownMenuItem>
       </DropdownMenuContent >
     </DropdownMenu>

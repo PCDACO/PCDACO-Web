@@ -20,20 +20,13 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
     header: "User",
     cell: ({ row }) => {
       const user = row.original.user;
-      return <Image width={32} height={32} src={user.avatarUrl !== "" ? user.avatarUrl : "/dummy-avatar.webp"} alt={user.name} />;
+      return (
+        <>
+          <Image width={32} height={32} src={user.avatarUrl !== "" ? user.avatarUrl : "/dummy-avatar.webp"} alt={user.name} />
+          <span>{user.name}</span>
+        </>
+      );
     }
-  },
-  {
-    accessorKey: "user",
-    header: "User",
-    cell: ({ row }) => {
-      const user = row.original.user;
-      return <span>{user.name}</span>;
-    }
-  },
-  {
-    accessorKey: "name",
-    header: "Tên",
   },
   {
     accessorKey: "description",
@@ -46,6 +39,10 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
       const createdAt = row.original.createdAt;
       return formatDate(createdAt.toString());
     }
+  },
+  {
+    accessorKey: "status",
+    header: "Trạng thái",
   },
   {
     id: "actions",

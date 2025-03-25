@@ -82,6 +82,13 @@ export const useOwnerMutation = () => {
       toastError(error);
     },
   });
+
+  // const banOwnerMutation = useMutation({
+  //   mutationKey: ["banOwner"],
+  //   mutationFn: () => ,
+  //
+  // });
+
   return {
     deleteOwnerMutation,
     patchOwnerMutation

@@ -28,3 +28,7 @@ export const PatchOwnerLicense = async (id: string, payload: OwnerApprovalPayloa
   return response.data;
 }
 
+// export const BanOwner = async (id: string, payload: BanOwnerPayload): Promise<RootResponse<null>> => {
+//   const response = await axiosInstance.delete("");
+//   return response.data;
+// }
