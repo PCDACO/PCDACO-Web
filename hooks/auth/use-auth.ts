@@ -10,7 +10,7 @@ export const useAuth = () => {
     mutationFn: ({ email, password }: { email: string, password: string }) => Login({ email, password }),
     onSuccess: (response) => {
       toastResponse
-      replace("/dashboard");
+      replace("/statistics");
     },
     onError: () => {
     }
