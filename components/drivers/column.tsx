@@ -1,7 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import MenuAction from "./menu-action";
 import { formatDate } from "@/lib/utils";
 import { DriverResponse } from "@/constants/models/driver.model";
 import Image from "next/image";

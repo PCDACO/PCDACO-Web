@@ -15,16 +15,6 @@ interface MonthCalendarProps {
   onDateChange: (date: Date) => void
   schedules: InspectionScheduleDetail[]
 }
-interface Schedule {
-  id: number;
-  statusName: "Pending" | "InProgress" | "Expired" | "Completed";
-}
-
-interface BadgeProps {
-  schedule: Schedule;
-  handleDeleteClick: (id: number) => void;
-  handleCancelTimer: () => void;
-}
 
 export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCalendarProps) {
   const [calendarDays, setCalendarDays] = useState<Array<{ date: Date | null; isCurrentMonth: boolean }>>([])

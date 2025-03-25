@@ -1,6 +1,5 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
-import MenuAction from "./menu-action";
 import { OwnerResponse } from "@/constants/models/owner.model";
 import { formatDate } from "@/lib/utils";
 import Image from "next/image";
