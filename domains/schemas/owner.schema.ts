@@ -10,4 +10,9 @@ export const OwnerSchema = z.object({
   createdAt: z.date(),
 });
 
+export const BanOwnerSchema = z.object({
+  reason: z.string().min(1, "Reason is required"),
+});
+
 export type OwnerPayloadSchema = z.infer<typeof OwnerSchema>;
+export type BanOwnerPayloadSchema = z.infer<typeof BanOwnerSchema>;

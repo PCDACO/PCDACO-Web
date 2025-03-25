@@ -33,6 +33,10 @@ export interface OwnerPayLoad {
   createdAt: Date;
 }
 
+export interface BanOwnerPayload {
+  reason: string;
+}
+
 export interface OwnerResponse {
   id: string;
   name: string;

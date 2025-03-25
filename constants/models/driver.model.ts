@@ -20,6 +20,10 @@ export interface DriverResponse {
   createdAt: Date;
 }
 
+export interface DriverBanPayload {
+  reason: string;
+}
+
 export type DriverParams = RootRequest;
 
 export interface DriverEditResponse {

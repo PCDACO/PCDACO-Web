@@ -6,6 +6,7 @@ import MenuAction from "./menu-action";
 import { AmenityResponse } from "@/constants/models/amenity.model";
 import Image from "next/image";
 import { formatDate } from "@/lib/utils";
+import { ImageIcon } from "lucide-react";
 
 export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
   {
@@ -20,7 +21,7 @@ export const AmenityColumns: ColumnDef<AmenityResponse>[] = [
     header: "Icon",
     cell: ({ row }) => {
       const icon = row.original.iconUrl;
-      return <Image width={32} height={32} src={icon} alt={row.original.name} />;
+      return icon !== "" ? <Image width={32} height={32} src={icon} alt={row.original.name} /> : <ImageIcon />
     }
   },
   {

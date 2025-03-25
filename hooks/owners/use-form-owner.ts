@@ -1,9 +1,11 @@
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OwnerPayLoad } from "@/constants/models/owner.model";
+import { BanOwnerPayload, OwnerPayLoad } from "@/constants/models/owner.model";
 import { useOwnerMutation } from "./use-owner";
 import {
+  BanOwnerPayloadSchema,
+  BanOwnerSchema,
   OwnerPayloadSchema,
   OwnerSchema,
 } from "@/domains/schemas/owner.schema";
@@ -12,6 +14,10 @@ interface OwnerFormProps {
   id: string;
   value: OwnerPayLoad;
   action: string;
+}
+interface BanOwnerFormProps {
+  id: string;
+  value: BanOwnerPayload;
 }
 
 export const useOwnerForm = ({ id, value, action }: OwnerFormProps) => {
@@ -50,3 +56,24 @@ export const useOwnerForm = ({ id, value, action }: OwnerFormProps) => {
     isLoading: deleteOwnerMutation.isPending,
   };
 };
+export const useBanOwnerForm = ({ id, value }: BanOwnerFormProps) => {
+  const defaultValues = useMemo(() => {
+    return {
+      reason: value.reason ?? ""
+    }
+  }, [id, value]);
+
+  const form = useForm<BanOwnerPayloadSchema>({
+    resolver: zodResolver(BanOwnerSchema),
+    defaultValues,
+  });
+
+  const onSubmit = form.handleSubmit(async () => {
+
+  })
+  return {
+    form,
+    onSubmit,
+    // isLoading:
+  }
+}
