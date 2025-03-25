@@ -1,4 +1,4 @@
-import { GetStatistics } from "@/app/(dashboard)/dashboard/action";
+import { GetStatistics } from "@/app/(dashboard)/statistics/action";
 import { useQuery } from "@tanstack/react-query"
 
 export const useStatisticsQuery = () => {

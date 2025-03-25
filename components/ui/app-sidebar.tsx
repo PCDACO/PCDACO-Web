@@ -57,7 +57,7 @@ const items: SideBarItem[] = [
   // ADMIN
   {
     title: 'Thống Kê',
-    url: '/dashboard',
+    url: '/statistics',
     icon: AlignEndHorizontal,
     role: 'Admin',
     group: 'Thống Kê',
