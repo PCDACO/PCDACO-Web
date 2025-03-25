@@ -21,9 +21,8 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
       ...params,
       index: pageNumber,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line 
   }, [pageNumber]);
-
 
   const totalPages = Math.ceil(value.totalItems / 10);
 
@@ -50,7 +49,6 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
         endPage = currentPage + middle - 1;
       }
     }
-
     return Array.from(
       { length: endPage - startPage + 1 },
       (_, i) => startPage + i
@@ -74,7 +72,7 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
           <PaginationItem key={page}>
             <Button
               onClick={() => setPageNumber(page)}
-              className={page === pageNumber ? "bg-primary text-white" : undefined}
+              className={page === pageNumber ? "bg-primary text-white" : "bg-white text-black"}
             >
               {page}
             </Button>

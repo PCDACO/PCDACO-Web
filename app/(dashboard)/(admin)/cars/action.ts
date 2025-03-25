@@ -6,8 +6,12 @@ import { GPSDeviceAssignPayload } from "@/constants/models/gps-device.model";
 export const GetCars = async (
   params: CarParams
 ): Promise<RootResponse<Pagination<CarResponse>>> => {
-  const response = await axiosInstance.get("/api/cars/admin", {
-    params,
+  const response = await axiosInstance.get("/api/staff/cars", {
+    params: {
+      index: params.index,
+      size: params.size,
+      keyword: params.keyword
+    }
   });
   return response.data;
 };

@@ -105,7 +105,7 @@ const items: SideBarItem[] = [
     group: 'Quản Lí Hệ Thống',
   },
   {
-    title: 'Xét Duyệt Người Dùng',
+    title: 'Xét Duyệt',
     url: '/pending-approval',
     icon: LucideIdCard,
     role: 'Admin',

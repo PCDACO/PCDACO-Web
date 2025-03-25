@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import MenuAction from "./menu-action";
 import { OwnerResponse } from "@/constants/models/owner.model";
 import { formatDate } from "@/lib/utils";
+import Image from "next/image";
 
 export const OwnerColumns: ColumnDef<OwnerResponse>[] = [
   {
@@ -10,6 +11,14 @@ export const OwnerColumns: ColumnDef<OwnerResponse>[] = [
     header: "STT",
     cell: ({ row }) => {
       return row.index + 1
+    }
+  },
+  {
+    accessorKey: "avatarUrl",
+    header: "",
+    cell: ({ row }) => {
+      const avatarUrl = row.original.avatarUrl;
+      return <Image width={32} height={32} src={avatarUrl !== "" ? avatarUrl : "/dummy-avatar.webp"} alt={row.original.name} />;
     }
   },
   {
@@ -31,23 +40,23 @@ export const OwnerColumns: ColumnDef<OwnerResponse>[] = [
       return <h1>{formatDate(row.original.dateOfBirth.toString())}</h1>
     }
   },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      return (
-        <MenuAction
-          id={row.original.id}
-          payload={{
-            name: row.original.name,
-            address: row.original.address,
-            createdAt: row.original.createdAt,
-            dateOfBirth: row.original.dateOfBirth,
-            email: row.original.email,
-            phone: row.original.phone,
-            role: row.original.role
-          }}
-        />
-      );
-    },
-  },
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     return (
+  //       <MenuAction
+  //         id={row.original.id}
+  //         payload={{
+  //           name: row.original.name,
+  //           address: row.original.address,
+  //           createdAt: row.original.createdAt,
+  //           dateOfBirth: row.original.dateOfBirth,
+  //           email: row.original.email,
+  //           phone: row.original.phone,
+  //           role: row.original.role
+  //         }}
+  //       />
+  //     );
+  //   },
+  // },
 ];
