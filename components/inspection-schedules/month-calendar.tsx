@@ -20,6 +20,17 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
   const [calendarDays, setCalendarDays] = useState<Array<{ date: Date | null; isCurrentMonth: boolean }>>([])
   const { rejectInspectionSchedule } = useInspectionScheduleMutation()
 
+  const statusClasses: Record<
+    string,
+    string
+  > = {
+    Pending: "bg-yellow-500",
+    InProgress: "bg-blue-500",
+    Expired: "bg-red-500",
+    Rejected: "bg-red-500",
+    Approved: "bg-green-500",
+  };
+
   let timerId: NodeJS.Timeout;
   const holdTime = 1500;
 
@@ -151,7 +162,7 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                               onMouseDown={() => handleDeleteClick(schedule.id)}
                               onMouseUp={() => handleCancelTimer()}
                               onMouseLeave={() => handleCancelTimer()}
-                              className="w-full justify-start truncate bg-black hover:bg-gray-800 cursor-pointer text-xs">
+                              className={`w-full justify-start truncate ${statusClasses[schedule.statusName] || "bg-slate-300"} cursor-pointer text-xs`}>
                               {formatDateToHourMinutes(schedule.inspectionDate)} - {schedule.carOwnerName}
                             </Badge>
                           </TooltipTrigger>
@@ -179,7 +190,7 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                                 onMouseDown={() => handleDeleteClick(schedule.id)}
                                 onMouseUp={() => handleCancelTimer()}
                                 onMouseLeave={() => handleCancelTimer()}
-                                className="w-full justify-start truncate bg-black hover:bg-gray-800 cursor-pointer text-xs">
+                                className={`w-full justify-start truncate bg-black ${statusClasses[schedule.statusName] || "bg-slate-300"}  cursor-pointer text-xs`}>
                                 {formatDateToHour(schedule.inspectionDate.toString())}     - {schedule.carOwnerName}
                               </Badge>
                             </TooltipTrigger>

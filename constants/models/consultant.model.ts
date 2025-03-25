@@ -12,6 +12,7 @@ export interface ConsultantResponse {
   id: string;
   name: string;
   email: string;
+  avatarUrl: string;
   address: string;
   dateOfBirth: Date;
   phone: string;

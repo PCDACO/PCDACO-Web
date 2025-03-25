@@ -12,6 +12,7 @@ export interface DriverResponse {
   id: string;
   name: string;
   email: string;
+  avatarUrl: string;
   address: string;
   dateOfBirth: Date;
   phone: string;
