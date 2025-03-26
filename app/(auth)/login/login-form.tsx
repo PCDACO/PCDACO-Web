@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Logout } from "./action";
 import Image from "next/image";
 import { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,11 +16,11 @@ export default function LoginForm({ className, ...props }: React.ComponentPropsW
     password: string
   }>();
 
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
 
 
   useEffect(() => {
-    Logout();
+    logout.mutate();
   }, [])
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">

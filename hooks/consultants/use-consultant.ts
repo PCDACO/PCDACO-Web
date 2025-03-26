@@ -27,7 +27,7 @@ export const useConsultantMutation = () => {
     onSuccess: (response) => {
       if (response.isSuccess) {
         setOpen(false);
-        queryClient.invalidateQueries({ queryKey: "consultants" });
+        queryClient.invalidateQueries({ queryKey: ["consultants"] });
         replace("/consultants");
       }
       toastResponse(response);
