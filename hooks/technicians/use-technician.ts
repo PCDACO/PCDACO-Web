@@ -28,7 +28,7 @@ export const useTechnicianMutation = () => {
       toastResponse(response);
       if (response.isSuccess) {
         setOpen(false);
-        queryClient.invalidateQueries({ queryKey: "technicians" });
+        queryClient.invalidateQueries({ queryKey: ["technicians"] });
         replace("/technicians");
       }
     },

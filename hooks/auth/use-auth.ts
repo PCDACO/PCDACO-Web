@@ -1,5 +1,5 @@
-import { Login } from "@/app/(auth)/login/action";
-import { toastResponse } from "@/lib/toast-error";
+import { Login, Logout } from "@/app/(auth)/login/action";
+import { toastError, toastResponse } from "@/lib/toast-error";
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/navigation";
 
@@ -9,13 +9,23 @@ export const useAuth = () => {
     mutationKey: ["auth-login"],
     mutationFn: ({ email, password }: { email: string, password: string }) => Login({ email, password }),
     onSuccess: (response) => {
-      toastResponse
+      toastResponse(response);
       replace("/statistics");
+    },
+    onError: (error) => {
+      toastError(error);
+    }
+  });
+  const logout = useMutation({
+    mutationKey: ["auth-logout"],
+    mutationFn: () => Logout(),
+    onSuccess: () => {
     },
     onError: () => {
     }
   });
   return {
-    login
+    login,
+    logout
   }
 }

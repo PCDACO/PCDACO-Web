@@ -9,7 +9,7 @@ export async function Login({
 }: {
   email: string;
   password: string;
-}) {
+}): Promise<RootResponse<null>> {
   const cookieStore = await cookies();
   // eslint-disable-next-line 
   const response = await axiosInstance.post("api/auth/admin/login", {
@@ -38,6 +38,7 @@ export async function Login({
 }
 
 export const Logout = async () => {
+  console.log("alo");
   const cookieStore = await cookies();
   cookieStore.delete("accessToken");
   cookieStore.delete("refreshToken");
