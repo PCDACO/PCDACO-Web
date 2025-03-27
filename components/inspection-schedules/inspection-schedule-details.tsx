@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { format } from "date-fns"
 import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, CheckCircle, XCircle } from "lucide-react"

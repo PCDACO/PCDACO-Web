@@ -2,10 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import MenuAction from "./menu-action";
 import Image from "next/image";
 import { formatDate } from "@/lib/utils";
 import { WithdrawRequestResponse } from "@/constants/models/withdraw-request.model";
+import CheckoutButton from "./checkout-button";
 
 export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
   {
@@ -21,16 +21,19 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
     cell: ({ row }) => {
       const user = row.original.user;
       return (
-        <>
-          <Image width={32} height={32} src={user.avatarUrl !== "" ? user.avatarUrl : "/dummy-avatar.webp"} alt={user.name} />
-          <span>{user.name}</span>
-        </>
+        <div className="flex w-full justify-start items-center">
+          <Image width={24} height={24} src={user.avatarUrl !== "" ? user.avatarUrl : "/dummy-avatar.webp"} alt={user.name} />
+          <span className="ml-4 text-sm">{user.name}</span>
+        </div>
       );
     }
   },
   {
-    accessorKey: "description",
-    header: "Mô Tả",
+    accessorKey: "amount",
+    header: "Lượng Tiền",
+    cell: ({ row }) => {
+      return <span>{row.original.amount} Đồng</span>
+    }
   },
   {
     accessorKey: "createdAt",
@@ -47,11 +50,12 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      return (
-        <MenuAction
-          id={row.original.id}
-        />
-      );
+      // return (
+      //   <MenuAction
+      //     id={row.original.id}
+      //   />
+      // );
+      return <CheckoutButton id={row.original.id} />
     },
   },
 ];

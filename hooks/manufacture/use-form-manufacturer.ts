@@ -58,7 +58,7 @@ export const useManufacturerForm = ({
     form,
     onSubmit,
     isLoading:
-      createManufacturerMutation.isPending ||
-      updateManufacturerMutation.isPending,
+      createManufacturerMutation.isLoading ||
+      updateManufacturerMutation.isLoading,
   };
 };

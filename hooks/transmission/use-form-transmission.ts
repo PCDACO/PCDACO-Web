@@ -55,8 +55,8 @@ export const useTransmissionForm = ({
     form,
     onSubmit,
     isLoading:
-      createTransmission.isPending ||
-      updateTransmission.isPending ||
-      deleteTransmission.isPending,
+      createTransmission.isLoading ||
+      updateTransmission.isLoading ||
+      deleteTransmission.isLoading,
   };
 };

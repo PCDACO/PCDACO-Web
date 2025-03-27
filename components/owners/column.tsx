@@ -46,6 +46,7 @@ export const OwnerColumns: ColumnDef<OwnerResponse>[] = [
       return (
         <MenuAction
           id={row.original.id}
+          isBanned={row.original.isBanned}
         />
       );
     },

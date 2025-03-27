@@ -4,14 +4,12 @@ import { DataTable } from "@/components/data-table";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   useDialogStore,
-  useIdStore,
   useKeywordStore,
   useParamStore,
 } from "@/stores/store";
 import SearchInput from "@/components/input/search-input";
 import PaginationTable from "../data-table/pagination";
 import { useOwnerQuery } from "@/hooks/owners/use-owner";
-import { useOwnerStore } from "./menu-action";
 import { OwnerColumns } from "./column";
 import OwnerForm from "./form";
 const OwnerTable = () => {
@@ -22,8 +20,6 @@ const OwnerTable = () => {
     params: value,
   });
 
-  const { id } = useIdStore();
-  const { data } = useOwnerStore();
 
   return (
     <Dialog
@@ -57,15 +53,7 @@ const OwnerTable = () => {
         />
       </div>
       <DialogContent>
-        <OwnerForm id={id} value={data || {
-          name: "",
-          address: "",
-          createdAt: new Date(),
-          dateOfBirth: new Date(),
-          email: "",
-          phone: "",
-          role: ""
-        }} />
+        <OwnerForm />
       </DialogContent>
     </Dialog>
   );

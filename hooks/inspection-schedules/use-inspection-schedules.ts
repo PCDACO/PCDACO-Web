@@ -13,7 +13,6 @@ import {
   InspectionSchedulePayload,
 } from "@/constants/models/inspection-schedule.model";
 import { useDialogStore } from "@/stores/store";
-import { toast } from "../use-toast";
 import { useRouter } from "next/navigation";
 import { ApproveInspectionScheduleAction } from "@/app/(dashboard)/(technicians)/technician-todo/[id]/approve/action";
 import { BaseResponse } from "@/constants/responses/base-response";
@@ -63,7 +62,7 @@ export const useInspectionScheduleMutation = () => {
         replace("/inspection-schedules");
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -82,7 +81,7 @@ export const useInspectionScheduleMutation = () => {
         replace("/inspection-schedules");
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -102,7 +101,7 @@ export const useInspectionScheduleMutation = () => {
         replace("/inspection-schedules");
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
 

@@ -42,6 +42,6 @@ export const useInspectionScheduleForm = ({
   return {
     form,
     onSubmit,
-    isLoading: createInspectionSchedule.isPending,
+    isLoading: createInspectionSchedule.isLoading,
   };
 };

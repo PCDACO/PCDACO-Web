@@ -10,24 +10,23 @@ import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   createGenericStore,
+  useBanStore,
   useDialogStore,
   useIdStore,
-  useKeywordStore,
 } from "@/stores/store";
 import { DriverPayLoad } from "@/constants/models/driver.model";
 
 interface MenuActionProps {
   id: string;
-  payload: DriverPayLoad;
+  isBanned: boolean;
 }
 
 export const useDriverStore = createGenericStore<DriverPayLoad>();
 
-const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
-  const { setKeyword } = useKeywordStore();
+const MenuAction: React.FC<MenuActionProps> = ({ id, isBanned }) => {
   const { setOpen } = useDialogStore();
   const { setId } = useIdStore();
-  const { setData } = useDriverStore();
+  const { setIsBanned } = useBanStore();
 
   return (
     <DropdownMenu>
@@ -40,25 +39,14 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
       <DropdownMenuContent align="end" >
         <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
         <DropdownMenuItem
+          className="bg-red-200 hover:cursor-pointer"
           onClick={() => {
-            setKeyword("update");
             setOpen(true);
             setId(id);
-            setData(payload);
+            setIsBanned(isBanned);
           }}
         >
-          Cập Nhật
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="bg-red-200"
-          onClick={() => {
-            setKeyword("delete");
-            setOpen(true);
-            setId(id);
-            setData(payload);
-          }}
-        >
-          Xóa
+          {isBanned ? "Gỡ chặn người dùng" : "Chặn người dùng"}
         </DropdownMenuItem>
       </DropdownMenuContent >
     </DropdownMenu>

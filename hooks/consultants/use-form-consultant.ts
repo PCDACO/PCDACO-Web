@@ -50,6 +50,6 @@ export const useConsultantForm = ({
   return {
     form,
     onSubmit,
-    isLoading: createConsultant.isPending,
+    isLoading: createConsultant.isLoading,
   };
 };

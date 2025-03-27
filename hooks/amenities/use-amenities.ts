@@ -51,7 +51,7 @@ export const useAmenityMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["amenities"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -72,7 +72,7 @@ export const useAmenityMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["amenities"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -87,7 +87,7 @@ export const useAmenityMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["amenities"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });

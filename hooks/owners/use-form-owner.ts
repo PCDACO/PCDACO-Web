@@ -53,7 +53,7 @@ export const useOwnerForm = ({ id, value, action }: OwnerFormProps) => {
   return {
     form,
     onSubmit,
-    isLoading: deleteOwnerMutation.isPending,
+    isLoading: deleteOwnerMutation.isLoading,
   };
 };
 export const useBanOwnerForm = ({ id, value }: BanOwnerFormProps) => {

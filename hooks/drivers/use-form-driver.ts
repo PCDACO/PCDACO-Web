@@ -54,7 +54,7 @@ export const useDriverForm = ({ id, value, action }: DriverFormProps) => {
   return {
     form,
     onSubmit,
-    isLoading: deleteDriverMutation.isPending,
+    isLoading: deleteDriverMutation.isLoading,
   };
 };
 

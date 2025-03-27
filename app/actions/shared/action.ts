@@ -74,3 +74,19 @@ export const GetCurrentUser = async (): Promise<RootResponse<CurrentUserResponse
   const response = await axiosInstance.get("/api/users/current");
   return response.data;
 }
+
+export const BanUser = async ({ id, bannedReason }: {
+  id: string,
+  bannedReason: string,
+}): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.post(`/api/users/${id}/ban`, {
+    bannedReason
+  });
+  return response.data;
+}
+
+export const UnbanUser = async (id: string): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.post(`/api/users/${id}/unban`);
+  return response.data;
+}
+

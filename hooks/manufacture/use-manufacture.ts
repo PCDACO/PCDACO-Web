@@ -50,7 +50,7 @@ export const useManuFactureMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -71,7 +71,7 @@ export const useManuFactureMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -86,7 +86,7 @@ export const useManuFactureMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["manufacturers"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });

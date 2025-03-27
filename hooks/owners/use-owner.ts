@@ -58,7 +58,7 @@ export const useOwnerMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["owners"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -78,7 +78,7 @@ export const useOwnerMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["ownerApproval"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });

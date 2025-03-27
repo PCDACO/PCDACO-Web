@@ -51,8 +51,8 @@ export const useFuelTypeForm = ({ id, value, action }: FuelTypeForm) => {
     form,
     onSubmit,
     isLoading:
-      createFuelType.isPending ||
-      updateFuelType.isPending ||
-      deleteFuelType.isPending,
+      createFuelType.isLoading ||
+      updateFuelType.isLoading ||
+      deleteFuelType.isLoading,
   };
 };

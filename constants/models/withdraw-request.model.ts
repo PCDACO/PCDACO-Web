@@ -1,3 +1,7 @@
+export interface WithdrawRequestPayload {
+  transactionProof?: FileList;
+  adminNote: string;
+}
 export interface WithdrawRequestParams extends RootRequest {
   status?: number,
   fromDate?: Date,
@@ -11,6 +15,15 @@ export interface WithdrawRequestResponse {
   status: string,
   createdAt: Date,
   processedInfo?: ProcessedInfoDetail
+}
+
+export interface WithdrawRequestQRResponse {
+  qrCodeUrl: string,
+  bankName: string,
+  accountName: string,
+  accountNumber: string,
+  amount: number,
+  description: string,
 }
 
 export interface UserDetail {

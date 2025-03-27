@@ -39,6 +39,6 @@ export const useAssignDeviceForm = ({ id, value }: GPSDeviceFormProps) => {
   return {
     form,
     onSubmit,
-    isLoading: assignDeviceMutation.isPending,
+    isLoading: assignDeviceMutation.isLoading,
   };
 };

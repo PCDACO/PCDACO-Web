@@ -32,7 +32,7 @@ export const useConsultantMutation = () => {
       }
       toastResponse(response);
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     }
   });

@@ -38,7 +38,7 @@ export const useCarMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["cars"] });
       }
     },
-    onError: (error) => {
+    onError: (error:Error) => {
       toastError(error);
     },
   });

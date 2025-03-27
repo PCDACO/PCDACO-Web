@@ -37,7 +37,7 @@ export const useDriverMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["drivers"] });
       }
     },
-    onError: (error) => {
+    onError: (error:Error) => {
       toastError(error);
     },
   });

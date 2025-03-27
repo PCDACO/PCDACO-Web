@@ -47,6 +47,7 @@ export interface OwnerResponse {
   phone: string;
   role: string;
   createdAt: Date;
+  isBanned: boolean;
 }
 
 export type OwnerParams = RootRequest;

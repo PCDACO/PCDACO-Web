@@ -18,7 +18,7 @@ export const useAssignDeviceMutation = () => {
       }
       toastResponse(response);
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });

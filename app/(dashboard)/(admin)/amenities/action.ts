@@ -35,11 +35,7 @@ export async function CreateAmenities({
   if (icon?.length ?? 0 > 0) {
     formData.append("icon", icon![0] as File);
   }
-  const response = await axiosInstance.post("/api/amenities", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await axiosInstance.postForm("/api/amenities", formData);
 
   return response.data;
 }
@@ -59,10 +55,6 @@ export async function UpdateAmenity(
   if (payload.icon?.length ?? 0 > 0) {
     formData.append("icon", payload.icon![0]);
   }
-  const response = await axiosInstance.put(`/api/amenities/${id}`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await axiosInstance.putForm(`/api/amenities/${id}`, formData);
   return response.data;
 }

@@ -9,22 +9,23 @@ import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   createGenericStore,
+  useBanStore,
   useDialogStore,
   useIdStore,
-  useKeywordStore,
 } from "@/stores/store";
 import { OwnerPayLoad } from "@/constants/models/owner.model";
 
 interface MenuActionProps {
   id: string;
+  isBanned: boolean;
 }
 
 export const useOwnerStore = createGenericStore<OwnerPayLoad>();
 
-const MenuAction: React.FC<MenuActionProps> = ({ id }) => {
-  const { setKeyword } = useKeywordStore();
+const MenuAction: React.FC<MenuActionProps> = ({ id, isBanned }) => {
   const { setOpen } = useDialogStore();
   const { setId } = useIdStore();
+  const { setIsBanned } = useBanStore();
 
   return (
     <DropdownMenu>
@@ -36,14 +37,14 @@ const MenuAction: React.FC<MenuActionProps> = ({ id }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" >
         <DropdownMenuItem
-          className="bg-red-200"
+          className="bg-red-200 hover:cursor-pointer"
           onClick={() => {
-            setKeyword("delete");
             setOpen(true);
             setId(id);
+            setIsBanned(isBanned);
           }}
         >
-          Chặn người dùng
+          {isBanned ? "Gỡ chặn người dùng" : "Chặn người dùng"}
         </DropdownMenuItem>
       </DropdownMenuContent >
     </DropdownMenu>

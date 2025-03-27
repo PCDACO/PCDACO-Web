@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { CarPayload } from "@/constants/models/car.model";
-import { useCarForm } from "@/hooks/cars/use-form-owner";
+import { useCarForm } from "@/hooks/cars/use-form-car";
 
 interface CarFormProps {
   id: string;

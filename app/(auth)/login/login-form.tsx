@@ -26,7 +26,6 @@ export default function LoginForm({
   }>();
 
   const { login } = useAuth();
-
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="flex w-full max-w-md max-h-full flex-col gap-8">
@@ -75,7 +74,7 @@ export default function LoginForm({
                       />
                     </div>
                     <Button type="submit" className="w-full">
-                      {login.isPending ? <LoadingSpinner /> : "Đăng nhập"}
+                      {login.isLoading ? <LoadingSpinner /> : "Đăng nhập"}
                     </Button>
                   </div>
                 </div>
