@@ -1,18 +1,17 @@
 "use server";
 
 import axiosInstance from "@/app/axios.server";
-import { TechnicianTaskResponse } from "@/constants/models/technician-task.model";
+import {
+  TechnicianTaskRequest,
+  TechnicianTaskResponse,
+} from "@/constants/models/technician-task.model";
 
-export const GetTechnicianTasks = async (): Promise<
-  RootResponse<TechnicianTaskResponse>
-> => {
+export const GetTechnicianTasks = async (
+  params?: Partial<TechnicianTaskRequest>
+): Promise<RootResponse<TechnicianTaskResponse>> => {
   const response = await axiosInstance.get(
     "/api/inspection-schedules/technician",
-    {
-      params: {
-        inspectionDate: new Date()
-      }
-    }
+    { params }
   );
   return response.data;
 };
@@ -46,10 +45,10 @@ export const ApproveTechnicianTask = async (
 };
 
 export const InProgressTechnicianTask = async (
-  id: string,
+  id: string
 ): Promise<RootResponse<null>> => {
   const response = await axiosInstance.patch(
-    `/api/inspection-schedules/${id}/inprogress`,
+    `/api/inspection-schedules/${id}/inprogress`
   );
   return response.data;
 };

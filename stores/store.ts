@@ -1,4 +1,5 @@
 import { GetInspectionSchedulesParams } from "@/constants/models/inspection-schedule.model";
+import { TechnicianTaskRequest } from "@/constants/models/technician-task.model";
 import { create } from "zustand";
 
 interface DialogState {
@@ -82,3 +83,6 @@ export const useDialogStore = create<DialogState>((set) => ({
   open: false,
   setOpen: (isOpen) => set({ open: isOpen }),
 }));
+
+export const useTechnicianTaskStoreParams =
+  createGenericStore<TechnicianTaskRequest>();
