@@ -4,7 +4,7 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -25,11 +25,8 @@ export default function LoginForm({
     password: string;
   }>();
 
-  const { login, logout } = useAuth();
+  const { login } = useAuth();
 
-  useEffect(() => {
-    logout.mutate();
-  }, [logout]);
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="flex w-full max-w-md max-h-full flex-col gap-8">
