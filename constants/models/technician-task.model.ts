@@ -31,3 +31,7 @@ export interface UserDetail {
   name: string;
   avatarUrl: string;
 }
+
+export interface TechnicianTaskRequest {
+  inspectionDate: Date;
+}
