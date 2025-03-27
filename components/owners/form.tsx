@@ -16,7 +16,11 @@ const OwnerForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { banUser, unbanUser } = useUserMutation();
   const handleSubmit = () => {
-    isBanned ? unbanUser.mutate({ id }) : banUser.mutate({ id, bannedReason });
+    if (isBanned) {
+      unbanUser.mutate({ id });
+      return;
+    }
+    banUser.mutate({ id, bannedReason });
   }
   const handleChange = (value: string) => {
     setBannedReason(value);

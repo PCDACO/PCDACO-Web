@@ -16,7 +16,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Image from "next/image";
-import { WithdrawRequestPayload } from "@/constants/models/withdraw-request.model";
 import { useWithdrawRequestForm } from "@/hooks/withdraw-requests/use-withdraw-request-form";
 
 interface Props {

@@ -5,7 +5,6 @@ import { DataTable } from "@/components/data-table";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   useDialogStore,
-  useIdStore,
   useKeywordStore,
   useParamStore,
 } from "@/stores/store";
