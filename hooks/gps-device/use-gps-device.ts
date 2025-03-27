@@ -42,7 +42,7 @@ export const useGPSDeviceMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -63,7 +63,7 @@ export const useGPSDeviceMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -78,7 +78,7 @@ export const useGPSDeviceMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });

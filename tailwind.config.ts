@@ -72,6 +72,7 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        dialogOverlay: "rgba(0, 0, 0, 0.5)",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -47,7 +47,7 @@ export const useFuelTypeMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -68,7 +68,7 @@ export const useFuelTypeMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -83,7 +83,7 @@ export const useFuelTypeMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["fueltypes"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });

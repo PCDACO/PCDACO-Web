@@ -47,7 +47,7 @@ export const useTransmissionMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["transmissions"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -68,7 +68,7 @@ export const useTransmissionMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["transmissions"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -83,7 +83,7 @@ export const useTransmissionMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["transmissions"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });

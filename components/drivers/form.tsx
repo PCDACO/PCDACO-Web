@@ -1,78 +1,52 @@
-import { useKeywordStore } from "@/stores/store";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Form,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import {
-  DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
-import { OwnerPayLoad } from "@/constants/models/owner.model";
-import { useDriverForm } from "@/hooks/drivers/use-form-driver";
+import { Button } from "../ui/button";
+import { useUserMutation } from "@/hooks/users/use-user";
+import { Input } from "../ui/input";
+import { useBanStore, useIdStore } from "@/stores/store";
+import { Label } from "../ui/label";
 
-interface DriverFormProp {
-  id: string;
-  value: OwnerPayLoad;
-}
-type KeywordType = {
-  name: string;
-  value: string;
-  form: React.JSX.Element;
-};
-const DriverForm = ({ id, value }: DriverFormProp) => {
-  const { keyword } = useKeywordStore();
-  const { form, onSubmit, isLoading } = useDriverForm({
-    id,
-    value,
-    action: keyword
-  });
-
-  const keywords: KeywordType[] = [
-    {
-      name: "delete",
-      value: "Delete Driver",
-      form: (
-        <></>
-      )
+const OwnerForm = () => {
+  const { isBanned } = useBanStore();
+  const { id } = useIdStore();
+  const [bannedReason, setBannedReason] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { banUser, unbanUser } = useUserMutation();
+  const handleSubmit = () => {
+    if (isBanned) {
+      unbanUser.mutate({ id });
+      return;
     }
-  ];
-  const GetTitle = (name: string) => {
-    const selected = keywords.find(k => k.name === name);
-    return selected ?
-      <DialogTitle>
-        {selected.value}
-      </DialogTitle>
-      : null;
-  };
-  const GetComponent = (name: string) => {
-    const selected = keywords.find(k => k.name === name);
-    return selected ?
-      <DialogTitle>
-        {selected.form}
-      </DialogTitle>
-      : null;
-  };
+    banUser.mutate({ id, bannedReason });
+  }
+  const handleChange = (value: string) => {
+    setBannedReason(value);
+  }
+  useEffect(() => {
+    if (banUser.isLoading || unbanUser.isLoading) {
+      setIsLoading(true);
+    }
+  }, [banUser.isLoading, unbanUser.isLoading])
   return (
-    <Form {...form}>
-      <form onSubmit={onSubmit} className="space-y-6">
-        <DialogHeader>
-          {GetTitle(keyword)}
-          <DialogDescription>
-            {keyword === 'delete' ? (<h1>Bạn có muốn xóa không</h1>) : <></>}
-          </DialogDescription>
-        </DialogHeader>
-        {GetComponent(keyword)}
-        <DialogFooter>
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Submit"}
-          </Button>
-        </DialogFooter>
-      </form>
-    </Form>
+    <>
+      <DialogHeader>
+        <Label className="font-bold text-lg">
+          {isBanned ? "Gỡ Chặn Người Dùng" : "Chặn Người Dùng"}
+        </Label>
+      </DialogHeader>
+      {!isBanned && <Label className="text-md">Lí do chặn</Label>}
+      {!isBanned && <Input value={bannedReason} onChange={(e) => handleChange(e.currentTarget.value)} />}
+      {isBanned ? (<h1>Bạn có muốn gỡ cấm không</h1>) : (<h1>Bạn có muốn cấm không</h1>)}
+      <DialogFooter>
+        <Button onClick={handleSubmit} disabled={isLoading}>
+          {isLoading ? "Loading..." : (isBanned ? "Gỡ Chặn" : "Chặn")}
+        </Button>
+      </DialogFooter>
+    </>
   );
 };
 
-export default DriverForm;
+export default OwnerForm;

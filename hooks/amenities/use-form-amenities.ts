@@ -52,8 +52,8 @@ export const useAmenityForm = ({ id, value, action }: AmenityForm) => {
     form,
     onSubmit,
     isLoading:
-      createAmentiy.isPending ||
-      updateAmenity.isPending ||
-      deleteAmenity.isPending,
+      createAmentiy.isLoading ||
+      updateAmenity.isLoading ||
+      deleteAmenity.isLoading,
   };
 };

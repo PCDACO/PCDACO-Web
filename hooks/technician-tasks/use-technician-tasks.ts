@@ -40,7 +40,7 @@ export const useTechnicianTaskMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       toastResponse(response);
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -54,7 +54,7 @@ export const useTechnicianTaskMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       toastResponse(response);
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
@@ -68,10 +68,10 @@ export const useTechnicianTaskMutation = () => {
       if (response.isSuccess) {
         setOpen(false);
         queryClient.invalidateQueries({ queryKey: ["tasks"] });
-        replace("/dashboard");
+        replace("/statistics");
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });

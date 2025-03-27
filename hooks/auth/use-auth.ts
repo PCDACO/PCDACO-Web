@@ -12,7 +12,7 @@ export const useAuth = () => {
       toastResponse(response);
       replace("/statistics");
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     }
   });

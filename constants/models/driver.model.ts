@@ -18,6 +18,7 @@ export interface DriverResponse {
   phone: string;
   role: string;
   createdAt: Date;
+  isBanned: boolean;
 }
 
 export interface DriverBanPayload {

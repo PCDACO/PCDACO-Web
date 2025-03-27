@@ -5,13 +5,11 @@ import { DataTable } from "@/components/data-table";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   useDialogStore,
-  useIdStore,
   useKeywordStore,
   useParamStore,
 } from "@/stores/store";
 import SearchInput from "@/components/input/search-input";
 import PaginationTable from "../data-table/pagination";
-import { useDriverStore } from "./menu-action";
 import { useDriverQuery } from "@/hooks/drivers/use-driver";
 import DriverForm from "./form";
 import { DriverColumns } from "./column";
@@ -22,9 +20,6 @@ const DriverTable = () => {
   const { listDriverQuery } = useDriverQuery({
     params: value,
   });
-
-  const { id } = useIdStore();
-  const { data } = useDriverStore();
 
   return (
     <Dialog
@@ -58,15 +53,7 @@ const DriverTable = () => {
         />
       </div>
       <DialogContent>
-        <DriverForm id={id} value={data || {
-          name: "",
-          address: "",
-          createdAt: new Date(),
-          dateOfBirth: new Date(),
-          email: "",
-          phone: "",
-          role: ""
-        }} />
+        <DriverForm />
       </DialogContent>
     </Dialog>
   );

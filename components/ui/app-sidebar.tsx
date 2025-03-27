@@ -112,7 +112,7 @@ const items: SideBarItem[] = [
     group: 'Người Dùng',
   },
   {
-    title: 'Người Cho Thuê',
+    title: 'Chủ Xe',
     url: '/owners',
     icon: PersonStandingIcon,
     role: 'Admin',
@@ -142,7 +142,7 @@ const items: SideBarItem[] = [
   // TECHNICIAN
   {
     title: 'Tổng Quan',
-    url: '/dashboard',
+    url: '/statistics',
     icon: Cog,
     role: 'Technician',
     group: 'Thống Kê',
@@ -157,7 +157,7 @@ const items: SideBarItem[] = [
   // CONSULTANT
   {
     title: 'Thống Kê',
-    url: '/dashboard',
+    url: '/statistics',
     icon: AlignEndHorizontal,
     role: 'Consultant',
     group: 'Thống Kê',

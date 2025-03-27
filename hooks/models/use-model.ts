@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
-import { toast } from "../use-toast";
 import { ModelParams, ModelResponse } from "@/constants/models/model.model.ts";
 import {
   DeleteModel,
@@ -42,7 +41,7 @@ export const useModelMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["models"] });
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });

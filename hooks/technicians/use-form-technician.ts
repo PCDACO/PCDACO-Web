@@ -50,6 +50,6 @@ export const useTechnicianForm = ({
   return {
     form,
     onSubmit,
-    isLoading: createTechnician.isPending,
+    isLoading: createTechnician.isLoading,
   };
 };

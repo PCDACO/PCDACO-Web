@@ -12,6 +12,11 @@ interface IDState {
   setId: (id: string) => void;
 }
 
+interface BanState {
+  isBanned: boolean;
+  setIsBanned: (isBanned: boolean) => void;
+}
+
 interface KeywordState {
   keyword: "create" | "update" | "delete";
   setKeyword: (keyword: "create" | "update" | "delete") => void;
@@ -72,6 +77,11 @@ export const createGenericStore = <T>() =>
 export const useIdStore = create<IDState>((set) => ({
   id: "",
   setId: (id) => set({ id }),
+}));
+
+export const useBanStore = create<BanState>((set) => ({
+  isBanned: false,
+  setIsBanned: (isBanned) => set({ isBanned }),
 }));
 
 export const useKeywordStore = create<KeywordState>((set) => ({

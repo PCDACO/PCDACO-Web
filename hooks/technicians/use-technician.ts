@@ -32,7 +32,7 @@ export const useTechnicianMutation = () => {
         replace("/technicians");
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toastError(error);
     }
   });

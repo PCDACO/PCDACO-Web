@@ -1,65 +1,49 @@
-import { useKeywordStore } from "@/stores/store";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
-import { OwnerPayLoad } from "@/constants/models/owner.model";
+import { Button } from "../ui/button";
+import { useUserMutation } from "@/hooks/users/use-user";
+import { Input } from "../ui/input";
+import { useBanStore, useIdStore } from "@/stores/store";
+import { Label } from "../ui/label";
 
-interface OwnerFormProps {
-  id: string;
-  value: OwnerPayLoad;
-}
-type KeywordType = {
-  name: string;
-  value: string;
-  form: React.JSX.Element;
-};
-
-const OwnerForm = ({ id, value }: OwnerFormProps) => {
-  console.log(id, value);
-  const { keyword } = useKeywordStore();
-  const keywords: KeywordType[] = [
-    {
-      name: "delete",
-      value: "Delete Owner",
-      form: (
-        <>
-        </>
-      )
+const OwnerForm = () => {
+  const { isBanned } = useBanStore();
+  const { id } = useIdStore();
+  const [bannedReason, setBannedReason] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { banUser, unbanUser } = useUserMutation();
+  const handleSubmit = () => {
+    if (isBanned) {
+      unbanUser.mutate({ id });
+      return;
     }
-  ];
-  const GetTitle = (name: string) => {
-    const selected = keywords.find(k => k.name === name);
-    return selected ?
-      <DialogTitle>
-        {selected.value}
-      </DialogTitle>
-      : null;
-  };
-  const GetComponent = (name: string) => {
-    const selected = keywords.find(k => k.name === name);
-    return selected ?
-      <DialogTitle>
-        {selected.form}
-      </DialogTitle>
-      : null;
-  };
+    banUser.mutate({ id, bannedReason });
+  }
+  const handleChange = (value: string) => {
+    setBannedReason(value);
+  }
+  useEffect(() => {
+    if (banUser.isLoading || unbanUser.isLoading) {
+      setIsLoading(true);
+    }
+  }, [banUser.isLoading, unbanUser.isLoading])
   return (
     <>
       <DialogHeader>
-        {GetTitle(keyword)}
-        <DialogDescription>
-          {keyword === 'delete' ? (<h1>Bạn có muốn xóa không</h1>) : <></>}
-        </DialogDescription>
+        <Label className="font-bold text-lg">
+          {isBanned ? "Gỡ Chặn Người Dùng" : "Chặn Người Dùng"}
+        </Label>
       </DialogHeader>
-      {GetComponent(keyword)}
+      {!isBanned && <Label className="text-md">Lí do chặn</Label>}
+      {!isBanned && <Input value={bannedReason} onChange={(e) => handleChange(e.currentTarget.value)} />}
+      {isBanned ? (<h1>Bạn có muốn gỡ cấm không</h1>) : (<h1>Bạn có muốn cấm không</h1>)}
       <DialogFooter>
-        {/* <Button type="submit" disabled={isLoading}> */}
-        {/*   {isLoading ? "Loading..." : "Submit"} */}
-        {/* </Button> */}
+        <Button onClick={handleSubmit} disabled={isLoading}>
+          {isLoading ? "Loading..." : (isBanned ? "Gỡ Chặn" : "Chặn")}
+        </Button>
       </DialogFooter>
     </>
   );
