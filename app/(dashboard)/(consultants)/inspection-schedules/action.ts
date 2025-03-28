@@ -46,3 +46,8 @@ export const RejectInspectionSchedules = async ({
   });
   return response.data;
 }
+
+export const DeleteInspectionSchedules = async (id: string): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.delete(`/api/inspection-schedules/${id}`);
+  return response.data;
+}

@@ -4,12 +4,12 @@ import "../globals.css";
 import ReactQueryProvider from "@/components/query-client-provider";
 import { Toaster } from "@/components/ui/toaster";
 const geistSans = localFont({
-  src: "../(dashboard)/fonts/GeistVF.woff",
+  src: "../fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "../(dashboard)/fonts/GeistMonoVF.woff",
+  src: "../fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });

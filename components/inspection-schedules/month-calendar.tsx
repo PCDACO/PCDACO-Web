@@ -177,6 +177,9 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                               <p>
                                 <strong>Location:</strong> {schedule.inspectionAddress}
                               </p>
+                              <p>
+                                <strong>Status:</strong> {schedule.statusName}
+                              </p>
                             </div>
                           </TooltipContent>
                         </Tooltip>
@@ -190,12 +193,12 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                                 onMouseDown={() => handleDeleteClick(schedule.id)}
                                 onMouseUp={() => handleCancelTimer()}
                                 onMouseLeave={() => handleCancelTimer()}
-                                className={`w-full justify-start truncate bg-black ${statusClasses[schedule.statusName] || "bg-slate-300"}  cursor-pointer text-xs`}>
-                                {formatDateToHour(schedule.inspectionDate.toString())}     - {schedule.carOwnerName}
+                                className={`w-full justify-start truncate bg-black ${statusClasses[schedule.statusName] || "bg-slate-300"}  cursor-pointer text-xs hover:${statusClasses}`}>
+                                {formatDateToHour(schedule.inspectionDate.toString())} - {schedule.carOwnerName}
                               </Badge>
                             </TooltipTrigger>
                             <TooltipContent>
-                              <div className="text-sm">
+                              <div className={`text-sm`}>
                                 <p>
                                   <strong>Owner:</strong> {schedule.carOwnerName}
                                 </p>
@@ -204,6 +207,9 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                                 </p>
                                 <p>
                                   <strong>Address:</strong> {schedule.inspectionAddress}
+                                </p>
+                                <p>
+                                  <strong>Status:</strong> {schedule.statusName}
                                 </p>
                               </div>
                             </TooltipContent>

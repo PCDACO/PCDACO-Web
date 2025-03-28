@@ -16,6 +16,11 @@ export const GetCars = async (
   return response.data;
 };
 
+export const GetCar = async (id: string): Promise<RootResponse<CarResponse>> => {
+  const response = await axiosInstance.get(`/api/car/${id}`);
+  return response.data;
+}
+
 export const DeleteCar = async (id: string): Promise<RootResponse<null>> => {
   const response = await axiosInstance.delete(`/api/cars/${id}`);
   return response.data;

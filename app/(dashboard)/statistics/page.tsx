@@ -20,7 +20,7 @@ export default async function DashboardPage() {
       return <TechnicianStatistics statisticData={statisticRepsonse.value} inProgressInspectionSchedule={inProgressInspectionScheduleResponse.value} />
     };
     case "Consultant": {
-      return <ConsultantStatistics />
+      return <ConsultantStatistics statisticData={statisticRepsonse.value} />
     };
     default: {
       return (<div>

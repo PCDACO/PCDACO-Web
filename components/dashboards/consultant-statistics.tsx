@@ -1,52 +1,119 @@
 'use client'
-import { useStatisticsQuery } from "@/hooks/statistics/use-statistics";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { StatisticResponse } from "@/constants/models/statistic.model";
+import ActivityItem from "./activity-item";
+import { Separator } from "../ui/separator";
 
-export default function ConsultantStatistics() {
-  const { listStatisticsQuery } = useStatisticsQuery();
-  const date = new Date();
+interface Props {
+  statisticData: StatisticResponse;
+}
+export default function ConsultantStatistics({ statisticData }: Props) {
   return (
     <main className="flex-1 p-8 overflow-auto">
-      <h1 className="text-3xl font-bold mb-8">Số Liệu Tháng</h1>
-      <h3 className="text-1xl mb-8">Hôm nay: {`${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`}</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {/* Statistics Cards */}
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold mb-8">Số Liệu Tháng</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Lương Tháng</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {statisticData?.staffSalary?.toLocaleString() ?? 0} Đồng
+              </div>
+              <p className="text-xs text-gray-500"></p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Đã Duyệt</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {statisticData?.totalApprovedInspectionSchedule ?? 0} Cuộc Hẹn
+              </div>
+              <p className="text-xs text-gray-500"></p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Đã Từ Chối</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {statisticData?.totalRejectedInspectionSchedule ?? 0} Cuộc Hẹn
+              </div>
+              <p className="text-xs text-gray-500"></p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Activity Cards - Rearranged with Recent Activity on right */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Ongoing Inspection Schedule Tasks - Left side */}
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Lương Tháng</CardTitle>
+          <CardHeader className="pb-3">
+            <CardTitle>Đang Diễn Ra</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {listStatisticsQuery.data?.value?.staffSalary ?? 0} Đồng
-            </div>
-            <p className="text-xs text-gray-500">
-            </p>
+          <CardContent className="space-y-4">
+            {/* {inProgressInspectionSchedule && ( */}
+            {/*   <div key={inProgressInspectionSchedule.id} className="mb-4"> */}
+            {/*     <InspectionTaskItem */}
+            {/*       id={inProgressInspectionSchedule.id} */}
+            {/*       address={inProgressInspectionSchedule.address} */}
+            {/*       ownerName={inProgressInspectionSchedule.ownerName} */}
+            {/*       licensePlate={inProgressInspectionSchedule.licensePlate} */}
+            {/*       scheduledTime={format(inProgressInspectionSchedule.date, 'MM/dd/yyyy hh:mm a')} */}
+            {/*     /> */}
+            {/*   </div> */}
+            {/* )} */}
           </CardContent>
         </Card>
+
+        {/* Recent Activity - Right side */}
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Đã Duyệt</CardTitle>
+          <CardHeader className="pb-3">
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>Latest updates from your team</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {listStatisticsQuery.data?.value?.totalApprovedInspectionSchedule ?? 0} Cuộc Hẹn
-            </div>
-            <p className="text-xs text-gray-500">
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Đã Từ Chối</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {listStatisticsQuery.data?.value?.totalRejectedInspectionSchedule ?? 0} Cuộc Hẹn
-            </div>
-            <p className="text-xs text-gray-500">
-            </p>
+          <CardContent className="space-y-4">
+            <ActivityItem
+              avatar="/placeholder.svg?height=32&width=32"
+              name="Alex Johnson"
+              action="commented on"
+              target="Website Redesign"
+              time="10 minutes ago"
+            />
+            <Separator />
+            <ActivityItem
+              avatar="/placeholder.svg?height=32&width=32"
+              name="Sarah Miller"
+              action="completed task"
+              target="Create wireframes"
+              time="1 hour ago"
+            />
+            <Separator />
+            <ActivityItem
+              avatar="/placeholder.svg?height=32&width=32"
+              name="David Chen"
+              action="uploaded"
+              target="Q2 Financial Report"
+              time="2 hours ago"
+            />
+            <Separator />
+            <ActivityItem
+              avatar="/placeholder.svg?height=32&width=32"
+              name="Emily Wilson"
+              action="created project"
+              target="Mobile App Redesign"
+              time="Yesterday at 4:30 PM"
+            />
           </CardContent>
         </Card>
       </div>
     </main>
-  );
+  )
+    ;
 }

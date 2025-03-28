@@ -7,12 +7,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Metadata } from "next";
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "../fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: "../fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
@@ -30,12 +30,10 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-1`} >
         <SidebarProvider>
           <AppSidebar />
-          <main className="container mx-auto my-4">
+          <main className="container mx-auto py-4 ">
             <ReactQueryProvider>{children}</ReactQueryProvider>
             <Toaster />
           </main>

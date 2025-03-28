@@ -33,6 +33,7 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { Card, CardContent, CardHeader } from "../ui/card"
 import { CarResponse } from "@/constants/models/car.model"
 import { TechnicianResponse } from "@/constants/models/technician.model"
+import { Checkbox } from "../ui/checkbox"
 
 interface InspectionScheduleFormProps {
   id: string;
@@ -95,7 +96,7 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                         </FormControl>
                         <SelectContent>
                           {technicians.map(item => (
-                            <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
+                            <SelectItem className="hover:cursor-pointer" key={item.id} value={item.id}>{item.name}</SelectItem>
                           )
                           ) ?? []}
                         </SelectContent>
@@ -262,13 +263,33 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                     </PopoverContent>
                   </Popover>
                   <FormDescription>
-                    Please select your preferred date and time.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">
+            <FormField
+              control={form.control}
+              name="isIncident"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>
+                      Là Sự Cố ?
+                    </FormLabel>
+                    <FormDescription>
+                    </FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+            <Button className="w-full mx-auto" type="submit">
               {isLoading ? <LoadingSpinner /> : "Submit"}
             </Button>
           </form>

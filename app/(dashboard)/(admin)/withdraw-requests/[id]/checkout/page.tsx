@@ -8,5 +8,9 @@ export default async function CheckoutPage(
 ) {
   const { id } = await params;
   const response = await GenerateQRCode(id);
-  return <CheckoutQRComponent id={id} qrInfo={response.value} />
+  return (
+    <main className="flex items-center justify-center w-full h-screen">
+      <CheckoutQRComponent id={id} qrInfo={response.value} />
+    </main>
+  )
 }

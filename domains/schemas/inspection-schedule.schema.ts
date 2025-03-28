@@ -5,6 +5,7 @@ export const InspectionScheduleSchema = z.object({
   carId: z.string().min(1, ""),
   inspectionAddress: z.string().min(1, ""),
   inspectionDate: z.date(),
+  isIncident: z.boolean()
 });
 
 export type InspectionSchedulePayloadSchema = z.infer<
