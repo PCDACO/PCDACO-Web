@@ -1,5 +1,6 @@
 import { GetInspectionSchedulesParams } from "@/constants/models/inspection-schedule.model";
 import { TechnicianTaskRequest } from "@/constants/models/technician-task.model";
+import { TransactionParams } from "@/constants/models/transaction.model";
 import { create } from "zustand";
 
 interface DialogState {
@@ -31,6 +32,12 @@ interface ParamsStore {
   value: RootRequest;
   setValue: (payload: RootRequest) => void;
 }
+
+interface TransactionParamsStore {
+  value: TransactionParams;
+  setValue: (payload: TransactionParams) => void;
+}
+
 interface InspectionScheduleParamsStore {
   value: GetInspectionSchedulesParams;
   setValue: (payload: GetInspectionSchedulesParams) => void;
@@ -49,6 +56,16 @@ export const useParamStore = create<ParamsStore>((set) => ({
     keyword: "",
   },
   setValue: (payload: RootRequest) => set({ value: payload }),
+}));
+
+export const useTransactionParamsStore = create<TransactionParamsStore>((set) => ({
+  value: {
+    index: 1,
+    size: 10,
+    transactionType: "",
+    keyword: "",
+  },
+  setValue: (payload: TransactionParams) => set({ value: payload }),
 }));
 
 export const useInspectionScheduleParamStore =
