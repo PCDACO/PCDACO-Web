@@ -15,10 +15,12 @@ export default async function CreateInspectionSchedulePage() {
     size: 1000,
     keyword: "",
   });
-  return <CreateInspectionForm id="" value={{
-    carId: "",
-    inspectionAddress: "",
-    inspectionDate: new Date(),
-    technicianId: ""
-  }} cars={carResponse?.value?.items ?? []} technicians={technicianResponse?.value?.items ?? []} />
+  return (
+    <CreateInspectionForm id="" value={{
+      carId: "",
+      inspectionAddress: "",
+      inspectionDate: new Date(),
+      technicianId: ""
+    }} cars={carResponse?.value?.items ?? []} technicians={technicianResponse?.value?.items ?? []} />
+  )
 }

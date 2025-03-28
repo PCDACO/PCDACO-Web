@@ -19,7 +19,7 @@ export interface CarResponse {
   location?: LocationDetail;
   manufacturer: ManufacturerDetail;
   images: ImageDetail[];
-  amenities: AmenityDetail;
+  amenities: AmenityDetail[];
 }
 
 interface PriceDetail {
@@ -45,6 +45,7 @@ interface AmenityDetail {
   id: string;
   name: string;
   description: string;
+  icon: string;
 }
 export interface CarParams extends RootRequest {
   status?: number;

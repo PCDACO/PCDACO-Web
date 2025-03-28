@@ -35,7 +35,7 @@ export default function CheckoutQRComponent({ id, qrInfo }: Props) {
 
   return (
     <Dialog>
-      <Card className="w-full max-w-md mx-auto my-auto">
+      <Card className="w-full max-w-md mx-auto">
         <CardHeader className="text-center">
           <CardTitle>Scan QR Code to Pay</CardTitle>
           <CardDescription>Scan the QR code below to complete your payment</CardDescription>

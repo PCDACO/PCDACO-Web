@@ -53,7 +53,7 @@ export const useInspectionScheduleMutation = () => {
 
   const createInspectionSchedule = useMutation({
     mutationKey: ["createInspectionSchedule"],
-    mutationFn: async (payload: InspectionSchedulePayload) => await CreateInspectionSchedules(payload),
+    mutationFn: (payload: InspectionSchedulePayload) => CreateInspectionSchedules(payload),
     onSuccess: (response) => {
       toastResponse(response);
       if (response.isSuccess) {

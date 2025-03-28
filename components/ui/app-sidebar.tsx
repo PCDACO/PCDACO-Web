@@ -30,6 +30,7 @@ import {
   LocateIcon,
   SquareUserRoundIcon,
   BadgeDollarSign,
+  Newspaper,
 } from 'lucide-react';
 // import Link from "next/link"
 import { LogoutButton } from './LogoutButton';
@@ -189,7 +190,14 @@ const items: SideBarItem[] = [
     url: '/pending-cars',
     icon: CarIcon,
     role: 'Consultant',
-    group: 'Xe',
+    group: 'Quản Lí Nền Tảng',
+  },
+  {
+    title: 'Báo Cáo',
+    url: '/reports',
+    icon: Newspaper,
+    role: 'Consultant',
+    group: 'Quản Lí Nền Tảng',
   },
 ];
 
