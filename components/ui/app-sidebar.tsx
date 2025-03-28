@@ -29,6 +29,7 @@ import {
   LucideIdCard,
   LocateIcon,
   SquareUserRoundIcon,
+  BadgeDollarSign,
 } from 'lucide-react';
 // import Link from "next/link"
 import { LogoutButton } from './LogoutButton';
@@ -63,11 +64,25 @@ const items: SideBarItem[] = [
     group: 'Thống Kê',
   },
   {
+    title: 'Giao Dịch',
+    url: '/transactions',
+    icon: BadgeDollarSign,
+    role: 'Admin',
+    group: 'Thống Kê',
+  },
+  {
     title: 'Xe',
     url: '/cars',
     icon: Car,
     role: 'Admin',
-    group: 'Xe',
+    group: 'Quản Lí Nền Tảng',
+  },
+  {
+    title: 'Lệnh Rút Tiền',
+    url: '/withdraw-requests',
+    icon: BadgeDollarSign,
+    role: 'Admin',
+    group: 'Quản Lí Nền Tảng',
   },
   {
     title: 'Tiện Nghi',
@@ -109,35 +124,35 @@ const items: SideBarItem[] = [
     url: '/pending-approval',
     icon: LucideIdCard,
     role: 'Admin',
-    group: 'Người Dùng',
+    group: 'Quản Lí Người Dùng',
   },
   {
     title: 'Chủ Xe',
     url: '/owners',
     icon: PersonStandingIcon,
     role: 'Admin',
-    group: 'Người Dùng',
+    group: 'Quản Lí Người Dùng',
   },
   {
     title: 'Người Thuê',
     url: '/drivers',
     icon: PersonStandingIcon,
     role: 'Admin',
-    group: 'Người Dùng',
+    group: 'Quản Lí Người Dùng',
   },
   {
     title: 'Tư Vấn Viên',
     url: '/consultants',
     icon: PersonStandingIcon,
     role: 'Admin',
-    group: 'Người Dùng',
+    group: 'Quản Lí Người Dùng',
   },
   {
     title: 'Kĩ Thuật Viên',
     url: '/technicians',
     icon: PersonStandingIcon,
     role: 'Admin',
-    group: 'Người Dùng',
+    group: 'Quản Lí Người Dùng',
   },
   // TECHNICIAN
   {
