@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import {
   DialogDescription,
   DialogFooter,
@@ -11,6 +10,7 @@ interface ManufacturerFormProps {
 }
 
 const ReportForm = ({ id }: ManufacturerFormProps) => {
+  console.log(id);
   return (
     <>
       <DialogHeader>
@@ -19,9 +19,9 @@ const ReportForm = ({ id }: ManufacturerFormProps) => {
         </DialogDescription>
       </DialogHeader>
       <DialogFooter>
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Loading..." : "Submit"}
-        </Button>
+        {/* <Button type="submit" disabled={isLoading}> */}
+        {/*   {isLoading ? "Loading..." : "Submit"} */}
+        {/* </Button> */}
       </DialogFooter>
     </>
   );

@@ -25,6 +25,7 @@ export const GetInProgressInspectionSchedule = async (): Promise<RootResponse<In
   const response = await axiosInstance.get("/api/inspection-schedules/in-progress");
   return response.data;
 }
+
 export const CreateInspectionSchedules =
   async (payload: InspectionSchedulePayload): Promise<RootResponse<InspectionScheduleCreateResponse>> => {
     const response = await axiosInstance.post("/api/inspection-schedules", {

@@ -8,13 +8,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  createGenericStore,
-  useDialogStore,
-  useIdStore,
-  useKeywordStore,
-} from "@/stores/store";
+import { createGenericStore } from "@/stores/store";
 import { ManufacturePayload } from "@/constants/models/manufacture.model";
+import Link from "next/link";
 
 interface ReportProps {
   id: string;
@@ -23,10 +19,6 @@ interface ReportProps {
 export const useManuFactureStore = createGenericStore<ManufacturePayload>();
 
 const MenuAction: React.FC<ReportProps> = ({ id }) => {
-  const { setKeyword } = useKeywordStore();
-  const { setOpen } = useDialogStore();
-  const { setId } = useIdStore();
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -37,17 +29,13 @@ const MenuAction: React.FC<ReportProps> = ({ id }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
-        <DropdownMenuItem
-          onClick={() => {
-            setKeyword("update");
-            setOpen(true);
-            setId(id);
-          }}
-        >
-          Cập Nhật
+        <DropdownMenuItem >
+          <Link href={`/reports/${id}`}>
+            Chi tiết
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
-    </DropdownMenu>
+    </DropdownMenu >
   );
 };
 

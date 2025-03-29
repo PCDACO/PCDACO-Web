@@ -11,8 +11,9 @@ export default async function TechnicianTodoDetailPage(
   }) {
   const { id } = await params
   const inspectionScheduleResponse = await GetInspectionScheduleDetail(id);
-  let carResponse;
+  let carResponse
   if (!inspectionScheduleResponse.value) {
+    carResponse = null!;
     redirect("/not-found");
   }
   carResponse = await GetCar(inspectionScheduleResponse.value.car.id);

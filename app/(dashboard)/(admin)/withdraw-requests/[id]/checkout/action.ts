@@ -20,7 +20,6 @@ export const ConfirmWithdrawRequest = async ({
   if (payload.transactionProof?.length ?? 0 > 0) {
     formData.append("transactionProof", payload.transactionProof![0] as File);
   }
-  console.log(formData);
   const response = await axiosInstance.postForm(`/api/withdrawals/${id}/confirm`, formData);
   return response.data;
 }
