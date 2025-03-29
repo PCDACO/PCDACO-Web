@@ -12,13 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select"
-import {
   Input
 } from "@/components/ui/input"
 import { useInspectionScheduleForm } from "@/hooks/inspection-schedules/use-form-inspection-schedule"
@@ -34,6 +27,12 @@ import { Card, CardContent, CardHeader } from "../ui/card"
 import { CarResponse } from "@/constants/models/car.model"
 import { TechnicianResponse } from "@/constants/models/technician.model"
 import { Checkbox } from "../ui/checkbox"
+import SelectWithSearch from "../ui/select-search"
+
+interface SelectParams {
+  id: string;
+  value: string;
+}
 
 interface InspectionScheduleFormProps {
   id: string;
@@ -85,49 +84,86 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                 <FormField
                   control={form.control}
                   name="technicianId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Kĩ Thuật Viên</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  render={({ field }) => {
+                    const selectedTechnicianObject = technicians.map((technician) => {
+                      return {
+                        id: technician.id,
+                        value: technician.name
+                      }
+                    }).find(
+                      (tech) => tech.id === field.value, // field.value holds the ID string
+                    )
+
+                    const handleSelectChange = (selectedOption: SelectParams | null) => {
+                      field.onChange(selectedOption ? selectedOption.id : null) // Pass the ID (or null) to RHF
+                    }
+                    return (
+                      <FormItem>
+                        <FormLabel>Kĩ Thuật Viên</FormLabel>
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Chọn Kĩ Thuật Viên" />
-                          </SelectTrigger>
+                          <SelectWithSearch<SelectParams> // Specify the data type
+                            options={technicians.map((technician) => {
+                              return {
+                                id: technician.id,
+                                value: technician.name
+                              }
+                            })}
+                            value={selectedTechnicianObject}
+                            onValueChange={handleSelectChange}
+                            valueKey="id"
+                            labelKey="value"
+                            placeholder="Chọn Kĩ Thuật Viên"
+                            searchPlaceholder="Tìm kiếm KTV..."
+                            emptyText="Không tìm thấy KTV."
+                          />
                         </FormControl>
-                        <SelectContent>
-                          {technicians.map(item => (
-                            <SelectItem className="hover:cursor-pointer" key={item.id} value={item.id}>{item.name}</SelectItem>
-                          )
-                          ) ?? []}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                        <FormMessage />
+
+                      </FormItem>
+                    )
+                  }}
                 />
               </div>
             </div>
             <FormField
               control={form.control}
               name="carId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Xe</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+              render={({ field }) => {
+                const selectedCarObject = cars.map((car) => {
+                  return {
+                    id: car.id,
+                    value: car.licensePlate
+                  }
+                }).find(
+                  (tech) => tech.id === field.value,
+                )
+                const handleSelectChange = (selectedOption: SelectParams | null) => {
+                  field.onChange(selectedOption ? selectedOption.id : null) // Pass the ID (or null) to RHF
+                }
+                return (
+                  <FormItem>
+                    <FormLabel>Xe</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Chọn xe" />
-                      </SelectTrigger>
+                      <SelectWithSearch<SelectParams>
+                        options={cars.map((car) => {
+                          return {
+                            id: car.id,
+                            value: `${car.modelName} - ${car.licensePlate}`
+                          }
+                        })}
+                        value={selectedCarObject}
+                        onValueChange={handleSelectChange}
+                        valueKey="id"
+                        labelKey="value"
+                        placeholder="Chọn Xe"
+                        searchPlaceholder="Tìm kiếm Xe..."
+                        emptyText="Không tìm thấy Xe."
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {cars.map(item => (
-                        <SelectItem key={item.id} value={item.id}>{item.licensePlate}</SelectItem>
-                      )) ?? []}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
+                    <FormMessage />
+                  </FormItem>
+                )
+              }}
             />
             <FormField
               control={form.control}

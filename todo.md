@@ -6,9 +6,9 @@
 - [x] monitor all the transactions
 ## Consultant
 - [x] view all reports 
-- [ ] view report details 
+- [x] view report details 
   - [x] make layout
-  - [ ] fetch api
+  - [x] fetch api
 - [x] add to the create inspection a checkbox to check if the purpose of that schedule is for incident or not ?
 - [ ] see the contract then sign it
   - [x] make layout
@@ -20,4 +20,3 @@
   - [ ] view compensation details
   - [ ] approve compensation
   - [ ] reject compensation
-

@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { GetInProgressInspectionSchedule } from "../(consultants)/inspection-schedules/action";
 import { GetStatistics } from "./action";
+import { GetUnderReviewReports } from "../(consultants)/reports/action";
 
 export const dynamic = "force-dynamic";
 export default async function DashboardPage() {
@@ -20,7 +21,8 @@ export default async function DashboardPage() {
       return <TechnicianStatistics statisticData={statisticRepsonse.value} inProgressInspectionSchedule={inProgressInspectionScheduleResponse.value} />
     };
     case "Consultant": {
-      return <ConsultantStatistics statisticData={statisticRepsonse.value} />
+      const underReviewReportScheduleResponse = await GetUnderReviewReports();
+      return <ConsultantStatistics statisticData={statisticRepsonse.value} underReviewReport={underReviewReportScheduleResponse.value ?? []} />
     };
     default: {
       return (<div>

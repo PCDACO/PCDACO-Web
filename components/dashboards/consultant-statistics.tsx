@@ -3,11 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { StatisticResponse } from "@/constants/models/statistic.model";
 import ActivityItem from "./activity-item";
 import { Separator } from "../ui/separator";
+import { UnderReviewResponse } from "@/constants/models/report.model";
+import UnderReviewReportItem from "./underreview-report-item";
 
 interface Props {
   statisticData: StatisticResponse;
+  underReviewReport: UnderReviewResponse[];
 }
-export default function ConsultantStatistics({ statisticData }: Props) {
+export default function ConsultantStatistics({ statisticData, underReviewReport }: Props) {
   return (
     <main className="flex-1 p-8 overflow-auto">
       {/* Statistics Cards */}
@@ -58,17 +61,13 @@ export default function ConsultantStatistics({ statisticData }: Props) {
             <CardTitle>Đang Diễn Ra</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* {inProgressInspectionSchedule && ( */}
-            {/*   <div key={inProgressInspectionSchedule.id} className="mb-4"> */}
-            {/*     <InspectionTaskItem */}
-            {/*       id={inProgressInspectionSchedule.id} */}
-            {/*       address={inProgressInspectionSchedule.address} */}
-            {/*       ownerName={inProgressInspectionSchedule.ownerName} */}
-            {/*       licensePlate={inProgressInspectionSchedule.licensePlate} */}
-            {/*       scheduledTime={format(inProgressInspectionSchedule.date, 'MM/dd/yyyy hh:mm a')} */}
-            {/*     /> */}
-            {/*   </div> */}
-            {/* )} */}
+            {underReviewReport &&
+              underReviewReport.map((item) => (
+                <div key={item.id} className="mb-4">
+                  <UnderReviewReportItem report={item} />
+                </div>
+              ))
+            }
           </CardContent>
         </Card>
 

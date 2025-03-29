@@ -428,7 +428,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                 <CardContent>
                   {
                     car.amenities.map((item) => (
-                      <div className="flex items-center gap-2">
+                      <div key={item.id} className="flex items-center gap-2">
                         <Gauge className="h-4 w-4 text-muted-foreground" />
                         <div>
                           <Image src={item.icon} alt={item.name} />
@@ -446,4 +446,3 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
     </div >
   )
 }
-

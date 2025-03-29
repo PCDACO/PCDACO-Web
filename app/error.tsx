@@ -33,7 +33,7 @@ export default function NotFound() {
               </h1>
 
               < p className="text-xl text-slate-300" >
-                The vehicle you're looking for has been checked out or doesn't exist in our fleet database.
+                The vehicle you`re looking for has been checked out or doesn`t exist in our fleet database.
               </p>
 
               < div className="pt-4 space-y-4" >

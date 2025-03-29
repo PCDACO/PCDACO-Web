@@ -11,13 +11,10 @@ interface Props {
   contractHtml: Document;
 }
 export default function ContractViewer({ id, contractHtml }: Props) {
+  console.log(id);
   const [showAcceptDialog, setShowAcceptDialog] = useState(false)
   const [showRejectDialog, setShowRejectDialog] = useState(false)
   const [contractStatus, setContractStatus] = useState<'pending' | 'accepted' | 'rejected'>('pending')
-
-
-
-
   const handleAccept = async () => {
     try {
       // Replace with your actual API endpoint for accepting the contract

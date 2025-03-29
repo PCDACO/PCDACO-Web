@@ -26,7 +26,6 @@ axiosInstance.interceptors.request.use(async (config) => {
   if (accessToken) {
     config.headers["Authorization"] = `Bearer ${accessToken.value}`;
   }
-
   if (config.method === "post") {
     config.headers["Idempotence-Key"] = generateGuid();
   }
@@ -39,7 +38,6 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log(error);
     if (error.status < 500) {
       return error.response ?? {
         value: null,
