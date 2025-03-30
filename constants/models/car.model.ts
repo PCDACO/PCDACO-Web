@@ -6,6 +6,7 @@ export interface CarResponse {
   modelName: string;
   ownerId: string;
   ownerName: string;
+  ownerPhone: string;
   licensePlate: string;
   color: string;
   seat: number;

@@ -66,7 +66,6 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
                       className="w-full"
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               );
             }}

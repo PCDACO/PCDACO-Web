@@ -3,6 +3,9 @@ export interface GetInspectionSchedulesParams {
   month: number;
   year: number;
 }
+export interface ContractFromScheduleUpdateResponse {
+  carId: string;
+}
 export interface InspectionScheduleResponse {
   inspectionSchedules: InspectionScheduleDetail[];
 }
@@ -55,6 +58,8 @@ export interface InspectionScheduleDetailResponse {
   owner: OwnerDetail;
   car: CarDetail;
   createdAt: Date;
+  contractId: string;
+  hasGPSDevice: boolean;
 }
 
 interface CarDetail {

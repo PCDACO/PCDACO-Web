@@ -13,6 +13,15 @@ export const ReviewReport = async (id: string): Promise<RootResponse<null>> => {
   return response.data;
 }
 
+//TODO: Must inject reason
+export const RejectReport = async (id: string, reason: string): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.put(`/api/reports/${id}/approve`, {
+    isApproved: false,
+    note: reason,
+  });
+  return response.data;
+}
+
 export const GetUnderReviewReports = async (): Promise<RootResponse<UnderReviewResponse[]>> => {
   const response = await axiosInstance.get("/api/reports/under-review");
   return response.data;

@@ -9,35 +9,35 @@ import { Check, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useDialogStore } from "@/stores/store";
+import { CarDetail } from "@/constants/models/technician-task.model";
 
 export default function TechnicianTodo() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date()
   );
-
   const { open, setOpen } = useDialogStore();
-
   const { listTechnicianTasks } = useTechnicianTaskQuery({
     inspectionDate: new Date(new Date(selectedDate!).getTime() + (24 * 60 * 60 * 1000))
   });
-  const { rejectTechnicianTask, inProgressTechnicianTask } =
-    useTechnicianTaskMutation();
+  const { rejectTechnicianTask, inProgressTechnicianTask } = useTechnicianTaskMutation();
   const todayDate = new Date();
   const [Note, SetNote] = useState<Record<string, string>>({
     dummy: "dummy",
   });
+  const [selectedCar, setSelectedCar] = useState<CarDetail | undefined>(undefined);
   const handleNoteChange = (taskId: string, note: string) => {
     SetNote({
       ...Note,
       [taskId]: note,
     });
   };
+  const handleTodoClick = (car: CarDetail) => {
+    setOpen(true);
+    setSelectedCar(car);
+  }
   return (
-    <Dialog open={open} onOpenChange={() => {
-      setOpen(!open)
-    }}>
+    <>
       <div className="min-h-screen bg-white text-black p-4 md:p-8">
         <h1 className="text-2xl font-bold mb-4">Lịch Làm Việc</h1>
         {/* Picker chọn ngày */}
@@ -59,13 +59,12 @@ export default function TechnicianTodo() {
           </Popover>
         </div>
         <main>
-
           <ul className="space-y-6">
             {listTechnicianTasks.data.value && listTechnicianTasks.data.value.cars?.map((car) => (
-              <li key={car.inspectionScheduleId} className="border border-gray-300 p-4 rounded-lg hover:cursor-pointer">
-                <div className="flex flex-col items-start justify-between mb-2" onClick={() => setOpen(true)}>
+              <li key={car.inspectionScheduleId} className="border border-gray-300 p-4 rounded-lg ">
+                <div className="flex flex-col items-start justify-between mb-2" >
                   <div className="flex flex-row w-full justify-between">
-                    <div>
+                    <div className="hover:cursor-pointer" onClick={() => handleTodoClick(car)}>
                       <h2 className="font-semibold">{car.modelName}-{car.licensePlate}</h2>
                       <p className="text-sm text-gray-600">{car.inspectionAddress}</p>
                     </div>
@@ -83,7 +82,7 @@ export default function TechnicianTodo() {
                                 note: Note[car.inspectionScheduleId] ?? "",
                               });
                             }
-                            } className=" w-8 h-8 flex items-center justify-center p-0 border-none cursor-pointer text-xs " aria-label="Reject"
+                            } className=" w-8 h-8 flex items-center justify-center p-0 border-none cursor-pointer text-xs bg-red-500" aria-label="Reject"
                             >
                               <X />
                             </Button>
@@ -120,15 +119,13 @@ export default function TechnicianTodo() {
                       }
                     />
                   </div>
-                  <DialogContent>
-                    <CarDetailsDialog car={car} />
-                  </DialogContent>
                 </div>
               </li>
             ))}
           </ul>
         </main >
       </div >
-    </Dialog >
+      <CarDetailsDialog car={selectedCar} isOpen={open} onOpenChange={() => setOpen(!open)} />
+    </>
   );
 }

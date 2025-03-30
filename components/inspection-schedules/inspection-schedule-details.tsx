@@ -17,7 +17,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
-import { useRouter } from "next/navigation"
 import { InspectionScheduleDetailResponse } from "@/constants/models/inspection-schedule.model"
 import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
 import { CarResponse } from "@/constants/models/car.model"
@@ -32,8 +31,7 @@ interface Props {
 }
 
 export default function InspectionDetailPage({ id, data, car }: Props) {
-  const { replace } = useRouter();
-  const { rejectInspectionSchedule } = useInspectionScheduleMutation();
+  const { rejectInspectionSchedule, updateContractFromScheduleInfo } = useInspectionScheduleMutation();
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false)
   const [responseNote, setResponseNote] = useState("")
 
@@ -48,7 +46,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
       case "Approved":
         return (
           <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
-            Approved
+            View Contract
           </Badge>
         )
       case "Rejected":
@@ -64,15 +62,13 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
 
   const handleReject = () => {
     // In a real app, this would call an API to update the inspection status
-    console.log("Inspection rejected with note:", responseNote)
     setIsRejectDialogOpen(false)
     rejectInspectionSchedule.mutate({ id, note: responseNote });
     setResponseNote("")
   }
 
-  const handleApprove = () => {
-    replace(`/technician-todo/${id}/approve`);
-  }
+  const handleApprove = () => updateContractFromScheduleInfo.mutate(data.id);
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   const nextImage = () => {
@@ -218,10 +214,14 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                <Button variant="default" className="flex-1" onClick={handleApprove}>
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  Approve
-                </Button>
+                {
+                  data.hasGPSDevice && (
+                    <Button variant="default" className="flex-1" onClick={handleApprove}>
+                      <CheckCircle className="mr-2 h-4 w-4" />
+                      View Contract
+                    </Button>
+                  )
+                }
               </div>
             </CardFooter>
           </Card>
@@ -230,64 +230,6 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
       <div className="mt-10 w-full">
         {/* Car Images */}
         <div className="md:col-span-2">
-          <Card className="overflow-hidden">
-            <div className="relative aspect-video bg-muted">
-              <Image
-                src={car?.images[currentImageIndex]?.url ?? "/placeholder.svg"}
-                alt={`${car.manufacturer.name} ${car.modelName}`}
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 flex items-center justify-between p-4">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full bg-background/80 backdrop-blur-sm"
-                  onClick={prevImage}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full bg-background/80 backdrop-blur-sm"
-                  onClick={nextImage}
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
-                {car.images.map((_, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    size="icon"
-                    className={`h-2 w-2 rounded-full p-0 ${index === currentImageIndex ? "bg-primary" : "bg-background/80"}`}
-                    onClick={() => setCurrentImageIndex(index)}
-                  >
-                    <span className="sr-only">View image {index + 1}</span>
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <div className="grid grid-cols-4 gap-2 p-2">
-              {car.images.map((image, index) => (
-                <button
-                  key={image.id}
-                  className={`relative aspect-video overflow-hidden rounded-md ${index === currentImageIndex ? "ring-2 ring-primary" : ""}`}
-                  onClick={() => setCurrentImageIndex(index)}
-                >
-                  <Image
-                    src={image.url || "/placeholder.svg"}
-                    alt={`${car.manufacturer.name} ${car.modelName} thumbnail ${index + 1}`}
-                    fill
-                    className="object-cover"
-                  />
-                </button>
-              ))}
-            </div>
-          </Card>
-
           <Tabs defaultValue="details" className="mt-6">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="details">Details</TabsTrigger>
@@ -441,6 +383,63 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
               </Card>
             </TabsContent>
           </Tabs>
+          <Card className="overflow-hidden">
+            <div className="relative aspect-video bg-muted">
+              <Image
+                src={car?.images[currentImageIndex]?.url ?? "/placeholder.svg"}
+                alt={`${car.manufacturer.name} ${car.modelName}`}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 flex items-center justify-between p-4">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full bg-background/80 backdrop-blur-sm"
+                  onClick={prevImage}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full bg-background/80 backdrop-blur-sm"
+                  onClick={nextImage}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
+                {car.images.map((_, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="icon"
+                    className={`h-2 w-2 rounded-full p-0 ${index === currentImageIndex ? "bg-primary" : "bg-background/80"}`}
+                    onClick={() => setCurrentImageIndex(index)}
+                  >
+                    <span className="sr-only">View image {index + 1}</span>
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <div className="grid grid-cols-4 gap-2 p-2">
+              {car.images.map((image, index) => (
+                <Button
+                  key={image.id}
+                  className={`relative aspect-video overflow-hidden rounded-md ${index === currentImageIndex ? "ring-2 ring-primary" : ""}`}
+                  onClick={() => setCurrentImageIndex(index)}
+                >
+                  <Image
+                    src={image.url || "/placeholder.svg"}
+                    alt={`${car.manufacturer.name} ${car.modelName} thumbnail ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                </Button>
+              ))}
+            </div>
+          </Card>
         </div>
       </div >
     </div >

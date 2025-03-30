@@ -7,3 +7,8 @@ export const GetCarContract = async (id: string): Promise<Document> => {
   });
   return response.data;
 }
+
+export const SignContract = async (id: string): Promise<RootResponse<null>> => {
+  const response = await axiosInstance.put(`/api/cars/${id}/contract/sign`);
+  return response.data;
+}

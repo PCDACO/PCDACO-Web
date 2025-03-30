@@ -14,9 +14,10 @@ import {
 } from "@/constants/models/inspection-schedule.model";
 import { useDialogStore } from "@/stores/store";
 import { useRouter } from "next/navigation";
-import { ApproveInspectionScheduleAction } from "@/app/(dashboard)/(technicians)/technician-todo/[id]/approve/action";
+import { ApproveInspectionScheduleAction } from "@/app/(dashboard)/(technicians)/technician-todo/approve/action";
 import { BaseResponse } from "@/constants/responses/base-response";
 import { toastError, toastResponse } from "@/lib/toast-error";
+import { UpdateCarContractByScheduleInfo } from "@/app/(dashboard)/(technicians)/technician-todo/[id]/action";
 
 interface InspectionSchedulesQuery {
   params?: GetInspectionSchedulesParams;
@@ -49,7 +50,7 @@ export const useInspectionScheduleQuery = ({
 export const useInspectionScheduleMutation = () => {
   const { setOpen } = useDialogStore();
   const queryClient = useQueryClient();
-  const { replace } = useRouter();
+  const { push } = useRouter();
 
   const createInspectionSchedule = useMutation({
     mutationKey: ["createInspectionSchedule"],
@@ -59,7 +60,7 @@ export const useInspectionScheduleMutation = () => {
       if (response.isSuccess) {
         setOpen(false);
         queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
-        replace("/inspection-schedules");
+        push("/inspection-schedules");
       }
     },
     onError: (error: Error) => {
@@ -78,7 +79,7 @@ export const useInspectionScheduleMutation = () => {
       toastResponse(response);
       if (response.isSuccess) {
         queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
-        replace("/inspection-schedules");
+        push("/inspection-schedules");
       }
     },
     onError: (error: Error) => {
@@ -98,7 +99,7 @@ export const useInspectionScheduleMutation = () => {
       toastResponse(response);
       if (response.isSuccess) {
         queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
-        replace("/inspection-schedules");
+        push("/inspection-schedules");
       }
     },
     onError: (error: Error) => {
@@ -106,10 +107,25 @@ export const useInspectionScheduleMutation = () => {
     },
 
   });
+
+  const updateContractFromScheduleInfo = useMutation({
+    mutationKey: ["update-contract-from-schedule"],
+    mutationFn: (id: string) => UpdateCarContractByScheduleInfo(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        push(`/cars/${response.value.carId}`);
+      }
+    },
+    onError(error: Error) {
+      toastError(error);
+    },
+  })
   return {
     createInspectionSchedule,
     rejectInspectionSchedule,
     approveInspectionSchedule,
+    updateContractFromScheduleInfo
   }
 }
 

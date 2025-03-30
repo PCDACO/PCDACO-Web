@@ -4,6 +4,13 @@ import { CarResponse } from "@/constants/models/car.model";
 
 export const CarColumns: ColumnDef<CarResponse>[] = [
   {
+    accessorKey: "index",
+    header: "STT",
+    cell: ({ row }) => {
+      return row.index + 1
+    }
+  },
+  {
     accessorKey: "licensePlate",
     header: "Biển Số Xe",
   },
@@ -41,4 +48,8 @@ export const CarColumns: ColumnDef<CarResponse>[] = [
       return <p>{status}</p>
     }
   },
+  {
+    accessorKey: "ownerPhoneNumber",
+    header: "SDT",
+  }
 ];
