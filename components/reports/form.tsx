@@ -5,12 +5,8 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog";
 
-interface ManufacturerFormProps {
-  id: string;
-}
 
-const ReportForm = ({ id }: ManufacturerFormProps) => {
-  console.log(id);
+const ReportForm = () => {
   return (
     <>
       <DialogHeader>

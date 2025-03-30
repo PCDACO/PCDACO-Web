@@ -5,7 +5,6 @@ import { DataTable } from "@/components/data-table";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   useDialogStore,
-  useIdStore,
   useKeywordStore,
   useParamStore,
 } from "@/stores/store";
@@ -22,8 +21,6 @@ const ReportTable = () => {
   const { listReports } = useReportQuery({
     params: value,
   });
-
-  const { id } = useIdStore();
 
   return (
     <Dialog
@@ -58,7 +55,7 @@ const ReportTable = () => {
         />
       </div>
       <DialogContent>
-        <ReportForm id={id} />
+        <ReportForm />
       </DialogContent>
     </Dialog>
   );

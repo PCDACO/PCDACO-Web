@@ -19,18 +19,35 @@ import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter } from "next/navigation"
 import { ReportDetailResponse } from "@/constants/models/report.model"
+import { useReportMutation } from "@/hooks/reports/use-report";
+import ReportDetailMenuAction from "./detail-menu-action";
+import CompensationForm from "../compensations/form";
+import { useDialogStore } from "@/stores/store";
 
 interface Props {
   report: ReportDetailResponse
 }
 export default function ReportDetails({ report }: Props) {
+  const { open, setOpen } = useDialogStore();
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false)
   const [resolutionComments, setResolutionComments] = useState("")
-  const { replace } = useRouter();
-  const handleApproveClick = () => {
-    replace("/inspection-schedules/create");
+  const { rejectReport } = useReportMutation();
+  const { push } = useRouter();
+  const handleCreateNewInspectionClick = () => {
+    push("/inspection-schedules/create");
   }
 
+  const handleApproveReportClick = () => {
+    //TODO : Call mutation with it
+  }
+
+  const handleReject = () => {
+    rejectReport.mutate({
+      id: report.id,
+      reason: resolutionComments
+    });
+    setIsRejectDialogOpen(false);
+  }
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return new Intl.DateTimeFormat("vi-VN", {
@@ -49,204 +66,187 @@ export default function ReportDetails({ report }: Props) {
     }).format(amount)
   }
 
-  const handleReject = () => {
-    setIsRejectDialogOpen(false);
-  }
 
-  return (
+  return <>
     <div className="container mx-auto py-6 max-w-6xl">
       <div className="flex flex-col gap-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-2xl font-bold">{report.title}</h1>
-            <p className="text-muted-foreground">ID: {report.id}</p>
+        <div className="flex flex-col md:flex-col justify-start items-start md:items-center gap-4 w-full">
+          <div className=" flex flex-row justify-between w-full">
+            <div className="flex flex-col items-start w-full">
+              <h1 className="text-2xl font-bold">{report.title}</h1>
+              <p className="text-muted-foreground-foreground ml-2">ID: {report.id}</p>
+            </div>
+            <ReportDetailMenuAction />
           </div>
-          <Badge
-            className="px-3 py-1 text-sm"
-            variant={report.status === "Pending" ? "outline" : report.status === "Approved" ? "default" : "destructive"}
-          >
-            {report.status}
-          </Badge>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Report Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                Thông tin báo cáo
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="flex items-center gap-3">
-                <Avatar>
-                  <AvatarImage src="/dummy-avatar.webp" alt={report.reportedName} />
-                  <AvatarFallback>{report.reportedName.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium">{report.reportedName}</p>
-                  <p className="text-sm text-muted-foreground">Người báo cáo</p>
-                </div>
-              </div>
-
-              <div>
-                <p className="font-medium text-muted-foreground">Mô tả</p>
-                <p>{report.description}</p>
-              </div>
-
-              <div>
-                <p className="font-medium text-muted-foreground">Loại báo cáo</p>
-                <p>{report.reportType}</p>
-              </div>
-
-              {report.imageUrls && report.imageUrls.length > 0 && (
-                <div>
-                  <p className="font-medium mb-2 flex items-center gap-1">
-                    <ImageIcon className="h-4 w-4" />
-                    Hình ảnh
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {report.imageUrls.map((imageUrl, index) => (
-                      <div key={index} className="relative aspect-video rounded-md overflow-hidden border">
-                        <Image
-                          src={imageUrl ?? "/placeholder.png?height=120&width=200"}
-                          alt={`Report image ${index + 1}`}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                    ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Report Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Thông tin báo cáo
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="flex items-center gap-3">
+                  <Avatar>
+                    <AvatarImage src="/placeholder.svg?height=40&width=40" alt={report.reportedName} />
+                    <AvatarFallback>{report.reportedName.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-medium">{report.reportedName}</p>
+                    <p className="text-sm text-muted-foreground">Người báo cáo</p>
                   </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
 
-          {/* Car Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Car className="h-5 w-5" />
-                Thông tin xe
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
+                <div>
+                  <p className="font-medium text-muted-foreground">Mô tả</p>
+                  <p>{report.description}</p>
+                </div>
 
-              {report?.carDetail?.imageUrl?.length > 0 &&
-                (
-                  <div className="aspect-video rounded-md overflow-hidden border">
-                    {
-                      report?.carDetail?.imageUrl?.map((url) => (
-                        <Image
-                          key={url}
-                          src={url ?? "/placeholder.png?height=200&width=400"}
-                          alt={report.carDetail.modelName}
-                          className="object-cover w-full h-full"
-                        />
-                      ))
-                    }
+                <div>
+                  <p className="font-medium text-muted-foreground">Loại báo cáo</p>
+                  <p>{report.reportType}</p>
+                </div>
+
+                {report.imageUrls && report.imageUrls.length > 0 && (
+                  <div>
+                    <p className="font-medium mb-2 flex items-center gap-1">
+                      <ImageIcon className="h-4 w-4" />
+                      Hình ảnh
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {report.imageUrls.map((imageUrl, index) => (
+                        <div key={index} className="relative aspect-video rounded-md overflow-hidden border">
+                          <Image
+                            src={imageUrl ?? "/placeholder.svg?height=120&width=200"}
+                            alt={`Report image ${index + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Biển số xe</p>
-                  <p className="font-medium">{report.carDetail.licensePlate}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Màu sắc</p>
-                  <p className="font-medium">{report.carDetail.color}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Mẫu xe</p>
-                  <p className="font-medium">{report.carDetail.modelName}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Hãng sản xuất</p>
-                  <p className="font-medium">{report.carDetail.manufacturerName}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Booking Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5" />
-                Thông tin đặt xe
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center gap-3">
-                  <Avatar>
-                    <AvatarImage src="/dummy-avatar.webp" alt={report.bookingDetail.driverName} />
-                    <AvatarFallback>{report.bookingDetail.driverName.charAt(0)}</AvatarFallback>
-                  </Avatar>
+              </CardContent>
+            </Card>
+            {/* Car Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Car className="h-5 w-5" />
+                  Thông tin xe
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {report?.carDetail?.imageUrl?.length > 0 && (
+                  <div className="aspect-video rounded-md overflow-hidden border">
+                    {report?.carDetail?.imageUrl?.map((url) => (
+                      <Image
+                        key={url}
+                        src={url ?? "/placeholder.svg?height=200&width=400"}
+                        alt={report.carDetail.modelName}
+                        width={400}
+                        height={200}
+                        className="object-cover w-full h-full"
+                      />
+                    ))}
+                  </div>
+                )}
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="font-medium">{report.bookingDetail.driverName}</p>
-                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <Phone className="h-3 w-3" />
-                      {report.bookingDetail.driverPhone}
-                    </div>
-                    <p className="text-sm text-muted-foreground">Người thuê</p>
+                    <p className="text-sm text-muted-foreground">Biển số xe</p>
+                    <p className="font-medium">{report.carDetail.licensePlate}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Màu sắc</p>
+                    <p className="font-medium">{report.carDetail.color}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Mẫu xe</p>
+                    <p className="font-medium">{report.carDetail.modelName}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Hãng sản xuất</p>
+                    <p className="font-medium">{report.carDetail.manufacturerName}</p>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-3">
-                  <Avatar>
-                    <AvatarImage src="/dummy-avatar.webp" alt={report.bookingDetail.ownerName} />
-                    <AvatarFallback>{report.bookingDetail.ownerName.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium">{report.bookingDetail.ownerName}</p>
-                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <Phone className="h-3 w-3" />
-                      {report.bookingDetail.ownerPhone}
+              </CardContent>
+            </Card>
+            {/* Booking Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5" />
+                  Thông tin đặt xe
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-center gap-3">
+                    <Avatar>
+                      <AvatarImage src="/placeholder.svg?height=40&width=40" alt={report.bookingDetail.driverName} />
+                      <AvatarFallback>{report.bookingDetail.driverName.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{report.bookingDetail.driverName}</p>
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <Phone className="h-3 w-3" />
+                        {report.bookingDetail.driverPhone}
+                      </div>
+                      <p className="text-sm text-muted-foreground">Người thuê</p>
                     </div>
-                    <p className="text-sm text-muted-foreground">Chủ xe</p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <Avatar>
+                      <AvatarImage src="/placeholder.svg?height=40&width=40" alt={report.bookingDetail.ownerName} />
+                      <AvatarFallback>{report.bookingDetail.ownerName.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{report.bookingDetail.ownerName}</p>
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <Phone className="h-3 w-3" />
+                        {report.bookingDetail.ownerPhone}
+                      </div>
+                      <p className="text-sm text-muted-foreground">Chủ xe</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <Separator />
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    Thời gian bắt đầu
-                  </p>
-                  <p className="font-medium">{formatDate(report.bookingDetail.startTime)}</p>
+                <Separator />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      Thời gian bắt đầu
+                    </p>
+                    <p className="font-medium">{formatDate(report.bookingDetail.startTime)}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      Thời gian kết thúc
+                    </p>
+                    <p className="font-medium">{formatDate(report.bookingDetail.endTime)}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    Thời gian kết thúc
-                  </p>
-                  <p className="font-medium">{formatDate(report.bookingDetail.endTime)}</p>
+                <Separator />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Giá cơ bản</p>
+                    <p className="font-medium">{formatCurrency(report.bookingDetail.basePrice)}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Tổng tiền</p>
+                    <p className="font-medium">{formatCurrency(report.bookingDetail.totalAmount)}</p>
+                  </div>
                 </div>
-              </div>
-
-              <Separator />
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Giá cơ bản</p>
-                  <p className="font-medium">{formatCurrency(report.bookingDetail.basePrice)}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Tổng tiền</p>
-                  <p className="font-medium">{formatCurrency(report.bookingDetail.totalAmount)}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Compensation Details */}
-          {
-            report?.compensationDetail && (
+              </CardContent>
+            </Card>
+            {/* Compensation Details */}
+            {report?.compensationDetail && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -257,7 +257,10 @@ export default function ReportDetails({ report }: Props) {
                 <CardContent className="grid gap-4">
                   <div className="flex items-center gap-3">
                     <Avatar>
-                      <AvatarImage src="/dummy-avatar.webp" alt={report?.compensationDetail?.userName ?? ""} />
+                      <AvatarImage
+                        src="/placeholder.svg?height=40&width=40"
+                        alt={report?.compensationDetail?.userName ?? ""}
+                      />
                       <AvatarFallback>{report?.compensationDetail?.userName?.charAt(0) ?? ""}</AvatarFallback>
                     </Avatar>
                     <div>
@@ -274,16 +277,15 @@ export default function ReportDetails({ report }: Props) {
                   <div className="flex justify-between items-center">
                     <div>
                       <p className="text-sm text-muted-foreground">Số tiền bồi thường</p>
-                      <p className="font-medium text-lg">{formatCurrency(report?.compensationDetail?.compensationAmount ?? "")}</p>
+                      <p className="font-medium text-lg">
+                        {formatCurrency(report?.compensationDetail?.compensationAmount ?? 0)}
+                      </p>
                     </div>
-                    {
-                      report?.compensationDetail?.isPaid &&
-                      (
-                        <Badge variant={report.compensationDetail.isPaid ? "default" : "outline"}>
-                          {report.compensationDetail.isPaid ? "Đã thanh toán" : "Chưa thanh toán"}
-                        </Badge>
-                      )
-                    }
+                    {report?.compensationDetail?.isPaid && (
+                      <Badge variant={report.compensationDetail.isPaid ? "default" : "outline"}>
+                        {report.compensationDetail.isPaid ? "Đã thanh toán" : "Chưa thanh toán"}
+                      </Badge>
+                    )}
                   </div>
 
                   {report?.compensationDetail?.paidAt && (
@@ -294,13 +296,9 @@ export default function ReportDetails({ report }: Props) {
                   )}
                 </CardContent>
               </Card>
-            )
-
-          }
-          {/* Inspection Schedule */}
-          {
-            report?.inspectionScheduleDetail &&
-            (
+            )}
+            {/* Inspection Schedule Details */}
+            {report?.inspectionScheduleDetail && (
               <Card className="md:col-span-2">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -312,10 +310,12 @@ export default function ReportDetails({ report }: Props) {
                   <div className="flex items-center gap-3">
                     <Avatar>
                       <AvatarImage
-                        src="/dummy-avatar.webp"
+                        src="/placeholder.svg?height=40&width=40"
                         alt={report?.inspectionScheduleDetail?.technicianName ?? ""}
                       />
-                      <AvatarFallback>{report?.inspectionScheduleDetail?.technicianName?.charAt(0) ?? ""}</AvatarFallback>
+                      <AvatarFallback>
+                        {report?.inspectionScheduleDetail?.technicianName?.charAt(0) ?? ""}
+                      </AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="font-medium">{report?.inspectionScheduleDetail?.technicianName ?? ""}</p>
@@ -339,11 +339,11 @@ export default function ReportDetails({ report }: Props) {
                         <Calendar className="h-3 w-3" />
                         Ngày kiểm tra
                       </p>
-                      {
-                        report?.inspectionScheduleDetail?.inspectionDate && (
-                          <p className="font-medium">{formatDate(report?.inspectionScheduleDetail?.inspectionDate ?? "")}</p>
-                        )
-                      }
+                      {report?.inspectionScheduleDetail?.inspectionDate && (
+                        <p className="font-medium">
+                          {formatDate(report?.inspectionScheduleDetail?.inspectionDate ?? "")}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -352,91 +352,84 @@ export default function ReportDetails({ report }: Props) {
                     <p className="font-medium">{report?.inspectionScheduleDetail?.note ?? ""}</p>
                   </div>
 
-                  {report?.inspectionScheduleDetail?.photoUrls && report.inspectionScheduleDetail.photoUrls.length > 0 && (
-                    <div>
-                      <p className="font-medium mb-2 flex items-center gap-1">
-                        <ImageIcon className="h-4 w-4" />
-                        Hình ảnh kiểm tra
-                      </p>
-                      <div className="grid grid-cols-3 gap-2">
-                        {report?.inspectionScheduleDetail?.photoUrls?.map((imageUrl, index) => (
-                          <div key={index} className="relative aspect-video rounded-md overflow-hidden border">
-                            <Image
-                              src={imageUrl ?? "/placeholder.png?height=120&width=200"}
-                              alt={`Inspection image ${index + 1}`}
-                              className="object-cover w-full h-full"
-                            />
-                          </div>
-                        )) ?? []}
+                  {report?.inspectionScheduleDetail?.photoUrls &&
+                    report.inspectionScheduleDetail.photoUrls.length > 0 && (
+                      <div>
+                        <p className="font-medium mb-2 flex items-center gap-1">
+                          <ImageIcon className="h-4 w-4" />
+                          Hình ảnh kiểm tra
+                        </p>
+                        <div className="grid grid-cols-3 gap-2">
+                          {report?.inspectionScheduleDetail?.photoUrls?.map((imageUrl, index) => (
+                            <div key={index} className="relative aspect-video rounded-md overflow-hidden border">
+                              <Image
+                                src={imageUrl ?? "/placeholder.svg?height=120&width=200"}
+                                alt={`Inspection image ${index + 1}`}
+                                width={200}
+                                height={120}
+                                className="object-cover w-full h-full"
+                              />
+                            </div>
+                          )) ?? []}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </CardContent>
               </Card>
-            )
-          }
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex justify-end gap-4 mt-4">
-          <Dialog open={isRejectDialogOpen} onOpenChange={setIsRejectDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <XCircle className="h-4 w-4" />
-                Từ chối báo cáo
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Từ chối báo cáo</DialogTitle>
-                <DialogDescription>Vui lòng nhập lý do từ chối báo cáo này.</DialogDescription>
-              </DialogHeader>
-              <Textarea
-                placeholder="Nhập lý do từ chối..."
-                value={resolutionComments}
-                onChange={(e) => setResolutionComments(e.target.value)}
-                className="min-h-[100px]"
-              />
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setIsRejectDialogOpen(false)}>
-                  Hủy
+            )}
+          </div>
+          <div className="flex flex-row justify-end w-full items-center mt-4">
+            <div className="flex w-full justify-end gap-4 mt-4">
+              <Dialog open={isRejectDialogOpen} onOpenChange={setIsRejectDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="gap-2">
+                    <XCircle className="h-4 w-4" />
+                    Từ chối báo cáo
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Từ chối báo cáo</DialogTitle>
+                    <DialogDescription>Vui lòng nhập lý do từ chối báo cáo này.</DialogDescription>
+                  </DialogHeader>
+                  <Textarea
+                    placeholder="Nhập lý do từ chối..."
+                    value={resolutionComments}
+                    onChange={(e) => setResolutionComments(e.target.value)}
+                    className="min-h-[100px]"
+                  />
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setIsRejectDialogOpen(false)}>
+                      Hủy
+                    </Button>
+                    <Button variant="destructive" onClick={handleReject}>
+                      Xác nhận từ chối
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+              {report.compensationDetail && (
+                <Button onClick={handleApproveReportClick} className="gap-2">
+                  <CheckCircle className="h-4 w-4" />
+                  Chấp nhận báo cáo
                 </Button>
-                <Button variant="destructive" onClick={handleReject}>
-                  Xác nhận từ chối
+              )}
+              {!report.compensationDetail && (
+                <Button onClick={handleCreateNewInspectionClick} className="gap-2">
+                  Tạo lịch
                 </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-
-          <Button onClick={handleApproveClick} className="gap-2">
-            <CheckCircle className="h-4 w-4" />
-            Chấp nhận báo cáo
-          </Button>
-          {/* <Dialog open={isApproveDialogOpen} onOpenChange={setIsApproveDialogOpen}> */}
-          {/*   <DialogTrigger asChild> */}
-          {/*   </DialogTrigger> */}
-          {/*   <DialogContent> */}
-          {/*     <DialogHeader> */}
-          {/*       <DialogTitle>Chấp nhận báo cáo</DialogTitle> */}
-          {/*       <DialogDescription>Bạn có thể thêm ghi chú khi chấp nhận báo cáo này.</DialogDescription> */}
-          {/*     </DialogHeader> */}
-          {/*     <Textarea */}
-          {/*       placeholder="Nhập ghi chú (không bắt buộc)..." */}
-          {/*       value={resolutionComments} */}
-          {/*       onChange={(e) => setResolutionComments(e.target.value)} */}
-          {/*       className="min-h-[100px]" */}
-          {/*     /> */}
-          {/*     <DialogFooter> */}
-          {/*       <Button variant="outline" onClick={() => setIsApproveDialogOpen(false)}> */}
-          {/*         Hủy */}
-          {/*       </Button> */}
-          {/*       <Button onClick={handleApprove}>Xác nhận chấp nhận</Button> */}
-          {/*     </DialogFooter> */}
-          {/*   </DialogContent> */}
-          {/* </Dialog> */}
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  )
+    </div >
+    <CompensationForm
+      id={report.id}
+      userId={report.bookingDetail.driverId}
+      isOpen={open}
+      onOpenChange={() => setOpen(!open)}
+    />
+  </>
 }
 
