@@ -44,12 +44,12 @@ export default function CompensationForm({ id, userId, isOpen, onOpenChange }: P
                 return (
                   <FormItem>
                     <FormLabel className="text-muted-foreground">
-                      Reason
+                      Lí do
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Enter Reason" />
+                        placeholder="Nhập lí do" />
                     </FormControl>
                   </FormItem>
                 )
@@ -61,12 +61,12 @@ export default function CompensationForm({ id, userId, isOpen, onOpenChange }: P
                 return (
                   <FormItem>
                     <FormLabel>
-                      Enter Amount
+                      Số lượng
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Enter Amount"
+                        placeholder="Nhập số lượng"
                         type="number"
                         {...form.register("compensationAmount", { valueAsNumber: true })}
                       />
