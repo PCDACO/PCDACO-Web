@@ -31,7 +31,7 @@ const TransactionTable = () => {
         <div className="flex items-center space-x-4">
           <Select onValueChange={handleValueChange}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a fruit" />
+              <SelectValue placeholder="Chọn trạng thái" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
