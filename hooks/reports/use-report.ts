@@ -1,5 +1,6 @@
+import { ApproveReport } from "@/app/(dashboard)/(consultants)/reports/[id]/action";
 import { GetReports, RejectReport, ReviewReport } from "@/app/(dashboard)/(consultants)/reports/action";
-import { ReportParams } from "@/constants/models/report.model";
+import { ApproveReportPayload, ReportParams } from "@/constants/models/report.model";
 import { toastError, toastResponse } from "@/lib/toast-error";
 import { useDialogStore } from "@/stores/store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -64,8 +65,28 @@ export const useReportMutation = () => {
       toastError(error);
     }
   });
+  const approveReport = useMutation({
+    mutationKey: [""],
+    mutationFn: ({ id, payload }:
+      {
+        id: string,
+        payload: ApproveReportPayload,
+      }) => ApproveReport(id, payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["reports"] });
+        push(`/reports`);
+      }
+    },
+    onError: (error: Error) => {
+      toastError(error);
+    }
+  });
   return {
     reviewReport,
     rejectReport,
+    approveReport
   }
 }

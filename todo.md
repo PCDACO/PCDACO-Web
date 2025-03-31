@@ -19,4 +19,5 @@
 - [x] fix the UI of car inspection detail of page todo
 - [x] fix the can not be closed of page todo
 - [x] view currently reviewing reports 
+- [x] submit the proof
 ## Fixing bug stage
