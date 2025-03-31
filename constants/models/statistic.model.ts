@@ -10,4 +10,19 @@ export interface StatisticResponse {
   totalApprovedInspectionSchedule: number,
   totalRejectedInspectionSchedule: number,
   staffSalary: number,
-} 
+}
+
+export interface SystemStatisticResponse {
+  totalRevenue: number;
+  activeUsers: number;
+  activeTransactions: number;
+  totalRentedCars: number;
+  totalBookingCancelled: number;
+  cancellationLoss: number;
+  revenueOverTime: ChartDetail[];
+}
+
+export interface ChartDetail {
+  month: string;
+  value: number;
+}
