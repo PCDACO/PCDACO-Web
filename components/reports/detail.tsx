@@ -42,6 +42,53 @@ export default function ReportDetails({ report }: Props) {
     setApproveOpen(true);
   }
 
+  const mapReportType = (type: number): JSX.Element => {
+    switch (type) {
+      case 0:
+        return (
+          <Badge className="bg-red-500 text-white">
+            Tranh cãi
+          </Badge>
+        );
+      case 1:
+        return (
+          <Badge className="bg-yellow-500 text-white">
+            Tai nạn
+          </Badge>
+        );
+      case 2:
+        return (
+          <Badge className="bg-purple-500 text-white">
+            Báo phạt
+          </Badge>
+        );
+      case 3:
+        return (
+          <Badge className="bg-orange-500 text-white">
+            Hư hỏng
+          </Badge>
+        );
+      case 4:
+        return (
+          <Badge className="bg-green-500 text-white">
+            Bảo trì
+          </Badge>
+        );
+      case 5:
+        return (
+          <Badge className="bg-blue-500 text-white">
+            Khác
+          </Badge>
+        );
+      default:
+        return (
+          <Badge className="bg-gray-500 text-white">
+            Error
+          </Badge>
+        );
+    }
+  };
+
   const handleReject = () => {
     rejectReport.mutate({
       id: report.id,
@@ -107,7 +154,7 @@ export default function ReportDetails({ report }: Props) {
 
                 <div>
                   <p className="font-medium text-muted-foreground">Loại báo cáo</p>
-                  <p>{report.reportType}</p>
+                  {mapReportType(report.reportType)}
                 </div>
 
                 {report.imageUrls && report.imageUrls.length > 0 && (

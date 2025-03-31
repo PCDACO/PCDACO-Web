@@ -1,8 +1,10 @@
 import { BanUser, UnbanUser } from "@/app/actions/shared/action";
 import { toastError, toastResponse } from "@/lib/toast-error";
+import { useDialogStore } from "@/stores/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export const useUserMutation = () => {
+  const { setOpen } = useDialogStore();
   const queryClient = useQueryClient();
   const banUser = useMutation({
     mutationKey: ["banUser"],
@@ -36,6 +38,7 @@ export const useUserMutation = () => {
       if (response.isSuccess) {
         queryClient.invalidateQueries({ queryKey: ["owners"] });
         queryClient.invalidateQueries({ queryKey: ["drivers"] });
+        setOpen(false);
       }
     },
     onError: (error: Error) => {
