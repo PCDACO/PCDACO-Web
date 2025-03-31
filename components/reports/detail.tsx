@@ -22,13 +22,14 @@ import { ReportDetailResponse } from "@/constants/models/report.model"
 import { useReportMutation } from "@/hooks/reports/use-report";
 import ReportDetailMenuAction from "./detail-menu-action";
 import CompensationForm from "../compensations/form";
-import { useDialogStore } from "@/stores/store";
+import ApproveReportForm from "./approve-form";
 
 interface Props {
   report: ReportDetailResponse
 }
 export default function ReportDetails({ report }: Props) {
-  const { open, setOpen } = useDialogStore();
+  const [compensationOpen, setCompensationOpen] = useState(false);
+  const [approveOpen, setApproveOpen] = useState(false);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false)
   const [resolutionComments, setResolutionComments] = useState("")
   const { rejectReport } = useReportMutation();
@@ -38,7 +39,7 @@ export default function ReportDetails({ report }: Props) {
   }
 
   const handleApproveReportClick = () => {
-    //TODO : Call mutation with it
+    setApproveOpen(true);
   }
 
   const handleReject = () => {
@@ -427,9 +428,17 @@ export default function ReportDetails({ report }: Props) {
     <CompensationForm
       id={report.id}
       userId={report.bookingDetail.driverId}
-      isOpen={open}
-      onOpenChange={() => setOpen(!open)}
+      isOpen={compensationOpen}
+      onOpenChange={() => setCompensationOpen(!compensationOpen)}
     />
+    <ApproveReportForm
+      id={report.id}
+      value={{
+        note: "",
+        images: new DataTransfer().files
+      }}
+      isOpen={approveOpen}
+      onOpenChange={() => setApproveOpen(!approveOpen)} />
   </>
 }
 
