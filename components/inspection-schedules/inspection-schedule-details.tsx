@@ -214,14 +214,10 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                {
-                  data.hasGPSDevice && (
-                    <Button variant="default" className="flex-1" onClick={handleApprove}>
-                      <CheckCircle className="mr-2 h-4 w-4" />
-                      View Contract
-                    </Button>
-                  )
-                }
+                <Button disabled={!data.hasGPSDevice} variant="default" className="flex-1" onClick={handleApprove}>
+                  <CheckCircle className="mr-2 h-4 w-4" />
+                  View Contract
+                </Button>
               </div>
             </CardFooter>
           </Card>

@@ -2,13 +2,12 @@
 import { MenuIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { useDialogStore } from "@/stores/store";
 
-export default function ReportDetailMenuAction() {
-  const { setOpen } = useDialogStore();
-  const handleOpenDialogClick = () => {
-    setOpen(true);
-  }
+interface Props {
+  setOpen: () => void;
+}
+
+export default function ReportDetailMenuAction({ setOpen }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -20,7 +19,7 @@ export default function ReportDetailMenuAction() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={handleOpenDialogClick} >
+          <DropdownMenuItem onClick={setOpen} >
             Create
           </DropdownMenuItem>
         </DropdownMenuGroup>

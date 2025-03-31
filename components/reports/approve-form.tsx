@@ -1,12 +1,14 @@
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader } from "../ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { useReportForm } from "@/hooks/reports/use-form-report";
 import { ApproveReportPayload } from "@/constants/models/report.model";
 import { useEffect, useState } from "react";
 import { Card } from "../ui/card";
-import { X } from "lucide-react";
+import { ImageIcon, X } from "lucide-react";
+import { Label } from "../ui/label";
+import Image from "next/image";
 
 interface Props {
   id: string;
@@ -42,6 +44,7 @@ export default function ApproveReportForm({ id, value, isOpen, onOpenChange }: P
   }, [images])
 
 
+
   const removeImage = (index: number) => {
     if (!images) return
 
@@ -51,7 +54,6 @@ export default function ApproveReportForm({ id, value, isOpen, onOpenChange }: P
         dt.items.add(images[i])
       }
     }
-
     form.setValue("images", dt.files)
   }
   return <>
@@ -63,8 +65,9 @@ export default function ApproveReportForm({ id, value, isOpen, onOpenChange }: P
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-6">
             <DialogHeader>
-              <DialogDescription>
-              </DialogDescription>
+              <DialogTitle>
+                Xác nhận đơn phat
+              </DialogTitle>
             </DialogHeader>
             <FormField
               control={form.control}
@@ -78,50 +81,51 @@ export default function ApproveReportForm({ id, value, isOpen, onOpenChange }: P
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Enter Note" />
+                        placeholder="Nhập ghi chú" />
                     </FormControl>
                   </FormItem>
                 )
               }} />
-            <FormField
-              control={form.control}
-              name="images"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>
-                      Enter Images
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="images"
-                        type="file"
-                        multiple
-                        accept="image/*"
-                        className="hidden"
-                        {...form.register("images", { required: "Please select at least one image" })}
-                      />
-                      <div className="flex-1">
-                        {previews.length > 0 ? (
-                          <p className="text-sm text-muted-foreground">
-                            {previews.length} {previews.length === 1 ? "image" : "images"} selected
-                          </p>
-                        ) : (
-                          <p className="text-sm text-muted-foreground">No images selected</p>
-                        )}
-                      </div>
-                    </FormControl>
-                  </FormItem>
-                )
-              }} />
+            <div className="space-y-2">
+              <Label htmlFor="images" className="text-base">
+                Upload Images
+              </Label>
+              <div className="flex items-center gap-4">
+                <Label
+                  htmlFor="images"
+                  className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors"
+                >
+                  <ImageIcon className="h-8 w-8 text-muted-foreground mb-2" />
+                  <span className="text-sm text-muted-foreground">Nhập ảnh</span>
+                </Label>
+                <input
+                  id="images"
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  className="hidden"
+                  {...form.register("images", { required: "Yêu cầu ảnh" })}
+                />
+                <div className="flex-1">
+                  {previews.length > 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                      {previews.length} {previews.length === 1 ? "image" : "images"} được chọn
+                    </p>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Không có ảnh được nhập</p>
+                  )}
+                </div>
+              </div>
+            </div>
             {previews.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {previews.map((preview, index) => (
                   <Card key={preview} className="relative overflow-hidden group aspect-square">
-                    <img
-                      src={preview || "/placeholder.svg"}
+                    <Image
+                      src={preview || "/placeholder.png"}
                       alt={`Preview ${index + 1}`}
+                      width={32}
+                      height={32}
                       className="w-full h-full object-cover"
                     />
                     <Button
