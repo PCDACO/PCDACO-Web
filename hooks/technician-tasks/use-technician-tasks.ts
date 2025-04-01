@@ -36,9 +36,11 @@ export const useTechnicianTaskMutation = () => {
     mutationFn: async ({ id, note }: { id: string; note: string }) =>
       await RejectTechnicianTask(id, note),
     onSuccess: (response) => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
       toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      }
     },
     onError: (error: Error) => {
       toastError(error);
@@ -50,9 +52,11 @@ export const useTechnicianTaskMutation = () => {
     mutationFn: async ({ id, note }: { id: string; note: string }) =>
       await ApproveTechnicianTask(id, note),
     onSuccess: (response) => {
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
       toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      }
     },
     onError: (error: Error) => {
       toastError(error);
