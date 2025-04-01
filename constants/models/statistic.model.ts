@@ -20,6 +20,7 @@ export interface SystemStatisticResponse {
   totalBookingCancelled: number;
   cancellationLoss: number;
   revenueOverTime: ChartDetail[];
+  activeUsersOverTime: ChartDetail[];
 }
 
 export interface ChartDetail {

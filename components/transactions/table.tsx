@@ -18,6 +18,7 @@ const TransactionTable = () => {
   });
 
   const handleValueChange = (statusValue: string) => {
+    console.log(statusValue);
     setValue({
       ...value,
       transactionType: statusValue

@@ -18,7 +18,7 @@ export default function AdminStatistics({ statistics }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">Tổng doanh thu</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(statistics.totalRevenue)}</div>
@@ -27,75 +27,66 @@ export default function AdminStatistics({ statistics }: Props) {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Người dùng đang hoạt động</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statistics.activeUsers}</div>
+            <div className="text-2xl font-bold">{statistics.activeUsers} người</div>
             {/* <p className="text-xs text-gray-500">+180 new users</p> */}
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Transactions</CardTitle>
+            <CardTitle className="text-sm font-medium">Giao dịch đang lưu hành</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statistics.activeTransactions}</div>
+            <div className="text-2xl font-bold">{statistics.activeTransactions} giao dịch</div>
             {/* <p className="text-xs text-gray-500">+8.2% from last hour</p> */}
           </CardContent>
         </Card>
         {/* EXTEND */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Rented Car</CardTitle>
+            <CardTitle className="text-sm font-medium">Tổng số xe đã được thuê</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statistics.totalRentedCars}</div>
+            <div className="text-2xl font-bold">{statistics.totalRentedCars} xe</div>
             {/* <p className="text-xs text-gray-500">+8.2% from last hour</p> */}
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Cancelled</CardTitle>
+            <CardTitle className="text-sm font-medium">Tổng số lần hủy</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{statistics.totalBookingCancelled}</div>
-            <p className="text-xs text-gray-500">+8.2% from last hour</p>
+            {/* <p className="text-xs text-gray-500">+8.2% from last hour</p> */}
           </CardContent>
         </Card>
-        {/* <Card> */}
-        {/*   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"> */}
-        {/*     <CardTitle className="text-sm font-medium">Total Cancelled</CardTitle> */}
-        {/*   </CardHeader> */}
-        {/*   <CardContent> */}
-        {/*     <div className="text-2xl font-bold">$1,247</div> */}
-        {/*     <p className="text-xs text-gray-500">+8.2% from last hour</p> */}
-        {/*   </CardContent> */}
-        {/* </Card> */}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Revenue Over Time</CardTitle>
+            <CardTitle>Doanh thu qua thời gian</CardTitle>
           </CardHeader>
           <CardContent>
             <LineChart
               data={statistics.revenueOverTime}
-              index="name"
+              index="month"
               categories={["value"]}
               colors={["#000000"]}
-              valueFormatter={(value) => `$${value}`}
+              valueFormatter={(value) => formatCurrency(value)}
               className="h-[200px]"
             />
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Active Users Over Time</CardTitle>
+            <CardTitle>Lưu lượng người dùng</CardTitle>
           </CardHeader>
           <CardContent>
             <LineChart
-              data={statistics.revenueOverTime}
-              index="name"
+              data={statistics.activeUsersOverTime}
+              index="month"
               categories={["value"]}
               colors={["#000000"]}
               valueFormatter={(value) => `${value}`}
