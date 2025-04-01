@@ -4,7 +4,6 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-// import { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -82,8 +81,8 @@ export default function LoginForm({
             </CardContent>
           </Card>
           <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-            By clicking continue, you agree to our{" "}
-            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+            Khi đăng nhập, bạn đã đồng ý với{" "}
+            <a href="#">Điều kiện dịch vụ</a> and <a href="#">Chính sách bảo mật</a>.
           </div>
         </div>
       </div>
