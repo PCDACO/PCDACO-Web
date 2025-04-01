@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CreateInspectionSchedules,
+  DeleteInspectionSchedules,
   GetInProgressInspectionSchedule,
   GetInspectionSchedules,
   RejectInspectionSchedules,
@@ -121,11 +122,23 @@ export const useInspectionScheduleMutation = () => {
       toastError(error);
     },
   })
+
+  const deleteInspectionSchedule = useMutation({
+    mutationKey: ["delete-inspection-schedules"],
+    mutationFn: (id: string) => DeleteInspectionSchedules(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
+      }
+    }
+  });
   return {
     createInspectionSchedule,
     rejectInspectionSchedule,
     approveInspectionSchedule,
-    updateContractFromScheduleInfo
+    updateContractFromScheduleInfo,
+    deleteInspectionSchedule
   }
 }
 

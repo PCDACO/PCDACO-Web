@@ -18,7 +18,7 @@ interface MonthCalendarProps {
 
 export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCalendarProps) {
   const [calendarDays, setCalendarDays] = useState<Array<{ date: Date | null; isCurrentMonth: boolean }>>([])
-  const { rejectInspectionSchedule } = useInspectionScheduleMutation()
+  const { deleteInspectionSchedule } = useInspectionScheduleMutation()
 
   const statusClasses: Record<
     string,
@@ -36,10 +36,7 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
 
   const handleDeleteClick = (id: string) => {
     timerId = setTimeout(() => {
-      rejectInspectionSchedule.mutate({
-        id: id,
-        note: "",
-      });
+      deleteInspectionSchedule.mutate(id);
     }, holdTime);
   }
 
