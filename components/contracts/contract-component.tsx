@@ -15,9 +15,7 @@ export default function ContractViewer({ id, contractHtml }: Props) {
   const [showAcceptDialog, setShowAcceptDialog] = useState(false)
   const { approveContract } = useContractMutation();
 
-  const handleAccept = async () => {
-    approveContract.mutate(id);
-  }
+  const handleAccept = () => approveContract.mutate(id);
 
   return (
     <div className="flex flex-col justify-start">
