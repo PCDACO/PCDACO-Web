@@ -89,7 +89,7 @@ export default function TechnicianStatistics({ inProgressInspectionSchedule, sta
           </CardHeader>
           <CardContent className="space-y-4">
             {
-              recentActivity?.activities.map((item) => (
+              recentActivity?.activities?.map((item) => (
                 <>
                   <CustomActivityItem
                     avatar={item.avatarUrl}

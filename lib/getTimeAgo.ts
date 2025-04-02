@@ -1,6 +1,6 @@
 export function getTimeAgo(date: Date): string {
   const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
+  const diffMs = now.getTime() - new Date(date).getTime();
 
   // If the provided date is in the future, consider it "just now".
   if (diffMs < 0) {
