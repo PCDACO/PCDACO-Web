@@ -1,5 +1,6 @@
 "use server"
 import axiosInstance from "@/app/axios.server";
+import { TechnicianRecentActivityResponse } from "@/constants/models/recent-activity.model";
 import { StatisticResponse, SystemStatisticResponse } from "@/constants/models/statistic.model";
 
 export const GetStatistics = async (): Promise<RootResponse<StatisticResponse>> => {
@@ -9,5 +10,10 @@ export const GetStatistics = async (): Promise<RootResponse<StatisticResponse>> 
 
 export const GetSystemStatistics = async (): Promise<RootResponse<SystemStatisticResponse>> => {
   const response = await axiosInstance.get("/api/statistics/total");
+  return response.data;
+}
+
+export const GetTechnicianRecentActivity = async (): Promise<RootResponse<TechnicianRecentActivityResponse>> => {
+  const response = await axiosInstance.get("/api/users/technician/recent-activity");
   return response.data;
 }
