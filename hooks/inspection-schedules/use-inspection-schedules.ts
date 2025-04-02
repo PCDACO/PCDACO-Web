@@ -115,7 +115,7 @@ export const useInspectionScheduleMutation = () => {
     onSuccess: (response) => {
       toastResponse(response);
       if (response.isSuccess) {
-        push(`/cars/${response.value.carId}`);
+        push(`/cars/${response.value.carId}/contract`);
       }
     },
     onError(error: Error) {
