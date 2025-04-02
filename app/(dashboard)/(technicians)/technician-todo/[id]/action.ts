@@ -9,7 +9,7 @@ export const GetInspectionScheduleDetail = async (id: string): Promise<RootRespo
 }
 
 export const UpdateCarContractByScheduleInfo = async (id: string): Promise<RootResponse<ContractFromScheduleUpdateResponse>> => {
-  const response = await axiosInstance.put(`/api/contracts/update-from-schedule/${id}`);
+  const response = await axiosInstance.put(`/api/schedules/${id}/contract`);
   return response.data;
 }
 
