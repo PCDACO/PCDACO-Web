@@ -1,18 +1,21 @@
 "use client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import ActivityItem from "./activity-item"
 import InspectionTaskItem from "./inspection-task-item"
 import { format } from "date-fns"
 import { InProgressInspectionScheduleResponse } from "@/constants/models/inspection-schedule.model"
 import { StatisticResponse } from "@/constants/models/statistic.model"
+import { TechnicianRecentActivityResponse } from "@/constants/models/recent-activity.model"
+import CustomActivityItem from "../ui/custom-activity-item"
+import { getTimeAgo } from "@/lib/getTimeAgo"
 
 interface Props {
   inProgressInspectionSchedule?: InProgressInspectionScheduleResponse;
-  statisticData?: StatisticResponse
+  statisticData?: StatisticResponse;
+  recentActivity?: TechnicianRecentActivityResponse;
 }
 
-export default function TechnicianStatistics({ inProgressInspectionSchedule, statisticData }: Props) {
+export default function TechnicianStatistics({ inProgressInspectionSchedule, statisticData, recentActivity }: Props) {
 
   return (
     <main className="flex-1 p-8 overflow-auto">
@@ -85,37 +88,18 @@ export default function TechnicianStatistics({ inProgressInspectionSchedule, sta
             <CardDescription>Latest updates from your team</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <ActivityItem
-              avatar="/placeholder.svg?height=32&width=32"
-              name="Alex Johnson"
-              action="commented on"
-              target="Website Redesign"
-              time="10 minutes ago"
-            />
-            <Separator />
-            <ActivityItem
-              avatar="/placeholder.svg?height=32&width=32"
-              name="Sarah Miller"
-              action="completed task"
-              target="Create wireframes"
-              time="1 hour ago"
-            />
-            <Separator />
-            <ActivityItem
-              avatar="/placeholder.svg?height=32&width=32"
-              name="David Chen"
-              action="uploaded"
-              target="Q2 Financial Report"
-              time="2 hours ago"
-            />
-            <Separator />
-            <ActivityItem
-              avatar="/placeholder.svg?height=32&width=32"
-              name="Emily Wilson"
-              action="created project"
-              target="Mobile App Redesign"
-              time="Yesterday at 4:30 PM"
-            />
+            {
+              recentActivity?.activities.map((item) => (
+                <>
+                  <CustomActivityItem
+                    avatar={item.avatarUrl}
+                    content={item.content}
+                    time={getTimeAgo(item.happenedAt)}
+                  />
+                  <Separator />
+                </>
+              )) ?? []
+            }
           </CardContent>
         </Card>
       </div>
