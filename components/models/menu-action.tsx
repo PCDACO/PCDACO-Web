@@ -15,6 +15,7 @@ import {
   useKeywordStore,
 } from "@/stores/store";
 import { ModelPayLoad } from "@/constants/models/model.model.ts";
+import { useRouter } from "next/navigation";
 
 interface MenuActionProps {
   id: string;
@@ -27,6 +28,7 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
   const { setKeyword } = useKeywordStore();
   const { setOpen } = useDialogStore();
   const { setId } = useIdStore();
+  const { push } = useRouter();
   const { setData } = useModelStore();
 
   return (
@@ -42,9 +44,7 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
         <DropdownMenuItem
           onClick={() => {
             setKeyword("update");
-            setOpen(true);
-            setId(id);
-            setData(payload);
+            push(`/manufacturers/${id}`)
           }}
         >
           Cập Nhật

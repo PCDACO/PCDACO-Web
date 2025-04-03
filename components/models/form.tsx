@@ -1,51 +1,50 @@
-import { useKeywordStore } from "@/stores/store";
-import React from "react";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { ModelPayLoad } from "@/constants/models/model.model.ts";
-import { useModelForm } from "@/hooks/models/use-form-model";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
-import { ManufactureResponse } from "@/constants/models/manufacture.model";
-import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-import { Calendar } from "../ui/calendar";
+"use client"
+
+import { useKeywordStore } from "@/stores/store"
+import type React from "react"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { useModelForm } from "@/hooks/models/use-form-model"
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import type { ManufactureResponse } from "@/constants/models/manufacture.model"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { CalendarIcon } from "lucide-react"
+import { format } from "date-fns"
+import { cn } from "@/lib/utils"
+import { Calendar } from "@/components/ui/calendar"
+import { ModelPayLoad } from "@/constants/models/model.model.ts"
+import SelectWithSearch from "../ui/select-search"
 
 interface ModelsFormProps {
-  id: string;
-  value: ModelPayLoad;
-  manufacturers: ManufactureResponse[];
+  id: string
+  value: ModelPayLoad
+  manufacturers: ManufactureResponse[]
 }
-type KeywordType = {
-  name: string;
+
+interface SelectParams {
+  id: string;
   value: string;
-  form: React.JSX.Element;
-};
+}
+
+type KeywordType = {
+  name: string
+  value: string
+  form: React.JSX.Element
+}
+
 const ModelForm = ({ id, value, manufacturers }: ModelsFormProps) => {
-  const { keyword } = useKeywordStore();
+  const { keyword } = useKeywordStore()
   const { form, onSubmit, isLoading } = useModelForm({
     id,
     value,
-    action: keyword
-  });
+    action: keyword,
+  })
 
   const keywords: KeywordType[] = [
     {
       name: "create",
-      value: "Create Manufacturer",
+      value: "Create Model",
       form: (
         <>
           <FormField
@@ -56,40 +55,52 @@ const ModelForm = ({ id, value, manufacturers }: ModelsFormProps) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="text"
-                      placeholder="Name"
-                      className="w-full"
-                    />
+                    <Input {...field} type="text" placeholder="Name" className="w-full" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              );
+              )
             }}
           />
           <FormField
             control={form.control}
             name="manufacturerId"
             render={({ field }) => {
+              const selectedCarObject = manufacturers.map((item) => {
+                return {
+                  id: item.id,
+                  value: item.name
+                }
+              }).find(
+                (tech) => tech.id === field.value,
+              )
+              const handleSelectChange = (selectedOption: SelectParams | null) => {
+                field.onChange(selectedOption ? selectedOption.id : null) // Pass the ID (or null) to RHF
+              }
               return (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Chọn Kĩ Thuật Viên" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {manufacturers.map(item => (
-                        <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
-                      )
-                      ) ?? []}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Nhà sản xuất</FormLabel>
+                  <FormControl>
+                    <SelectWithSearch<SelectParams>
+                      {...field}
+                      options={manufacturers.map((item) => {
+                        return {
+                          id: item.id,
+                          value: item.name
+                        }
+                      })}
+                      value={selectedCarObject}
+                      onValueChange={handleSelectChange}
+                      valueKey="id"
+                      labelKey="value"
+                      placeholder="Chọn nhà sản xuất"
+                      searchPlaceholder="Tìm kiếm nhà sản xuất..."
+                      emptyText="Không tìm thấy nhà sản xuất."
+                    />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
-              );
+              )
             }}
           />
           <FormField
@@ -97,107 +108,165 @@ const ModelForm = ({ id, value, manufacturers }: ModelsFormProps) => {
             name="releaseDate"
             render={({ field }) => {
               return (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
+                <FormItem className="flex flex-col">
+                  <FormLabel>Ngày công bố</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[280px] justify-start text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                      </Button>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
                     </PopoverContent>
                   </Popover>
+                  <FormMessage />
                 </FormItem>
-              );
+              )
             }}
           />
         </>
-      )
+      ),
     },
     {
       name: "update",
-      value: "Update Manufacturer",
+      value: "Update Model",
       form: (
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="text"
-                    placeholder="Name"
-                    className="w-full"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
-        />
-      )
+        <>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="text" placeholder="Name" className="w-full" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="manufacturerId"
+            render={({ field }) => {
+              const selectedCarObject = manufacturers.map((item) => {
+                return {
+                  id: item.id,
+                  value: item.name
+                }
+              }).find(
+                (tech) => tech.id === field.value,
+              )
+              const handleSelectChange = (selectedOption: SelectParams | null) => {
+                field.onChange(selectedOption ? selectedOption.id : null) // Pass the ID (or null) to RHF
+              }
+              return (
+                <FormItem>
+                  <FormLabel>Nhà sản xuất</FormLabel>
+                  <FormControl>
+                    <SelectWithSearch<SelectParams>
+                      {...field}
+                      options={manufacturers.map((item) => {
+                        return {
+                          id: item.id,
+                          value: item.name
+                        }
+                      })}
+                      value={selectedCarObject}
+                      onValueChange={handleSelectChange}
+                      valueKey="id"
+                      labelKey="value"
+                      placeholder="Chọn nhà sản xuất"
+                      searchPlaceholder="Tìm kiếm nhà sản xuất..."
+                      emptyText="Không tìm thấy nhà sản xuất."
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="releaseDate"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Ngày công bố</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+        </>
+      ),
     },
     {
       name: "delete",
-      value: "Delete Manufacturer",
-      form: (
-        <></>
-      )
-    }
-  ];
+      value: "Delete Model",
+      form: <></>,
+    },
+  ]
+
   const GetTitle = (name: string) => {
-    const selected = keywords.find(k => k.name === name);
-    return selected ?
-      <DialogTitle>
-        {selected.value}
-      </DialogTitle>
-      : null;
-  };
+    const selected = keywords.find((k) => k.name === name)
+    return selected ? <CardTitle>{selected.value}</CardTitle> : null
+  }
+
   const GetComponent = (name: string) => {
-    const selected = keywords.find(k => k.name === name);
-    return selected ?
-      <CardTitle>
-        {selected.form}
-      </CardTitle>
-      : null;
-  };
+    const selected = keywords.find((k) => k.name === name)
+    return selected ? selected.form : null
+  }
+
   return (
-    <Card>
+    <Card className="w-full max-w-md mx-auto">
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
           <CardHeader>
             {GetTitle(keyword)}
-            <CardDescription>
-              {keyword === 'delete' ? (<h1>Bạn có muốn xóa không</h1>) : <></>}
-            </CardDescription>
+            <CardDescription>{keyword === "delete" ? <p>Bạn có muốn xóa không?</p> : <></>}</CardDescription>
           </CardHeader>
-          {GetComponent(keyword)}
+          <div className="px-6 space-y-4">{GetComponent(keyword)}</div>
           <CardFooter>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Loading..." : "Submit"}
+            <Button type="submit" disabled={isLoading} className="w-full">
+              {isLoading ? "Loading..." : keyword === "delete" ? "Xóa" : "Submit"}
             </Button>
           </CardFooter>
         </form>
       </Form>
     </Card>
-  );
-};
+  )
+}
 
-export default ModelForm;
+export default ModelForm
