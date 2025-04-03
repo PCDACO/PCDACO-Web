@@ -17,7 +17,6 @@ export const GetModels = async (
       params,
     }
   );
-  console.log(response.data.value.items);
   return response.data;
 };
 

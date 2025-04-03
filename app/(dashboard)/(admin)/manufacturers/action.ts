@@ -12,7 +12,6 @@ export async function GetManufacturers(
 ): Promise<RootResponse<Pagination<ManufactureResponse>>> {
   try {
     const response = await axiosInstance.get("/api/manufacturers", { params });
-
     return response.data;
   } catch (error) {
     throw error;
