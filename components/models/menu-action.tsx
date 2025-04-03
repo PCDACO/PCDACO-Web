@@ -14,8 +14,8 @@ import {
   useIdStore,
   useKeywordStore,
 } from "@/stores/store";
-import { ModelPayLoad } from "@/constants/models/model.model.ts";
 import { useRouter } from "next/navigation";
+import { ModelPayLoad } from "@/constants/models/model.model";
 
 interface MenuActionProps {
   id: string;
@@ -44,7 +44,7 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
         <DropdownMenuItem
           onClick={() => {
             setKeyword("update");
-            push(`/manufacturers/${id}`)
+            push(`/models/${id}/update`)
           }}
         >
           Cập Nhật

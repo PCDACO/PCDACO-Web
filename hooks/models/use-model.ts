@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
-import { ModelParams, ModelPayLoad, ModelResponse } from "@/constants/models/model.model.ts";
+import { ModelParams, ModelPayLoad, ModelResponse } from "@/constants/models/model.model";
 import {
   CreateModel,
   DeleteModel,

@@ -13,8 +13,8 @@ import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
-import { ModelPayLoad } from "@/constants/models/model.model.ts"
 import SelectWithSearch from "../ui/select-search"
+import { ModelPayLoad } from "@/constants/models/model.model"
 
 interface ModelsFormProps {
   id: string
@@ -38,8 +38,9 @@ const ModelForm = ({ id, value, manufacturers }: ModelsFormProps) => {
   const { form, onSubmit, isLoading } = useModelForm({
     id,
     value,
-    action: keyword,
+    action: id ? "update" : keyword,
   })
+
 
   const keywords: KeywordType[] = [
     {

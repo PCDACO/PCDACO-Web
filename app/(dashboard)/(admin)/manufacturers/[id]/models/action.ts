@@ -5,7 +5,7 @@ import {
   ModelParams,
   ModelPayLoad,
   ModelResponse,
-} from "@/constants/models/model.model.ts";
+} from "@/constants/models/model.model";
 
 export const GetModels = async (
   manufacturerId: string,
@@ -43,11 +43,9 @@ export const UpdateModel = async (
   payload: ModelPayLoad
 ): Promise<RootResponse<null>> => {
   const response = await axiosInstance.put(`/api/models/${id}`, {
-    body: {
-      name: payload.name,
-      releaseDate: payload.releaseDate.toISOString(),
-      manufacturerId: payload.manufacturerId,
-    },
+    name: payload.name,
+    releaseDate: payload.releaseDate,
+    manufacturerId: payload.manufacturerId,
   });
   return response.data;
 };
@@ -56,4 +54,3 @@ export const DeleteModel = async (id: string): Promise<RootResponse<null>> => {
   const response = await axiosInstance.delete(`/api/models/${id}`);
   return response.data;
 };
-

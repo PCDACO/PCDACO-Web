@@ -7,7 +7,7 @@ import {
   ModelSchema,
 } from "@/domains/schemas/model.schema";
 import { useForm } from "react-hook-form";
-import { ModelPayLoad } from "@/constants/models/model.model.ts";
+import { ModelPayLoad } from "@/constants/models/model.model";
 
 interface ModelFormProps {
   id: string;
@@ -38,6 +38,7 @@ export const useModelForm = ({ id, value, action }: ModelFormProps) => {
   });
 
   const onSubmit = form.handleSubmit((payload) => {
+    console.log("logged");
     switch (action) {
       case "create": {
         createModelMutation.mutate(payload);
