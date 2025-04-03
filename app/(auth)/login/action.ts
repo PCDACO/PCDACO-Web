@@ -16,7 +16,7 @@ export async function Login({
     email,
     password,
   });
-  if (response.status !== 200) throw new Error();
+  if (response.status !== 200) return response.data;
   const checkingRoleResponse = await axiosInstance.get("api/users/role", {
     headers: {
       Authorization: `Bearer ${response.data.value.accessToken}`,

@@ -1,91 +1,86 @@
 "use client";
-import { useForm } from "react-hook-form";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/hooks/auth/use-auth";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { Form, FormField, FormItem } from "@/components/ui/form";
+import { useAuthForm } from "@/hooks/auth/use-form-auth";
 
 export default function LoginForm({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
-  const { register, handleSubmit } = useForm<{
-    email: string;
-    password: string;
-  }>();
-
-  const { login } = useAuth();
+}: React.ComponentProps<"div">) {
+  const { form, onSubmit, isLoading } = useAuthForm();
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-      <div className="flex w-full max-w-md max-h-full flex-col gap-8">
-        <span className="flex items-center gap-2 self-center font-medium hover:cursor-default">
-          <Image
-            alt=""
-            src="/icon.svg"
-            width={64}
-            height={64}
-            className="size-8"
-          />
-          PCDACO
-        </span>
-        <div className={cn("flex flex-col gap-8", className)} {...props}>
-          <Card>
-            <CardHeader className="text-center gap-4">
-              <CardTitle className="text-xl">Chào Mừng</CardTitle>
-              <CardDescription>Đăng nhập để truy cập hệ thống</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form
-                onSubmit={handleSubmit((data) =>
-                  login.mutate({ email: data.email, password: data.password })
-                )}
-              >
-                <div className="grid gap-8">
-                  <div className="grid gap-8">
-                    <div className="grid gap-4">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        {...register("email")}
-                        id="email"
-                        type="email"
-                        placeholder=""
-                      />
-                    </div>
-                    <div className="grid gap-2">
-                      <div className="flex items-center">
-                        <Label htmlFor="password">Password</Label>
-                      </div>
-                      <Input
-                        {...register("password")}
-                        id="password"
-                        type="password"
-                        required
-                      />
-                    </div>
-                    <Button type="submit" className="w-full">
-                      {login.isLoading ? <LoadingSpinner /> : "Đăng nhập"}
-                    </Button>
-                  </div>
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <Card className="overflow-hidden">
+        <CardContent className="grid p-0 md:grid-cols-2">
+          <Form {...form}>
+            <form onSubmit={onSubmit} className="p-6 md:p-8">
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-col items-center text-center">
+                  <h1 className="text-2xl font-bold">Chào mừng</h1>
+                  <p className="text-sm text-muted-foreground">
+                    Đăng nhập vào hệ thống quản lí Free Driver
+                  </p>
                 </div>
-              </form>
-            </CardContent>
-          </Card>
-          <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-            Khi đăng nhập, bạn đã đồng ý với{" "}
-            <a href="#">Điều kiện dịch vụ</a> and <a href="#">Chính sách bảo mật</a>.
+                <div className="grid gap-6">
+                  <FormField
+                    name="email"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          {...field}
+                          id="email"
+                          type="email"
+                          placeholder=""
+                          required
+                        />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    name="password"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <Label htmlFor="email">Mật Khẩu</Label>
+                        <Input
+                          {...field}
+                          id="password"
+                          type="password"
+                          placeholder=""
+                          required
+                        />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" disabled={isLoading} className="w-full">
+                    Đăng Nhập
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </Form>
+          <div className="relative hidden md:block">
+            <img
+              src="/logo.png"
+              alt="Image"
+              className="pt-16 object-contain absolute inset-0 h-full w-full "
+            />
           </div>
-        </div>
+        </CardContent>
+      </Card>
+      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
+        Khi đăng nhập, bạn đã đồng ý với{" "}
+        <a href="#">Điều kiện dịch vụ</a> and <a href="#">Chính sách bảo mật</a>.
       </div>
-    </div>
+    </div >
   );
 }

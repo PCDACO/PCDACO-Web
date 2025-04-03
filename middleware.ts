@@ -13,5 +13,5 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/statistics", request.url));
 }
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|login|icon.svg|dummy-avatar.webp|not-found.tsx).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|login|icon.svg|dummy-avatar.webp|logo.png|not-found.tsx).*)"],
 };
