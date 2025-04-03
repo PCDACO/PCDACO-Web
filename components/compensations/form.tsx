@@ -1,7 +1,7 @@
 import { useCompensationForm } from "@/hooks/compensations/use-form-compensation";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader } from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { useEffect } from "react";
 
@@ -33,6 +33,7 @@ export default function CompensationForm({ id, userId, isOpen, onOpenChange }: P
       <DialogContent>
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-6">
+            <DialogTitle>Tạo đơn bồi thường</DialogTitle>
             <DialogHeader>
               <DialogDescription>
               </DialogDescription>
@@ -76,7 +77,7 @@ export default function CompensationForm({ id, userId, isOpen, onOpenChange }: P
               }} />
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Loading..." : "Submit"}
+                {isLoading ? "Loading..." : "Tạo"}
               </Button>
             </DialogFooter>
           </form>

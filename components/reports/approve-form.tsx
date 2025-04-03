@@ -64,10 +64,8 @@ export default function ApproveReportForm({ id, value, isOpen, onOpenChange }: P
       <DialogContent>
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-6">
+            <DialogTitle> Xác nhận đơn phạt </DialogTitle>
             <DialogHeader>
-              <DialogTitle>
-                Xác nhận đơn phat
-              </DialogTitle>
             </DialogHeader>
             <FormField
               control={form.control}
