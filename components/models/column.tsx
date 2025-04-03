@@ -1,8 +1,7 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
-
 import MenuAction from "./menu-action";
-import { ModelResponse } from "@/constants/models/model.model.ts";
+import { ModelResponse } from "@/constants/models/model.model";
 import { formatDate } from "@/lib/utils";
 
 export const ModelColumns: ColumnDef<ModelResponse>[] = [
@@ -33,7 +32,7 @@ export const ModelColumns: ColumnDef<ModelResponse>[] = [
           id={row.original.id}
           payload={{
             name: row.original.name,
-            manufacturerId: row.original.manufacturerId,
+            manufacturerId: row.original.manufacturer.id,
             releaseDate: row.original.releaseDate
           }}
         />

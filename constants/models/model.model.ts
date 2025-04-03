@@ -8,8 +8,13 @@ export interface ModelResponse {
   id: string;
   name: string;
   releaseDate: Date;
-  manufacturerId: string;
   createdAt: Date;
+  manufacturer: ManufacturerDetail;
+}
+
+interface ManufacturerDetail {
+  id: string;
+  name: string;
 }
 
 export type ModelParams = RootRequest
