@@ -1,12 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogStore } from "@/stores/store";
-import { ModelParams, ModelResponse } from "@/constants/models/model.model.ts";
+import { ModelParams, ModelPayLoad, ModelResponse } from "@/constants/models/model.model.ts";
 import {
+  CreateModel,
   DeleteModel,
   GetModels,
+  UpdateModel,
 } from "@/app/(dashboard)/(admin)/manufacturers/[id]/models/action";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 import { toastError, toastResponse } from "@/lib/toast-error";
+import { useRouter } from "next/navigation";
 
 interface ModelQuery {
   manufacturerId: string;
@@ -31,9 +34,48 @@ export const useModelQuery = ({ manufacturerId, params }: ModelQuery) => {
 export const useModelMutation = () => {
   const { setOpen } = useDialogStore();
   const queryClient = useQueryClient();
+  const { push } = useRouter();
+
+  const createModelMutation = useMutation({
+    mutationKey: ["create"],
+    mutationFn: (payload: ModelPayLoad) => CreateModel(payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["models"] });
+        push("/manufacturers");
+      }
+    },
+    onError: (error: Error) => {
+      toastError(error);
+    },
+  });
+
+  const updateModelMutation = useMutation({
+    mutationKey: [""],
+    mutationFn: ({
+      id, payload
+    }: {
+      id: string,
+      payload: ModelPayLoad
+    }) => UpdateModel(id, payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["models"] });
+        push("/manufacturers");
+      }
+    },
+    onError: (error: Error) => {
+      toastError(error);
+    },
+  });
+
   const deleteModelMutation = useMutation({
     mutationKey: ["deleteModel"],
-    mutationFn: async (id: string) => await DeleteModel(id),
+    mutationFn: (id: string) => DeleteModel(id),
     onSuccess: (response) => {
       toastResponse(response);
       if (response.isSuccess) {
@@ -47,6 +89,8 @@ export const useModelMutation = () => {
   });
 
   return {
+    createModelMutation,
+    updateModelMutation,
     deleteModelMutation,
   };
 };

@@ -30,12 +30,11 @@ export const GetModel = async (
 export const CreateModel = async (
   payload: ModelPayLoad
 ): Promise<RootResponse<ModelCreateResponse>> => {
+  console.log(payload)
   const response = await axiosInstance.post(`/api/models`, {
-    body: {
-      name: payload.name,
-      releaseDate: payload.releaseDate,
-      manufacturerId: payload.manufacturerId,
-    },
+    name: payload.name,
+    releaseDate: payload.releaseDate,
+    manufacturerId: payload.manufacturerId,
   });
   return response.data;
 };
@@ -57,3 +56,4 @@ export const DeleteModel = async (id: string): Promise<RootResponse<null>> => {
   const response = await axiosInstance.delete(`/api/models/${id}`);
   return response.data;
 };
+
