@@ -1,11 +1,10 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
 import { formatDate } from "@/lib/utils";
 import { TransactionResponse } from "@/constants/models/transaction.model";
 import { Badge } from "../ui/badge";
-import { formatCurrency } from "../dashboards/formatCurrency";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 export const TransactionColumns: ColumnDef<TransactionResponse>[] = [
   {

@@ -1,7 +1,6 @@
 'use client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { StatisticResponse } from "@/constants/models/statistic.model";
-import ActivityItem from "./activity-item";
 import { Separator } from "../ui/separator";
 import { UnderReviewResponse } from "@/constants/models/report.model";
 import UnderReviewReportItem from "./underreview-report-item";
@@ -92,8 +91,7 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
                   />
                   <Separator />
                 </>
-              )
-              )
+              ))
             }
           </CardContent>
         </Card>
