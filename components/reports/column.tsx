@@ -15,7 +15,7 @@ export const ReportColumns: ColumnDef<ReportResponse>[] = [
     }
   },
   {
-    accessorKey: "reportedName",
+    accessorKey: "reporterName",
     header: "Người Tố Cáo",
   },
   {

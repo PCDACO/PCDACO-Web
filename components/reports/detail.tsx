@@ -139,11 +139,11 @@ export default function ReportDetails({ report }: Props) {
               <CardContent className="grid gap-4">
                 <div className="flex items-center gap-3">
                   <Avatar>
-                    <AvatarImage src="/placeholder.svg?height=40&width=40" alt={report.reportedName} />
-                    <AvatarFallback>{report.reportedName.charAt(0)}</AvatarFallback>
+                    <AvatarImage src="/placeholder.svg?height=40&width=40" alt={report.reporterName} />
+                    <AvatarFallback>{report.reporterName.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium">{report.reportedName}</p>
+                    <p className="font-medium">{report.reporterName}</p>
                     <p className="text-sm text-muted-foreground">Người báo cáo</p>
                   </div>
                 </div>
