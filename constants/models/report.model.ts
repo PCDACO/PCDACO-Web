@@ -9,7 +9,7 @@ export interface ReportResponse {
   id: string;
   bookingId: string;
   reporterId: string;
-  reportedName: string;
+  reporterName: string;
   title: string;
   description: string;
   reportType: number;
@@ -41,7 +41,7 @@ export interface ImageReport {
 export interface ReportDetailResponse {
   id: string;
   reporterId: string;
-  reportedName: string;
+  reporterName: string;
   title: string;
   description: string;
   reportType: number;
