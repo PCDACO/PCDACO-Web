@@ -1,9 +1,9 @@
 import { GetTechnicians } from "@/app/(dashboard)/(admin)/technicians/action";
 import CreateInspectionForm from "@/components/inspection-schedules/create-inspection-form";
-import { GetPendingCars } from "./action";
+import { GetCars } from "@/app/(dashboard)/(admin)/cars/action";
 
 export default async function CreateInspectionSchedulePage() {
-  const carResponse = await GetPendingCars({
+  const carResponse = await GetCars({
     index: 1,
     size: 1000,
     keyword: "",
@@ -20,6 +20,8 @@ export default async function CreateInspectionSchedulePage() {
       inspectionAddress: "",
       inspectionDate: new Date(),
       technicianId: ""
-    }} cars={carResponse?.value?.items ?? []} technicians={technicianResponse?.value?.items ?? []} />
+    }} cars={carResponse?.value?.items ?? []}
+      technicians={technicianResponse?.value?.items ?? []}
+    />
   )
 }

@@ -16,11 +16,11 @@ export default function ReportDetailMenuAction({ setOpen }: Props) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>Tùy chọn</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={setOpen} >
-            Create
+          <DropdownMenuItem className="hover:cursor-pointer" onClick={setOpen} >
+            Tạo đơn bồi thường
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

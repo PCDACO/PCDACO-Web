@@ -23,6 +23,7 @@ import { useReportMutation } from "@/hooks/reports/use-report";
 import ReportDetailMenuAction from "./detail-menu-action";
 import CompensationForm from "../compensations/form";
 import ApproveReportForm from "./approve-form";
+import { formatId } from "@/lib/format-uuid";
 
 interface Props {
   report: ReportDetailResponse
@@ -35,7 +36,7 @@ export default function ReportDetails({ report }: Props) {
   const { rejectReport } = useReportMutation();
   const { push } = useRouter();
   const handleCreateNewInspectionClick = () => {
-    push("/inspection-schedules/create");
+    push(`/inspection-schedules/create?carId=${report?.carDetail?.id ?? ""}`);
   }
 
   const handleApproveReportClick = () => {
@@ -122,7 +123,7 @@ export default function ReportDetails({ report }: Props) {
           <div className=" flex flex-row justify-between w-full">
             <div className="flex flex-col items-start w-full">
               <h1 className="text-2xl font-bold">{report.title}</h1>
-              <p className="text-muted-foreground-foreground ml-2">ID: {report.id}</p>
+              <p className="text-muted-foreground-foreground ml-2">Id: {formatId(report.id)}</p>
             </div>
             <ReportDetailMenuAction setOpen={() => setCompensationOpen(true)} />
           </div>
