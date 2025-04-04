@@ -1,3 +1,4 @@
+"use client"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";

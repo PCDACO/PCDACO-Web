@@ -2,17 +2,14 @@
 import { SystemStatisticResponse } from "@/constants/models/statistic.model";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { LineChart } from "../ui/custom-chart";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 interface Props {
   statistics: SystemStatisticResponse;
 }
+
 export default function AdminStatistics({ statistics }: Props) {
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "VND",
-    }).format(amount)
-  }
   return (
     <main className="flex-1 p-8 overflow-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -59,42 +56,51 @@ export default function AdminStatistics({ statistics }: Props) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{statistics.totalBookingCancelled}</div>
-            {/* <p className="text-xs text-gray-500">+8.2% from last hour</p> */}
           </CardContent>
         </Card>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Doanh thu qua thời gian</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <LineChart
-              data={statistics.revenueOverTime}
-              index="month"
-              categories={["value"]}
-              colors={["#000000"]}
-              valueFormatter={(value) => formatCurrency(value)}
-              className="h-[200px]"
-            />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Lưu lượng người dùng</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <LineChart
-              data={statistics.activeUsersOverTime}
-              index="month"
-              categories={["value"]}
-              colors={["#000000"]}
-              valueFormatter={(value) => `${value}`}
-              className="h-[200px]"
-            />
-          </CardContent>
-        </Card>
+      <div className="w-full min-h-[480px]">
+        <Tabs defaultValue="revenue" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="revenue">Doanh thu</TabsTrigger>
+            <TabsTrigger value="users">Lưu lượng người dùng</TabsTrigger>
+          </TabsList>
+          <TabsContent value="revenue" >
+            <Card>
+              <CardHeader>
+                <CardTitle>Doanh thu qua thời gian</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <LineChart
+                  data={statistics.revenueOverTime}
+                  index="month"
+                  categories={["value"]}
+                  colors={["#000000"]}
+                  valueFormatter={(value) => formatCurrency(value)}
+                  className="min-h-[200px]"
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="users">
+            <Card>
+              <CardHeader>
+                <CardTitle>Lưu lượng người dùng</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <LineChart
+                  data={statistics.activeUsersOverTime}
+                  index="month"
+                  categories={["value"]}
+                  colors={["#000000"]}
+                  valueFormatter={(value) => `${value}`}
+                  className="h-[200px]"
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
-    </main>
+    </main >
   );
 }

@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import {
   Pagination,
   PaginationContent,
@@ -13,7 +14,7 @@ interface IPaginationTable<T> {
 }
 
 const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
-  const [pageNumber, setPageNumber] = React.useState<number>(1);
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const { setValue, value: params } = useParamStore();
 
   React.useEffect(() => {
@@ -60,6 +61,7 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
       <PaginationContent>
         <PaginationItem>
           <Button
+            variant="outline"
             className="hover:cursor-pointer bg-white text-black "
             onClick={() =>
               setPageNumber((prev) => Math.max(prev - 1, 1))
@@ -87,6 +89,7 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
 
         <PaginationItem>
           <Button
+            variant="outline"
             className="hover:cursor-pointer bg-white text-black"
             onClick={() =>
               setPageNumber((prev) => Math.min(prev + 1, totalPages))
@@ -95,21 +98,6 @@ const PaginationTable = <T,>({ value }: IPaginationTable<T>) => {
           </Button>
         </PaginationItem>
       </PaginationContent>
-      {/* <Select onValueChange={(value) => handlePageSizeChange(Number(value))}> */}
-      {/*   <SelectTrigger className="w-[150px]"> */}
-      {/*     <SelectValue placeholder="Số Lượng" /> */}
-      {/*   </SelectTrigger> */}
-      {/*   <SelectContent> */}
-      {/*     <SelectGroup> */}
-      {/*       <SelectLabel>Size page</SelectLabel> */}
-      {/*       {["10", "20", "50", "100"].map((item) => ( */}
-      {/*         <SelectItem value={item} key={item}> */}
-      {/*           {item} */}
-      {/*         </SelectItem> */}
-      {/*       ))} */}
-      {/*     </SelectGroup> */}
-      {/*   </SelectContent> */}
-      {/* </Select> */}
     </Pagination >
   );
 };

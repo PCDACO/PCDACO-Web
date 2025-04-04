@@ -62,12 +62,12 @@ export default function CompensationForm({ id, userId, isOpen, onOpenChange }: P
                 return (
                   <FormItem>
                     <FormLabel>
-                      Số lượng
+                      Số tiền đền bù
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Nhập số lượng"
+                        placeholder="Nhập số tiền"
                         type="number"
                         {...form.register("compensationAmount", { valueAsNumber: true })}
                       />

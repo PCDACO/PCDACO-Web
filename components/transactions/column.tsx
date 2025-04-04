@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { formatDate } from "@/lib/utils";
 import { TransactionResponse } from "@/constants/models/transaction.model";
 import { Badge } from "../ui/badge";
+import { formatCurrency } from "../dashboards/formatCurrency";
 
 export const TransactionColumns: ColumnDef<TransactionResponse>[] = [
   {
@@ -44,10 +45,16 @@ export const TransactionColumns: ColumnDef<TransactionResponse>[] = [
   {
     accessorKey: "amount",
     header: "Lượng tiền",
+    cell: ({ row }) => {
+      return <span>{formatCurrency(row.original.amount)}</span>
+    }
   },
   {
     accessorKey: "balanceAfter",
     header: "Số dư sau giao dịch",
+    cell: ({ row }) => {
+      return <span>{formatCurrency(row.original.balanceAfter)}</span>
+    }
   },
   {
     accessorKey: "status",

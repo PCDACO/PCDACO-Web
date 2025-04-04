@@ -5,12 +5,16 @@ import ActivityItem from "./activity-item";
 import { Separator } from "../ui/separator";
 import { UnderReviewResponse } from "@/constants/models/report.model";
 import UnderReviewReportItem from "./underreview-report-item";
+import { ConsultantRecentActivityResponse } from "@/constants/models/recent-activity.model";
+import CustomActivityItem from "../ui/custom-activity-item";
+import { getTimeAgo } from "@/lib/getTimeAgo";
 
 interface Props {
   statisticData: StatisticResponse;
   underReviewReport: UnderReviewResponse[];
+  consultantRecentActivity: ConsultantRecentActivityResponse;
 }
-export default function ConsultantStatistics({ statisticData, underReviewReport }: Props) {
+export default function ConsultantStatistics({ statisticData, underReviewReport, consultantRecentActivity }: Props) {
   return (
     <main className="flex-1 p-8 overflow-auto">
       {/* Statistics Cards */}
@@ -78,37 +82,19 @@ export default function ConsultantStatistics({ statisticData, underReviewReport 
             <CardDescription>Latest updates from your team</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <ActivityItem
-              avatar="/placeholder.svg?height=32&width=32"
-              name="Alex Johnson"
-              action="commented on"
-              target="Website Redesign"
-              time="10 minutes ago"
-            />
-            <Separator />
-            <ActivityItem
-              avatar="/placeholder.svg?height=32&width=32"
-              name="Sarah Miller"
-              action="completed task"
-              target="Create wireframes"
-              time="1 hour ago"
-            />
-            <Separator />
-            <ActivityItem
-              avatar="/placeholder.svg?height=32&width=32"
-              name="David Chen"
-              action="uploaded"
-              target="Q2 Financial Report"
-              time="2 hours ago"
-            />
-            <Separator />
-            <ActivityItem
-              avatar="/placeholder.svg?height=32&width=32"
-              name="Emily Wilson"
-              action="created project"
-              target="Mobile App Redesign"
-              time="Yesterday at 4:30 PM"
-            />
+            {
+              consultantRecentActivity && consultantRecentActivity?.activities.map((item) => (
+                <>
+                  <CustomActivityItem
+                    avatar={item.avatarUrl !== "" ? item.avatarUrl ?? "/dummy-avatar.webp" : "/dummy-avatar.webp"}
+                    content={item.content}
+                    time={getTimeAgo(item.happenedAt)}
+                  />
+                  <Separator />
+                </>
+              )
+              )
+            }
           </CardContent>
         </Card>
       </div>
