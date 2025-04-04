@@ -6,7 +6,7 @@ import Image from "next/image";
 import { formatDate } from "@/lib/utils";
 import { WithdrawRequestResponse } from "@/constants/models/withdraw-request.model";
 import CheckoutButton from "./checkout-button";
-import { formatCurrency } from "../dashboards/formatCurrency";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
   {
