@@ -45,6 +45,7 @@ interface SelectWithSearchProps<T extends OptionType> {
   label?: string
   /** Optional CSS class name for the container div */
   className?: string
+  disable?: boolean
 }
 
 /**
@@ -62,6 +63,7 @@ export default function SelectWithSearch<T extends OptionType>({
   emptyText = "No options found.",
   label,
   className,
+  disable
 }: SelectWithSearchProps<T>) {
   const id = useId()
   const [open, setOpen] = useState<boolean>(false)
@@ -87,6 +89,7 @@ export default function SelectWithSearch<T extends OptionType>({
             variant="outline"
             role="combobox"
             aria-expanded={open}
+            disabled={disable ?? false}
             className="bg-background hover:bg-background border-input w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
           >
             <span className={cn("truncate", !value && "text-muted-foreground")}>

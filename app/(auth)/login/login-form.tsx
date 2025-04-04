@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { useAuthForm } from "@/hooks/auth/use-form-auth";
+import Image from "next/image";
 
 export default function LoginForm({
   className,
@@ -69,9 +70,11 @@ export default function LoginForm({
             </form>
           </Form>
           <div className="relative hidden md:block">
-            <img
+            <Image
               src="/logo.png"
               alt="Image"
+              width={2000}
+              height={2000}
               className="pt-16 object-contain absolute inset-0 h-full w-full "
             />
           </div>

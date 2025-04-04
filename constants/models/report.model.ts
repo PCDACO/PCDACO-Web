@@ -12,7 +12,7 @@ export interface ReportResponse {
   reportedName: string;
   title: string;
   description: string;
-  reportType: string;
+  reportType: number;
   status: string;
   resolvedAt?: Date;
   resolvedById?: string;

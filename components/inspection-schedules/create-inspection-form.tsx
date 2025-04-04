@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import {
   Button
 } from "@/components/ui/button"
@@ -28,6 +28,8 @@ import { CarResponse } from "@/constants/models/car.model"
 import { TechnicianResponse } from "@/constants/models/technician.model"
 import { Checkbox } from "../ui/checkbox"
 import SelectWithSearch from "../ui/select-search"
+import { useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 
 interface SelectParams {
   id: string;
@@ -41,9 +43,18 @@ interface InspectionScheduleFormProps {
   technicians: TechnicianResponse[];
 }
 export default function CreateInspectionForm({ id, value, cars, technicians }: InspectionScheduleFormProps) {
+  const searchParams = useSearchParams()
+  const carId = searchParams.get("carId");
   const { form, isLoading, onSubmit } = useInspectionScheduleForm({
     id, value
   });
+
+  useEffect(() => {
+    if (carId) {
+      form.setValue("carId", carId);
+      form.setValue("isIncident", true);
+    }
+  }, [carId, form])
 
   function handleDateSelect(date: Date | undefined) {
     if (date) {
@@ -68,7 +79,6 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
         newDate.setHours(hours + 12);
       }
     }
-
     form.setValue("inspectionDate", newDate);
   }
   return (
@@ -135,7 +145,7 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                     value: car.licensePlate
                   }
                 }).find(
-                  (tech) => tech.id === field.value,
+                  (car) => car.id === field.value,
                 )
                 const handleSelectChange = (selectedOption: SelectParams | null) => {
                   field.onChange(selectedOption ? selectedOption.id : null) // Pass the ID (or null) to RHF
@@ -153,6 +163,7 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                         })}
                         value={selectedCarObject}
                         onValueChange={handleSelectChange}
+                        disable={carId !== null}
                         valueKey="id"
                         labelKey="value"
                         placeholder="Chọn Xe"
@@ -304,29 +315,33 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="isIncident"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>
-                      Là Sự Cố ?
-                    </FormLabel>
-                    <FormDescription>
-                    </FormDescription>
-                  </div>
-                </FormItem>
-              )}
-            />
-            <Button className="w-full mx-auto" type="submit">
-              {isLoading ? <LoadingSpinner /> : "Submit"}
+            {
+              carId &&
+              <FormField
+                control={form.control}
+                name="isIncident"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={true}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>
+                        Là Sự Cố ?
+                      </FormLabel>
+                      <FormDescription>
+                      </FormDescription>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            }
+            <Button className="flex justify-center w-1/4 mx-auto" type="submit">
+              {isLoading ? <LoadingSpinner /> : "Tạo"}
             </Button>
           </form>
         </Form >

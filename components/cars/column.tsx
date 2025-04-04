@@ -1,6 +1,7 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { CarResponse } from "@/constants/models/car.model";
+import { Badge } from "../ui/badge";
 
 export const CarColumns: ColumnDef<CarResponse>[] = [
   {
@@ -26,23 +27,19 @@ export const CarColumns: ColumnDef<CarResponse>[] = [
     accessorKey: "status",
     header: "Tình Trạng",
     cell: ({ row }) => {
-      let status = row.original.status;
+      const status = row.original.status;
       switch (status) {
         case "Available": {
-          status = "Khả Dụng";
-          break;
+          return <Badge className="bg-green-500 text-white">Khả Dụng</Badge>
         }
         case "Rented": {
-          status = "Đang Được Cho Thuê";
-          break;
+          return <Badge className="bg-blue-500 text-white">Đang Được Cho Thuê</Badge>
         }
         case "Pending": {
-          status = "Đang Chờ Xét Duyệt";
-          break;
+          return <Badge className="bg-yellow-500 text-white">Đang Chờ Xét Duyệt</Badge>
         }
         case "Inactive": {
-          status = "Vô Hiệu Hóa";
-          break;
+          return <Badge className="bg-red-500 text-white">Vô Hiệu Hóa</Badge>
         }
       }
       return <p>{status}</p>

@@ -12,3 +12,4 @@ export const SignContract = async (id: string): Promise<RootResponse<null>> => {
   const response = await axiosInstance.post(`/api/cars/contracts/${id}/sign`);
   return response.data;
 }
+
