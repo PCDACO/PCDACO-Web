@@ -1,16 +1,20 @@
 import { Login, Logout } from "@/app/(auth)/login/action";
+import { LoginPayload } from "@/constants/models/auth.model";
 import { toastError, toastResponse } from "@/lib/toast-error";
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/navigation";
 
-export const useAuth = () => {
+export const useAuthMutation = () => {
   const { replace } = useRouter();
   const login = useMutation({
     mutationKey: ["auth-login"],
-    mutationFn: ({ email, password }: { email: string, password: string }) => Login({ email, password }),
+    mutationFn: ({ email, password }: LoginPayload) => Login({ email, password }),
     onSuccess: (response) => {
+      console.log("success")
       toastResponse(response);
-      replace("/statistics");
+      if (response.isSuccess) {
+        replace("/statistics");
+      }
     },
     onError: (error: Error) => {
       toastError(error);
