@@ -24,9 +24,9 @@ export interface UnderReviewResponse {
   id: string;
   bookingId: string;
   title: string;
-  bookingReportType: number;
+  reportType: number;
   description: string;
-  bookingReportStatus: number;
+  status: number;
   createdAt: Date;
   reportedByName: string;
 }

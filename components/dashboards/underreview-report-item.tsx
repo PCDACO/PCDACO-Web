@@ -77,7 +77,7 @@ export default function UnderReviewReportItem({
     if (!found) {
       return <Badge color="#ccc">Unknown</Badge>;
     }
-    return <Badge color={found.color}>{found.label}</Badge>;
+    return <Badge className={`bg-[${found?.value}] text-black`}>{found.label}</Badge>;
   }
 
   const getStatusBadge = (reportType: number): JSX.Element => {
@@ -85,7 +85,7 @@ export default function UnderReviewReportItem({
     if (!found) {
       return <Badge color="#ccc">Unknown</Badge>;
     }
-    return <Badge color={found.color}>{found.label}</Badge>;
+    return <Badge variant="outline" className={`bg-[${found?.value}] text-black`}>{found.label}</Badge>;
   }
 
   return (
@@ -108,11 +108,6 @@ export default function UnderReviewReportItem({
           </div>
 
           <div className="flex items-center gap-2">
-            {/* <Car className="h-4 w-4 text-muted-foreground flex-shrink-0" /> */}
-            <p className="text-sm font-medium">{report.title}</p>
-          </div>
-
-          <div className="flex items-center gap-2">
             {/* <Clock className="h-4 w-4 text-muted-foreground flex-shrink-0" /> */}
             <p className="text-sm text-muted-foreground">{report.description}</p>
           </div>
@@ -120,12 +115,12 @@ export default function UnderReviewReportItem({
 
           <div className="flex items-center gap-2">
             {/* <Clock className="h-4 w-4 text-muted-foreground flex-shrink-0" /> */}
-            {getTypeBadge(report.bookingReportType)}
+            {getTypeBadge(report.reportType)}
           </div>
 
           <div className="flex items-center gap-2">
             {/* <Clock className="h-4 w-4 text-muted-foreground flex-shrink-0" /> */}
-            {getStatusBadge(report.bookingReportStatus)}
+            {getStatusBadge(report.status)}
           </div>
         </div>
       </CardContent>

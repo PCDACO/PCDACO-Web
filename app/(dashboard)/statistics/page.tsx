@@ -4,7 +4,7 @@ import TechnicianStatistics from "@/components/dashboards/technician-statistics"
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { GetInProgressInspectionSchedule } from "../(consultants)/inspection-schedules/action";
-import { GetStatistics, GetSystemStatistics, GetTechnicianRecentActivity } from "./action";
+import { GetConsultantRecentActivity, GetStatistics, GetSystemStatistics, GetTechnicianRecentActivity } from "./action";
 import { GetUnderReviewReports } from "../(consultants)/reports/action";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +24,8 @@ export default async function DashboardPage() {
     };
     case "Consultant": {
       const underReviewReportScheduleResponse = await GetUnderReviewReports();
-      return <ConsultantStatistics statisticData={statisticRepsonse.value} underReviewReport={underReviewReportScheduleResponse.value ?? []} />
+      const recentActivityResponse = await GetConsultantRecentActivity();
+      return <ConsultantStatistics statisticData={statisticRepsonse.value} underReviewReport={underReviewReportScheduleResponse?.value ?? []} consultantRecentActivity={recentActivityResponse?.value ?? []} />
     };
     default: {
       return (<div>

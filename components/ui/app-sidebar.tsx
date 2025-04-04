@@ -282,13 +282,13 @@ export async function AppSidebar() {
                     alt="avatarUrl"
                     src={
                       currentUser.value?.avatarUrl !== ''
-                        ? currentUser.value.avatarUrl
+                        ? currentUser.value?.avatarUrl ?? "/dummy-avatar.webp"
                         : '/dummy-avatar.webp'
                     }
                     width={24}
                     height={24}
                   />{' '}
-                  {currentUser.value.name}
+                  {currentUser?.value?.name ?? ""}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

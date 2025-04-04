@@ -4,6 +4,7 @@ import axiosInstance from "@/app/axios.server"
 import { CompensationPayload } from "@/constants/models/compensation.model"
 
 export const CreateCompensation = async (id: string, payload: CompensationPayload): Promise<RootResponse<null>> => {
+  console.log(payload);
   const response = await axiosInstance.put(`/api/reports/${id}/compensation`, {
     id,
     ...payload

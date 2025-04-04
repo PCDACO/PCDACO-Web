@@ -25,8 +25,8 @@ export const useCompensationForm = ({ id, value }: Props) => {
     defaultValues
   });
 
-  const onSubmit = form.handleSubmit(() => {
-    createCompensation.mutate({ id, payload: value });
+  const onSubmit = form.handleSubmit((payload) => {
+    createCompensation.mutate({ id, payload });
   });
   return {
     form: form,

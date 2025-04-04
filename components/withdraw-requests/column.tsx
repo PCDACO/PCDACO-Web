@@ -6,6 +6,7 @@ import Image from "next/image";
 import { formatDate } from "@/lib/utils";
 import { WithdrawRequestResponse } from "@/constants/models/withdraw-request.model";
 import CheckoutButton from "./checkout-button";
+import { formatCurrency } from "../dashboards/formatCurrency";
 
 export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
   {
@@ -32,7 +33,7 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
     accessorKey: "amount",
     header: "Lượng Tiền",
     cell: ({ row }) => {
-      return <span>{row.original.amount} Đồng</span>
+      return <span>{formatCurrency(row.original.amount)}</span>
     }
   },
   {
