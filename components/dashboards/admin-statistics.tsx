@@ -59,8 +59,8 @@ export default function AdminStatistics({ statistics }: Props) {
           </CardContent>
         </Card>
       </div>
-      <div className="w-full min-h-[480px]">
-        <Tabs defaultValue="revenue" className="w-full">
+      <div className=" min-h-[480px]">
+        <Tabs defaultValue="revenue" className="">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="revenue">Doanh thu</TabsTrigger>
             <TabsTrigger value="users">Lưu lượng người dùng</TabsTrigger>

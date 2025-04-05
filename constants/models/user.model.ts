@@ -12,3 +12,11 @@ export interface CurrentUserResponse {
   balance: number,
   totalCar: number,
 }
+
+export interface UpdateUserPayload {
+  name: string;
+  email: string;
+  address: string;
+  dateOfBirth: Date;
+  phone: string;
+}
