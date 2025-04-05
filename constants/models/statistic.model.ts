@@ -21,6 +21,8 @@ export interface SystemStatisticResponse {
   cancellationLoss: number;
   revenueOverTime: ChartDetail[];
   activeUsersOverTime: ChartDetail[];
+  bookingsOverTime: ChartDetail[];
+  activeCarsOverTime: ChartDetail[];
 }
 
 export interface ChartDetail {

@@ -7,6 +7,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -25,12 +26,12 @@ import {
   Calendar,
   CarIcon,
   LucideProps,
-  ChevronUp,
   LucideIdCard,
   LocateIcon,
   SquareUserRoundIcon,
   BadgeDollarSign,
   Newspaper,
+  ChevronDown,
 } from 'lucide-react';
 // import Link from "next/link"
 import { LogoutButton } from './LogoutButton';
@@ -246,6 +247,45 @@ export async function AppSidebar() {
 
   return (
     <Sidebar>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                  <Image
+                    className="mr-1"
+                    alt="avatarUrl"
+                    src={
+                      currentUser.value?.avatarUrl !== ''
+                        ? currentUser.value?.avatarUrl ?? "/dummy-avatar.webp"
+                        : '/dummy-avatar.webp'
+                    }
+                    width={24}
+                    height={24}
+                  />{' '}
+                  {currentUser?.value?.name ?? ""}
+                  <ChevronDown className="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width]"
+              >
+                <DropdownMenuItem>
+                  <Link href={"/profiles"} className='flex w-full' >
+                    <SquareUserRoundIcon className="ml-4 h-4 w-4 text-primary mr-2" />
+                    <span>Tài Khoản</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <LogoutButton />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent className="flex flex-col justify-start">
         <SidebarMenu>
           {Object.entries(groupedItems).map(([group, items]) => (
@@ -272,43 +312,6 @@ export async function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <Image
-                    className="mr-1"
-                    alt="avatarUrl"
-                    src={
-                      currentUser.value?.avatarUrl !== ''
-                        ? currentUser.value?.avatarUrl ?? "/dummy-avatar.webp"
-                        : '/dummy-avatar.webp'
-                    }
-                    width={24}
-                    height={24}
-                  />{' '}
-                  {currentUser?.value?.name ?? ""}
-                  <ChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-                <DropdownMenuItem>
-                  <Link href={"/profiles"} className='flex w-full' >
-                    <SquareUserRoundIcon className="h-4 w-4 text-primary mr-2" />
-                    <span className=''>Tài Khoản</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <LogoutButton />
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   );
