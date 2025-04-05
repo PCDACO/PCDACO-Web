@@ -1,11 +1,15 @@
 import { BanUser, UnbanUser } from "@/app/actions/shared/action";
+import { UpdateProfile } from "@/app/actions/users/action";
+import { UpdateUserPayload } from "@/constants/models/user.model";
 import { toastError, toastResponse } from "@/lib/toast-error";
 import { useDialogStore } from "@/stores/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useRouter } from "next/navigation";
 
 export const useUserMutation = () => {
   const { setOpen } = useDialogStore();
   const queryClient = useQueryClient();
+  const { push } = useRouter();
   const banUser = useMutation({
     mutationKey: ["banUser"],
     mutationFn: ({
@@ -45,8 +49,29 @@ export const useUserMutation = () => {
       toastError(error);
     },
   });
+
+  const updateProfile = useMutation({
+    mutationKey: ["updateProfile"],
+    mutationFn: ({
+      id, payload
+    }: {
+      id: string,
+      payload: UpdateUserPayload
+    }) => UpdateProfile(id, payload),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        push("/profiles");
+      }
+    },
+    onError: (error: Error) => {
+      toastError(error);
+    }
+  });
+
   return {
     banUser,
-    unbanUser
+    unbanUser,
+    updateProfile
   }
 }

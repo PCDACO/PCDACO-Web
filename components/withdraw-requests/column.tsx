@@ -7,6 +7,30 @@ import { formatDate } from "@/lib/utils";
 import { WithdrawRequestResponse } from "@/constants/models/withdraw-request.model";
 import CheckoutButton from "./checkout-button";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { Badge } from "../ui/badge";
+
+const WithdrawalRequestStatus = [
+  {
+    name: "Đang diễn ra",
+    value: "Pending",
+    color: "#26FC46"
+  },
+  {
+    name: "Đã hoàn thành",
+    value: "Completed",
+    color: "#FCDF26"
+  },
+  {
+    name: "Đã từ chối",
+    value: "Rejected",
+    color: "#264AFC"
+  },
+  {
+    name: "Đã hủy",
+    value: "Cancelled",
+    color: "#9126FC"
+  },
+]
 
 export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
   {
@@ -18,7 +42,7 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
   },
   {
     accessorKey: "user",
-    header: "User",
+    header: "Người dùng",
     cell: ({ row }) => {
       const user = row.original.user;
       return (
@@ -47,6 +71,14 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
   {
     accessorKey: "status",
     header: "Trạng thái",
+    cell: ({ row }) => {
+      const getBadgeByStatus = (status: string) => {
+        const result = WithdrawalRequestStatus.find((item) => item.value === status)
+        if (!result) return <Badge variant="outline">Unknown</Badge>
+        return <Badge className={`bg-${result?.color} text-black`} >{result.name}</Badge >
+      }
+      return getBadgeByStatus(row.original.status);
+    }
   },
   {
     id: "actions",

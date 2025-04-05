@@ -52,7 +52,7 @@ const AmenityTable = () => {
             />
             <DialogTrigger asChild>
               <Button>
-                <PlusCircleIcon /> Tạo Mới
+                <PlusCircleIcon /> Tạo
               </Button>
             </DialogTrigger>
           </div>

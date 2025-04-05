@@ -15,6 +15,7 @@ import PaginationTable from "../data-table/pagination";
 import { useTransmissionQuery } from "@/hooks/transmission/use-transmission";
 import { useTransmissionStore } from "./menu-action";
 import TransmissionForm from "./form";
+import { PlusCircleIcon } from "lucide-react";
 const TransmissionTable = () => {
   const { open, setOpen } = useDialogStore();
   const { setKeyword } = useKeywordStore();
@@ -50,7 +51,9 @@ const TransmissionTable = () => {
               }
             />
             <DialogTrigger asChild>
-              <Button>Create</Button>
+              <Button>
+                <PlusCircleIcon /> Tạo
+              </Button>
             </DialogTrigger>
           </div>
         </div>

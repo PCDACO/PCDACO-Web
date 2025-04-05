@@ -11,6 +11,6 @@ export default function CheckoutButton({ id }: Props) {
     replace(`/withdraw-requests/${id}/checkout/`);
   }
   return <>
-    <Button variant="default" onClick={handleClick}>Chuyển Tiền</Button>
+    <Button variant="outline" onClick={handleClick}>Chuyển Tiền</Button>
   </>
 }

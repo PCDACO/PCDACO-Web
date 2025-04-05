@@ -53,7 +53,7 @@ const TechnicianForm = ({ id, value }: TechnicianFormProps) => {
   const keywords: KeywordType[] = [
     {
       name: "create",
-      value: "Create Technician",
+      value: "Tạo kĩ thuật viên",
       form: (
         <div className="space-y-4 h-full">
           <FormField
@@ -179,7 +179,7 @@ const TechnicianForm = ({ id, value }: TechnicianFormProps) => {
     },
     {
       name: "delete",
-      value: "Delete Technician",
+      value: "Xóa kĩ thuật viên",
       form: (
         <></>
       )

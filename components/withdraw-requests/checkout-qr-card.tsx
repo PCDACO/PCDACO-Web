@@ -108,7 +108,7 @@ export default function CheckoutQRComponent({ id, qrInfo }: Props) {
         </CardContent>
         <CardFooter className="w-full">
           <DialogTrigger className="w-full mx-auto">
-            <Button className="" onClick={handleUpdateClick}>
+            <Button variant="outline" className="" onClick={handleUpdateClick}>
               Hoàn Tất
             </Button>
           </DialogTrigger>

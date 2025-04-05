@@ -33,7 +33,7 @@ const CarForm = ({ id, value }: CarFormProps) => {
   const keywords: KeywordType[] = [
     {
       name: "delete",
-      value: "Delete Car",
+      value: "Xóa xe",
       form: (
         <></>
       )
@@ -58,8 +58,8 @@ const CarForm = ({ id, value }: CarFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="space-y-6">
+        {GetTitle(keyword)}
         <DialogHeader>
-          {GetTitle(keyword)}
           <DialogDescription>
             {keyword === 'delete' ? (<h1>Bạn có muốn xóa không</h1>) : <></>}
           </DialogDescription>
