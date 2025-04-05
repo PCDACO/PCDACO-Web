@@ -69,23 +69,23 @@ const ReportTypes = [
 export default function UnderReviewReportItem({
   report
 }: InspectionTaskItemProps) {
-  const { replace } = useRouter();
-  const handleBtnClick = () => replace(`/reports/${report.id}`)
+  const { push } = useRouter();
+  const handleBtnClick = () => push(`/reports/${report.id}`)
 
   const getTypeBadge = (reportType: number): JSX.Element => {
     const found = ReportTypes.find((item) => item.value === reportType);
     if (!found) {
-      return <Badge color="#ccc">Unknown</Badge>;
+      return <Badge variant="destructive">Unknown</Badge>;
     }
-    return <Badge className={`bg-[${found?.value}] text-black`}>{found.label}</Badge>;
+    return <Badge style={{ backgroundColor: found.color, color: "black" }}>{found.label}</Badge>;
   }
 
   const getStatusBadge = (reportType: number): JSX.Element => {
     const found = ReportStatuses.find((item) => item.value === reportType);
     if (!found) {
-      return <Badge color="#ccc">Unknown</Badge>;
+      return <Badge variant="destructive">Unknown</Badge>;
     }
-    return <Badge variant="outline" className={`bg-[${found?.value}] text-black`}>{found.label}</Badge>;
+    return <Badge style={{ backgroundColor: found.color, color: "black" }}>{found.label}</Badge>;
   }
 
   return (
@@ -93,7 +93,6 @@ export default function UnderReviewReportItem({
       <CardContent className="p-4">
         <div className="space-y-2">
           <div className="flex items-start gap-2">
-            {/* <MapPin className="h-4 w-4 text-muted-foreground mt-1 flex-shrink-0" /> */}
             <p className="text-sm">{report.id}</p>
           </div>
 

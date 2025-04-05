@@ -33,7 +33,7 @@ export const useGPSDeviceForm = ({ id, value, action }: GPSDeviceFormProps) => {
     defaultValues,
   });
 
-  const onSubmit = form.handleSubmit(async (payload) => {
+  const onSubmit = form.handleSubmit((payload) => {
     switch (action) {
       case "create": {
         createGPSDeviceMutation.mutate(payload);

@@ -9,7 +9,7 @@ export const GetCarContract = async (id: string): Promise<Document> => {
 }
 
 export const SignContract = async (id: string): Promise<RootResponse<null>> => {
-  const response = await axiosInstance.post(`/api/cars/contracts/${id}/sign`);
+  const response = await axiosInstance.post(`/api/cars/${id}/contract/sign`);
   return response.data;
 }
 

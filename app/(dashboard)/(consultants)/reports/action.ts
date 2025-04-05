@@ -24,6 +24,5 @@ export const RejectReport = async (id: string, reason: string): Promise<RootResp
 
 export const GetUnderReviewReports = async (): Promise<RootResponse<UnderReviewResponse[]>> => {
   const response = await axiosInstance.get("/api/reports/under-review");
-  console.log(response.data);
   return response.data;
 }
