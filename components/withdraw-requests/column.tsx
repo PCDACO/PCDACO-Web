@@ -75,7 +75,7 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
       const getBadgeByStatus = (status: string) => {
         const result = WithdrawalRequestStatus.find((item) => item.value === status)
         if (!result) return <Badge variant="outline">Unknown</Badge>
-        return <Badge className={`bg-${result?.color} text-black`} >{result.name}</Badge >
+        return <Badge style={{ backgroundColor: result.color, color: "black" }} >{result.name}</Badge >
       }
       return getBadgeByStatus(row.original.status);
     }

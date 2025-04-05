@@ -11,6 +11,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -22,13 +24,15 @@ import { useGPSDeviceForm } from "@/hooks/gps-device/use-form-gps-device";
 interface GPSDeviceFormProps {
   id: string;
   value: GPSDevicePayload;
+  isOpen: boolean;
+  onOpenChange: () => void;
 }
 type KeywordType = {
   name: string;
   value: string;
   form: React.JSX.Element;
 };
-const GPSDeviceForm = ({ id, value }: GPSDeviceFormProps) => {
+const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) => {
   const { keyword } = useKeywordStore();
   const { form, onSubmit, isLoading } = useGPSDeviceForm({
     id,
@@ -91,7 +95,7 @@ const GPSDeviceForm = ({ id, value }: GPSDeviceFormProps) => {
     },
     {
       name: "delete",
-      value: "Delete GPS Device",
+      value: "Gỡ thiết bị",
       form: (
         <></>
       )
@@ -114,22 +118,29 @@ const GPSDeviceForm = ({ id, value }: GPSDeviceFormProps) => {
       : null;
   };
   return (
-    <Form {...form}>
-      <form onSubmit={onSubmit} className="space-y-6">
-        <DialogHeader>
-          {GetTitle(keyword)}
-          <DialogDescription>
-            {keyword === 'delete' ? (<h1>Bạn có muốn xóa không</h1>) : <></>}
-          </DialogDescription>
-        </DialogHeader>
-        {GetComponent(keyword)}
-        <DialogFooter>
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Submit"}
-          </Button>
-        </DialogFooter>
-      </form>
-    </Form>
+    <Dialog
+      open={isOpen}
+      onOpenChange={onOpenChange}
+    >
+      <DialogContent>
+        <Form {...form}>
+          <form onSubmit={onSubmit} className="space-y-6">
+            <DialogHeader>
+              {GetTitle(keyword)}
+              <DialogDescription>
+                {keyword === 'delete' ? (<h1>Bạn có muốn gỡ không</h1>) : <></>}
+              </DialogDescription>
+            </DialogHeader>
+            {GetComponent(keyword)}
+            <DialogFooter>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? "Loading..." : "Gỡ"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

@@ -5,32 +5,33 @@ import { ColumnDef } from "@tanstack/react-table";
 import { GPSDeviceResponse } from "@/constants/models/gps-device.model";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "../ui/badge";
+import MenuAction from "./menu-action";
 
 const GPSDeviceStatusValue = [
   {
     name: "Khả dụng",
     value: "Available",
-    color: "#26FC46"
+    color: "#C8E6C9", // same as "Đã giải quyết" / "Bảo dưỡng"
   },
   {
     name: "Đang sử dụng",
     value: "InUsed",
-    color: "#FCDF26"
+    color: "#FFE082", // similar to "Đang xem xét"/"Phạt giao thông"
   },
   {
     name: "Đang sửa chữa",
     value: "Repairing",
-    color: "#264AFC"
+    color: "#B39DDB", // taken from "Hư hại"
   },
   {
     name: "Đang hỏng",
     value: "Broken",
-    color: "#9126FC"
+    color: "#FFCDD2", // taken from "Đang chờ"/"Tai nạn"
   },
   {
     name: "Đã bỏ",
     value: "Removed",
-    color: "#FC264D"
+    color: "#E0E0E0", // taken from ReportTypes "Khác"
   },
 ]
 
@@ -53,7 +54,7 @@ export const GPSDeviceColumns: ColumnDef<GPSDeviceResponse>[] = [
       const getBadgeByStatus = (status: string) => {
         const result = GPSDeviceStatusValue.find((item) => item.value === status)
         if (!result) return <Badge variant="outline">Unknown</Badge>
-        return <Badge className={`bg-${result?.color} text-black`} >{result.name}</Badge >
+        return <Badge style={{ backgroundColor: result.color, color: "black" }} >{result.name}</Badge >
       }
       return getBadgeByStatus(row.original.status);
     }
@@ -63,6 +64,16 @@ export const GPSDeviceColumns: ColumnDef<GPSDeviceResponse>[] = [
     header: "Tạo lúc",
     cell: ({ row }) => {
       return formatDate(row.original.createdAt.toString());
+    }
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return <MenuAction id={row.original.id} payload={
+        {
+          name: row.original.name
+        }
+      } />
     }
   },
 ];
