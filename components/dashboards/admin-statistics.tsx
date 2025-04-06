@@ -24,7 +24,7 @@ export default function AdminStatistics({ statistics }: Props) {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Người dùng đang hoạt động</CardTitle>
+            <CardTitle className="text-sm font-medium">Đang hoạt động</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{statistics.activeUsers} người</div>
