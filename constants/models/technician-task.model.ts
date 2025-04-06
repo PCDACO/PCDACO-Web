@@ -25,6 +25,7 @@ export interface CarDetail {
 export interface ImageDetail {
   id: string;
   url: string;
+  imageTypeName: string;
 }
 export interface UserDetail {
   id: string;

@@ -20,7 +20,6 @@ export default function TechnicianTodo() {
     inspectionDate: selectedDate === undefined ? undefined : new Date(new Date(selectedDate!).getTime() + (24 * 60 * 60 * 1000))
   });
   const { rejectTechnicianTask, inProgressTechnicianTask } = useTechnicianTaskMutation();
-  const todayDate = new Date();
   const [Note, SetNote] = useState<Record<string, string>>({
     dummy: "dummy",
   });
@@ -74,33 +73,25 @@ export default function TechnicianTodo() {
                             <p className="text-sm text-gray-600">{car.inspectionAddress}</p>
                           </div>
                           <div className="flex gap-4">
-                            {(
-                              todayDate.getDate() === new Date((new Date(listTechnicianTasks?.data?.value?.inspectionDate).getTime() - (24 * 60 * 60 * 1000))).getDate() &&
-                              todayDate.getMonth() === new Date((new Date(listTechnicianTasks?.data?.value?.inspectionDate).getTime() - (24 * 60 * 60 * 1000))).getMonth() &&
-                              todayDate.getFullYear() === new Date((new Date(listTechnicianTasks?.data?.value?.inspectionDate).getTime() - (24 * 60 * 60 * 1000))).getFullYear()
-                            ) && (
-                                <>
-                                  <Button onClick={() => {
-                                    rejectTechnicianTask.mutate({
-                                      id: car.inspectionScheduleId,
-                                      note: Note[car.inspectionScheduleId] ?? "",
-                                    });
-                                  }
-                                  } className=" w-8 h-8 flex items-center justify-center p-0 border-none cursor-pointer text-xs bg-red-500" aria-label="Reject"
-                                  >
-                                    <X />
-                                  </Button>
-                                  <Button onClick={() => {
-                                    inProgressTechnicianTask.mutate({
-                                      id: car.inspectionScheduleId
-                                    });
-                                  }
-                                  } className=" w-8 h-8 flex items-center justify-center p-0 border-none cursor-pointer text-xs " aria-label="Approve"
-                                  >
-                                    <Check />
-                                  </Button>
-                                </>
-                              )}
+                            <Button onClick={() => {
+                              rejectTechnicianTask.mutate({
+                                id: car.inspectionScheduleId,
+                                note: Note[car.inspectionScheduleId] ?? "",
+                              });
+                            }
+                            } className=" w-8 h-8 flex items-center justify-center p-0 border-none cursor-pointer text-xs bg-red-500" aria-label="Reject"
+                            >
+                              <X />
+                            </Button>
+                            <Button onClick={() => {
+                              inProgressTechnicianTask.mutate({
+                                id: car.inspectionScheduleId
+                              });
+                            }
+                            } className=" w-8 h-8 flex items-center justify-center p-0 border-none cursor-pointer text-xs " aria-label="Approve"
+                            >
+                              <Check />
+                            </Button>
                           </div>
                         </div>
                         <div className="mt-4">
