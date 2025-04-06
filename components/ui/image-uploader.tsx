@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { Label } from "./label"
 import { Textarea } from "./textarea"
+import { InspectionPhotoType } from "@/constants/enums/inspection-photo-type.enum"
+
 
 interface ImageUploaderProps {
   label: string
@@ -106,7 +108,7 @@ export function ImageUploader({ label, photoType, file, date, description, onCha
         </CardContent>
       </Card>
 
-      {file && (
+      {(photoType === InspectionPhotoType.VehicleInspectionCertificate && file) && (
         <div className="mt-2">
           <div className="font-medium whitespace-nowrap min-w-[80px]">Photo Date:</div>
           <Popover>

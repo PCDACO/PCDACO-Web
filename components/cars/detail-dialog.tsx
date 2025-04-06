@@ -63,13 +63,13 @@ export default function CarDetailsDialog({ car, isOpen, onOpenChange }: CarDetai
 
                     {car.images.length !== 0 && (<section>
                       <h3 className="font-semibold text-lg mb-2">Car Images</h3>
-                      <ImageGallery images={car.images.map(i => i.url)} />
+                      <ImageGallery images={car.images.filter(i => i.imageTypeName === "Car").map(i => i.url)} />
                     </section>)}
                     {/* Paperwork Images */}
                     {
                       car.images.length !== 0 && (<section>
                         <h3 className="font-semibold text-lg mb-2">Paperwork</h3>
-                        <ImageGallery images={car.images.map(i => i.url)} />
+                        <ImageGallery images={car.images.filter(i => i.imageTypeName === "Paper").map(i => i.url)} />
                       </section>)
                     }
                     {/* Amenities

@@ -8,19 +8,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ImageUploader } from "@/components/ui/image-uploader"
 import { toast } from "@/hooks/use-toast"
 import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
+import { InspectionPhotoType } from "@/constants/enums/inspection-photo-type.enum"
+import { InProgressInspectionScheduleResponse } from "@/constants/models/inspection-schedule.model"
 
-// Enum matching the one in the screenshot
-enum InspectionPhotoType {
-  ExteriorCar = "ExteriorCar",
-  FuelGauge = "FuelGauge",
-  ParkingLocation = "ParkingLocation",
-  CarKey = "CarKey",
-  TrunkSpace = "TrunkSpace",
-  FuelGaugeFinal = "FuelGaugeFinal",
-  Scratches = "Scratches",
-  Cleanliness = "Cleanliness",
-  TollFees = "TollFees",
-}
 
 // Helper to get human-readable labels
 const getPhotoTypeLabel = (type: InspectionPhotoType): string => {
@@ -45,12 +35,13 @@ const ALL_PHOTOS = [
   InspectionPhotoType.TrunkSpace,
   InspectionPhotoType.Scratches,
   InspectionPhotoType.Cleanliness,
+  InspectionPhotoType.VehicleInspectionCertificate,
 ]
 interface Props {
-  id: string,
+  schedule: InProgressInspectionScheduleResponse;
 }
 
-export default function CarInspectionForm({ id }: Props) {
+export default function CarInspectionForm({ schedule }: Props) {
   const { approveInspectionSchedule } = useInspectionScheduleMutation();
   const [photos, setPhotos] = useState<Record<string, File | null>>({
     [InspectionPhotoType.ExteriorCar.toString()]: null,
@@ -60,6 +51,7 @@ export default function CarInspectionForm({ id }: Props) {
     [InspectionPhotoType.TrunkSpace.toString()]: null,
     [InspectionPhotoType.Scratches.toString()]: null,
     [InspectionPhotoType.Cleanliness.toString()]: null,
+    [InspectionPhotoType.VehicleInspectionCertificate.toString()]: null,
   })
 
   const [dates, setDates] = useState<Record<string, Date | undefined>>({
@@ -70,6 +62,7 @@ export default function CarInspectionForm({ id }: Props) {
     [InspectionPhotoType.TrunkSpace.toString()]: undefined,
     [InspectionPhotoType.Scratches.toString()]: undefined,
     [InspectionPhotoType.Cleanliness.toString()]: undefined,
+    [InspectionPhotoType.VehicleInspectionCertificate.toString()]: undefined,
   })
   const [descriptions, setDescriptions] = useState<Record<string, string>>({
     [InspectionPhotoType.ExteriorCar.toString()]: "",
@@ -79,6 +72,7 @@ export default function CarInspectionForm({ id }: Props) {
     [InspectionPhotoType.TrunkSpace.toString()]: "",
     [InspectionPhotoType.Scratches.toString()]: "",
     [InspectionPhotoType.Cleanliness.toString()]: "",
+    [InspectionPhotoType.VehicleInspectionCertificate.toString()]: "",
   })
   const [note, setNote] = useState<string>("");
 
@@ -163,7 +157,7 @@ export default function CarInspectionForm({ id }: Props) {
       return;
     }
     approveInspectionSchedule.mutate({
-      id: id,
+      id: schedule.id,
       payload: {
         dates: dates,
         photos: photos,
@@ -202,7 +196,7 @@ export default function CarInspectionForm({ id }: Props) {
         onChange={(e) => handleNoteChange(e.target.value)}
       />
       <div className="mt-6 flex justify-end">
-        <Button type="submit" size="lg">
+        <Button disabled={schedule?.contractDetail?.ownerSignatureDate === undefined} type="submit" size="lg">
           Submit Inspection
         </Button>
       </div>

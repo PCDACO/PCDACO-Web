@@ -78,7 +78,6 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev === 0 ? car.images.length - 1 : prev - 1))
   }
-
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="mb-6 flex items-center justify-between">
@@ -227,16 +226,16 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
         {/* Car Images */}
         <div className="md:col-span-2">
           <Tabs defaultValue="details" className="mt-6">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="details">Details</TabsTrigger>
               <TabsTrigger value="specifications">Specifications</TabsTrigger>
               <TabsTrigger value="amenities">Amenities</TabsTrigger>
+              <TabsTrigger value="images">Images</TabsTrigger>
             </TabsList>
-            <TabsContent value="details" className="mt-4">
+            <TabsContent value="details" className="mt-4 min-h-[480px]">
               <Card>
                 <CardHeader>
                   <CardTitle>Car Details</CardTitle>
-                  <CardDescription>Basic information about this vehicle</CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   <div className="grid grid-cols-2 gap-4">
@@ -318,7 +317,6 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
               <Card>
                 <CardHeader>
                   <CardTitle>Specifications</CardTitle>
-                  <CardDescription>Technical details about this vehicle</CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   <div className="grid grid-cols-2 gap-4">
@@ -361,81 +359,68 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
             <TabsContent value="amenities" className="mt-4">
               <Card>
                 <CardHeader>
-                  <CardDescription>Features and amenities included with this vehicle</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {
-                    car.amenities.map((item) => (
-                      <div key={item.id} className="flex items-center gap-2">
-                        <Gauge className="h-4 w-4 text-muted-foreground" />
-                        <div>
-                          <Image src={item.icon} alt={item.name} />
-                          <p className="text-sm text-muted-foreground">{item.name}</p>
+                  <div className="grid grid-cols-4 gap-y-4">
+                    {
+                      car?.amenities?.map((item) => (
+                        <div key={item.id} className="flex flex-row">
+                          <Image width={16} height={16} src={item.icon} alt={item.name} />
+                          <p className="ml-4 text-sm text-muted-foreground">{item.name}</p>
                         </div>
-                      </div>
-                    ))
-                  }
+                      )) ?? []
+                    }
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="images" className="mt-4 ">
+              <Card className="min-h-[500px]">
+                <CardHeader>
+                  {/* <CardDescription>Features and amenities included with this vehicle</CardDescription> */}
+                </CardHeader>
+                <CardContent className="relative h-96">
+                  <Image
+                    src={car?.images[currentImageIndex]?.url ?? "/placeholder.svg"}
+                    alt={`${car.manufacturer.name} ${car.modelName}`}
+                    fill
+                    className="object-contain "
+                  />
+                  <div className="flex items-center justify-between mx-4 h-full">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-full bg-background/80 backdrop-blur-sm"
+                      onClick={prevImage}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-full bg-background/80 backdrop-blur-sm"
+                      onClick={nextImage}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
+                    {car.images.map((_, index) => (
+                      <Button
+                        key={index}
+                        variant="outline"
+                        size="icon"
+                        className={`h-2 w-2 rounded-full p-0 ${index === currentImageIndex ? "bg-primary" : "bg-background/80"}`}
+                        onClick={() => setCurrentImageIndex(index)}
+                      >
+                        <span className="sr-only">View image {index + 1}</span>
+                      </Button>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
           </Tabs>
-          <Card className="overflow-hidden">
-            <div className="relative aspect-video bg-muted">
-              <Image
-                src={car?.images[currentImageIndex]?.url ?? "/placeholder.svg"}
-                alt={`${car.manufacturer.name} ${car.modelName}`}
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 flex items-center justify-between p-4">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full bg-background/80 backdrop-blur-sm"
-                  onClick={prevImage}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full bg-background/80 backdrop-blur-sm"
-                  onClick={nextImage}
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
-                {car.images.map((_, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    size="icon"
-                    className={`h-2 w-2 rounded-full p-0 ${index === currentImageIndex ? "bg-primary" : "bg-background/80"}`}
-                    onClick={() => setCurrentImageIndex(index)}
-                  >
-                    <span className="sr-only">View image {index + 1}</span>
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <div className="grid grid-cols-4 gap-2 p-2">
-              {car.images.map((image, index) => (
-                <Button
-                  key={image.id}
-                  className={`relative aspect-video overflow-hidden rounded-md ${index === currentImageIndex ? "ring-2 ring-primary" : ""}`}
-                  onClick={() => setCurrentImageIndex(index)}
-                >
-                  <Image
-                    src={image.url || "/placeholder.svg"}
-                    alt={`${car.manufacturer.name} ${car.modelName} thumbnail ${index + 1}`}
-                    fill
-                    className="object-cover"
-                  />
-                </Button>
-              ))}
-            </div>
-          </Card>
         </div>
       </div >
     </div >

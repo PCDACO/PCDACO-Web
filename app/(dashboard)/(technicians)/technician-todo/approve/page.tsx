@@ -6,7 +6,7 @@ export default async function ApproveInspectionSchedulePage() {
   const response = await GetInProgressInspectionSchedule();
   return (
     <main className="container mx-auto py-8 px-4">
-      <CarInspectionForm id={response.value.id} />
+      <CarInspectionForm schedule={response.value} />
     </main>
   );
 }

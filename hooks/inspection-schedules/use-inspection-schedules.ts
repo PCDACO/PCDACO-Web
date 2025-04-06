@@ -90,12 +90,12 @@ export const useInspectionScheduleMutation = () => {
 
   const approveInspectionSchedule = useMutation({
     mutationKey: ["rejectInspectionSchedule"],
-    mutationFn: async ({
+    mutationFn: ({
       id, payload
     }: {
       id: string,
       payload: CarInspectionSchedulePayload
-    }) => await ApproveInspectionScheduleAction(id, payload),
+    }) => ApproveInspectionScheduleAction(id, payload),
     onSuccess: (response) => {
       toastResponse(response);
       if (response.isSuccess) {

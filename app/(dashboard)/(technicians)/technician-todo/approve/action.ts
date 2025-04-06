@@ -49,9 +49,11 @@ export const ApproveInspectionScheduleAction = async (id: string, payload: CarIn
       if (!photo) continue;
       const formData = new FormData();
       formData.append("photos", photo);
-      formData.append("expiryDate", format(date ?? new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
       formData.append("description", description);
       formData.append("photoType", `${photoType}`);
+      if (date) {
+        formData.append("expiryDate", format(date ?? new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+      }
       axiosInstance.patchForm(`/api/inspection-schedules/${id}/photos`, formData);
     }
   }

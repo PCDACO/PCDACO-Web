@@ -47,6 +47,17 @@ export interface InProgressInspectionScheduleResponse {
   ownerName: string;
   address: string;
   licensePlate: string;
+  contractDetail: ContractDetail;
+}
+
+interface ContractDetail {
+  id: string;
+  terms: string;
+  status: string;
+  ownerSignatureDate?: Date;
+  technicianSignatureDate?: Date;
+  inspectionResults?: string;
+  gPSDeviceId?: string;
 }
 
 export interface InspectionScheduleDetailResponse {
