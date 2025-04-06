@@ -2,6 +2,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { CarResponse } from "@/constants/models/car.model";
 import { Badge } from "../ui/badge";
+import MenuAction from "./menu-action";
 
 export const CarColumns: ColumnDef<CarResponse>[] = [
   {
@@ -48,5 +49,11 @@ export const CarColumns: ColumnDef<CarResponse>[] = [
   {
     accessorKey: "ownerPhoneNumber",
     header: "SDT",
+  },
+  {
+    id: "action",
+    cell: ({ row }) => {
+      return <MenuAction id={row.original.id} />
+    }
   }
 ];

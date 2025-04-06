@@ -4,31 +4,20 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  createGenericStore,
-  useDialogStore,
-  useIdStore,
-  useKeywordStore,
-} from "@/stores/store";
-import { CarPayload } from "@/constants/models/car.model";
+import { useRouter } from "next/navigation";
 
 interface MenuActionProps {
   id: string;
-  payload: CarPayload;
 }
 
-export const useCarStore = createGenericStore<CarPayload>();
+const MenuAction: React.FC<MenuActionProps> = ({ id }) => {
+  const { push } = useRouter();
 
-const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
-  const { setKeyword } = useKeywordStore();
-  const { setOpen } = useDialogStore();
-  const { setId } = useIdStore();
-  const { setData } = useCarStore();
+  const handleNavigateClick = () => push(`/cars/${id}`);
 
   return (
     <DropdownMenu>
@@ -40,26 +29,10 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem
-          onClick={() => {
-            setKeyword("update");
-            setOpen(true);
-            setId(id);
-            setData(payload);
-          }}
+        <DropdownMenuItem className="hover:cursor-pointer"
+          onClick={() => { handleNavigateClick() }}
         >
-          Update
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() => {
-            setKeyword("delete");
-            setOpen(true);
-            setId(id);
-            setData(payload);
-          }}
-        >
-          Delete
+          Chi tiết
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
