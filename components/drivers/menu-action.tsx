@@ -4,6 +4,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
@@ -15,6 +16,7 @@ import {
   useIdStore,
 } from "@/stores/store";
 import { DriverPayLoad } from "@/constants/models/driver.model";
+import { useRouter } from "next/navigation";
 
 interface MenuActionProps {
   id: string;
@@ -27,6 +29,7 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, isBanned }) => {
   const { setOpen } = useDialogStore();
   const { setId } = useIdStore();
   const { setIsBanned } = useBanStore();
+  const { push } = useRouter();
 
   return (
     <DropdownMenu>
@@ -38,6 +41,13 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, isBanned }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" >
         <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
+        <DropdownMenuItem
+          className="hover:cursor-pointer"
+          onClick={() => { push(`/users/${id}`) }}
+        >
+          Chi tiết
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem
           className="bg-red-200 hover:cursor-pointer"
           onClick={() => {

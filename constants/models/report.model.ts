@@ -2,7 +2,7 @@ export type ReportParams = RootRequest;
 
 export interface ApproveReportPayload {
   note: string;
-  images?: FileList;
+  // images?: FileList;
 }
 
 export interface ReportResponse {
