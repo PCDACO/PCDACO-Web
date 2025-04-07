@@ -1,32 +1,17 @@
 import React from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  createGenericStore,
-  useDialogStore,
-  useIdStore,
-  useKeywordStore,
-} from "@/stores/store";
+import { createGenericStore } from "@/stores/store";
 import { TechnicianPayload } from "@/constants/models/technician.model";
+import { useRouter } from "next/navigation";
 
-interface MenuActionProps {
-  id: string;
-  payload: TechnicianPayload;
-}
+interface MenuActionProps { id: string; }
 
 export const useTechnicianStore = createGenericStore<TechnicianPayload>();
 
-const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
-  const { setKeyword } = useKeywordStore();
-  const { setOpen } = useDialogStore();
-  const { setId } = useIdStore();
-  const { setData } = useTechnicianStore();
+const MenuAction: React.FC<MenuActionProps> = ({ id }) => {
+  const { push } = useRouter();
 
   return (
     <DropdownMenu>
@@ -37,15 +22,12 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
         <DropdownMenuItem
-          onClick={() => {
-            setKeyword("delete");
-            setOpen(true);
-            setId(id);
-            setData(payload);
-          }}
+          className="hover:cursor-pointer"
+          onClick={() => { push(`/users/${id}`) }}
         >
-          Delete
+          Chi tiết
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

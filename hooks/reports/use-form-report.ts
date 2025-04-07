@@ -16,7 +16,6 @@ export const useReportForm = ({ id, value }: Props) => {
   const defaultValues = useMemo(() => {
     return {
       note: value.note ?? "",
-      images: value.images ?? new DataTransfer().files
     };
   }, [id, value]);
 

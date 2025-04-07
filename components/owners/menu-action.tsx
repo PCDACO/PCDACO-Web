@@ -14,6 +14,8 @@ import {
   useIdStore,
 } from "@/stores/store";
 import { OwnerPayLoad } from "@/constants/models/owner.model";
+import { useRouter } from "next/navigation";
+import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
 
 interface MenuActionProps {
   id: string;
@@ -26,6 +28,7 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, isBanned }) => {
   const { setOpen } = useDialogStore();
   const { setId } = useIdStore();
   const { setIsBanned } = useBanStore();
+  const { push } = useRouter();
 
   return (
     <DropdownMenu>
@@ -36,6 +39,13 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, isBanned }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" >
+        <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
+        <DropdownMenuItem
+          className="hover:cursor-pointer"
+          onClick={() => { push(`/users/${id}`) }}
+        >
+          Chi tiết
+        </DropdownMenuItem>
         <DropdownMenuItem
           className="bg-red-200 hover:cursor-pointer"
           onClick={() => {

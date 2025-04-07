@@ -1,62 +1,38 @@
+"use client"
 import Image from "next/image"
 import Link from "next/link"
-import { CalendarClock, Car, ChevronRight, Clock, DollarSign, Star, User } from "lucide-react"
+import { CalendarClock, Car, ChevronLeft, ChevronRight, Clock, Eye, Star, User } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "../ui/button"
+import { useRouter } from "next/navigation"
+import { CarDetailResponse } from "@/constants/models/car.model"
+import { formatCurrency } from "@/lib/formatCurrency"
+import { formatId } from "@/lib/format-uuid"
 
-export default function CarDetailsComponent() {
+interface Props {
+  car: CarDetailResponse;
+}
+
+export default function CarDetailsComponent({
+  car
+}: Props) {
+  const { color,
+    manufacturer,
+    modelName,
+    owner,
+    images,
+    bookings } = car;
+  const { back, push } = useRouter();
   // This would typically come from a database or API
-  const car = {
-    id: "car_123",
-    name: "Toyota Camry",
-    model: "Camry SE",
-    manufacturer: "Toyota",
-    year: 2022,
-    color: "Silver",
-    licensePlate: "ABC-1234",
-    status: "Available",
-    owner: {
-      id: "owner_456",
-      name: "John Smith",
-      email: "john.smith@example.com",
-      phone: "+1 (555) 123-4567",
-      address: "123 Main St, Anytown, USA",
-    },
-    bookings: [
-      {
-        id: "booking_789",
-        startDate: "2023-10-15",
-        endDate: "2023-10-20",
-        customerName: "Alice Johnson",
-        amount: 350,
-        status: "Completed",
-      },
-      {
-        id: "booking_790",
-        startDate: "2023-09-05",
-        endDate: "2023-09-10",
-        customerName: "Bob Williams",
-        amount: 400,
-        status: "Completed",
-      },
-      {
-        id: "booking_791",
-        startDate: "2023-08-22",
-        endDate: "2023-08-25",
-        customerName: "Carol Davis",
-        amount: 250,
-        status: "Completed",
-      },
-    ],
-    statistics: {
-      totalBookings: 15,
-      totalEarnings: 5250,
-      averageRating: 4.7,
-      lastRented: "2023-10-20",
-    },
+  const handleClick = () => {
+    back();
+  }
+
+  const handleActionClick = (id: string) => {
+    push(`/bookings/${id}`);
   }
 
   return (
@@ -64,13 +40,16 @@ export default function CarDetailsComponent() {
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <div className="flex items-center text-sm text-muted-foreground">
+            <Button onClick={handleClick} variant="ghost" size="icon" className="mr-2">
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
             <Link href="/cars" className="hover:underline">
               Cars
             </Link>
             <ChevronRight className="h-4 w-4 mx-1" />
             <span>Details</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">{car.name}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{modelName}</h1>
           <div className="flex items-center gap-2">
             <Badge variant={car.status === "Available" ? "default" : "destructive"}>{car.status}</Badge>
             <span className="text-muted-foreground">License: {car.licensePlate}</span>
@@ -89,24 +68,19 @@ export default function CarDetailsComponent() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <h3 className="font-medium text-muted-foreground">Model</h3>
-                <p>{car.model}</p>
+                <p>{modelName}</p>
               </div>
               <div>
                 <h3 className="font-medium text-muted-foreground">Manufacturer</h3>
-                <p>{car.manufacturer}</p>
-              </div>
-              <div>
-                <h3 className="font-medium text-muted-foreground">Year</h3>
-                <p>{car.year}</p>
+                <p>{manufacturer.name}</p>
               </div>
               <div>
                 <h3 className="font-medium text-muted-foreground">Color</h3>
-                <p>{car.color}</p>
+                <p>{color}</p>
               </div>
             </div>
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader>
             <CardTitle>Owner Details</CardTitle>
@@ -115,19 +89,19 @@ export default function CarDetailsComponent() {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4 text-muted-foreground" />
-                <span>{car.owner.name}</span>
+                <span>{owner.name}</span>
               </div>
               <div>
                 <h3 className="font-medium text-muted-foreground">Email</h3>
-                <p>{car.owner.email}</p>
+                <p>{owner.email}</p>
               </div>
               <div>
                 <h3 className="font-medium text-muted-foreground">Phone</h3>
-                <p>{car.owner.phone}</p>
+                <p>{owner.phone}</p>
               </div>
               <div>
                 <h3 className="font-medium text-muted-foreground">Address</h3>
-                <p>{car.owner.address}</p>
+                <p>{owner.address}</p>
               </div>
             </div>
           </CardContent>
@@ -152,8 +126,8 @@ export default function CarDetailsComponent() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center">
-              <DollarSign className="h-5 w-5 text-muted-foreground mr-2" />
-              <span className="text-2xl font-bold">${car.statistics.totalEarnings}</span>
+              {/* <DollarSign className="h-5 w-5 text-muted-foreground mr-2" /> */}
+              <span className="text-2xl font-bold">{formatCurrency(car.statistics.totalEarnings)}</span>
             </div>
           </CardContent>
         </Card>
@@ -188,28 +162,33 @@ export default function CarDetailsComponent() {
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
-            <div className="grid grid-cols-5 p-4 font-medium border-b">
+            <div className="grid grid-cols-6 p-4 font-medium border-b">
               <div>Booking ID</div>
               <div>Customer</div>
               <div>Dates</div>
               <div>Amount</div>
               <div>Status</div>
+              <div>Action</div>
             </div>
-            {car.bookings.map((booking) => (
-              <div key={booking.id} className="grid grid-cols-5 p-4 border-b last:border-0">
-                <div className="font-medium">{booking.id}</div>
-                <div>{booking.customerName}</div>
+            {bookings.map((booking) => (
+              <div key={booking.bookingId} className="grid grid-cols-6 p-4 border-b last:border-0">
+                <div className="font-medium">{formatId(booking.bookingId)}</div>
+                <div>{booking.driverName}</div>
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <span>
-                    {new Date(booking.startDate).toLocaleDateString()} -{" "}
-                    {new Date(booking.endDate).toLocaleDateString()}
+                    {new Date(booking.startTime).toLocaleDateString()} -{" "}
+                    {new Date(booking.endTime).toLocaleDateString()}
                   </span>
                 </div>
-                <div>${booking.amount}</div>
+                <div>{formatCurrency(booking.amount)}</div>
                 <div>
                   <Badge variant="outline">{booking.status}</Badge>
                 </div>
+                <Button onClick={() => handleActionClick(booking.bookingId)} variant="ghost" size="icon">
+                  <Eye className="h-4 w-4" />
+                  <span className="sr-only">View car details</span>
+                </Button>
               </div>
             ))}
           </div>
@@ -228,73 +207,38 @@ export default function CarDetailsComponent() {
             </TabsList>
             <TabsContent value="car" className="mt-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div className="aspect-video rounded-md overflow-hidden border">
-                  <Image
-                    src="/placeholder.svg?height=400&width=600"
-                    alt="Car front view"
-                    width={600}
-                    height={400}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div className="aspect-video rounded-md overflow-hidden border">
-                  <Image
-                    src="/placeholder.svg?height=400&width=600"
-                    alt="Car side view"
-                    width={600}
-                    height={400}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div className="aspect-video rounded-md overflow-hidden border">
-                  <Image
-                    src="/placeholder.svg?height=400&width=600"
-                    alt="Car rear view"
-                    width={600}
-                    height={400}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div className="aspect-video rounded-md overflow-hidden border">
-                  <Image
-                    src="/placeholder.svg?height=400&width=600"
-                    alt="Car interior"
-                    width={600}
-                    height={400}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
+                {
+                  images.filter(item => item.type === "Car").map(item => (
+                    <div key={item.id} className="aspect-video rounded-md overflow-hidden border">
+                      <Image
+                        key={item.id}
+                        src={item.url !== "" ? item.url ?? "/placeholder.png" : "/placeholder.png"}
+                        alt="Car front view"
+                        width={600}
+                        height={400}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                  ))
+                }
               </div>
             </TabsContent>
             <TabsContent value="paperwork" className="mt-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div className="aspect-[3/4] rounded-md overflow-hidden border">
-                  <Image
-                    src="/placeholder.svg?height=800&width=600"
-                    alt="Registration document"
-                    width={600}
-                    height={800}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div className="aspect-[3/4] rounded-md overflow-hidden border">
-                  <Image
-                    src="/placeholder.svg?height=800&width=600"
-                    alt="Insurance document"
-                    width={600}
-                    height={800}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div className="aspect-[3/4] rounded-md overflow-hidden border">
-                  <Image
-                    src="/placeholder.svg?height=800&width=600"
-                    alt="Maintenance record"
-                    width={600}
-                    height={800}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
+                {
+                  images.filter(item => item.type === "Paper").map(item => (
+                    <div key={item.id} className="aspect-video rounded-md overflow-hidden border">
+                      <Image
+                        key={item.id}
+                        src={item.url !== "" ? item.url ?? "/placeholder.png" : "/placeholder.png"}
+                        alt="Car front view"
+                        width={600}
+                        height={400}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                  ))
+                }
               </div>
             </TabsContent>
           </Tabs>

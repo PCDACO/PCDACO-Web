@@ -479,7 +479,6 @@ export default function ReportDetails({ report }: Props) {
           id={report.id}
           value={{
             note: "",
-            images: new DataTransfer().files
           }}
           isOpen={approveOpen}
           onOpenChange={() => setApproveOpen(!approveOpen)} />
