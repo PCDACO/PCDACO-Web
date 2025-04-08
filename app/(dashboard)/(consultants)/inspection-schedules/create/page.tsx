@@ -8,6 +8,8 @@ export default async function CreateInspectionSchedulePage() {
     size: 1000,
     keyword: "",
     status: 1,
+    onlyNoGps: true,
+    onlyHasInspectionSchedule: false,
   });
   const technicianResponse = await GetTechnicians({
     index: 1,
@@ -15,13 +17,16 @@ export default async function CreateInspectionSchedulePage() {
     keyword: "",
   });
   return (
-    <CreateInspectionForm id="" value={{
-      carId: "",
-      inspectionAddress: "",
-      inspectionDate: new Date(),
-      technicianId: ""
-    }} cars={carResponse?.value?.items ?? []}
+    <CreateInspectionForm
+      id=""
+      value={{
+        carId: "",
+        inspectionAddress: "",
+        inspectionDate: new Date(),
+        technicianId: "",
+      }}
+      cars={carResponse?.value?.items ?? []}
       technicians={technicianResponse?.value?.items ?? []}
     />
-  )
+  );
 }

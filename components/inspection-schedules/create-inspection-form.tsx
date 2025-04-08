@@ -1,7 +1,5 @@
-'use client'
-import {
-  Button
-} from "@/components/ui/button"
+"use client";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,26 +8,24 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import {
-  Input
-} from "@/components/ui/input"
-import { useInspectionScheduleForm } from "@/hooks/inspection-schedules/use-form-inspection-schedule"
-import { LoadingSpinner } from "../ui/loading-spinner"
-import { InspectionSchedulePayload } from "@/constants/models/inspection-schedule.model"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { Calendar } from "../ui/calendar"
-import { ScrollArea, ScrollBar } from "../ui/scroll-area"
-import { Card, CardContent, CardHeader } from "../ui/card"
-import { CarResponse } from "@/constants/models/car.model"
-import { TechnicianResponse } from "@/constants/models/technician.model"
-import { Checkbox } from "../ui/checkbox"
-import SelectWithSearch from "../ui/select-search"
-import { useEffect } from "react"
-import { useSearchParams } from "next/navigation"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useInspectionScheduleForm } from "@/hooks/inspection-schedules/use-form-inspection-schedule";
+import { LoadingSpinner } from "../ui/loading-spinner";
+import { InspectionSchedulePayload } from "@/constants/models/inspection-schedule.model";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "../ui/calendar";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { CarResponse } from "@/constants/models/car.model";
+import { TechnicianResponse } from "@/constants/models/technician.model";
+import { Checkbox } from "../ui/checkbox";
+import SelectWithSearch from "../ui/select-search";
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 interface SelectParams {
   id: string;
@@ -42,11 +38,21 @@ interface InspectionScheduleFormProps {
   cars: CarResponse[];
   technicians: TechnicianResponse[];
 }
-export default function CreateInspectionForm({ id, value, cars, technicians }: InspectionScheduleFormProps) {
-  const searchParams = useSearchParams()
+export default function CreateInspectionForm({
+  id,
+  value,
+  cars,
+  technicians,
+}: InspectionScheduleFormProps) {
+  const searchParams = useSearchParams();
   const carId = searchParams.get("carId");
+  const type = searchParams.get("type");
+
+  console.log("carId", carId);
+
   const { form, isLoading, onSubmit } = useInspectionScheduleForm({
-    id, value
+    id,
+    value,
   });
 
   useEffect(() => {
@@ -54,7 +60,7 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
       form.setValue("carId", carId);
       form.setValue("isIncident", true);
     }
-  }, [carId, form])
+  }, [carId, form]);
 
   function handleDateSelect(date: Date | undefined) {
     if (date) {
@@ -87,7 +93,7 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
         <h1 className="w-full text-center">Tạo Lịch</h1>
       </CardHeader>
       <CardContent>
-        <Form {...form} >
+        <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-6">
             <div>
               <div>
@@ -95,18 +101,22 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                   control={form.control}
                   name="technicianId"
                   render={({ field }) => {
-                    const selectedTechnicianObject = technicians.map((technician) => {
-                      return {
-                        id: technician.id,
-                        value: technician.name
-                      }
-                    }).find(
-                      (tech) => tech.id === field.value, // field.value holds the ID string
-                    )
+                    const selectedTechnicianObject = technicians
+                      .map((technician) => {
+                        return {
+                          id: technician.id,
+                          value: technician.name,
+                        };
+                      })
+                      .find(
+                        (tech) => tech.id === field.value // field.value holds the ID string
+                      );
 
-                    const handleSelectChange = (selectedOption: SelectParams | null) => {
-                      field.onChange(selectedOption ? selectedOption.id : null) // Pass the ID (or null) to RHF
-                    }
+                    const handleSelectChange = (
+                      selectedOption: SelectParams | null
+                    ) => {
+                      field.onChange(selectedOption ? selectedOption.id : null); // Pass the ID (or null) to RHF
+                    };
                     return (
                       <FormItem>
                         <FormLabel>Kĩ Thuật Viên</FormLabel>
@@ -115,8 +125,8 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                             options={technicians.map((technician) => {
                               return {
                                 id: technician.id,
-                                value: technician.name
-                              }
+                                value: technician.name,
+                              };
                             })}
                             value={selectedTechnicianObject}
                             onValueChange={handleSelectChange}
@@ -128,9 +138,8 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                           />
                         </FormControl>
                         <FormMessage />
-
                       </FormItem>
-                    )
+                    );
                   }}
                 />
               </div>
@@ -139,17 +148,19 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
               control={form.control}
               name="carId"
               render={({ field }) => {
-                const selectedCarObject = cars.map((car) => {
-                  return {
-                    id: car.id,
-                    value: car.licensePlate
-                  }
-                }).find(
-                  (car) => car.id === field.value,
-                )
-                const handleSelectChange = (selectedOption: SelectParams | null) => {
-                  field.onChange(selectedOption ? selectedOption.id : null) // Pass the ID (or null) to RHF
-                }
+                const selectedCarObject = cars
+                  .map((car) => {
+                    return {
+                      id: car.id,
+                      value: car.licensePlate,
+                    };
+                  })
+                  .find((car) => car.id === field.value);
+                const handleSelectChange = (
+                  selectedOption: SelectParams | null
+                ) => {
+                  field.onChange(selectedOption ? selectedOption.id : null); // Pass the ID (or null) to RHF
+                };
                 return (
                   <FormItem>
                     <FormLabel>Xe</FormLabel>
@@ -158,8 +169,8 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                         options={cars.map((car) => {
                           return {
                             id: car.id,
-                            value: `${car.modelName} - ${car.licensePlate}`
-                          }
+                            value: `${car.modelName} - ${car.licensePlate}`,
+                          };
                         })}
                         value={selectedCarObject}
                         onValueChange={handleSelectChange}
@@ -173,7 +184,7 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                )
+                );
               }}
             />
             <FormField
@@ -183,10 +194,7 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                 <FormItem>
                   <FormLabel>Địa Chỉ Xét Xe</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Nhập Địa Chỉ"
-                      type=""
-                      {...field} />
+                    <Input placeholder="Nhập Địa Chỉ" type="" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -236,7 +244,7 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                                     size="icon"
                                     variant={
                                       field.value &&
-                                        field.value.getHours() % 12 === hour % 12
+                                      field.value.getHours() % 12 === hour % 12
                                         ? "default"
                                         : "ghost"
                                     }
@@ -263,13 +271,16 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                                     size="icon"
                                     variant={
                                       field.value &&
-                                        field.value.getMinutes() === minute
+                                      field.value.getMinutes() === minute
                                         ? "default"
                                         : "ghost"
                                     }
                                     className="sm:w-full shrink-0 aspect-square"
                                     onClick={() =>
-                                      handleTimeChange("minute", minute.toString())
+                                      handleTimeChange(
+                                        "minute",
+                                        minute.toString()
+                                      )
                                     }
                                   >
                                     {minute.toString().padStart(2, "0")}
@@ -290,10 +301,10 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                                   size="icon"
                                   variant={
                                     field.value &&
-                                      ((ampm === "AM" &&
-                                        field.value.getHours() < 12) ||
-                                        (ampm === "PM" &&
-                                          field.value.getHours() >= 12))
+                                    ((ampm === "AM" &&
+                                      field.value.getHours() < 12) ||
+                                      (ampm === "PM" &&
+                                        field.value.getHours() >= 12))
                                       ? "default"
                                       : "ghost"
                                   }
@@ -309,14 +320,12 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                       </div>
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>
-                  </FormDescription>
+                  <FormDescription></FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {
-              carId &&
+            {carId && type === "Report" && (
               <FormField
                 control={form.control}
                 name="isIncident"
@@ -330,25 +339,19 @@ export default function CreateInspectionForm({ id, value, cars, technicians }: I
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>
-                        Là Sự Cố ?
-                      </FormLabel>
-                      <FormDescription>
-                      </FormDescription>
+                      <FormLabel>Là Sự Cố ?</FormLabel>
+                      <FormDescription></FormDescription>
                     </div>
                   </FormItem>
                 )}
               />
-            }
+            )}
             <Button className="flex justify-center w-1/4 mx-auto" type="submit">
               {isLoading ? <LoadingSpinner /> : "Tạo"}
             </Button>
           </form>
-        </Form >
+        </Form>
       </CardContent>
     </Card>
-  )
+  );
 }
-
-
-

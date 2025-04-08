@@ -50,6 +50,8 @@ interface AmenityDetail {
 }
 export interface CarParams extends RootRequest {
   status?: number;
+  onlyHasInspectionSchedule?: boolean;
+  onlyNoGps?: boolean;
 }
 
 export interface CarEditResponse {
@@ -85,34 +87,34 @@ export interface CarDetailResponse {
     phone: string;
     address: string;
     avatarUrl: string;
-  },
+  };
   statistics: {
     totalBookings: number;
     totalEarnings: number;
     averageRating: number;
     lastRented: Date;
-  },
+  };
   pickupLocation: {
     longtitude: number;
     latitude: number;
     address: string;
-  },
+  };
   manufacturer: {
     id: string;
     name: string;
-  },
+  };
   images: {
     id: string;
     url: string;
     type: string;
     name: string;
-  }[],
+  }[];
   amenities: {
     id: string;
     name: string;
     description: string;
     icon: string;
-  }[],
+  }[];
   bookings: {
     bookingId: string;
     driverId: string;
@@ -122,6 +124,5 @@ export interface CarDetailResponse {
     endTime: string;
     amount: number;
     status: string;
-  }[],
+  }[];
 }
-

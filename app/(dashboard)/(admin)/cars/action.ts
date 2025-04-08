@@ -4,22 +4,27 @@ import { CarParams, CarResponse } from "@/constants/models/car.model";
 import { GPSDeviceAssignPayload } from "@/constants/models/gps-device.model";
 
 export const GetCars = async (
-  params: CarParams
+  params: Partial<CarParams>
 ): Promise<RootResponse<Pagination<CarResponse>>> => {
   const response = await axiosInstance.get("/api/staff/cars", {
     params: {
       index: params.index,
       size: params.size,
-      keyword: params.keyword
-    }
+      keyword: params.keyword,
+      status: params.status,
+      onlyHasInspectionSchedule: params.onlyHasInspectionSchedule,
+      onlyNoGps: params.onlyNoGps,
+    },
   });
   return response.data;
 };
 
-export const GetCar = async (id: string): Promise<RootResponse<CarResponse>> => {
+export const GetCar = async (
+  id: string
+): Promise<RootResponse<CarResponse>> => {
   const response = await axiosInstance.get(`/api/car/${id}`);
   return response.data;
-}
+};
 
 export const DeleteCar = async (id: string): Promise<RootResponse<null>> => {
   const response = await axiosInstance.delete(`/api/cars/${id}`);
