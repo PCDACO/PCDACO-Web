@@ -1,10 +1,7 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { CarResponse } from "@/constants/models/car.model";
-import { Badge } from "../ui/badge";
 import MenuAction from "./menu-action";
-import { CarStatusString } from "@/constants/enums/car-status.enum";
-import { translate } from "@/lib/translate";
 import { CarBadge } from "./car-badge";
 
 export const CarColumns: ColumnDef<CarResponse>[] = [
