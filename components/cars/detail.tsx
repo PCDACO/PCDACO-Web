@@ -1,46 +1,61 @@
-"use client"
-import Image from "next/image"
-import Link from "next/link"
-import { CalendarClock, Car, ChevronLeft, ChevronRight, Clock, Eye, Star, User } from "lucide-react"
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  CalendarClock,
+  Car,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Eye,
+  Star,
+  User,
+} from "lucide-react";
 
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "../ui/button"
-import { useRouter } from "next/navigation"
-import { CarDetailResponse } from "@/constants/models/car.model"
-import { formatCurrency } from "@/lib/formatCurrency"
-import { formatId } from "@/lib/format-uuid"
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import { CarDetailResponse } from "@/constants/models/car.model";
+import { formatCurrency } from "@/lib/formatCurrency";
+import { formatId } from "@/lib/format-uuid";
+import { CarBadge } from "./car-badge";
+import { CarStatusString } from "@/constants/enums/car-status.enum";
 
 interface Props {
   car: CarDetailResponse;
 }
 
-export default function CarDetailsComponent({
-  car
-}: Props) {
-  const { color,
-    manufacturer,
-    modelName,
-    owner,
-    images,
-    bookings } = car;
+export default function CarDetailsComponent({ car }: Props) {
+  const { color, manufacturer, modelName, owner, images, bookings } = car;
   const { back, push } = useRouter();
   // This would typically come from a database or API
   const handleClick = () => {
     back();
-  }
+  };
 
   const handleActionClick = (id: string) => {
     push(`/bookings/${id}`);
-  }
+  };
 
   return (
     <div className="container mx-auto py-6 space-y-6">
       <div className="flex items-center justify-between">
-        <div className="space-y-1">
+        <div className="space-y-1 w-full">
           <div className="flex items-center text-sm text-muted-foreground">
-            <Button onClick={handleClick} variant="ghost" size="icon" className="mr-2">
+            <Button
+              onClick={handleClick}
+              variant="ghost"
+              size="icon"
+              className="mr-2"
+            >
               <ChevronLeft className="h-5 w-5" />
             </Button>
             <Link href="/cars" className="hover:underline">
@@ -49,14 +64,30 @@ export default function CarDetailsComponent({
             <ChevronRight className="h-4 w-4 mx-1" />
             <span>Details</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">{modelName}</h1>
-          <div className="flex items-center gap-2">
-            <Badge variant={car.status === "Available" ? "default" : "destructive"}>{car.status}</Badge>
-            <span className="text-muted-foreground">License: {car.licensePlate}</span>
+          <div className="flex justify-between items-center w-full">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">{modelName}</h1>
+              <div className="flex items-center gap-2">
+                <CarBadge status={car.status} />
+                <span className="text-muted-foreground">
+                  License: {car.licensePlate}
+                </span>
+              </div>
+            </div>
+            {car.status === CarStatusString.Pending && (
+              <Button
+                onClick={() => {
+                  push(
+                    `/inspection-schedules/create?carId=${car.id}&type=Edit`
+                  );
+                }}
+              >
+                Tạo lịch kiểm định
+              </Button>
+            )}
           </div>
         </div>
-        <div className="flex gap-2">
-        </div>
+        <div className="flex gap-2"></div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -71,7 +102,9 @@ export default function CarDetailsComponent({
                 <p>{modelName}</p>
               </div>
               <div>
-                <h3 className="font-medium text-muted-foreground">Manufacturer</h3>
+                <h3 className="font-medium text-muted-foreground">
+                  Manufacturer
+                </h3>
                 <p>{manufacturer.name}</p>
               </div>
               <div>
@@ -116,7 +149,9 @@ export default function CarDetailsComponent({
           <CardContent>
             <div className="flex items-center">
               <Car className="h-5 w-5 text-muted-foreground mr-2" />
-              <span className="text-2xl font-bold">{car.statistics.totalBookings}</span>
+              <span className="text-2xl font-bold">
+                {car.statistics.totalBookings}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -127,7 +162,9 @@ export default function CarDetailsComponent({
           <CardContent>
             <div className="flex items-center">
               {/* <DollarSign className="h-5 w-5 text-muted-foreground mr-2" /> */}
-              <span className="text-2xl font-bold">{formatCurrency(car.statistics.totalEarnings)}</span>
+              <span className="text-2xl font-bold">
+                {formatCurrency(car.statistics.totalEarnings)}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -138,7 +175,9 @@ export default function CarDetailsComponent({
           <CardContent>
             <div className="flex items-center">
               <Star className="h-5 w-5 text-amber-500 mr-2 fill-amber-500" />
-              <span className="text-2xl font-bold">{car.statistics.averageRating}</span>
+              <span className="text-2xl font-bold">
+                {car.statistics.averageRating}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -149,7 +188,9 @@ export default function CarDetailsComponent({
           <CardContent>
             <div className="flex items-center">
               <CalendarClock className="h-5 w-5 text-muted-foreground mr-2" />
-              <span className="text-2xl font-bold">{new Date(car.statistics.lastRented).toLocaleDateString()}</span>
+              <span className="text-2xl font-bold">
+                {new Date(car.statistics.lastRented).toLocaleDateString()}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -171,7 +212,10 @@ export default function CarDetailsComponent({
               <div>Action</div>
             </div>
             {bookings.map((booking) => (
-              <div key={booking.bookingId} className="grid grid-cols-6 p-4 border-b last:border-0">
+              <div
+                key={booking.bookingId}
+                className="grid grid-cols-6 p-4 border-b last:border-0"
+              >
                 <div className="font-medium">{formatId(booking.bookingId)}</div>
                 <div>{booking.driverName}</div>
                 <div className="flex items-center gap-1">
@@ -185,7 +229,11 @@ export default function CarDetailsComponent({
                 <div>
                   <Badge variant="outline">{booking.status}</Badge>
                 </div>
-                <Button onClick={() => handleActionClick(booking.bookingId)} variant="ghost" size="icon">
+                <Button
+                  onClick={() => handleActionClick(booking.bookingId)}
+                  variant="ghost"
+                  size="icon"
+                >
                   <Eye className="h-4 w-4" />
                   <span className="sr-only">View car details</span>
                 </Button>
@@ -207,45 +255,57 @@ export default function CarDetailsComponent({
             </TabsList>
             <TabsContent value="car" className="mt-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {
-                  images.filter(item => item.type === "Car").map(item => (
-                    <div key={item.id} className="aspect-video rounded-md overflow-hidden border">
+                {images
+                  .filter((item) => item.type === "Car")
+                  .map((item) => (
+                    <div
+                      key={item.id}
+                      className="aspect-video rounded-md overflow-hidden border"
+                    >
                       <Image
                         key={item.id}
-                        src={item.url !== "" ? item.url ?? "/placeholder.png" : "/placeholder.png"}
+                        src={
+                          item.url !== ""
+                            ? item.url ?? "/placeholder.png"
+                            : "/placeholder.png"
+                        }
                         alt="Car front view"
                         width={600}
                         height={400}
                         className="object-cover w-full h-full"
                       />
                     </div>
-                  ))
-                }
+                  ))}
               </div>
             </TabsContent>
             <TabsContent value="paperwork" className="mt-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {
-                  images.filter(item => item.type === "Paper").map(item => (
-                    <div key={item.id} className="aspect-video rounded-md overflow-hidden border">
+                {images
+                  .filter((item) => item.type === "Paper")
+                  .map((item) => (
+                    <div
+                      key={item.id}
+                      className="aspect-video rounded-md overflow-hidden border"
+                    >
                       <Image
                         key={item.id}
-                        src={item.url !== "" ? item.url ?? "/placeholder.png" : "/placeholder.png"}
+                        src={
+                          item.url !== ""
+                            ? item.url ?? "/placeholder.png"
+                            : "/placeholder.png"
+                        }
                         alt="Car front view"
                         width={600}
                         height={400}
                         className="object-cover w-full h-full"
                       />
                     </div>
-                  ))
-                }
+                  ))}
               </div>
             </TabsContent>
           </Tabs>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
-
-

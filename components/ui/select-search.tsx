@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useId, useState } from "react"
-import { CheckIcon, ChevronDownIcon } from "lucide-react"
+import { useId, useState } from "react";
+import { CheckIcon, ChevronDownIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils" // Assuming you have this utility
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"; // Assuming you have this utility
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -12,40 +12,40 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/command";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 // Define a generic type for the option object passed into the component.
 //eslint-disable-next-line
-type OptionType = Record<string, any>
+type OptionType = Record<string, any>;
 
 interface SelectWithSearchProps<T extends OptionType> {
   /** The currently selected option object (or null/undefined if none selected). */
-  value: T | null | undefined
+  value: T | null | undefined;
   /** The array of available option objects (pass your pre-fetched data here). */
-  options: T[]
+  options: T[];
   /** Callback function triggered when the selection changes. Receives the full selected option object or null. */
-  onValueChange: (selectedOption: T | null) => void
+  onValueChange: (selectedOption: T | null) => void;
   /** The key in the option object to use as the unique identifier. Defaults to 'value'. */
-  valueKey?: keyof T
+  valueKey?: keyof T;
   /** The key in the option object to use as the display label. Defaults to 'label'. */
-  labelKey?: keyof T
+  labelKey?: keyof T;
   /** Placeholder text for the button when no value is selected. */
-  placeholder?: string
+  placeholder?: string;
   /** Placeholder text for the search input inside the popover. */
-  searchPlaceholder?: string
+  searchPlaceholder?: string;
   /** Text to display when the search yields no results. */
-  emptyText?: string
+  emptyText?: string;
   /** Optional label text to display above the select component. */
-  label?: string
+  label?: string;
   /** Optional CSS class name for the container div */
-  className?: string
-  disable?: boolean
+  className?: string;
+  disable?: boolean;
 }
 
 /**
@@ -63,21 +63,21 @@ export default function SelectWithSearch<T extends OptionType>({
   emptyText = "No options found.",
   label,
   className,
-  disable
+  disable,
 }: SelectWithSearchProps<T>) {
-  const id = useId()
-  const [open, setOpen] = useState<boolean>(false)
+  const id = useId();
+  const [open, setOpen] = useState<boolean>(false);
 
   // Helper function to safely get string representation of a property
   const getStringValue = (obj: T | null | undefined, key: keyof T): string => {
     if (!obj || obj[key] === undefined || obj[key] === null) {
-      return ""
+      return "";
     }
-    return String(obj[key])
-  }
+    return String(obj[key]);
+  };
 
   // Get the display label of the currently selected value object
-  const selectedLabel = value ? getStringValue(value, labelKey) : placeholder
+  const selectedLabel = value ? getStringValue(value, labelKey) : placeholder;
 
   return (
     <div className={cn(label && "*:not-first:mt-2", className)}>
@@ -90,7 +90,7 @@ export default function SelectWithSearch<T extends OptionType>({
             role="combobox"
             aria-expanded={open}
             disabled={disable ?? false}
-            className="bg-background hover:bg-background border-input w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
+            className="bg-background hover:bg-background border-muted-foreground w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
           >
             <span className={cn("truncate", !value && "text-muted-foreground")}>
               {selectedLabel}
@@ -113,24 +113,22 @@ export default function SelectWithSearch<T extends OptionType>({
             // It must return a number (score): 0 for no match, >0 for a match.
             filter={(itemValue, searchValue) => {
               // itemValue is the unique ID string (e.g., "next.js", "user-123")
-              const lowerSearch = searchValue.toLowerCase()
+              const lowerSearch = searchValue.toLowerCase();
 
               // Check if the search term matches the ID (valueKey)
-              const valueMatch = itemValue
-                .toLowerCase()
-                .includes(lowerSearch)
+              const valueMatch = itemValue.toLowerCase().includes(lowerSearch);
 
               // Find the corresponding full option object to get the label
               const option = options.find(
-                (opt) => getStringValue(opt, valueKey) === itemValue,
-              )
-              const label = option ? getStringValue(option, labelKey) : ""
+                (opt) => getStringValue(opt, valueKey) === itemValue
+              );
+              const label = option ? getStringValue(option, labelKey) : "";
 
               // Check if the search term matches the label (labelKey)
-              const labelMatch = label.toLowerCase().includes(lowerSearch)
+              const labelMatch = label.toLowerCase().includes(lowerSearch);
 
               // Return 1 if either matches (basic scoring), 0 otherwise
-              return valueMatch || labelMatch ? 1 : 0
+              return valueMatch || labelMatch ? 1 : 0;
             }}
           >
             <CommandInput placeholder={searchPlaceholder} />
@@ -138,11 +136,11 @@ export default function SelectWithSearch<T extends OptionType>({
               <CommandEmpty>{emptyText}</CommandEmpty>
               <CommandGroup>
                 {options.map((option) => {
-                  const optionId = getStringValue(option, valueKey)
-                  const optionLabel = getStringValue(option, labelKey)
+                  const optionId = getStringValue(option, valueKey);
+                  const optionLabel = getStringValue(option, labelKey);
                   const isSelected = value
                     ? getStringValue(value, valueKey) === optionId
-                    : false
+                    : false;
 
                   return (
                     <CommandItem
@@ -152,21 +150,21 @@ export default function SelectWithSearch<T extends OptionType>({
                       onSelect={(currentValueId) => {
                         const selectedOption = options.find(
                           (opt) =>
-                            getStringValue(opt, valueKey) === currentValueId,
-                        )
-                        onValueChange(selectedOption ?? null)
-                        setOpen(false)
+                            getStringValue(opt, valueKey) === currentValueId
+                        );
+                        onValueChange(selectedOption ?? null);
+                        setOpen(false);
                       }}
-                    // Prevent default filtering based on label text, rely on our custom filter
-                    // This might not be strictly necessary depending on cmdk version, but can prevent conflicts
-                    // filter={false} // <-- You might not need this line
+                      // Prevent default filtering based on label text, rely on our custom filter
+                      // This might not be strictly necessary depending on cmdk version, but can prevent conflicts
+                      // filter={false} // <-- You might not need this line
                     >
                       {optionLabel /* Display the user-friendly label */}
                       {isSelected && (
                         <CheckIcon size={16} className="ml-auto" />
                       )}
                     </CommandItem>
-                  )
+                  );
                 })}
               </CommandGroup>
             </CommandList>
@@ -174,6 +172,5 @@ export default function SelectWithSearch<T extends OptionType>({
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }
-

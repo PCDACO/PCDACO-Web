@@ -6,22 +6,26 @@ import SearchInput from "@/components/input/search-input";
 import PaginationTable from "../data-table/pagination";
 import { useCarQuery } from "@/hooks/cars/use-car";
 import { CarColumns } from "./column";
-interface CarTableProps {
-  status?: number;
-}
-const CarTable = ({ status }: CarTableProps) => {
+import { useCarParamsStore } from "@/stores/use-params";
+import CarFilter from "./car-filter";
+
+const CarTable = () => {
+  const { params } = useCarParamsStore();
   const { value } = useParamStore();
   const { listCarQuery } = useCarQuery({
     params: {
-      ...value,
-      status: status,
+      keyword: value.keyword,
+      status: params.status,
     },
   });
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center w-full">
-        <SearchInput keyValue="manufacture" />
+        <div className="flex items-center space-x-4">
+          <SearchInput keyValue="manufacture" />
+          <CarFilter />
+        </div>
         <div className="flex items-center space-x-4">
           <PaginationTable
             value={

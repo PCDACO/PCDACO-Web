@@ -6,7 +6,7 @@ import { BaseResponseWithPagination } from "@/constants/responses/base-response"
 import { toastError, toastResponse } from "@/lib/toast-error";
 
 interface CarQuery {
-  params?: CarParams;
+  params?: Partial<CarParams>;
 }
 
 export const useCarQuery = ({ params }: CarQuery) => {
@@ -18,6 +18,7 @@ export const useCarQuery = ({ params }: CarQuery) => {
     queryKey: ["cars", params],
     queryFn: () => GetCars(params),
     initialData: BaseResponseWithPagination<CarResponse>,
+    enabled: !!params,
     staleTime: 0,
     retry: 1,
   });
@@ -38,7 +39,7 @@ export const useCarMutation = () => {
         queryClient.invalidateQueries({ queryKey: ["cars"] });
       }
     },
-    onError: (error:Error) => {
+    onError: (error: Error) => {
       toastError(error);
     },
   });
