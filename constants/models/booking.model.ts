@@ -1,3 +1,20 @@
+export type BookingParams = RootRequest;
+
+export interface ListBookingResponse {
+  id: string;
+  carName: string;
+  driverName: string;
+  ownerName: string;
+  totalAmount: number;
+  totalDistance: number;
+  isPaid: boolean;
+  isRefund: boolean;
+  status: string;
+  startTime: string;
+  endTime: string;
+  actualReturnTime: string;
+}
+
 export interface BookingResponse {
   id: string;
   car: CarDetail;

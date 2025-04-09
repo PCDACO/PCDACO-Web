@@ -59,10 +59,10 @@ export default function CarDetailsComponent({ car }: Props) {
               <ChevronLeft className="h-5 w-5" />
             </Button>
             <Link href="/cars" className="hover:underline">
-              Cars
+              Xe
             </Link>
             <ChevronRight className="h-4 w-4 mx-1" />
-            <span>Details</span>
+            <span>Chi tiết</span>
           </div>
           <div className="flex justify-between items-center w-full">
             <div>
@@ -86,21 +86,21 @@ export default function CarDetailsComponent({ car }: Props) {
               </Button>
             )}
           </div>
-        </div>
+        </div >
         <div className="flex gap-2"></div>
-      </div>
+      </div >
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle>Car Information</CardTitle>
+            <CardTitle>Thông tin xe</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <h3 className="font-medium text-muted-foreground">Model</h3>
                 <p>{modelName}</p>
-              </div>
+              </div >
               <div>
                 <h3 className="font-medium text-muted-foreground">
                   Manufacturer
@@ -108,15 +108,19 @@ export default function CarDetailsComponent({ car }: Props) {
                 <p>{manufacturer.name}</p>
               </div>
               <div>
-                <h3 className="font-medium text-muted-foreground">Color</h3>
+                <h3 className="font-medium text-muted-foreground">Dòng xe</h3>
+                <p>{modelName}</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-muted-foreground">Màu</h3>
                 <p>{color}</p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </div >
+          </CardContent >
+        </Card >
         <Card>
           <CardHeader>
-            <CardTitle>Owner Details</CardTitle>
+            <CardTitle>Thông tin chủ xe</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -129,22 +133,22 @@ export default function CarDetailsComponent({ car }: Props) {
                 <p>{owner.email}</p>
               </div>
               <div>
-                <h3 className="font-medium text-muted-foreground">Phone</h3>
+                <h3 className="font-medium text-muted-foreground">SDT</h3>
                 <p>{owner.phone}</p>
               </div>
               <div>
-                <h3 className="font-medium text-muted-foreground">Address</h3>
+                <h3 className="font-medium text-muted-foreground">Địa chỉ</h3>
                 <p>{owner.address}</p>
               </div>
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div >
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="md:col-span-1">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Total Bookings</CardTitle>
+            <CardTitle className="text-base">Tổng chuyến</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">
@@ -157,7 +161,7 @@ export default function CarDetailsComponent({ car }: Props) {
         </Card>
         <Card className="md:col-span-1">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Car Earnings</CardTitle>
+            <CardTitle className="text-base">Lợi nhuận xe</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">
@@ -170,7 +174,7 @@ export default function CarDetailsComponent({ car }: Props) {
         </Card>
         <Card className="md:col-span-1">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Average Rating</CardTitle>
+            <CardTitle className="text-base">Đánh giá trung bình</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">
@@ -183,7 +187,7 @@ export default function CarDetailsComponent({ car }: Props) {
         </Card>
         <Card className="md:col-span-1">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Last Rented</CardTitle>
+            <CardTitle className="text-base">Lần cuối thuê</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">
@@ -198,17 +202,17 @@ export default function CarDetailsComponent({ car }: Props) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Booking History</CardTitle>
-          <CardDescription>Recent bookings for this vehicle</CardDescription>
+          <CardTitle>Chuyến</CardTitle>
+          <CardDescription>Các lượt thuê gần đây</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
             <div className="grid grid-cols-6 p-4 font-medium border-b">
               <div>Booking ID</div>
-              <div>Customer</div>
-              <div>Dates</div>
-              <div>Amount</div>
-              <div>Status</div>
+              <div>Khách</div>
+              <div>Ngày</div>
+              <div>Số tiền</div>
+              <div>Trạng thái</div>
               <div>Action</div>
             </div>
             {bookings.map((booking) => (
@@ -235,7 +239,7 @@ export default function CarDetailsComponent({ car }: Props) {
                   size="icon"
                 >
                   <Eye className="h-4 w-4" />
-                  <span className="sr-only">View car details</span>
+                  <span className="sr-only">Chi tiết xe</span>
                 </Button>
               </div>
             ))}
@@ -245,13 +249,13 @@ export default function CarDetailsComponent({ car }: Props) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Photos</CardTitle>
+          <CardTitle>Ảnh</CardTitle>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="car">
             <TabsList className="mb-4">
-              <TabsTrigger value="car">Car Photos</TabsTrigger>
-              <TabsTrigger value="paperwork">Paperwork</TabsTrigger>
+              <TabsTrigger value="car">Xe</TabsTrigger>
+              <TabsTrigger value="paperwork">Giấy tờ</TabsTrigger>
             </TabsList>
             <TabsContent value="car" className="mt-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -306,6 +310,6 @@ export default function CarDetailsComponent({ car }: Props) {
           </Tabs>
         </CardContent>
       </Card>
-    </div>
+    </div >
   );
 }
