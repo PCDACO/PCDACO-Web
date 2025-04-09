@@ -48,8 +48,6 @@ export default function CreateInspectionForm({
   const carId = searchParams.get("carId");
   const type = searchParams.get("type");
 
-  console.log("carId", carId);
-
   const { form, isLoading, onSubmit } = useInspectionScheduleForm({
     id,
     value,
@@ -58,9 +56,14 @@ export default function CreateInspectionForm({
   useEffect(() => {
     if (carId) {
       form.setValue("carId", carId);
-      form.setValue("isIncident", true);
     }
-  }, [carId, form]);
+
+    if (type === "Report") {
+      form.setValue("isIncident", true);
+    } else {
+      form.setValue("isIncident", false);
+    }
+  }, [carId, form, type]);
 
   function handleDateSelect(date: Date | undefined) {
     if (date) {
