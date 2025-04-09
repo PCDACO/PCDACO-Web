@@ -9,7 +9,7 @@ export default async function CreateInspectionSchedulePage() {
     keyword: "",
     status: 1,
     onlyNoGps: true,
-    onlyHasInspectionSchedule: false,
+    onlyHasInprogressInspectionSchedule: false,
   });
   const technicianResponse = await GetTechnicians({
     index: 1,

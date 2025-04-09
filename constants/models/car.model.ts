@@ -50,7 +50,7 @@ interface AmenityDetail {
 }
 export interface CarParams extends RootRequest {
   status?: number;
-  onlyHasInspectionSchedule?: boolean;
+  onlyHasInprogressInspectionSchedule?: boolean;
   onlyNoGps?: boolean;
 }
 
