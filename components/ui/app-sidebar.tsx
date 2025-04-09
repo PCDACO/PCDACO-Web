@@ -32,6 +32,7 @@ import {
   BadgeDollarSign,
   Newspaper,
   ChevronDown,
+  NewspaperIcon,
 } from 'lucide-react';
 // import Link from "next/link"
 import { LogoutButton } from './LogoutButton';
@@ -76,6 +77,13 @@ const items: SideBarItem[] = [
     title: 'Xe',
     url: '/cars',
     icon: Car,
+    role: 'Admin',
+    group: 'Quản Lí Nền Tảng',
+  },
+  {
+    title: 'Bookings',
+    url: '/bookings',
+    icon: NewspaperIcon,
     role: 'Admin',
     group: 'Quản Lí Nền Tảng',
   },

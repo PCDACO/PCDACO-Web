@@ -42,8 +42,8 @@ export function ReportsTable({
   return (
     <Tabs defaultValue="made" className="w-full">
       <TabsList className="grid w-full grid-cols-2 max-w-md mb-4">
-        <TabsTrigger value="made">Reports Made</TabsTrigger>
-        <TabsTrigger value="received">Reports Received</TabsTrigger>
+        <TabsTrigger value="made">Báo cáo đã tạo</TabsTrigger>
+        <TabsTrigger value="received">Báo cáo được nhận</TabsTrigger>
       </TabsList>
 
       <TabsContent value="made">

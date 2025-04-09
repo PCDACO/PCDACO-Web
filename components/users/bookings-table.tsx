@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Clock, Eye } from "lucide-react"
 import { UserBookingDetail } from "@/constants/models/user.model"
 import { useRouter } from "next/navigation"
+import { formatCurrency } from "@/lib/formatCurrency"
 
 export function BookingsTable({ bookings }: { bookings: UserBookingDetail[] }) {
   const { push } = useRouter();
@@ -84,7 +85,7 @@ export function BookingsTable({ bookings }: { bookings: UserBookingDetail[] }) {
                   </div>
                 </TableCell>
                 <TableCell>{getStatusBadge(booking.status)}</TableCell>
-                <TableCell className="text-right">${booking.totalAmount.toFixed(2)}</TableCell>
+                <TableCell className="text-right">{formatCurrency(booking.totalAmount)}</TableCell>
                 <TableCell className="text-right">
                   <Button onClick={() => handleActionClick(booking.id)} variant="ghost" size="icon">
                     <Eye className="h-4 w-4" />
