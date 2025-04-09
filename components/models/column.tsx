@@ -13,8 +13,12 @@ export const ModelColumns: ColumnDef<ModelResponse>[] = [
     }
   },
   {
-    accessorKey: "name",
-    header: "Tên",
+    accessorKey: "ownerName",
+    header: "Người thuê",
+  },
+  {
+    accessorKey: "driverName",
+    header: "Người thuê",
   },
   {
     accessorKey: "createdAt",
