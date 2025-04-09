@@ -12,7 +12,8 @@ export const GetCars = async (
       size: params.size,
       keyword: params.keyword,
       status: params.status,
-      onlyHasInspectionSchedule: params.onlyHasInspectionSchedule,
+      onlyHasInprogressInspectionSchedule:
+        params.onlyHasInprogressInspectionSchedule,
       onlyNoGps: params.onlyNoGps,
     },
   });

@@ -8,8 +8,8 @@ export default async function CreateInspectionSchedulePage() {
     size: 1000,
     keyword: "",
     status: 1,
-    onlyNoGps: true,
-    onlyHasInspectionSchedule: false,
+    onlyNoGps: false,
+    onlyHasInprogressInspectionSchedule: false,
   });
   const technicianResponse = await GetTechnicians({
     index: 1,
