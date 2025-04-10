@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CreateInspectionSchedules,
   DeleteInspectionSchedules,
+  GetCurrentTechnicianInspectionSchedules,
   GetInProgressInspectionSchedule,
   GetInspectionSchedules,
   RejectInspectionSchedules,
@@ -39,13 +40,19 @@ export const useInspectionScheduleQuery = ({
     retry: 1
   });
 
+  const listCurrentInspectionSchedules = useQuery({
+    queryKey: ["inspection-schedules"],
+    queryFn: () => GetCurrentTechnicianInspectionSchedules({ month: params.month, year: params.year }),
+    initialData: BaseResponse<InspectionScheduleDetail[]>,
+  });
+
   const inProgressInspectionSchedule = useQuery({
     queryKey: ["inspection-schedules", "in-progress"],
     queryFn: () => GetInProgressInspectionSchedule(),
     initialData: BaseResponse<InProgressInspectionScheduleResponse>,
   });
 
-  return { listInspectionSchedules, inProgressInspectionSchedule };
+  return { listInspectionSchedules, listCurrentInspectionSchedules, inProgressInspectionSchedule };
 };
 
 export const useInspectionScheduleMutation = () => {
