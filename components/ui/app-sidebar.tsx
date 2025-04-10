@@ -173,7 +173,14 @@ const items: SideBarItem[] = [
     group: 'Thống Kê',
   },
   {
-    title: 'Lịch Kiểm Định',
+    title: 'Lịch Xác Minh',
+    url: '/technician-todo',
+    icon: Calendar,
+    role: 'Technician',
+    group: 'Lịch',
+  },
+  {
+    title: 'Lịch Xác Minh Theo Tháng',
     url: '/technician-todo',
     icon: Calendar,
     role: 'Technician',

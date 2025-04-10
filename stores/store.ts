@@ -71,8 +71,8 @@ export const useTransactionParamsStore = create<TransactionParamsStore>((set) =>
 export const useInspectionScheduleParamStore =
   create<InspectionScheduleParamsStore>((set) => ({
     value: {
-      month: 3,
-      year: 2025,
+      month: (new Date).getMonth(),
+      year: (new Date).getFullYear(),
       technicianId: undefined,
     },
     setValue: (payload: GetInspectionSchedulesParams) =>

@@ -3,6 +3,12 @@ export interface GetInspectionSchedulesParams {
   month: number;
   year: number;
 }
+
+export interface GetCurrentInspectionSchedulesParams {
+  month: number;
+  year: number;
+}
+
 export interface ContractFromScheduleUpdateResponse {
   carId: string;
 }

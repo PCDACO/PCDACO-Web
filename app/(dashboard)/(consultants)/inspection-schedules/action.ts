@@ -1,6 +1,8 @@
 "use server"
+import { GetToken } from "@/app/actions/shared/action";
 import axiosInstance from "@/app/axios.server";
-import { GetInspectionSchedulesParams, InProgressInspectionScheduleResponse, InspectionScheduleCreateResponse, InspectionScheduleDetail, InspectionSchedulePayload } from "@/constants/models/inspection-schedule.model";
+import { GetCurrentInspectionSchedulesParams, GetInspectionSchedulesParams, InProgressInspectionScheduleResponse, InspectionScheduleCreateResponse, InspectionScheduleDetail, InspectionSchedulePayload } from "@/constants/models/inspection-schedule.model";
+import { jwtDecode } from "jwt-decode";
 
 export const GetInspectionSchedules =
   async ({
@@ -17,6 +19,28 @@ export const GetInspectionSchedules =
     }
     const response = await axiosInstance.get("/api/inspection-schedules", {
       params: param
+    });
+    return response.data;
+  }
+
+interface AccessTokenObject {
+  sub: string;
+}
+
+export const GetCurrentTechnicianInspectionSchedules =
+  async (params: GetCurrentInspectionSchedulesParams): Promise<RootResponse<InspectionScheduleDetail[]>> => {
+    const { accessToken } = await GetToken();
+    const decoded = jwtDecode<AccessTokenObject>(accessToken?.value ?? "");
+    if (!decoded.sub) return {
+      isSuccess: false,
+      message: "",
+      value: null!
+    }
+    const response = await axiosInstance.get("/api/inspection-schedules", {
+      params: {
+        ...params,
+        technicianId: decoded.sub
+      }
     });
     return response.data;
   }
