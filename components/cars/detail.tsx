@@ -76,6 +76,7 @@ export default function CarDetailsComponent({ car }: Props) {
             </div>
             {car.status === CarStatusString.Pending && (
               <Button
+                disabled={car.hasInspectionSchedule}
                 onClick={() => {
                   push(
                     `/inspection-schedules/create?carId=${car.id}&type=Edit`
@@ -86,9 +87,9 @@ export default function CarDetailsComponent({ car }: Props) {
               </Button>
             )}
           </div>
-        </div >
+        </div>
         <div className="flex gap-2"></div>
-      </div >
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="md:col-span-2">
@@ -100,7 +101,7 @@ export default function CarDetailsComponent({ car }: Props) {
               <div>
                 <h3 className="font-medium text-muted-foreground">Model</h3>
                 <p>{modelName}</p>
-              </div >
+              </div>
               <div>
                 <h3 className="font-medium text-muted-foreground">
                   Manufacturer
@@ -115,9 +116,9 @@ export default function CarDetailsComponent({ car }: Props) {
                 <h3 className="font-medium text-muted-foreground">Màu</h3>
                 <p>{color}</p>
               </div>
-            </div >
-          </CardContent >
-        </Card >
+            </div>
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader>
             <CardTitle>Thông tin chủ xe</CardTitle>
@@ -143,7 +144,7 @@ export default function CarDetailsComponent({ car }: Props) {
             </div>
           </CardContent>
         </Card>
-      </div >
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="md:col-span-1">
@@ -310,6 +311,6 @@ export default function CarDetailsComponent({ car }: Props) {
           </Tabs>
         </CardContent>
       </Card>
-    </div >
+    </div>
   );
 }
