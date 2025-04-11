@@ -184,33 +184,6 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                     ) : (
                       <>
                         {daySchedules.slice(0, 2).map((schedule) => (
-                          <Tooltip key={schedule.id}>
-                            <TooltipTrigger asChild>
-                              <Badge
-                                onMouseDown={() => handleDeleteClick(schedule.id)}
-                                onMouseUp={() => handleCancelTimer()}
-                                onMouseLeave={() => handleCancelTimer()}
-                                className={`w-full justify-start truncate bg-black ${statusClasses[schedule.statusName] || "bg-slate-300"}  cursor-pointer text-xs hover:${statusClasses}`}>
-                                {formatDateToHour(schedule.inspectionDate.toString())} - {schedule.carOwnerName}
-                              </Badge>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <div className={`text-sm`}>
-                                <p>
-                                  <strong>Owner:</strong> {schedule.carOwnerName}
-                                </p>
-                                <p>
-                                  <strong>Time:</strong> {formatDateToHour(schedule.inspectionDate.toString())}
-                                </p>
-                                <p>
-                                  <strong>Address:</strong> {schedule.inspectionAddress}
-                                </p>
-                                <p>
-                                  <strong>Status:</strong> {schedule.statusName}
-                                </p>
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
                         ))}
                         <Tooltip>
                           <TooltipTrigger asChild>
