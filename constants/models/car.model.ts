@@ -65,6 +65,7 @@ export interface CarCreateResponse {
 export interface CarDetailResponse {
   id: string;
   modelId: string;
+  hasInspectionSchedule: boolean;
   modelName: string;
   releaseDate: string;
   color: string;
