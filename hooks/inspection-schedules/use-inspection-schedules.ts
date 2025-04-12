@@ -6,6 +6,7 @@ import {
   GetInProgressInspectionSchedule,
   GetInspectionSchedules,
   RejectInspectionSchedules,
+  UpdateInspectionSchedule,
 } from "@/app/(dashboard)/(consultants)/inspection-schedules/action";
 import {
   CarInspectionSchedulePayload,
@@ -76,6 +77,26 @@ export const useInspectionScheduleMutation = () => {
     },
   });
 
+  const reassignInspectionSchedule = useMutation({
+    mutationKey: ["reassign-schedules"],
+    mutationFn: ({
+      id, payload
+    }: {
+      id: string,
+      payload: InspectionSchedulePayload,
+    }) => UpdateInspectionSchedule({ id, payload }),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
+      }
+    },
+    onError: (error: Error) => {
+      toastError(error);
+    }
+  });
+
+
   const rejectInspectionSchedule = useMutation({
     mutationKey: ["rejectInspectionSchedule"],
     mutationFn: async ({
@@ -145,7 +166,8 @@ export const useInspectionScheduleMutation = () => {
     rejectInspectionSchedule,
     approveInspectionSchedule,
     updateContractFromScheduleInfo,
-    deleteInspectionSchedule
+    deleteInspectionSchedule,
+    reassignInspectionSchedule
   }
 }
 

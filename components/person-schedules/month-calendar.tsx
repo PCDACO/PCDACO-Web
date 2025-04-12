@@ -9,7 +9,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { InspectionScheduleDetail } from "@/constants/models/inspection-schedule.model"
 import { formatDate, formatDateToHour } from "@/lib/utils"
 import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
-import TimeBadgeComponent from "./time-badge"
 
 interface MonthCalendarProps {
   currentDate: Date
@@ -153,12 +152,58 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                   {daySchedules.length > 0 ? (
                     daySchedules.length <= 3 ? (
                       daySchedules.map((schedule) => (
-                        <TimeBadgeComponent key={schedule.id} statusClasses={statusClasses} schedule={schedule} />
+                        <Tooltip key={schedule.id}>
+                          <TooltipTrigger asChild>
+                            <Badge
+                              className={`w-full justify-start truncate bg-black ${statusClasses[schedule.statusName] || "bg-slate-300"}  cursor-pointer text-xs hover:${statusClasses}`}>
+                              {formatDateToHour(schedule.inspectionDate.toString())} - {schedule.carOwnerName}
+                            </Badge>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className={`text-sm`}>
+                              <p>
+                                <strong>Owner:</strong> {schedule.carOwnerName}
+                              </p>
+                              <p>
+                                <strong>Time:</strong> {formatDateToHour(schedule.inspectionDate.toString())}
+                              </p>
+                              <p>
+                                <strong>Address:</strong> {schedule.inspectionAddress}
+                              </p>
+                              <p>
+                                <strong>Status:</strong> {schedule.statusName}
+                              </p>
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
                       ))
                     ) : (
                       <>
                         {daySchedules.slice(0, 2)?.map((schedule) => (
-                          <TimeBadgeComponent key={schedule.id} statusClasses={statusClasses} schedule={schedule} />
+                          <Tooltip key={schedule.id}>
+                            <TooltipTrigger asChild>
+                              <Badge
+                                className={`w-full justify-start truncate bg-black ${statusClasses[schedule.statusName] || "bg-slate-300"}  cursor-pointer text-xs hover:${statusClasses}`}>
+                                {formatDateToHour(schedule.inspectionDate.toString())} - {schedule.carOwnerName}
+                              </Badge>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <div className={`text-sm`}>
+                                <p>
+                                  <strong>Owner:</strong> {schedule.carOwnerName}
+                                </p>
+                                <p>
+                                  <strong>Time:</strong> {formatDateToHour(schedule.inspectionDate.toString())}
+                                </p>
+                                <p>
+                                  <strong>Address:</strong> {schedule.inspectionAddress}
+                                </p>
+                                <p>
+                                  <strong>Status:</strong> {schedule.statusName}
+                                </p>
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
                         )) ?? []}
                         <Tooltip>
                           <TooltipTrigger asChild>

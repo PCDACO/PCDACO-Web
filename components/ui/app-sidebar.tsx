@@ -181,7 +181,7 @@ const items: SideBarItem[] = [
   },
   {
     title: 'Lịch Xác Minh Theo Tháng',
-    url: '/technician-todo',
+    url: '/personal-schedules',
     icon: Calendar,
     role: 'Technician',
     group: 'Lịch',

@@ -11,13 +11,15 @@ import {
 interface InspectionScheduleFormProps {
   id: string;
   value: InspectionSchedulePayload;
+  keyword: string;
 }
 
 export const useInspectionScheduleForm = ({
   id,
   value,
+  keyword
 }: InspectionScheduleFormProps) => {
-  const { createInspectionSchedule } = useInspectionScheduleMutation();
+  const { createInspectionSchedule, reassignInspectionSchedule, deleteInspectionSchedule } = useInspectionScheduleMutation();
 
   // Memoize defaultValues to prevent recalculating it on each render
   const defaultValues = useMemo(() => {
@@ -26,7 +28,7 @@ export const useInspectionScheduleForm = ({
       carId: "",
       inspectionAddress: "",
       inspectionDate: new Date(),
-      isIncident: false
+      isIncident: false,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, value]);
@@ -36,8 +38,19 @@ export const useInspectionScheduleForm = ({
     defaultValues,
   });
 
-  const onSubmit = form.handleSubmit(async (payload) => {
-    createInspectionSchedule.mutate(payload);
+  const onSubmit = form.handleSubmit((payload) => {
+    switch (keyword) {
+      case "create": {
+        return createInspectionSchedule.mutate(payload);
+      };
+      case "update": {
+        console.log(payload);
+        return reassignInspectionSchedule.mutate({ id, payload });
+      };
+      case "delete": {
+        return deleteInspectionSchedule.mutate(id);
+      }
+    }
   });
 
   return {

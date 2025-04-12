@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import { MonthCalendar } from "@/components/inspection-schedules/month-calendar"
+import { MonthCalendar } from "./month-calendar"
 import { useInspectionScheduleQuery } from "@/hooks/inspection-schedules/use-inspection-schedules"
 import { useInspectionScheduleParamStore } from "@/stores/store"
 
