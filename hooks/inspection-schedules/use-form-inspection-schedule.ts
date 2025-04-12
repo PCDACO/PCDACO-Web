@@ -11,22 +11,24 @@ import {
 interface InspectionScheduleFormProps {
   id: string;
   value: InspectionSchedulePayload;
+  keyword: string;
 }
 
 export const useInspectionScheduleForm = ({
   id,
   value,
+  keyword
 }: InspectionScheduleFormProps) => {
-  const { createInspectionSchedule } = useInspectionScheduleMutation();
+  const { createInspectionSchedule, updateInspectionSchedule, deleteInspectionSchedule } = useInspectionScheduleMutation();
 
   // Memoize defaultValues to prevent recalculating it on each render
   const defaultValues = useMemo(() => {
     return {
-      technicianId: "",
-      carId: "",
-      inspectionAddress: "",
-      inspectionDate: new Date(),
-      isIncident: false
+      technicianId: id ? value.technicianId : "",
+      carId: id ? value.carId : "",
+      inspectionAddress: id ? value.inspectionAddress : "",
+      inspectionDate: id ? value.inspectionDate : new Date(),
+      isIncident: id ? value.isIncident : false,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, value]);
@@ -36,13 +38,25 @@ export const useInspectionScheduleForm = ({
     defaultValues,
   });
 
-  const onSubmit = form.handleSubmit(async (payload) => {
-    createInspectionSchedule.mutate(payload);
+  const onSubmit = form.handleSubmit((payload) => {
+    switch (keyword) {
+      case "create": {
+        return createInspectionSchedule.mutate(payload);
+      };
+      case "update": {
+        return updateInspectionSchedule.mutate({ id, payload });
+      };
+      case "delete": {
+        return deleteInspectionSchedule.mutate(id);
+      }
+    }
   });
 
   return {
     form,
     onSubmit,
-    isLoading: createInspectionSchedule.isLoading,
+    isLoading: createInspectionSchedule.isLoading
+      || updateInspectionSchedule.isLoading
+      || deleteInspectionSchedule.isLoading,
   };
 };

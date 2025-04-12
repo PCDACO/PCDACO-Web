@@ -51,6 +51,7 @@ export default function CreateInspectionForm({
   const { form, isLoading, onSubmit } = useInspectionScheduleForm({
     id,
     value,
+    keyword: "create",
   });
 
   useEffect(() => {
@@ -247,7 +248,7 @@ export default function CreateInspectionForm({
                                     size="icon"
                                     variant={
                                       field.value &&
-                                      field.value.getHours() % 12 === hour % 12
+                                        field.value.getHours() % 12 === hour % 12
                                         ? "default"
                                         : "ghost"
                                     }
@@ -274,7 +275,7 @@ export default function CreateInspectionForm({
                                     size="icon"
                                     variant={
                                       field.value &&
-                                      field.value.getMinutes() === minute
+                                        field.value.getMinutes() === minute
                                         ? "default"
                                         : "ghost"
                                     }
@@ -304,10 +305,10 @@ export default function CreateInspectionForm({
                                   size="icon"
                                   variant={
                                     field.value &&
-                                    ((ampm === "AM" &&
-                                      field.value.getHours() < 12) ||
-                                      (ampm === "PM" &&
-                                        field.value.getHours() >= 12))
+                                      ((ampm === "AM" &&
+                                        field.value.getHours() < 12) ||
+                                        (ampm === "PM" &&
+                                          field.value.getHours() >= 12))
                                       ? "default"
                                       : "ghost"
                                   }

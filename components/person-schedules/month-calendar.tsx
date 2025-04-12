@@ -1,14 +1,11 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { InspectionScheduleDetail } from "@/constants/models/inspection-schedule.model"
 import { formatDate, formatDateToHour } from "@/lib/utils"
-import TimeBadgeComponent from "./time-badge"
 
 interface MonthCalendarProps {
   currentDate: Date
@@ -29,6 +26,7 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
     Rejected: "bg-red-500",
     Approved: "bg-green-500",
   };
+
 
   // Get days for the calendar grid
   useEffect(() => {
@@ -132,12 +130,58 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                   {daySchedules.length > 0 ? (
                     daySchedules.length <= 3 ? (
                       daySchedules.map((schedule) => (
-                        <TimeBadgeComponent key={schedule.id} statusClasses={statusClasses} schedule={schedule} />
+                        <Tooltip key={schedule.id}>
+                          <TooltipTrigger asChild>
+                            <Badge
+                              className={`w-full justify-start truncate bg-black ${statusClasses[schedule.statusName] || "bg-slate-300"}  cursor-pointer text-xs hover:${statusClasses}`}>
+                              {formatDateToHour(schedule.inspectionDate.toString())} - {schedule.carOwnerName}
+                            </Badge>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className={`text-sm`}>
+                              <p>
+                                <strong>Owner:</strong> {schedule.carOwnerName}
+                              </p>
+                              <p>
+                                <strong>Time:</strong> {formatDateToHour(schedule.inspectionDate.toString())}
+                              </p>
+                              <p>
+                                <strong>Address:</strong> {schedule.inspectionAddress}
+                              </p>
+                              <p>
+                                <strong>Status:</strong> {schedule.statusName}
+                              </p>
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
                       ))
                     ) : (
-                      <div key={index}>
+                      <>
                         {daySchedules.slice(0, 2)?.map((schedule) => (
-                          <TimeBadgeComponent key={schedule.id} statusClasses={statusClasses} schedule={schedule} />
+                          <Tooltip key={schedule.id}>
+                            <TooltipTrigger asChild>
+                              <Badge
+                                className={`w-full justify-start truncate bg-black ${statusClasses[schedule.statusName] || "bg-slate-300"}  cursor-pointer text-xs hover:${statusClasses}`}>
+                                {formatDateToHour(schedule.inspectionDate.toString())} - {schedule.carOwnerName}
+                              </Badge>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <div className={`text-sm`}>
+                                <p>
+                                  <strong>Owner:</strong> {schedule.carOwnerName}
+                                </p>
+                                <p>
+                                  <strong>Time:</strong> {formatDateToHour(schedule.inspectionDate.toString())}
+                                </p>
+                                <p>
+                                  <strong>Address:</strong> {schedule.inspectionAddress}
+                                </p>
+                                <p>
+                                  <strong>Status:</strong> {schedule.statusName}
+                                </p>
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
                         )) ?? []}
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -160,7 +204,7 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                             </div>
                           </TooltipContent>
                         </Tooltip>
-                      </div>
+                      </>
                     )
                   ) : null}
                 </div>

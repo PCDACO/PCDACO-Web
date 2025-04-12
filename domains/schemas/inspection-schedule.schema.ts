@@ -7,7 +7,5 @@ export const InspectionScheduleSchema = z.object({
   inspectionDate: z.date(),
   isIncident: z.boolean()
 });
-
 export type InspectionSchedulePayloadSchema = z.infer<
-  typeof InspectionScheduleSchema
->;
+  typeof InspectionScheduleSchema>

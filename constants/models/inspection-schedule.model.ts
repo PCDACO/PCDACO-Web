@@ -15,17 +15,19 @@ export interface ContractFromScheduleUpdateResponse {
 export interface InspectionScheduleResponse {
   inspectionSchedules: InspectionScheduleDetail[];
 }
+
 export interface InspectionScheduleDetail {
   id: string;
   technicianId: string;
   technicianName: string;
+  carId: string;
   carOwnerId: string;
   carOwnerName: string;
-  inspectionStatusId: string;
   statusName: string;
   note: string;
   inspectionAddress: string;
   inspectionDate: Date;
+  isIncident: boolean;
   createdAt: Date;
 }
 
@@ -34,6 +36,11 @@ export interface InspectionSchedulePayload {
   carId: string;
   inspectionAddress: string;
   inspectionDate: Date;
+  isIncident: boolean;
+}
+
+export interface ReassignInspectionSchedulePayload {
+  technicianId: string;
 }
 
 export interface CarInspectionSchedulePayload {
