@@ -1,7 +1,6 @@
 import { useKeywordStore } from "@/stores/store";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from "../ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
-import { Input } from "../ui/input";
 import { useInspectionScheduleForm } from "@/hooks/inspection-schedules/use-form-inspection-schedule";
 import { InspectionSchedulePayload } from "@/constants/models/inspection-schedule.model";
 import { useEffect, useState } from "react";
@@ -49,7 +48,6 @@ const UpdateInspectionForm = ({
     }
   });
 
-
   useEffect(() => {
     if (listTechnicians.data) {
       setCurrentTechnicianName(listTechnicians?.data?.value?.items?.find(t => t.id === value.technicianId)?.name ?? "");
@@ -64,6 +62,7 @@ const UpdateInspectionForm = ({
       form.setValue("carId", value.carId);
       form.setValue("inspectionDate", value.inspectionDate);
       form.setValue("inspectionAddress", value.inspectionAddress);
+      form.setValue("isIncident", value.isIncident);
     }
   }, [id, form])
 
@@ -147,22 +146,20 @@ const UpdateInspectionForm = ({
     return title.form;
   }
 
-  const handleSubmitClick = () => {
-    console.log(form.getValues());
-  }
-
   return <Dialog
     open={isOpen}
     onOpenChange={onOpenChange}
   >
     <DialogContent>
-      <Form {...form} >
+      <Form {...form}>
         <form onSubmit={onSubmit} className="gap-y-6">
-          <> {getTitle(keyword)} </>
-          <DialogDescription>Current Technician: {currentTechnicianName}</DialogDescription>
+          <DialogHeader>
+            <>{getTitle(keyword)}</>
+            <DialogDescription>Current Technician: {currentTechnicianName}</DialogDescription>
+          </DialogHeader>
           <>{getForm(keyword)}</>
           <DialogFooter>
-            <Button onClick={handleSubmitClick} type="submit" variant="ghost">
+            <Button className="mt-10" type="submit" variant="ghost">
               {isLoading ? <LoadingSpinner /> : "Hoàn tất"}
             </Button>
           </DialogFooter>

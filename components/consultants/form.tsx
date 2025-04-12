@@ -31,7 +31,7 @@ type KeywordType = {
   form: React.JSX.Element;
 };
 const ConsultantForm = ({ id, value }: ConsultantFormProps) => {
-  const { keyword } = useKeywordStore();
+  const keyword = "create";
   const { form, onSubmit, isLoading } = useConsultantForm({
     id,
     value,
@@ -209,7 +209,6 @@ const ConsultantForm = ({ id, value }: ConsultantFormProps) => {
       <CardContent>
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-8">
-            {keyword === 'delete' ? (<h1>Bạn có muốn xóa không</h1>) : <></>}
             {GetComponent(keyword)}
             <Button className="mx-auto w-full" type="submit" disabled={isLoading}>
               {isLoading ? "Loading..." : "Submit"}

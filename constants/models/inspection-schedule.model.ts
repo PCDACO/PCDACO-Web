@@ -27,6 +27,7 @@ export interface InspectionScheduleDetail {
   note: string;
   inspectionAddress: string;
   inspectionDate: Date;
+  isIncident: boolean;
   createdAt: Date;
 }
 

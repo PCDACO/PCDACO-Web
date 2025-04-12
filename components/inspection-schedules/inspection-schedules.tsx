@@ -20,7 +20,6 @@ export default function TechnicianCalendarPage() {
   const { open, setOpen } = useDialogStore();
   const { id } = useIdStore();
   const { data } = useInspectionStore();
-  const { keyword } = useKeywordStore();
   const { replace } = useRouter();
   // Filter schedules when technician selection changes
   useEffect(() => {
@@ -77,6 +76,7 @@ export default function TechnicianCalendarPage() {
         inspectionAddress: "",
         inspectionDate: new Date(),
         technicianId: "",
+        isIncident: false,
       }} isOpen={open} onOpenChange={() => setOpen(!open)} />
     </>
   )

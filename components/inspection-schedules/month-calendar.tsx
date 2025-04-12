@@ -35,16 +35,6 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
   let timerId: NodeJS.Timeout;
   const holdTime = 1500;
 
-  const handleDeleteClick = (id: string) => {
-    timerId = setTimeout(() => {
-      deleteInspectionSchedule.mutate(id);
-    }, holdTime);
-  }
-
-  const handleCancelTimer = () => {
-    clearTimeout(timerId);
-  }
-
   // Get days for the calendar grid
   useEffect(() => {
     const year = currentDate.getFullYear()
@@ -156,7 +146,7 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                         <TimeBadgeComponent key={schedule.id} statusClasses={statusClasses} schedule={schedule} />
                       ))
                     ) : (
-                      <>
+                      <div key={index}>
                         {daySchedules.slice(0, 2)?.map((schedule) => (
                           <TimeBadgeComponent key={schedule.id} statusClasses={statusClasses} schedule={schedule} />
                         )) ?? []}
@@ -181,7 +171,7 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
                             </div>
                           </TooltipContent>
                         </Tooltip>
-                      </>
+                      </div>
                     )
                   ) : null}
                 </div>

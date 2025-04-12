@@ -29,7 +29,7 @@ const TimeBadgeComponent = ({
       technicianId: schedule.technicianId,
       carId: schedule.carId,
       inspectionDate: schedule.inspectionDate,
-      isIncident: schedule.is
+      isIncident: schedule.isIncident,
     });
     setOpen(true);
   }
