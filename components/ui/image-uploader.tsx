@@ -110,6 +110,7 @@ export function ImageUploader({ label, photoType, file, date, description, onCha
 
       {(photoType === InspectionPhotoType.VehicleInspectionCertificate && file) && (
         <div className="mt-2">
+          <div className="font-medium">{label}</div>
           <div className="font-medium whitespace-nowrap min-w-[80px]">Photo Date:</div>
           <Popover>
             <PopoverTrigger asChild>
