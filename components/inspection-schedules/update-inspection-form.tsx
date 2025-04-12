@@ -1,6 +1,7 @@
+"use client"
 import { useKeywordStore } from "@/stores/store";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { Form } from "../ui/form";
 import { useInspectionScheduleForm } from "@/hooks/inspection-schedules/use-form-inspection-schedule";
 import { InspectionSchedulePayload } from "@/constants/models/inspection-schedule.model";
 import { useEffect, useState } from "react";
@@ -9,6 +10,7 @@ import SelectWithSearch from "../ui/select-search";
 import { TechnicianResponse } from "@/constants/models/technician.model";
 import { Button } from "../ui/button";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules";
 
 interface Props {
   id: string;
@@ -33,6 +35,8 @@ const UpdateInspectionForm = ({
   id, value, isOpen, onOpenChange
 }: Props) => {
   const { keyword } = useKeywordStore();
+  const [selectedTechnicianObject, setSelectedTechnicianObject] = useState<SelectParams>();
+  const { updateInspectionSchedule, deleteInspectionSchedule } = useInspectionScheduleMutation();
   const { form, onSubmit, isLoading } = useInspectionScheduleForm({
     id: id ?? "",
     keyword: keyword,
@@ -53,7 +57,21 @@ const UpdateInspectionForm = ({
       setCurrentTechnicianName(listTechnicians?.data?.value?.items?.find(t => t.id === value.technicianId)?.name ?? "");
       setTechnicians(listTechnicians?.data?.value?.items ?? [])
     }
+    //eslint-disable-next-line
   }, [listTechnicians])
+
+  const handleSubmitClick = () => {
+    if (keyword === "update") {
+      const payload = form.getValues();
+      updateInspectionSchedule.mutate({
+        id: id ?? "",
+        payload: payload
+      })
+    }
+    if (keyword === "delete") {
+      deleteInspectionSchedule.mutate(id)
+    }
+  }
 
   useEffect(() => {
     if (id) {
@@ -64,7 +82,22 @@ const UpdateInspectionForm = ({
       form.setValue("inspectionAddress", value.inspectionAddress);
       form.setValue("isIncident", value.isIncident);
     }
+    setSelectedTechnicianObject(() => {
+      return technicians
+        .map((technician) => {
+          return {
+            id: technician.id,
+            value: technician.name,
+          };
+        })
+        .find(
+          (tech) => tech.id === form.getValues().technicianId
+        );
+    })
+    //eslint-disable-next-line
   }, [id, form])
+
+
 
 
   const keywords: KeywordType[] = [
@@ -73,50 +106,22 @@ const UpdateInspectionForm = ({
       value: "Cập nhật lịch xác nhận",
       form: (
         <div>
-          <FormField
-            control={form.control}
-            name="technicianId"
-            render={({ field }) => {
-              const selectedTechnicianObject = technicians
-                .map((technician) => {
-                  return {
-                    id: technician.id,
-                    value: technician.name,
-                  };
-                })
-                .find(
-                  (tech) => tech.id === field.value // field.value holds the ID string
-                );
-
-              const handleSelectChange = (
-                selectedOption: SelectParams | null
-              ) => {
-                field.onChange(selectedOption ? selectedOption.id : null); // Pass the ID (or null) to RHF
+          <SelectWithSearch<SelectParams> // Specify the data type
+            options={technicians.map((technician) => {
+              return {
+                id: technician.id,
+                value: technician.name,
               };
-              return (
-                <FormItem>
-                  <FormLabel>Kĩ Thuật Viên</FormLabel>
-                  <FormControl>
-                    <SelectWithSearch<SelectParams> // Specify the data type
-                      options={technicians.map((technician) => {
-                        return {
-                          id: technician.id,
-                          value: technician.name,
-                        };
-                      })}
-                      value={selectedTechnicianObject}
-                      onValueChange={handleSelectChange}
-                      valueKey="id"
-                      labelKey="value"
-                      placeholder="Chọn Kĩ Thuật Viên"
-                      searchPlaceholder="Tìm kiếm KTV..."
-                      emptyText="Không tìm thấy KTV."
-                    />
-                  </FormControl>
-                </FormItem>
-              );
-            }}
+            })}
+            value={selectedTechnicianObject}
+            onValueChange={(searchParams) => form.setValue("technicianId", searchParams?.id ?? "")}
+            valueKey="id"
+            labelKey="value"
+            placeholder="Chọn Kĩ Thuật Viên"
+            searchPlaceholder="Tìm kiếm KTV..."
+            emptyText="Không tìm thấy KTV."
           />
+          );
         </div>
       )
     },
@@ -154,12 +159,14 @@ const UpdateInspectionForm = ({
       <Form {...form}>
         <form onSubmit={onSubmit} className="gap-y-6">
           <DialogHeader>
-            <>{getTitle(keyword)}</>
-            <DialogDescription>Current Technician: {currentTechnicianName}</DialogDescription>
+            {getTitle(keyword)}
+            <DialogDescription>
+              {keyword === "delete" ? "Bạn có chắc chắn muốn xóa lịch xác nhận này ?" : `Hiện Tại: ${currentTechnicianName}`}
+            </DialogDescription>
           </DialogHeader>
-          <>{getForm(keyword)}</>
+          {getForm(keyword)}
           <DialogFooter>
-            <Button className="mt-10" type="submit" variant="ghost">
+            <Button onClick={handleSubmitClick} className="mt-10" type="submit" variant="ghost">
               {isLoading ? <LoadingSpinner /> : "Hoàn tất"}
             </Button>
           </DialogFooter>

@@ -1,14 +1,11 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { InspectionScheduleDetail } from "@/constants/models/inspection-schedule.model"
 import { formatDate, formatDateToHour } from "@/lib/utils"
-import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
 
 interface MonthCalendarProps {
   currentDate: Date
@@ -18,7 +15,6 @@ interface MonthCalendarProps {
 
 export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCalendarProps) {
   const [calendarDays, setCalendarDays] = useState<Array<{ date: Date | null; isCurrentMonth: boolean }>>([])
-  const { deleteInspectionSchedule } = useInspectionScheduleMutation()
 
   const statusClasses: Record<
     string,
@@ -31,18 +27,6 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
     Approved: "bg-green-500",
   };
 
-  let timerId: NodeJS.Timeout;
-  const holdTime = 1500;
-
-  const handleDeleteClick = (id: string) => {
-    timerId = setTimeout(() => {
-      deleteInspectionSchedule.mutate(id);
-    }, holdTime);
-  }
-
-  const handleCancelTimer = () => {
-    clearTimeout(timerId);
-  }
 
   // Get days for the calendar grid
   useEffect(() => {
@@ -81,12 +65,6 @@ export function MonthCalendar({ currentDate, onDateChange, schedules }: MonthCal
 
     setCalendarDays(days)
   }, [currentDate])
-
-
-  const formatDateToHourMinutes = (inspectionDate: Date) => {
-    const date = new Date(inspectionDate.toString())
-    return `${new Date(date.toString()).getHours().toString()}:${(new Date(date)).getMinutes().toString()}`
-  }
 
   return (
     <TooltipProvider>

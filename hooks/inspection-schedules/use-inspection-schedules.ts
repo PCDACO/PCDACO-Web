@@ -77,7 +77,7 @@ export const useInspectionScheduleMutation = () => {
     },
   });
 
-  const reassignInspectionSchedule = useMutation({
+  const updateInspectionSchedule = useMutation({
     mutationKey: ["reassign-schedules"],
     mutationFn: ({
       id, payload
@@ -167,7 +167,7 @@ export const useInspectionScheduleMutation = () => {
     approveInspectionSchedule,
     updateContractFromScheduleInfo,
     deleteInspectionSchedule,
-    reassignInspectionSchedule
+    updateInspectionSchedule,
   }
 }
 

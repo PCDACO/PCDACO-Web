@@ -1,4 +1,0 @@
-const ReassignInspectionForm = () => {
-  return <>
-  </>
-}

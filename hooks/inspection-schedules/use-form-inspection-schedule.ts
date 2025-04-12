@@ -19,7 +19,7 @@ export const useInspectionScheduleForm = ({
   value,
   keyword
 }: InspectionScheduleFormProps) => {
-  const { createInspectionSchedule, reassignInspectionSchedule, deleteInspectionSchedule } = useInspectionScheduleMutation();
+  const { createInspectionSchedule, updateInspectionSchedule, deleteInspectionSchedule } = useInspectionScheduleMutation();
 
   // Memoize defaultValues to prevent recalculating it on each render
   const defaultValues = useMemo(() => {
@@ -39,13 +39,12 @@ export const useInspectionScheduleForm = ({
   });
 
   const onSubmit = form.handleSubmit((payload) => {
-    console.log(payload);
     switch (keyword) {
       case "create": {
         return createInspectionSchedule.mutate(payload);
       };
       case "update": {
-        return reassignInspectionSchedule.mutate({ id, payload });
+        return updateInspectionSchedule.mutate({ id, payload });
       };
       case "delete": {
         return deleteInspectionSchedule.mutate(id);
@@ -56,6 +55,8 @@ export const useInspectionScheduleForm = ({
   return {
     form,
     onSubmit,
-    isLoading: createInspectionSchedule.isLoading,
+    isLoading: createInspectionSchedule.isLoading
+      || updateInspectionSchedule.isLoading
+      || deleteInspectionSchedule.isLoading,
   };
 };
