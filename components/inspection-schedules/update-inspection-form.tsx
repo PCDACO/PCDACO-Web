@@ -52,6 +52,7 @@ const UpdateInspectionForm = ({
     }
   });
 
+
   useEffect(() => {
     if (listTechnicians.data) {
       setCurrentTechnicianName(listTechnicians?.data?.value?.items?.find(t => t.id === value.technicianId)?.name ?? "");
@@ -114,14 +115,23 @@ const UpdateInspectionForm = ({
               };
             })}
             value={selectedTechnicianObject}
-            onValueChange={(searchParams) => form.setValue("technicianId", searchParams?.id ?? "")}
+            onValueChange={(searchParams) => {
+              form.setValue("technicianId", searchParams?.id ?? "");
+              if (searchParams) {
+                setSelectedTechnicianObject(technicians.map(item => {
+                  return {
+                    id: item.id,
+                    value: item.name,
+                  }
+                }).find(item => item.id === searchParams?.id))
+              }
+            }}
             valueKey="id"
             labelKey="value"
             placeholder="Chọn Kĩ Thuật Viên"
             searchPlaceholder="Tìm kiếm KTV..."
             emptyText="Không tìm thấy KTV."
           />
-          );
         </div>
       )
     },
