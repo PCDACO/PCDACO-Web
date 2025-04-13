@@ -30,8 +30,8 @@ import { formatCurrency } from "@/lib/formatCurrency";
 import { formatId } from "@/lib/format-uuid";
 import { CarBadge } from "./car-badge";
 import { CarStatusString } from "@/constants/enums/car-status.enum";
-import CarContractDialog from "./contract-dialog";
 import { useDialogStore } from "@/stores/store";
+import CarContractDialog from "./contract-dialog";
 
 interface Props {
   car: CarDetailResponse;
@@ -41,7 +41,7 @@ export default function CarDetailsComponent({ car }: Props) {
   const { color, manufacturer, modelName, owner, images, bookings } = car;
   const { back, push } = useRouter();
   const { open, setOpen } = useDialogStore();
-  //handling functions
+  // This would typically come from a database or API
   const handleClick = () => {
     back();
   };
@@ -57,40 +57,27 @@ export default function CarDetailsComponent({ car }: Props) {
   const handleViewLocationClick = () => {
     push(`${car.id}/map`)
   }
-
   return (
-    <div >
-      <div className=" mx-auto py-6 space-y-6">
+    <>
+      <div className="container mx-auto py-6 space-y-6">
         <div className="flex items-center justify-between">
           <div className="space-y-1 w-full">
             <div className="flex items-center text-sm text-muted-foreground">
               <Button
-                disabled={car.hasInspectionSchedule}
-                onClick={() => {
-                  push(
-                    `/inspection-schedules/create?carId=${car.id}&type=Edit`
-                  );
-                }}
+                onClick={handleClick}
+                variant="ghost"
+                size="icon"
+                className="mr-2"
               >
                 <ChevronLeft className="h-5 w-5" />
               </Button>
-            )}
-          </div>
-        </div>
-        <div className="flex gap-2"></div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Thông tin xe</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <h3 className="font-medium text-muted-foreground">Model</h3>
-                <p>{modelName}</p>
-              </div>
+              <Link href="/cars" className="hover:underline">
+                Xe
+              </Link>
+              <ChevronRight className="h-4 w-4 mx-1" />
+              <span>Chi tiết</span>
+            </div>
+            <div className="flex justify-between items-center w-full">
               <div>
                 <h1 className="text-3xl font-bold tracking-tight">{modelName}</h1>
                 <div className="flex items-center gap-2">
@@ -117,6 +104,7 @@ export default function CarDetailsComponent({ car }: Props) {
                 }
                 {car.status === CarStatusString.Pending && (
                   <Button
+                    disabled={car.hasInspectionSchedule}
                     className="mx-4"
                     onClick={() => {
                       push(
@@ -129,9 +117,8 @@ export default function CarDetailsComponent({ car }: Props) {
                 )}
               </div>
             </div>
-          </div >
-          <div className="flex gap-2"></div>
-        </div >
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="md:col-span-2">
@@ -143,7 +130,7 @@ export default function CarDetailsComponent({ car }: Props) {
                 <div>
                   <h3 className="font-medium text-muted-foreground">Model</h3>
                   <p>{modelName}</p>
-                </div >
+                </div>
                 <div>
                   <h3 className="font-medium text-muted-foreground">
                     Manufacturer
@@ -158,9 +145,9 @@ export default function CarDetailsComponent({ car }: Props) {
                   <h3 className="font-medium text-muted-foreground">Màu</h3>
                   <p>{color}</p>
                 </div>
-              </div >
-            </CardContent >
-          </Card >
+              </div>
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader>
               <CardTitle>Thông tin chủ xe</CardTitle>
@@ -184,18 +171,21 @@ export default function CarDetailsComponent({ car }: Props) {
                   <p>{owner.address}</p>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Thông tin chủ xe</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <User className="h-4 w-4 text-muted-foreground" />
-                <span>{owner.name}</span>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <Card className="md:col-span-1">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Tổng chuyến</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center">
+                <Car className="h-5 w-5 text-muted-foreground mr-2" />
+                <span className="text-2xl font-bold">
+                  {car.statistics.totalBookings}
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -236,10 +226,10 @@ export default function CarDetailsComponent({ car }: Props) {
                   {new Date(car.statistics.lastRented).toLocaleDateString()}
                 </span>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
+
         <Card>
           <CardHeader>
             <CardTitle>Chuyến</CardTitle>
@@ -329,23 +319,30 @@ export default function CarDetailsComponent({ car }: Props) {
                     .map((item) => (
                       <div
                         key={item.id}
-                        src={
-                          item.url !== ""
-                            ? item.url ?? "/placeholder.png"
-                            : "/placeholder.png"
-                        }
-                        alt="Car front view"
-                        width={600}
-                        height={400}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                  ))}
-              </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
-    </div>
+                        className="aspect-video rounded-md overflow-hidden border"
+                      >
+                        <Image
+                          key={item.id}
+                          src={
+                            item.url !== ""
+                              ? item.url ?? "/placeholder.png"
+                              : "/placeholder.png"
+                          }
+                          alt="Car front view"
+                          width={600}
+                          height={400}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                    ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
+      <CarContractDialog terms={car?.contract?.terms ?? ""} open={open} onOpenChange={() => setOpen(!open)} />
+    </>
+
   );
 }
