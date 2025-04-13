@@ -8,7 +8,8 @@ import {
   ChevronRight,
   Clock,
   Eye,
-  PaperclipIcon,
+  MapPinnedIcon,
+  ReceiptText,
   Star,
   User,
 } from "lucide-react";
@@ -53,6 +54,10 @@ export default function CarDetailsComponent({ car }: Props) {
     push(`/bookings/${id}`);
   };
 
+  const handleViewLocationClick = () => {
+    push(`${car.id}/map`)
+  }
+
   return (
     <div >
       <div className=" mx-auto py-6 space-y-6">
@@ -85,9 +90,16 @@ export default function CarDetailsComponent({ car }: Props) {
               </div>
               <div>
                 {
-                  car?.contract && (
+                  car?.contract?.terms && car?.contract?.terms !== "" && (
                     <Button onClick={handleOpenContractClick} variant="ghost">
-                      <PaperclipIcon />
+                      <ReceiptText />
+                    </Button>
+                  )
+                }
+                {
+                  car?.status === CarStatusString.Available && (
+                    <Button onClick={handleViewLocationClick} variant="ghost">
+                      <MapPinnedIcon />
                     </Button>
                   )
                 }

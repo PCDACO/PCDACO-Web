@@ -56,6 +56,10 @@ interface BookingDetail {
   isRefund: boolean;
   refundAmount: number;
   refundDate: Date;
+  contract: {
+    id: string;
+    terms: string;
+  }
 }
 
 interface PaymentDetail {

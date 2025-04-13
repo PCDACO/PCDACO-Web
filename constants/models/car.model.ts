@@ -130,3 +130,9 @@ export interface CarDetailResponse {
     terms: string;
   }
 }
+
+export interface CarLocationResponse {
+  latitude: number;
+  longitude: number;
+  updatedAt: Date;
+}
