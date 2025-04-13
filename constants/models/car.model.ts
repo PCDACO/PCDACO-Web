@@ -125,4 +125,8 @@ export interface CarDetailResponse {
     amount: number;
     status: string;
   }[];
+  contract: {
+    id: string;
+    terms: string;
+  }
 }

@@ -4,12 +4,14 @@ import { CarParams, CarResponse } from "@/constants/models/car.model";
 import { DeleteCar, GetCars } from "@/app/(dashboard)/(admin)/cars/action";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 import { toastError, toastResponse } from "@/lib/toast-error";
+import { GetCarContract } from "@/app/(dashboard)/(technicians)/cars/[id]/contract/action";
 
 interface CarQuery {
+  id?: string;
   params?: Partial<CarParams>;
 }
 
-export const useCarQuery = ({ params }: CarQuery) => {
+export const useCarQuery = ({ id, params }: CarQuery) => {
   if (params === undefined) {
     params = { index: 1, size: 10 };
   }
@@ -23,7 +25,18 @@ export const useCarQuery = ({ params }: CarQuery) => {
     retry: 1,
   });
 
-  return { listCarQuery };
+  const carDocument = useQuery({
+    queryKey: ["cars", id ?? ""],
+    queryFn: async () => {
+      if (!id) {
+        return document.implementation.createHTMLDocument('');
+      }
+      return GetCarContract(id)
+    },
+
+  });
+
+  return { listCarQuery, carDocument };
 };
 
 export const useCarMutation = () => {
@@ -43,6 +56,7 @@ export const useCarMutation = () => {
       toastError(error);
     },
   });
+
 
   return {
     deleteCarMutation,
