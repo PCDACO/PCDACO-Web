@@ -9,7 +9,6 @@ export default async function CarPage({
 }) {
   const { id } = await params;
   const carDetailResponse = await GetCarDetail(id);
-  console.log(carDetailResponse);
   if (!carDetailResponse.value) {
     redirect("/not-found");
   }

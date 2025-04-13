@@ -29,6 +29,7 @@ const MenuAction: React.FC<MenuActionProps> = ({ id }) => {
       <DropdownMenuContent align="end" >
         <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
         <DropdownMenuItem
+          className="hover:cursor-pointer"
           onClick={handleNavigateClick}
         >
           Chi tiết
