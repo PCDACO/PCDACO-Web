@@ -3,7 +3,7 @@ import { formatDateToHour } from "@/lib/utils";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Badge } from "../ui/badge";
-import { createGenericStore, useDialogStore, useIdStore, useKeywordStore } from "@/stores/store";
+import { createGenericStore } from "@/stores/store";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -17,31 +17,8 @@ const TimeBadgeComponent = ({
   statusClasses, schedule
 }: Props) => {
   // Init States
-  const { setData } = useInspectionStore();
-  const { setId } = useIdStore();
-  const { setOpen } = useDialogStore();
-  const { setKeyword } = useKeywordStore();
   const { push } = useRouter();
   // Handle
-  const handleEditClick = () => {
-    setId(schedule.id);
-    setKeyword("update")
-    setData({
-      inspectionAddress: schedule.inspectionAddress,
-      technicianId: schedule.technicianId,
-      carId: schedule.carId,
-      inspectionDate: schedule.inspectionDate,
-      isIncident: schedule.isIncident,
-    });
-    setOpen(true);
-  }
-
-  const handleDeleteClick = () => {
-    setId(schedule.id);
-    setKeyword("delete");
-    setOpen(true);
-  }
-
   const handleDetailClick = () => {
     push(`/inspection-schedules/${schedule.id}/details`);
   }
@@ -77,12 +54,6 @@ const TimeBadgeComponent = ({
       <ContextMenuContent className="w-64">
         <ContextMenuItem onClick={handleDetailClick} className="hover:cursor-pointer">
           Chi tiết
-        </ContextMenuItem>
-        <ContextMenuItem onClick={handleEditClick} className="hover:cursor-pointer">
-          Cập nhật
-        </ContextMenuItem>
-        <ContextMenuItem onClick={handleDeleteClick} className="hover:cursor-pointer">
-          Hủy
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>

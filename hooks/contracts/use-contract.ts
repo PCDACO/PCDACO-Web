@@ -7,7 +7,15 @@ export const useContractMutation = () => {
   const { push } = useRouter();
   const approveContract = useMutation({
     mutationKey: ["approve-contract"],
-    mutationFn: (id: string) => SignContract(id),
+    mutationFn: ({
+      id,
+      signature
+    }: {
+      id: string,
+      signature: string
+    }) => SignContract({
+        id,signature
+      }),
     onSuccess: (response) => {
       toastResponse(response);
       if (response.isSuccess) {
