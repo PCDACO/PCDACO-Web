@@ -22,7 +22,7 @@ interface ModelTableProps {
 }
 
 const ModelTable = ({ manufacturerId }: ModelTableProps) => {
-  const { replace } = useRouter();
+  const { push } = useRouter();
   const { setKeyword } = useKeywordStore();
   const { value } = useParamStore();
   const { id } = useIdStore();
@@ -34,7 +34,7 @@ const ModelTable = ({ manufacturerId }: ModelTableProps) => {
 
   const handleClick = () => {
     setKeyword("create");
-    replace(`/manufacturers/${manufacturerId}/models/create`);
+    push(`/manufacturers/${manufacturerId}/models/create`);
   }
 
   return (

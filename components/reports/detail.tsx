@@ -48,8 +48,7 @@ export default function ReportDetails({ report }: Props) {
   const { push } = useRouter();
   const handleCreateNewInspectionClick = () => {
     push(
-      `/inspection-schedules/create?carId=${
-        report?.carDetail?.id ?? ""
+      `/inspection-schedules/create?carId=${report?.carDetail?.id ?? ""
       }&type=Report`
     );
   };
@@ -117,9 +116,15 @@ export default function ReportDetails({ report }: Props) {
                       Id: {formatId(report.id)}
                     </p>
                   </div>
-                  <ReportDetailMenuAction
-                    setOpen={() => setCompensationOpen(true)}
-                  />
+
+                  {
+                    !report?.compensationDetail && (
+                      <ReportDetailMenuAction
+                        setOpen={() => setCompensationOpen(true)}
+                      />
+                    )
+                  }
+
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Report Information */}
@@ -486,13 +491,13 @@ export default function ReportDetails({ report }: Props) {
                             </p>
                             {report?.inspectionScheduleDetail
                               ?.inspectionDate && (
-                              <p className="font-medium">
-                                {formatDate(
-                                  report?.inspectionScheduleDetail
-                                    ?.inspectionDate ?? ""
-                                )}
-                              </p>
-                            )}
+                                <p className="font-medium">
+                                  {formatDate(
+                                    report?.inspectionScheduleDetail
+                                      ?.inspectionDate ?? ""
+                                  )}
+                                </p>
+                              )}
                           </div>
                         </div>
 
@@ -507,7 +512,7 @@ export default function ReportDetails({ report }: Props) {
 
                         {report?.inspectionScheduleDetail?.photoUrls &&
                           report.inspectionScheduleDetail.photoUrls.length >
-                            0 && (
+                          0 && (
                             <div>
                               <p className="font-medium mb-2 flex items-center gap-1">
                                 <ImageIcon className="h-4 w-4" />
@@ -582,6 +587,7 @@ export default function ReportDetails({ report }: Props) {
                     </Dialog>
                     {report.compensationDetail && (
                       <Button
+                        disabled={!report?.compensationDetail?.imageUrl && report?.compensationDetail?.imageUrl !== ""}
                         onClick={handleApproveReportClick}
                         className="gap-2"
                       >

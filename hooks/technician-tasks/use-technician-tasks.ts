@@ -28,7 +28,7 @@ export const useTechnicianTaskQuery = (
 };
 
 export const useTechnicianTaskMutation = () => {
-  const { replace } = useRouter();
+  const { push } = useRouter();
   const { setOpen } = useDialogStore();
   const queryClient = useQueryClient();
   const rejectTechnicianTask = useMutation({
@@ -72,7 +72,7 @@ export const useTechnicianTaskMutation = () => {
       if (response.isSuccess) {
         setOpen(false);
         queryClient.invalidateQueries({ queryKey: ["tasks"] });
-        replace("/statistics");
+        push("/statistics");
       }
     },
     onError: (error: Error) => {

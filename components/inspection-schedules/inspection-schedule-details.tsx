@@ -21,6 +21,7 @@ import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-
 import { CarResponse } from "@/constants/models/car.model"
 import Image from "next/image"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import { useRouter } from "next/navigation"
 
 
 interface Props {
@@ -33,6 +34,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
   const { rejectInspectionSchedule, updateContractFromScheduleInfo } = useInspectionScheduleMutation();
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false)
   const [responseNote, setResponseNote] = useState("")
+  const { push } = useRouter();
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -64,6 +66,10 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
     setIsRejectDialogOpen(false)
     rejectInspectionSchedule.mutate({ id, note: responseNote });
     setResponseNote("")
+  }
+
+  const handleNavigateToApprove = () => {
+    push("/technician-todo/approve");
   }
 
   const handleApprove = () => updateContractFromScheduleInfo.mutate(data.id);
@@ -212,10 +218,22 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                <Button disabled={!data.hasGPSDevice} variant="default" className="flex-1" onClick={handleApprove}>
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  Xem hợp đồng
-                </Button>
+                {
+                  !(data?.isTechnicianSigned && data?.isOwnerSigned) && (
+                    <Button disabled={(!data.hasGPSDevice) || (!data.isOwnerSigned)} variant="default" className="flex-1" onClick={handleApprove}>
+                      <CheckCircle className="mr-2 h-4 w-4" />
+                      Xem hợp đồng
+                    </Button>
+                  )
+                }
+                {
+                  (data?.isTechnicianSigned && data?.isOwnerSigned) && (
+                    <Button variant="default" className="flex-1" onClick={handleNavigateToApprove}>
+                      <CheckCircle className="mr-2 h-4 w-4" />
+                      Xem hợp đồng
+                    </Button>
+                  )
+                }
               </div>
             </CardFooter>
           </Card>
