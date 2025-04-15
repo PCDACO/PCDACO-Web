@@ -128,12 +128,12 @@ export default function CarDetailsComponent({ car }: Props) {
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h3 className="font-medium text-muted-foreground">Model</h3>
+                  <h3 className="font-medium text-muted-foreground">Mẫu xe</h3>
                   <p>{modelName}</p>
                 </div>
                 <div>
                   <h3 className="font-medium text-muted-foreground">
-                    Manufacturer
+                    Nhà sản xuất
                   </h3>
                   <p>{manufacturer.name}</p>
                 </div>

@@ -56,7 +56,7 @@ export default function BookingDetailComponent({
     <>
       <div className="container mx-auto py-8 px-4">
         <div className="flex items-center mb-6">
-          <h1 className="text-2xl font-bold">Booking Details</h1>
+          <h1 className="text-2xl font-bold">Chi tiết Booking</h1>
           <Badge className={`ml-auto ${getStatusColor(booking.status)} text-white`}>{booking.status}</Badge>
           {
             booking?.contract?.terms && booking?.contract?.terms !== "" && (
@@ -83,21 +83,21 @@ export default function BookingDetailComponent({
                   <p className="font-medium">{formatId(id)}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Start Time</p>
+                  <p className="text-sm text-muted-foreground">Bắt đầu</p>
                   <p className="font-medium">{formatDate(new Date(booking.startTime).toString())}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">End Time</p>
+                  <p className="text-sm text-muted-foreground">Kết thúc</p>
                   <p className="font-medium">{formatDate(new Date(booking.endTime).toString())}</p>
                 </div>
                 {booking.actualReturnTime && (
                   <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Actual Return Time</p>
+                    <p className="text-sm text-muted-foreground">Trả xe lúc</p>
                     <p className="font-medium">{formatDate(new Date(booking.actualReturnTime).toString())}</p>
                   </div>
                 )}
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Pickup Address</p>
+                  <p className="text-sm text-muted-foreground">Địa chỉ nhận xe</p>
                   <p className="font-medium">{car.pickupAddress}</p>
                 </div>
                 {booking.note && (
@@ -115,7 +115,7 @@ export default function BookingDetailComponent({
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center">
                 <Car className="mr-2 h-5 w-5" />
-                Car Details
+                Chi tiết xe
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -170,11 +170,11 @@ export default function BookingDetailComponent({
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg flex items-center">
                     <User className="mr-2 h-5 w-5" />
-                    Users
+                    Người dùng
                   </CardTitle>
                   <TabsList>
-                    <TabsTrigger value="driver">Driver</TabsTrigger>
-                    <TabsTrigger value="owner">Owner</TabsTrigger>
+                    <TabsTrigger value="driver">Khách hàng</TabsTrigger>
+                    <TabsTrigger value="owner">Người thuê</TabsTrigger>
                   </TabsList>
                 </div>
               </CardHeader>
@@ -187,7 +187,7 @@ export default function BookingDetailComponent({
                     </Avatar>
                     <div>
                       <p className="font-medium">{driver.name}</p>
-                      <p className="text-sm text-muted-foreground">Driver</p>
+                      <p className="text-sm text-muted-foreground">Khách hàng</p>
                     </div>
                   </div>
                   <Separator />
@@ -197,7 +197,7 @@ export default function BookingDetailComponent({
                       <p className="font-medium">{driver.email}</p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-sm text-muted-foreground">Phone</p>
+                      <p className="text-sm text-muted-foreground">SDT</p>
                       <p className="font-medium">{driver.phone}</p>
                     </div>
                     <div className="space-y-1">
@@ -215,7 +215,7 @@ export default function BookingDetailComponent({
                     </Avatar>
                     <div>
                       <p className="font-medium">{owner.name}</p>
-                      <p className="text-sm text-muted-foreground">Car Owner</p>
+                      <p className="text-sm text-muted-foreground">Chủ xe</p>
                     </div>
                   </div>
                   <Separator />
@@ -225,7 +225,7 @@ export default function BookingDetailComponent({
                       <p className="font-medium">{owner.email}</p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-sm text-muted-foreground">Phone</p>
+                      <p className="text-sm text-muted-foreground">SDT</p>
                       <p className="font-medium">{owner.phone}</p>
                     </div>
                     <div className="space-y-1">
@@ -243,13 +243,13 @@ export default function BookingDetailComponent({
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center">
                 <CreditCard className="mr-2 h-5 w-5" />
-                Payment Details
+                Chi tiết giao dịch
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <p className="text-muted-foreground">Payment Status</p>
+                  <p className="text-muted-foreground">Trạng thái</p>
                   <Badge variant={payment.isPaid ? "default" : "destructive"}>{payment.isPaid ? "Paid" : "Unpaid"}</Badge>
                 </div>
 
@@ -257,34 +257,34 @@ export default function BookingDetailComponent({
 
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <p>Base Price</p>
+                    <p>Giá cơ bản</p>
                     <p>{payment.basePrice.toLocaleString()} đ</p>
                   </div>
                   <div className="flex justify-between">
-                    <p>Platform Fee</p>
+                    <p>Phí nền tảng</p>
                     <p>{payment.platformFee.toLocaleString()} đ</p>
                   </div>
                   {payment.excessDay > 0 && (
                     <>
                       <div className="flex justify-between">
-                        <p>Excess Days</p>
-                        <p>{payment.excessDay}</p>
+                        <p>Trả trễ</p>
+                        <p>{payment.excessDay} Ngày</p>
                       </div>
                       <div className="flex justify-between">
-                        <p>Excess Day Fee</p>
+                        <p>Phí trả trễ</p>
                         <p>{payment.excessDayFee.toLocaleString()} đ</p>
                       </div>
                     </>
                   )}
                   {booking.isRefund && booking.refundAmount && (
                     <div className="flex justify-between text-red-500">
-                      <p>Refund Amount</p>
+                      <p>Hoàn tiền</p>
                       <p>-{booking.refundAmount.toLocaleString()} đ</p>
                     </div>
                   )}
                   <Separator />
                   <div className="flex justify-between font-bold text-lg">
-                    <p>Total Amount</p>
+                    <p>Tổng tiền</p>
                     <p>{payment.totalAmount.toLocaleString()} đ</p>
                   </div>
                 </div>
@@ -304,7 +304,7 @@ export default function BookingDetailComponent({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Total Distance</p>
+                    <p className="text-sm text-muted-foreground">Tổng hành trình</p>
                     <p className="font-medium">{trip.totalDistance} km</p>
                   </div>
                 </div>
@@ -312,10 +312,10 @@ export default function BookingDetailComponent({
                 <div className="md:col-span-2">
                   <Tabs defaultValue="driver-to-owner">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-medium">Feedback</h3>
+                      <h3 className="font-medium">Phản hồi</h3>
                       <TabsList>
-                        <TabsTrigger value="driver-to-owner">Driver to Owner</TabsTrigger>
-                        <TabsTrigger value="owner-to-driver">Owner to Driver</TabsTrigger>
+                        <TabsTrigger value="driver-to-owner">Từ khách</TabsTrigger>
+                        <TabsTrigger value="owner-to-driver">Từ chủ xe</TabsTrigger>
                       </TabsList>
                     </div>
 
@@ -347,7 +347,7 @@ export default function BookingDetailComponent({
                           ))
                       ) : (
                         <div className="text-center py-6 text-muted-foreground border rounded-md">
-                          <p>No feedback from driver to owner</p>
+                          <p>Không có phản hồi</p>
                         </div>
                       )}
                     </TabsContent>
@@ -380,7 +380,7 @@ export default function BookingDetailComponent({
                           ))
                       ) : (
                         <div className="text-center py-6 text-muted-foreground border rounded-md">
-                          <p>No feedback from owner to driver</p>
+                          <p>Không có phản hồi</p>
                         </div>
                       )}
                     </TabsContent>
