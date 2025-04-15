@@ -1,8 +1,7 @@
 "use client"
 import { useState } from "react"
 import { format } from "date-fns"
-import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, CheckCircle, XCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, Shield } from "lucide-react"
-
+import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, CheckCircle, XCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, X, CheckIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -88,8 +87,8 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
         <div className="grid gap-6 md:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Inspection Information</CardTitle>
-              <CardDescription>Details about the scheduled inspection</CardDescription>
+              <CardTitle>Thông tin xác minh</CardTitle>
+              <CardDescription>Các chi tiết về lịch xác minh</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="flex items-start gap-2">
@@ -97,7 +96,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                   <Clipboard className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="font-medium">Inspection ID</p>
+                  <p className="font-medium">ID</p>
                   <p className="text-sm text-muted-foreground">{data.id}</p>
                 </div>
               </div>
@@ -107,7 +106,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                   <Calendar className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="font-medium">Inspection Date</p>
+                  <p className="font-medium">Ngày xác minh</p>
                   <p className="text-sm text-muted-foreground">
                     {format(data.date, "MMMM d, yyyy")}
                   </p>
@@ -119,7 +118,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                   <Clock className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="font-medium">Inspection Time</p>
+                  <p className="font-medium">Thời gian</p>
                   <p className="text-sm text-muted-foreground">{format(data.date, "h:mm a ")}</p>
                 </div>
               </div>
@@ -129,7 +128,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="font-medium">Address</p>
+                  <p className="font-medium">Địa chỉ</p>
                   <p className="text-sm text-muted-foreground">{data.address}</p>
                 </div>
               </div>
@@ -148,8 +147,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
 
           <Card>
             <CardHeader>
-              <CardTitle>People</CardTitle>
-              <CardDescription>People involved in this inspection</CardDescription>
+              <CardTitle>Người tham gia</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="flex items-start gap-2">
@@ -157,7 +155,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                   <User className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="font-medium">Car Owner</p>
+                  <p className="font-medium">Chủ xe</p>
                   <p className="text-sm text-muted-foreground">{data.owner.name}</p>
                   <p className="text-xs text-muted-foreground">Phone: {data.owner.phone}</p>
                   <p className="text-xs text-muted-foreground">ID: {data.owner.id}</p>
@@ -169,7 +167,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                   <User className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="font-medium">Technician</p>
+                  <p className="font-medium">Kĩ thuật viên</p>
                   <p className="text-sm text-muted-foreground">{data.technician.name}</p>
                   <p className="text-xs text-muted-foreground">ID: {data.technician.id}</p>
                 </div>
@@ -189,13 +187,13 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                   <DialogTrigger asChild>
                     <Button variant="destructive" className="flex-1">
                       <XCircle className="mr-2 h-4 w-4" />
-                      Reject
+                      Từ chối
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Reject Inspection</DialogTitle>
-                      <DialogDescription>Please provide a reason for rejecting this inspection.</DialogDescription>
+                      <DialogTitle>Từ chối xác minh</DialogTitle>
+                      <DialogDescription>Hãy điền lí do từ chối lịch xác minh này</DialogDescription>
                     </DialogHeader>
                     <Textarea
                       placeholder="Reason for rejection..."
@@ -205,17 +203,18 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     />
                     <DialogFooter className="mt-4">
                       <Button variant="outline" onClick={() => setIsRejectDialogOpen(false)}>
-                        Cancel
+                        <X />
                       </Button>
                       <Button variant="destructive" onClick={handleReject}>
-                        Confirm Rejection
+                        <CheckIcon />
+                        Hoàn thành
                       </Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
                 <Button disabled={!data.hasGPSDevice} variant="default" className="flex-1" onClick={handleApprove}>
                   <CheckCircle className="mr-2 h-4 w-4" />
-                  View Contract
+                  Xem hợp đồng
                 </Button>
               </div>
             </CardFooter>
@@ -227,10 +226,10 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
         <div className="md:col-span-2">
           <Tabs defaultValue="details" className="mt-6">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="details">Details</TabsTrigger>
-              <TabsTrigger value="specifications">Specifications</TabsTrigger>
-              <TabsTrigger value="amenities">Amenities</TabsTrigger>
-              <TabsTrigger value="images">Images</TabsTrigger>
+              <TabsTrigger value="details">Chi tiết</TabsTrigger>
+              <TabsTrigger value="specifications">Thông số</TabsTrigger>
+              <TabsTrigger value="amenities">Tiện nghi</TabsTrigger>
+              <TabsTrigger value="images">Hình ảnh</TabsTrigger>
             </TabsList>
             <TabsContent value="details" className="mt-4 min-h-[480px]">
               <Card>
@@ -242,7 +241,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     <div className="flex items-center gap-2">
                       <Car className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <p className="text-sm font-medium">Model</p>
+                        <p className="text-sm font-medium">Mã xe</p>
                         <p className="text-sm text-muted-foreground">{car.modelName}</p>
                       </div>
                     </div>
@@ -250,7 +249,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     <div className="flex items-center gap-2">
                       <Building className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <p className="text-sm font-medium">Manufacturer</p>
+                        <p className="text-sm font-medium">Nhà sản xuất</p>
                         <p className="text-sm text-muted-foreground">{car.manufacturer.name}</p>
                       </div>
                     </div>
@@ -258,7 +257,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     <div className="flex items-center gap-2">
                       <Tag className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <p className="text-sm font-medium">License Plate</p>
+                        <p className="text-sm font-medium">Biển số</p>
                         <p className="text-sm text-muted-foreground">{car.licensePlate}</p>
                       </div>
                     </div>
@@ -266,7 +265,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     <div className="flex items-center gap-2">
                       <Palette className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <p className="text-sm font-medium">Color</p>
+                        <p className="text-sm font-medium">Màu</p>
                         <p className="text-sm text-muted-foreground">{car.color}</p>
                       </div>
                     </div>
@@ -274,7 +273,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     <div className="flex items-center gap-2">
                       <User className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <p className="text-sm font-medium">Seats</p>
+                        <p className="text-sm font-medium">Số ghế</p>
                         <p className="text-sm text-muted-foreground">{car.seat}</p>
                       </div>
                     </div>
@@ -282,7 +281,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     <div className="flex items-center gap-2">
                       <User className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <p className="text-sm font-medium">Owner</p>
+                        <p className="text-sm font-medium">Chủ xe</p>
                         <p className="text-sm text-muted-foreground">{car.ownerName}</p>
                       </div>
                     </div>
@@ -291,7 +290,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                   <Separator />
 
                   <div>
-                    <p className="text-sm font-medium">Description</p>
+                    <p className="text-sm font-medium">Mô tả</p>
                     <p className="text-sm text-muted-foreground mt-1">{car.description}</p>
                   </div>
 
@@ -299,7 +298,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     <div>
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
-                        <p className="text-sm font-medium">Location</p>
+                        <p className="text-sm font-medium">Vị trí</p>
                       </div>
                       {
                         car.location &&
@@ -316,14 +315,14 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
             <TabsContent value="specifications" className="mt-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Specifications</CardTitle>
+                  <CardTitle>Thông số</CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex items-center gap-2">
                       <Cog className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <p className="text-sm font-medium">Transmission</p>
+                        <p className="text-sm font-medium">Hộp số</p>
                         <p className="text-sm text-muted-foreground">{car.transmissionType}</p>
                       </div>
                     </div>
@@ -331,7 +330,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     <div className="flex items-center gap-2">
                       <Fuel className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <p className="text-sm font-medium">Fuel Type</p>
+                        <p className="text-sm font-medium">Kiểu nhiên liệu</p>
                         <p className="text-sm text-muted-foreground">{car.fuelType}</p>
                       </div>
                     </div>
@@ -339,16 +338,8 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                     <div className="flex items-center gap-2">
                       <Gauge className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <p className="text-sm font-medium">Fuel Consumption</p>
+                        <p className="text-sm font-medium">Mức tiêu thụ</p>
                         <p className="text-sm text-muted-foreground">{car.fuelComsumption} L/100km</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Requires Collateral</p>
-                        <p className="text-sm text-muted-foreground">{car.requiresCollateral ? "Yes" : "No"}</p>
                       </div>
                     </div>
                   </div>
@@ -359,6 +350,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
             <TabsContent value="amenities" className="mt-4">
               <Card>
                 <CardHeader>
+                  <CardTitle>Tiện nghi</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-4 gap-y-4">
@@ -377,7 +369,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
             <TabsContent value="images" className="mt-4 ">
               <Card className="min-h-[500px]">
                 <CardHeader>
-                  {/* <CardDescription>Features and amenities included with this vehicle</CardDescription> */}
+                  <CardTitle>Hình ảnh</CardTitle>
                 </CardHeader>
                 <CardContent className="relative h-96">
                   <Image
@@ -413,7 +405,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                         className={`h-2 w-2 rounded-full p-0 ${index === currentImageIndex ? "bg-primary" : "bg-background/80"}`}
                         onClick={() => setCurrentImageIndex(index)}
                       >
-                        <span className="sr-only">View image {index + 1}</span>
+                        <span className="sr-only">Xem thêm {index + 1}</span>
                       </Button>
                     ))}
                   </div>
