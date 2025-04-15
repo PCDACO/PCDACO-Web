@@ -15,7 +15,6 @@ import { Button } from "../ui/button"
 import { useDialogStore } from "@/stores/store"
 
 // Add these type definitions at the top of the file, before the bookingData
-
 enum FeedbackTypeEnum {
   DriverToOwner = 0,
   OwnerToDriver = 1,
@@ -27,7 +26,7 @@ interface Props {
 export default function BookingDetailComponent({
   bookingData
 }: Props) {
-  const { id, car, driver, owner, booking, payment, trip, feedbacks } = bookingData
+  const { id, car, driver, owner, booking, payment, trip, feedbacks, contract } = bookingData
 
   const { open, setOpen } = useDialogStore();
 
@@ -55,16 +54,16 @@ export default function BookingDetailComponent({
   return (
     <>
       <div className="container mx-auto py-8 px-4">
-        <div className="flex items-center mb-6">
+        <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Chi tiết Booking</h1>
-          <Badge className={`ml-auto ${getStatusColor(booking.status)} text-white`}>{booking.status}</Badge>
-          {
-            booking?.contract?.terms && booking?.contract?.terms !== "" && (
+          <div>
+            {contract?.terms && contract?.terms !== "" && (
               <Button onClick={handleOpenContractClick} variant="ghost">
                 <ReceiptTextIcon />
               </Button>
-            )
-          }
+            )}
+            <Badge className={`ml-auto ${getStatusColor(booking.status)} text-white mx-4`}>{booking.status}</Badge>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -391,7 +390,7 @@ export default function BookingDetailComponent({
           </Card>
         </div>
       </div>
-      <BookingContractDialog terms={booking?.contract?.terms ?? ""} open={open} onOpenChange={() => setOpen(!open)} />
+      <BookingContractDialog terms={contract?.terms ?? ""} open={open} onOpenChange={() => setOpen(!open)} />
     </>
   )
 }

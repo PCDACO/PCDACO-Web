@@ -76,7 +76,7 @@ export default function TechnicianCalendarPage() {
         inspectionAddress: "",
         inspectionDate: new Date(),
         technicianId: "",
-        isIncident: false,
+        inspectionType: 0,
       }} isOpen={open} onOpenChange={() => setOpen(!open)} />
     </>
   )

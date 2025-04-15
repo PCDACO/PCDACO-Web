@@ -24,6 +24,10 @@ export interface BookingResponse {
   payment: PaymentDetail;
   trip: TripDetail;
   feedbacks: FeedbackDetail[];
+  contract: {
+    id: string;
+    terms: string;
+  }
 }
 
 interface CarDetail {
@@ -56,10 +60,6 @@ interface BookingDetail {
   isRefund: boolean;
   refundAmount: number;
   refundDate: Date;
-  contract: {
-    id: string;
-    terms: string;
-  }
 }
 
 interface PaymentDetail {
