@@ -22,10 +22,10 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { CarResponse } from "@/constants/models/car.model";
 import { TechnicianResponse } from "@/constants/models/technician.model";
-import { Checkbox } from "../ui/checkbox";
 import SelectWithSearch from "../ui/select-search";
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { Select, SelectItem, SelectLabel } from "../ui/select";
 
 interface SelectParams {
   id: string;
@@ -63,12 +63,12 @@ export default function CreateInspectionForm({
     if (carId) {
       form.setValue("carId", carId);
     }
-
-
     if (type === "Report") {
-      form.setValue("isIncident", true);
+      form.setValue("inspectionType", 1);
+    } else if (type === "gps-unassign") {
+      form.setValue("inspectionType", 2);
     } else {
-      form.setValue("isIncident", false);
+      form.setValue("inspectionType", 0);
     }
   }, [carId, form, type]);
 
@@ -308,27 +308,22 @@ export default function CreateInspectionForm({
                 )
               }}
             />
-            {carId && type === "Report" && (
-              <FormField
-                control={form.control}
-                name="isIncident"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        disabled={true}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>Là Sự Cố ?</FormLabel>
-                      <FormDescription></FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
-            )}
+            <FormField
+              control={form.control}
+              name="inspectionType"
+              render={({ field }) => {
+                return (
+                  <Select onValueChange={() => {
+                    form.setValue("inspectionType", field.value);
+                  }}>
+                    <SelectLabel>Type</SelectLabel>
+                    <SelectItem value={"0"}>Xác minh xe mới</SelectItem>
+                    <SelectItem value={"1"}>Sự cố</SelectItem>
+                    <SelectItem value={"2"}>Gỡ GPS</SelectItem>
+                  </Select>
+                )
+              }}
+            />
             <Button className="flex justify-center w-1/4 mx-auto" type="submit">
               {isLoading ? <LoadingSpinner /> : "Tạo"}
             </Button>

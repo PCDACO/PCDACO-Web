@@ -28,7 +28,7 @@ export const useInspectionScheduleForm = ({
       carId: id ? value.carId : "",
       inspectionAddress: id ? value.inspectionAddress : "",
       inspectionDate: id ? value.inspectionDate : new Date(),
-      isIncident: id ? value.isIncident : false,
+      inspectionType: id ? value.inspectionType : 0,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, value]);

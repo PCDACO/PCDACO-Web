@@ -24,7 +24,7 @@ export default async function CreateInspectionSchedulePage() {
         inspectionAddress: "",
         inspectionDate: new Date(),
         technicianId: "",
-        isIncident: false,
+        inspectionType: 0,
       }}
       cars={carResponse?.value?.items ?? []}
       technicians={technicianResponse?.value?.items ?? []}

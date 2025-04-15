@@ -36,7 +36,7 @@ export interface InspectionSchedulePayload {
   carId: string;
   inspectionAddress: string;
   inspectionDate: Date;
-  isIncident: boolean;
+  inspectionType: number;
 }
 
 export interface ReassignInspectionSchedulePayload {

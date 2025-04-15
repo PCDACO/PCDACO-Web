@@ -12,4 +12,3 @@ export const UpdateCarContractByScheduleInfo = async (id: string): Promise<RootR
   const response = await axiosInstance.put(`/api/schedules/${id}/contract`);
   return response.data;
 }
-
