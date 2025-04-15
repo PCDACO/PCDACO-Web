@@ -17,7 +17,7 @@ const TechnicianTable = () => {
     params: value,
   });
 
-  const { replace } = useRouter();
+  const { push } = useRouter();
 
   return (
     <div className="space-y-4">
@@ -36,7 +36,7 @@ const TechnicianTable = () => {
             }
           />
           <Button onClick={() => {
-            replace("/technicians/create")
+            push("/technicians/create")
           }}>
             <PlusCircleIcon />Tạo
           </Button>

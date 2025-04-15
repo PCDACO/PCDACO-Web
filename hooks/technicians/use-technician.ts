@@ -19,7 +19,7 @@ export const useTechnicianQuery = ({ params }: {
 }
 export const useTechnicianMutation = () => {
   const { setOpen } = useDialogStore();
-  const { replace } = useRouter();
+  const { push } = useRouter();
   const queryClient = useQueryClient();
   const createTechnician = useMutation({
     mutationKey: ["createTechnician"],
@@ -29,7 +29,7 @@ export const useTechnicianMutation = () => {
       if (response.isSuccess) {
         setOpen(false);
         queryClient.invalidateQueries({ queryKey: ["technicians"] });
-        replace("/technicians");
+        push("/technicians");
       }
     },
     onError: (error: Error) => {

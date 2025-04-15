@@ -20,7 +20,7 @@ export default function TechnicianCalendarPage() {
   const { open, setOpen } = useDialogStore();
   const { id } = useIdStore();
   const { data } = useInspectionStore();
-  const { replace } = useRouter();
+  const { push } = useRouter();
   // Filter schedules when technician selection changes
   useEffect(() => {
     const date = new Date(currentDate.toString());
@@ -59,7 +59,7 @@ export default function TechnicianCalendarPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button onClick={() => replace("/inspection-schedules/create")} className="bg-black text-white hover:bg-gray-800">
+              <Button onClick={() => push("/inspection-schedules/create")} className="bg-black text-white hover:bg-gray-800">
                 <Plus className="mr-2 h-4 w-4" />Tạo
               </Button>
             </div>

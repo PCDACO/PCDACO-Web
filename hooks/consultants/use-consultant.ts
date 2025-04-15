@@ -19,7 +19,7 @@ export const useConsultantQuery = ({ params }: {
 }
 export const useConsultantMutation = () => {
   const { setOpen } = useDialogStore();
-  const { replace } = useRouter();
+  const { push } = useRouter();
   const queryClient = useQueryClient();
   const createConsultant = useMutation({
     mutationKey: ["createConsultant"],
@@ -28,7 +28,7 @@ export const useConsultantMutation = () => {
       if (response.isSuccess) {
         setOpen(false);
         queryClient.invalidateQueries({ queryKey: ["consultants"] });
-        replace("/consultants");
+        push("/consultants");
       }
       toastResponse(response);
     },

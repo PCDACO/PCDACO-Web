@@ -6,9 +6,9 @@ interface Props {
   id: string;
 }
 export default function CheckoutButton({ id }: Props) {
-  const { replace } = useRouter();
+  const { push } = useRouter();
   const handleClick = () => {
-    replace(`/withdraw-requests/${id}/checkout/`);
+    push(`/withdraw-requests/${id}/checkout/`);
   }
   return <>
     <Button variant="outline" onClick={handleClick}>Chuyển Tiền</Button>

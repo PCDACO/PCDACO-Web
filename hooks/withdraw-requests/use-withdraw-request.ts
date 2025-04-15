@@ -28,7 +28,7 @@ export const useWithdrawRequestQuery = ({ params }: Props) => {
 
 export const useWithdrawRequestMutation = () => {
   const { setOpen } = useDialogStore();
-  const { replace } = useRouter();
+  const { push } = useRouter();
   const queryClient = useQueryClient();
   const confirmWithdrawRequest = useMutation({
     mutationKey: ["confirmWithdrawRequest"],
@@ -43,7 +43,7 @@ export const useWithdrawRequestMutation = () => {
       if (response.isSuccess) {
         setOpen(false);
         queryClient.invalidateQueries({ queryKey: ["amenities"] });
-        replace("/withdraw-requests");
+        push("/withdraw-requests");
       }
     },
     onError: (error: Error) => {

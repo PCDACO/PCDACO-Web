@@ -17,8 +17,8 @@ export default function InspectionTaskItem({
   licensePlate,
   scheduledTime,
 }: InspectionTaskItemProps) {
-  const { replace } = useRouter();
-  const handleBtnClick = () => replace(`/technician-todo/${id}`)
+  const { push } = useRouter();
+  const handleBtnClick = () => push(`/technician-todo/${id}`)
 
   return (
     <Card onClick={handleBtnClick} className="border-l-4 border-l-yellow-400 hover:cursor-pointer hover:shadow-lg hover:animate-pulse">

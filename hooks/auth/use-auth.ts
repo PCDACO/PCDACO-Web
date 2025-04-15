@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/navigation";
 
 export const useAuthMutation = () => {
-  const { replace } = useRouter();
+  const { push } = useRouter();
   const login = useMutation({
     mutationKey: ["auth-login"],
     mutationFn: ({ email, password }: LoginPayload) => Login({ email, password }),
@@ -13,7 +13,7 @@ export const useAuthMutation = () => {
       console.log("success")
       toastResponse(response);
       if (response.isSuccess) {
-        replace("/statistics");
+        push("/statistics");
       }
     },
     onError: (error: Error) => {
