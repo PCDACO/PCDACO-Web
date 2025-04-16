@@ -215,6 +215,13 @@ const items: SideBarItem[] = [
     role: 'Consultant',
     group: 'Quản Lí Nền Tảng',
   },
+  {
+    title: 'Báo Cáo Xe',
+    url: '/car-reports',
+    icon: Newspaper,
+    role: 'Consultant',
+    group: 'Quản Lí Nền Tảng',
+  },
 ];
 
 export async function AppSidebar() {
