@@ -12,7 +12,7 @@ export interface ReportResponse {
   reporterName: string;
   title: string;
   description: string;
-  reportType: number;
+  reportType: string;
   status: string;
   resolvedAt?: Date;
   resolvedById?: string;
@@ -24,7 +24,7 @@ export interface UnderReviewResponse {
   id: string;
   bookingId: string;
   title: string;
-  reportType: number;
+  reportType: string;
   description: string;
   status: number;
   createdAt: Date;
@@ -45,7 +45,7 @@ export interface ReportDetailResponse {
   title: string;
   description: string;
   reportType: number;
-  status: string;
+  status: number;
   resolvedAt: string | null;
   resolvedById: string | null;
   resolutionComments: string | null;

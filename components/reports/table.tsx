@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { DataTable } from "@/components/data-table";
 import { Dialog, DialogContent } from "@/components/ui/dialog";

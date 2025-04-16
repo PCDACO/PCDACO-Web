@@ -86,6 +86,7 @@ export interface InspectionScheduleDetailResponse {
   hasGPSDevice: boolean;
   isTechnicianSigned: boolean;
   isOwnerSigned: boolean;
+  type: string;
 }
 
 interface CarDetail {
