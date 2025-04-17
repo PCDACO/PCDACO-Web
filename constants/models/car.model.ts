@@ -18,6 +18,11 @@ export interface CarResponse {
   requiresCollateral: boolean;
   price: PriceDetail;
   location?: LocationDetail;
+  pickupLocation?: {
+    longtitude: number;
+    latitude: number;
+    address: string;
+  };
   manufacturer: ManufacturerDetail;
   images: ImageDetail[];
   amenities: AmenityDetail[];

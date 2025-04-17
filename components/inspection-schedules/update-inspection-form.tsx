@@ -175,7 +175,7 @@ const UpdateInspectionForm = ({
           </DialogHeader>
           {getForm(keyword)}
           <DialogFooter>
-            <Button onClick={handleSubmitClick} className="mt-10" type="submit" variant="ghost">
+            <Button onClick={handleSubmitClick} className="mt-10" type="submit" variant="outline">
               {isLoading ? <LoadingSpinner /> : "Hoàn tất"}
             </Button>
           </DialogFooter>

@@ -2,6 +2,7 @@ import Image from "next/image"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { CarDetail } from "@/constants/models/technician-task.model"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 interface CarDetailsDialogProps {
   car?: CarDetail
   isOpen: boolean;
@@ -26,13 +27,16 @@ export default function CarDetailsDialog({ car, isOpen, onOpenChange }: CarDetai
                   <div className="space-y-8">
                     {/* Owner Information */}
                     <section className="flex items-center space-x-4">
-                      <Image
-                        src={car.owner.avatarUrl !== "" ? car.owner.avatarUrl : "/dummy-avatar.webp"}
-                        alt={car.owner.name}
-                        width={64}
-                        height={64}
-                        className="rounded-full"
-                      />
+                      <Avatar className="mt-4">
+                        <AvatarImage
+                          src={car.owner.avatarUrl}
+                          alt={car.owner.name}
+                          width={72}
+                          height={72}
+                          className="rounded-full"
+                        />
+                        <AvatarFallback>{Array.from(car?.owner?.name)[0].toUpperCase()}</AvatarFallback>
+                      </Avatar>
                       <div>
                         <h3 className="font-semibold text-lg">Owner</h3>
                         <p>{car.owner.name}</p>
@@ -92,8 +96,8 @@ export default function CarDetailsDialog({ car, isOpen, onOpenChange }: CarDetai
             )
           }
         </div>
-      </DialogContent>
-    </Dialog>
+      </DialogContent >
+    </Dialog >
   )
 }
 

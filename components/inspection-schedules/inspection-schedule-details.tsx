@@ -183,7 +183,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
 
               <div>
                 <p className="text-sm text-muted-foreground">
-                  Created on {format(data.date, "MMMM d, yyyy 'at' h:mm a")}
+                  Created on {format(data.createdAt, "MMMM d, yyyy 'at' h:mm a")}
                 </p>
               </div>
             </CardContent>
@@ -219,18 +219,18 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                   </DialogContent>
                 </Dialog>
                 {
-                  !(data?.isTechnicianSigned && data?.isOwnerSigned) && (
-                    <Button disabled={(!data.hasGPSDevice) || (!data.isOwnerSigned)} variant="default" className="flex-1" onClick={handleApprove}>
+                  !data?.isTechnicianSigned && (
+                    <Button disabled={(!data.hasGPSDevice)} variant="default" className="flex-1" onClick={handleApprove}>
                       <CheckCircle className="mr-2 h-4 w-4" />
                       Xem hợp đồng
                     </Button>
                   )
                 }
                 {
-                  (data?.isTechnicianSigned && data?.isOwnerSigned) && (
+                  data?.isTechnicianSigned && (
                     <Button variant="default" className="flex-1" onClick={handleNavigateToApprove}>
                       <CheckCircle className="mr-2 h-4 w-4" />
-                      Xem hợp đồng
+                      Xác minh
                     </Button>
                   )
                 }
@@ -321,7 +321,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
                       {
                         car.location &&
                         <p className="text-sm text-muted-foreground mt-1">
-                          Latitude: {car.location.latitude}, Longitude: {car.location.longtitude}
+                          {car?.pickupLocation?.address}
                         </p>
                       }
                     </div>

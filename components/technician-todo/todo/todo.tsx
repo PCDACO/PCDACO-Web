@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { CalendarDays, Check, Clock, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { useDialogStore } from "@/stores/store";
 import { CarDetail } from "@/constants/models/technician-task.model";
 import { Card, CardContent } from "@/components/ui/card";
+import { CustomCalendar } from "@/components/ui/custom-calendar";
 
 export default function TechnicianTodo() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
@@ -48,7 +48,7 @@ export default function TechnicianTodo() {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
-              <Calendar
+              <CustomCalendar
                 mode="single"
                 selected={selectedDate}
                 onSelect={setSelectedDate}
