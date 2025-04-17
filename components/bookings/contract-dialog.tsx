@@ -10,8 +10,8 @@ interface DocumentDialogProps {
 const BookingContractDialog = ({ terms, open, onOpenChange }: DocumentDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTitle></DialogTitle>
       <DialogContent className="min-w-[1000]" >
+        <DialogTitle></DialogTitle>
         <div className="border rounded-md p-4 max-h-[850] overflow-auto">
           <div
             dangerouslySetInnerHTML={{
