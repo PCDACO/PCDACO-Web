@@ -63,9 +63,7 @@ export default function ProfileComponent({ user }: Props) {
                   <div className="flex items-start gap-4">
                     <Avatar className="h-20 w-20">
                       <AvatarImage src={user.avatarUrl} alt={user.name} />
-                      <AvatarFallback>
-                        <User className="h-10 w-10" />
-                      </AvatarFallback>
+                      <AvatarFallback> {Array.from(user.name)[0].toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
                       <CardTitle className="text-2xl">{user.name}</CardTitle>

@@ -47,6 +47,7 @@ import {
   DropdownMenuTrigger,
 } from './dropdown-menu';
 import Image from 'next/image';
+import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 
 interface SideBarItem {
   title: string;
@@ -275,17 +276,16 @@ export async function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <Image
-                    className="mr-1"
-                    alt="avatarUrl"
-                    src={
-                      currentUser.value?.avatarUrl !== ''
-                        ? currentUser.value?.avatarUrl ?? "/dummy-avatar.webp"
-                        : '/dummy-avatar.webp'
-                    }
-                    width={24}
-                    height={24}
-                  />{' '}
+                  <Avatar>
+                    <AvatarImage
+                      className="mr-1"
+                      alt="avatarUrl"
+                      src={currentUser.value?.avatarUrl}
+                      width={12}
+                      height={12}
+                    />
+                    <AvatarFallback>{Array.from(currentUser?.value?.name)[0].toUpperCase()} </AvatarFallback>
+                  </Avatar>
                   {currentUser?.value?.name ?? ""}
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>

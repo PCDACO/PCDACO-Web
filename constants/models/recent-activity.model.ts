@@ -3,6 +3,7 @@ export interface TechnicianRecentActivityResponse {
 }
 
 interface ActivityDetail {
+  name: string;
   avatarUrl: string;
   content: string;
   happenedAt: Date;
@@ -13,6 +14,7 @@ export interface ConsultantRecentActivityResponse {
 }
 
 interface ConsultantRecentActivityDetail {
+  name: string;
   avatarUrl: string;
   content: string;
   happenedAt: Date;

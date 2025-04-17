@@ -85,7 +85,8 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
               consultantRecentActivity && consultantRecentActivity?.activities.map((item) => (
                 <>
                   <CustomActivityItem
-                    avatar={item.avatarUrl !== "" ? item.avatarUrl ?? "/dummy-avatar.webp" : "/dummy-avatar.webp"}
+                    name={item.name}
+                    avatar={item.avatarUrl}
                     content={item.content}
                     time={getTimeAgo(item.happenedAt)}
                   />

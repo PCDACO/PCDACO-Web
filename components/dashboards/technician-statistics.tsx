@@ -92,7 +92,8 @@ export default function TechnicianStatistics({ inProgressInspectionSchedule, sta
               recentActivity?.activities?.map((item) => (
                 <>
                   <CustomActivityItem
-                    avatar={item.avatarUrl !== "" ? "/dummy-avatar.webp" : "/dummy-avatar.webp"}
+                    name={item.name}
+                    avatar={item.avatarUrl}
                     content={item.content}
                     time={getTimeAgo(item.happenedAt)}
                   />
