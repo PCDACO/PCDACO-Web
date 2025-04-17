@@ -27,7 +27,8 @@ export interface InspectionScheduleDetail {
   note: string;
   inspectionAddress: string;
   inspectionDate: Date;
-  isIncident: boolean;
+  type: number;
+  reportId: string;
   createdAt: Date;
 }
 
@@ -36,7 +37,8 @@ export interface InspectionSchedulePayload {
   carId: string;
   inspectionAddress: string;
   inspectionDate: Date;
-  inspectionType: number;
+  type: number;
+  reportId?: string;
 }
 
 export interface ReassignInspectionSchedulePayload {
