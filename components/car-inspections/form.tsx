@@ -35,7 +35,6 @@ const ALL_PHOTOS = [
   InspectionPhotoType.TrunkSpace,
   InspectionPhotoType.Scratches,
   InspectionPhotoType.Cleanliness,
-  InspectionPhotoType.VehicleInspectionCertificate,
 ]
 interface Props {
   schedule: InProgressInspectionScheduleResponse;
@@ -51,7 +50,6 @@ export default function CarInspectionForm({ schedule }: Props) {
     [InspectionPhotoType.TrunkSpace.toString()]: null,
     [InspectionPhotoType.Scratches.toString()]: null,
     [InspectionPhotoType.Cleanliness.toString()]: null,
-    [InspectionPhotoType.VehicleInspectionCertificate.toString()]: null,
   })
 
   const [dates, setDates] = useState<Record<string, Date | undefined>>({
@@ -62,7 +60,6 @@ export default function CarInspectionForm({ schedule }: Props) {
     [InspectionPhotoType.TrunkSpace.toString()]: undefined,
     [InspectionPhotoType.Scratches.toString()]: undefined,
     [InspectionPhotoType.Cleanliness.toString()]: undefined,
-    [InspectionPhotoType.VehicleInspectionCertificate.toString()]: undefined,
   })
   const [descriptions, setDescriptions] = useState<Record<string, string>>({
     [InspectionPhotoType.ExteriorCar.toString()]: "",
@@ -72,9 +69,9 @@ export default function CarInspectionForm({ schedule }: Props) {
     [InspectionPhotoType.TrunkSpace.toString()]: "",
     [InspectionPhotoType.Scratches.toString()]: "",
     [InspectionPhotoType.Cleanliness.toString()]: "",
-    [InspectionPhotoType.VehicleInspectionCertificate.toString()]: "",
   })
   const [note, setNote] = useState<string>("");
+
 
   const isDatesValid = () => {
     // eslint-disable-next-line
@@ -166,7 +163,6 @@ export default function CarInspectionForm({ schedule }: Props) {
       },
     });
   }
-
   return (
     <form onSubmit={handleSubmit}>
       <Card>

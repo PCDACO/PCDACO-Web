@@ -4,16 +4,12 @@ import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { CalendarIcon, Camera, X } from "lucide-react"
+import { Camera, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-import { format } from "date-fns"
 import { Label } from "./label"
 import { Textarea } from "./textarea"
-import { InspectionPhotoType } from "@/constants/enums/inspection-photo-type.enum"
 
 
 interface ImageUploaderProps {
@@ -27,7 +23,7 @@ interface ImageUploaderProps {
   onDescriptionChange: (description: string) => void
 }
 
-export function ImageUploader({ label, photoType, file, date, description, onChange, onDateChange, onDescriptionChange }: ImageUploaderProps) {
+export function ImageUploader({ label, photoType, file, description, onChange, onDescriptionChange }: ImageUploaderProps) {
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -107,27 +103,6 @@ export function ImageUploader({ label, photoType, file, date, description, onCha
           )}
         </CardContent>
       </Card>
-
-      {(photoType === InspectionPhotoType.VehicleInspectionCertificate && file) && (
-        <div className="mt-2">
-          <div className="font-medium">{label}</div>
-          <div className="font-medium whitespace-nowrap min-w-[80px]">Photo Date:</div>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className={cn("w-full justify-start text-left font-normal", !date && "text-muted-foreground")}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Select date for this photo</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar mode="single" selected={date} onSelect={onDateChange} initialFocus />
-            </PopoverContent>
-          </Popover>
-        </div>
-      )}
       {file && (
         <div className="*:not-first:mt-2">
           <Label >Simple textarea</Label>

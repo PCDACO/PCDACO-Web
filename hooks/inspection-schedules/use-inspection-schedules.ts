@@ -108,7 +108,7 @@ export const useInspectionScheduleMutation = () => {
       toastResponse(response);
       if (response.isSuccess) {
         queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
-        push("/inspection-schedules");
+        push("/statistics");
       }
     },
     onError: (error: Error) => {

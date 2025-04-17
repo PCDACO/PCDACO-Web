@@ -7,9 +7,6 @@ export default async function CreateInspectionSchedulePage() {
     index: 1,
     size: 1000,
     keyword: "",
-    status: 1,
-    onlyNoGps: false,
-    onlyHasInprogressInspectionSchedule: false,
   });
   const technicianResponse = await GetTechnicians({
     index: 1,

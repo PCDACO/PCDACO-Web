@@ -25,7 +25,7 @@ import { TechnicianResponse } from "@/constants/models/technician.model";
 import SelectWithSearch from "../ui/select-search";
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Select, SelectItem, SelectLabel } from "../ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface SelectParams {
   id: string;
@@ -84,6 +84,34 @@ export default function CreateInspectionForm({
           <form onSubmit={onSubmit} className="space-y-6">
             <div>
               <div>
+                <FormField
+                  control={form.control}
+                  name="inspectionType"
+                  render={({ field }) => {
+                    return (
+                      <FormItem className="mb-4">
+                        <FormLabel>Loại</FormLabel>
+                        <FormControl>
+                          <Select
+                            value={field.value.toString()}
+                            onValueChange={(value) => form.setValue("inspectionType", parseInt(value))}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Chọn loại kiểm tra" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectItem className="hover:cursor-pointer" value="0">Xác minh xe mới</SelectItem>
+                                <SelectItem className="hover:cursor-pointer" value="1">Sự cố</SelectItem>
+                                <SelectItem className="hover:cursor-pointer" value="2">Gỡ GPS</SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                      </FormItem>
+                    )
+                  }}
+                />
                 <FormField
                   control={form.control}
                   name="technicianId"
@@ -305,22 +333,6 @@ export default function CreateInspectionForm({
                     <FormDescription></FormDescription>
                     <FormMessage />
                   </FormItem>
-                )
-              }}
-            />
-            <FormField
-              control={form.control}
-              name="inspectionType"
-              render={({ field }) => {
-                return (
-                  <Select onValueChange={() => {
-                    form.setValue("inspectionType", field.value);
-                  }}>
-                    <SelectLabel>Type</SelectLabel>
-                    <SelectItem value={"0"}>Xác minh xe mới</SelectItem>
-                    <SelectItem value={"1"}>Sự cố</SelectItem>
-                    <SelectItem value={"2"}>Gỡ GPS</SelectItem>
-                  </Select>
                 )
               }}
             />

@@ -144,6 +144,7 @@ export default function SelectWithSearch<T extends OptionType>({
 
                   return (
                     <CommandItem
+                      className="hover:cursor-pointer"
                       key={optionId}
                       // Pass the unique ID string as the value for Command's internal handling and filtering
                       value={optionId}
@@ -155,9 +156,9 @@ export default function SelectWithSearch<T extends OptionType>({
                         onValueChange(selectedOption ?? null);
                         setOpen(false);
                       }}
-                      // Prevent default filtering based on label text, rely on our custom filter
-                      // This might not be strictly necessary depending on cmdk version, but can prevent conflicts
-                      // filter={false} // <-- You might not need this line
+                    // Prevent default filtering based on label text, rely on our custom filter
+                    // This might not be strictly necessary depending on cmdk version, but can prevent conflicts
+                    // filter={false} // <-- You might not need this line
                     >
                       {optionLabel /* Display the user-friendly label */}
                       {isSelected && (
