@@ -3,12 +3,17 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { AvatarImage } from "@radix-ui/react-avatar"
-import { Calendar, MapPin, Shield, User, Wrench } from "lucide-react"
+import { Calendar, CheckCircleIcon, MapPin, Shield, User, Wrench, XIcon } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import { CarReportDetailResponse } from "@/constants/models/car-report.model"
 import { formatId } from "@/lib/format-uuid"
 import { useRouter } from "next/navigation"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
+import { useCarReportMutation } from "@/hooks/car-reports/use-car-reports"
+import { ChangeEvent, useState } from "react"
+import { Input } from "../ui/input"
+import { Label } from "../ui/label"
 
 interface Props {
   report: CarReportDetailResponse;
@@ -16,6 +21,8 @@ interface Props {
 
 const CarReportDetailComponent = ({ report }: Props) => {
   const { push } = useRouter();
+  const { approveCarReport, rejectCarReport } = useCarReportMutation();
+  const [note, setNote] = useState("");
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -26,6 +33,10 @@ const CarReportDetailComponent = ({ report }: Props) => {
       hour: "2-digit",
       minute: "2-digit",
     }).format(date)
+  }
+
+  const handleNoteChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNote(e.currentTarget.value);
   }
 
   const handleNavigateCreateInspectionDetail = () => {
@@ -47,6 +58,19 @@ const CarReportDetailComponent = ({ report }: Props) => {
   //   }
   // }
 
+  const handleApproveCarReport = () => {
+    approveCarReport.mutate({
+      id: report.id,
+      note: note
+    });
+  }
+
+  const handleRejectCarReport = () => {
+    rejectCarReport.mutate({
+      id: report.id,
+      note: note
+    });
+  }
   // Determine report type display
   const getReportTypeDisplay = (type: string) => {
     switch (type) {
@@ -261,15 +285,56 @@ const CarReportDetailComponent = ({ report }: Props) => {
 
               {/* Action buttons based on report type */}
               <div className="space-y-3">
-                <h3 className="font-medium">Hành động</h3>
-
                 <div className="space-y-2">
                   {
-                    report.inspectionScheduleDetail && (
-                      <Button className="w-full" variant="outline">
-                        <Shield className="mr-2 h-4 w-4" />
-                        Xác nhận thay đổi GPS
-                      </Button>
+                    report.inspectionScheduleDetail && report.status === "UnderReview" && (
+                      <>
+                        <h3 className="font-medium">Hành động</h3>
+                        <Dialog >
+                          <DialogTrigger className="w-full">
+                            <Button className="w-full" variant="destructive">
+                              <XIcon className="mr-2 h-4 w-4" />
+                              Từ chối
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle> Từ chối thay đổi </DialogTitle>
+                            </DialogHeader>
+                            <h1 className="text-muted-foreground">Bạn có chắc chắn không ?</h1>
+                            <Label>Note</Label>
+                            <Input placeholder="Nhập note" value={note} onChange={handleNoteChange} />
+                            <DialogFooter>
+                              <Button onClick={handleRejectCarReport} variant="outline">
+                                <CheckCircleIcon className="mr-2 h-4 w-4" />
+                                Xác nhận
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                        <Dialog >
+                          <DialogTrigger className="w-full">
+                            <Button className="w-full" variant="outline">
+                              <Shield className="mr-2 h-4 w-4" />
+                              Xác nhận thay đổi GPS
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle> Xác nhận thay đổi </DialogTitle>
+                            </DialogHeader>
+                            <h1 className="text-muted-foreground">Bạn có chắc chắn không ?</h1>
+                            <Label>Note</Label>
+                            <Input placeholder="Nhập note" value={note} onChange={handleNoteChange} />
+                            <DialogFooter>
+                              <Button onClick={handleApproveCarReport} variant="outline">
+                                <CheckCircleIcon className="mr-2 h-4 w-4" />
+                                Xác nhận
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </>
                     )
                   }
                   {
@@ -321,7 +386,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
           </Card>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 
