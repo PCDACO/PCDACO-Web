@@ -24,11 +24,12 @@ export const useInspectionScheduleForm = ({
   // Memoize defaultValues to prevent recalculating it on each render
   const defaultValues = useMemo(() => {
     return {
-      technicianId: id ? value.technicianId : "",
-      carId: id ? value.carId : "",
-      inspectionAddress: id ? value.inspectionAddress : "",
-      inspectionDate: id ? value.inspectionDate : new Date(),
-      inspectionType: id ? value.inspectionType : 0,
+      technicianId: value.technicianId ?? "",
+      carId: value.carId ?? "",
+      inspectionAddress: value.inspectionAddress ?? "",
+      inspectionDate: value.inspectionDate ?? new Date(),
+      type: value.type ?? 0,
+      reportId: value?.reportId ?? "",
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, value]);

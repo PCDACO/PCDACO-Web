@@ -11,7 +11,6 @@ import {
   Pencil,
   Save,
   X,
-  User,
   Mail,
   Phone,
   MapPin,

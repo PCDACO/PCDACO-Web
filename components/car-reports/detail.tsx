@@ -1,18 +1,21 @@
-import { Badge } from "@/components/ui/badge"
+"use client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { AvatarImage } from "@radix-ui/react-avatar"
-import { Calendar, Car, CheckCircle, Clock, MapPin, Shield, User, Wrench } from "lucide-react"
+import { Calendar, MapPin, Shield, User, Wrench } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import { CarReportDetailResponse } from "@/constants/models/car-report.model"
+import { formatId } from "@/lib/format-uuid"
+import { useRouter } from "next/navigation"
 
 interface Props {
   report: CarReportDetailResponse;
 }
 
 const CarReportDetailComponent = ({ report }: Props) => {
+  const { push } = useRouter();
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -25,21 +28,24 @@ const CarReportDetailComponent = ({ report }: Props) => {
     }).format(date)
   }
 
-  // Determine status color
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "pending":
-        return "bg-yellow-100 text-yellow-800"
-      case "resolved":
-        return "bg-green-100 text-green-800"
-      case "scheduled":
-        return "bg-blue-100 text-blue-800"
-      case "rejected":
-        return "bg-red-100 text-red-800"
-      default:
-        return "bg-gray-100 text-gray-800"
-    }
+  const handleNavigateCreateInspectionDetail = () => {
+    push(`/inspection-schedules/create?carId=${report.carDetail.id}&reportId=${report.id}&type=gps-unassign`);
   }
+  // Determine status color
+  // const getStatusColor = (status: string) => {
+  //   switch (status) {
+  //     case "Pending":
+  //       return "bg-yellow-100 text-yellow-800"
+  //     case "UnderReview":
+  //       return "bg-green-100 text-green-800"
+  //     case "Resolved":
+  //       return "bg-blue-100 text-blue-800"
+  //     case "Rejected":
+  //       return "bg-red-100 text-red-800"
+  //     default:
+  //       return "bg-gray-100 text-gray-800"
+  //   }
+  // }
 
   // Determine report type display
   const getReportTypeDisplay = (type: string) => {
@@ -61,12 +67,11 @@ const CarReportDetailComponent = ({ report }: Props) => {
         <div>
           <h1 className="text-3xl font-bold">{report.title}</h1>
           <div className="flex items-center gap-2 mt-2">
-            <Badge className={getStatusColor(report.status)}>{report.status}</Badge>
-            <span className="text-sm text-muted-foreground">ID: {report.id.substring(0, 8)}...</span>
+            {/* <Badge className={getStatusColor(report.status)}>{report.status}</Badge> */}
+            <span className="text-sm text-muted-foreground">ID: {formatId(report.id)}</span>
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">Quay lại</Button>
           {report.status === "Pending" && <Button>Xử lý báo cáo</Button>}
         </div>
       </div>
@@ -176,7 +181,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
                           alt={report?.inspectionScheduleDetail?.technicianName ?? ""}
                         />
                         <AvatarFallback >
-                          {Array.from(report?.inspectionScheduleDetail?.technicianName.trim())[0].toUpperCase()}
+                          {Array.from(report?.inspectionScheduleDetail?.technicianName)[0].toUpperCase()}
                         </AvatarFallback >
                       </Avatar>
                     </div>
@@ -229,12 +234,16 @@ const CarReportDetailComponent = ({ report }: Props) => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="relative aspect-video rounded-md overflow-hidden border">
-                <Image
-                  src={report?.carDetail?.imageUrl[0]}
-                  alt={`Report image`}
-                  fill
-                  className="object-cover"
-                />
+                {
+                  report?.carDetail?.imageUrl && (
+                    <Image
+                      src={report?.carDetail?.imageUrl[0] ?? "/placeholder.svg"}
+                      alt={`Report image`}
+                      fill
+                      className="object-cover"
+                    />
+                  )
+                }
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -254,48 +263,24 @@ const CarReportDetailComponent = ({ report }: Props) => {
               <div className="space-y-3">
                 <h3 className="font-medium">Hành động</h3>
 
-                {report.reportType === "ChangeGPS" ? (
-                  <div className="space-y-2">
-                    {
-                      report.inspectionScheduleDetail && (
-                        <Button className="w-full" variant="outline">
-                          <Shield className="mr-2 h-4 w-4" />
-                          Xác nhận thay đổi GPS
-                        </Button>
-                      )
-                    }
-                    {
-                      (!report.inspectionScheduleDetail || report.inspectionScheduleDetail?.id === '') && (
-                        <Button className="w-full" variant="outline">
-                          <Wrench className="mr-2 h-4 w-4" />
-                          Lên lịch thay GPS
-                        </Button>
-                      )
-                    }
-                  </div>
-                ) : report.reportType === "DeactivateCar" ? (
-                  <div className="space-y-2">
-                    <Button className="w-full" variant="destructive">
-                      <Car className="mr-2 h-4 w-4" />
-                      Hủy kích hoạt xe
-                    </Button>
-                    <Button className="w-full" variant="outline">
-                      <Clock className="mr-2 h-4 w-4" />
-                      Tạm hoãn kích hoạt
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <Button className="w-full" variant="outline">
-                      <CheckCircle className="mr-2 h-4 w-4" />
-                      Xác nhận đã sửa chữa
-                    </Button>
-                    <Button className="w-full" variant="outline">
-                      <Wrench className="mr-2 h-4 w-4" />
-                      Lên lịch sửa chữa
-                    </Button>
-                  </div>
-                )}
+                <div className="space-y-2">
+                  {
+                    report.inspectionScheduleDetail && (
+                      <Button className="w-full" variant="outline">
+                        <Shield className="mr-2 h-4 w-4" />
+                        Xác nhận thay đổi GPS
+                      </Button>
+                    )
+                  }
+                  {
+                    !report.inspectionScheduleDetail && (
+                      <Button onClick={handleNavigateCreateInspectionDetail} className="w-full" variant="outline">
+                        <Wrench className="mr-2 h-4 w-4" />
+                        Lên lịch thay GPS
+                      </Button>
+                    )
+                  }
+                </div>
               </div>
             </CardContent>
           </Card>

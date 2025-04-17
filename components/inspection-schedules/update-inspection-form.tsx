@@ -76,7 +76,8 @@ const UpdateInspectionForm = ({
 
   useEffect(() => {
     if (id) {
-      form.setValue("inspectionType", value.inspectionType);
+      form.setValue("reportId", value.reportId ?? "");
+      form.setValue("type", value.type);
       form.setValue("technicianId", value.technicianId);
       form.setValue("carId", value.carId);
       form.setValue("inspectionDate", value.inspectionDate);

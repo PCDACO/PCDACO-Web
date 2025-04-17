@@ -46,7 +46,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './dropdown-menu';
-import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 
 interface SideBarItem {

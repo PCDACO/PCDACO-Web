@@ -31,8 +31,8 @@ const TimeBadgeComponent = ({
       technicianId: schedule.technicianId,
       carId: schedule.carId,
       inspectionDate: schedule.inspectionDate,
-      //TODO: fix this
-      inspectionType: 0,
+      type: schedule.type ?? 0,
+      reportId: schedule.reportId ?? "",
     });
     setOpen(true);
   }

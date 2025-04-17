@@ -23,8 +23,6 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { CarResponse } from "@/constants/models/car.model";
 import { TechnicianResponse } from "@/constants/models/technician.model";
 import SelectWithSearch from "../ui/select-search";
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface SelectParams {
@@ -34,20 +32,22 @@ interface SelectParams {
 
 interface InspectionScheduleFormProps {
   id: string;
+  carId?: string;
+  reportId?: string;
+  type?: string;
   value: InspectionSchedulePayload;
   cars: CarResponse[];
   technicians: TechnicianResponse[];
 }
 export default function CreateInspectionForm({
   id,
+  carId,
+  reportId,
+  type,
   value,
   cars,
   technicians,
 }: InspectionScheduleFormProps) {
-  const searchParams = useSearchParams();
-  const carId = searchParams.get("carId");
-  const type = searchParams.get("type");
-
   const { form, isLoading, onSubmit } = useInspectionScheduleForm({
     id,
     value,
@@ -58,21 +58,6 @@ export default function CreateInspectionForm({
     const totalMinutes = hour * 60 + minute;
     return totalMinutes >= 1320 || totalMinutes <= 419; // 22:00 to 06:59
   };
-
-  useEffect(() => {
-    if (carId) {
-      form.setValue("carId", carId);
-    }
-    if (type === "Report") {
-      form.setValue("inspectionType", 1);
-    } else if (type === "gps-unassign") {
-      form.setValue("inspectionType", 2);
-    } else {
-      form.setValue("inspectionType", 0);
-    }
-  }, [carId, form, type]);
-
-
 
   return (
     <Card>
@@ -86,15 +71,15 @@ export default function CreateInspectionForm({
               <div>
                 <FormField
                   control={form.control}
-                  name="inspectionType"
+                  name="type"
                   render={({ field }) => {
                     return (
                       <FormItem className="mb-4">
                         <FormLabel>Loại</FormLabel>
                         <FormControl>
-                          <Select
+                          <Select disabled={!type}
                             value={field.value.toString()}
-                            onValueChange={(value) => form.setValue("inspectionType", parseInt(value))}
+                            onValueChange={(value) => form.setValue("type", parseInt(value))}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder="Chọn loại kiểm tra" />
@@ -335,6 +320,24 @@ export default function CreateInspectionForm({
                   </FormItem>
                 )
               }}
+            />
+            <FormField
+              control={form.control}
+              name="reportId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{reportId !== undefined ? "Địa Chỉ Xét Xe" : ""}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Nhập Địa Chỉ"
+                      type={reportId !== undefined ? "text" : "hidden"}
+                      disabled={!!reportId}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
             <Button className="flex justify-center w-1/4 mx-auto" type="submit">
               {isLoading ? <LoadingSpinner /> : "Tạo"}

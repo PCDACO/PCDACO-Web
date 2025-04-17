@@ -82,8 +82,8 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
           </CardHeader>
           <CardContent className="space-y-4">
             {
-              consultantRecentActivity && consultantRecentActivity?.activities.map((item) => (
-                <>
+              consultantRecentActivity && consultantRecentActivity?.activities.map((item, index) => (
+                <div key={index}>
                   <CustomActivityItem
                     name={item.name}
                     avatar={item.avatarUrl}
@@ -91,7 +91,7 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
                     time={getTimeAgo(item.happenedAt)}
                   />
                   <Separator />
-                </>
+                </div>
               ))
             }
           </CardContent>
