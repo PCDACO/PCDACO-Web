@@ -1,83 +1,37 @@
 "use client";
-
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { InspectionScheduleDetail } from "@/constants/models/inspection-schedule.model";
 import { formatDate, formatDateToHour } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { EventDetailDialog } from "./event-detail-dialog";
+import TimeBadgeComponent from "./time-badge";
 
 interface MonthCalendarProps {
+  statusClasses: Record<string, string>;
+  selectedEvent: InspectionScheduleDetail | null;
+  handleEventClick: (schedule: InspectionScheduleDetail | null) => void;
   currentDate: Date;
   onDateChange: (date: Date) => void;
   schedules: InspectionScheduleDetail[];
 }
 
-interface TimeBadgeProps {
-  schedule: InspectionScheduleDetail;
-  statusClasses: Record<string, string>;
-  onEventClick: (schedule: InspectionScheduleDetail) => void;
-}
-
-function TimeBadgeComponent({
-  schedule,
-  statusClasses,
-  onEventClick,
-}: TimeBadgeProps) {
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Badge
-          className={`w-full justify-start truncate cursor-pointer text-xs ${
-            statusClasses[schedule.statusName] || "bg-gray-500"
-          }`}
-          onClick={() => onEventClick(schedule)}
-        >
-          {formatDateToHour(schedule.inspectionDate.toString())} -{" "}
-          {schedule.carOwnerName}
-        </Badge>
-      </TooltipTrigger>
-      <TooltipContent>
-        <div className="text-sm">
-          <p>
-            <strong>Time:</strong>{" "}
-            {formatDateToHour(schedule.inspectionDate.toString())}
-          </p>
-          <p>
-            <strong>Owner:</strong> {schedule.carOwnerName}
-          </p>
-          <p>
-            <strong>Address:</strong> {schedule.inspectionAddress}
-          </p>
-        </div>
-      </TooltipContent>
-    </Tooltip>
-  );
-}
-
 export function MonthCalendar({
   currentDate,
   onDateChange,
+  selectedEvent,
+  handleEventClick,
+  statusClasses,
   schedules,
 }: MonthCalendarProps) {
-  const [selectedEvent, setSelectedEvent] =
-    useState<InspectionScheduleDetail | null>(null);
   const [calendarDays, setCalendarDays] = useState<
     Array<{ date: Date | null; isCurrentMonth: boolean }>
   >([]);
 
-  const statusClasses: Record<string, string> = {
-    Pending: "bg-yellow-500",
-    InProgress: "bg-blue-500",
-    Expired: "bg-red-500",
-    Rejected: "bg-red-500",
-    Approved: "bg-green-500",
-  };
 
   // Get days for the calendar grid
   useEffect(() => {
@@ -107,12 +61,9 @@ export function MonthCalendar({
     setCalendarDays(days);
   }, [currentDate]);
 
-  const handleEventClick = (schedule: InspectionScheduleDetail) => {
-    setSelectedEvent(schedule);
-  };
 
   return (
-    <TooltipProvider>
+    <>
       <div className="p-4">
         <h2 className="text-xl font-bold mb-4">
           {currentDate.toLocaleString("default", { month: "long" })}{" "}
@@ -149,13 +100,11 @@ export function MonthCalendar({
             return (
               <div
                 key={index}
-                className={`min-h-24 h-auto p-1 border ${
-                  day.isCurrentMonth ? "bg-white" : "bg-gray-50"
-                }
+                className={`min-h-24 h-auto p-1 border ${day.isCurrentMonth ? "bg-white" : "bg-gray-50"
+                  }
                                     ${isToday ? "ring-2 ring-black" : ""}
-                                    ${
-                                      !day.isCurrentMonth ? "text-gray-400" : ""
-                                    }`}
+                                    ${!day.isCurrentMonth ? "text-gray-400" : ""
+                  }`}
               >
                 <div className="text-right mb-1">{day.date.getDate()}</div>
                 <div className="overflow-y-hidden space-y-1">
@@ -185,7 +134,7 @@ export function MonthCalendar({
                           <TooltipTrigger asChild>
                             <Badge
                               className="w-full justify-center bg-gray-800 hover:bg-black cursor-pointer text-xs"
-                              onClick={() => setSelectedEvent(daySchedules[2])}
+                              onClick={() => handleEventClick(daySchedules[2])}
                             >
                               +{daySchedules.length - 2} more
                             </Badge>
@@ -227,9 +176,9 @@ export function MonthCalendar({
         <EventDetailDialog
           event={selectedEvent}
           isOpen={!!selectedEvent}
-          onClose={() => setSelectedEvent(null)}
+          onClose={() => handleEventClick(null)}
         />
       )}
-    </TooltipProvider>
+    </>
   );
 }

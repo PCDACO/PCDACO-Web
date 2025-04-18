@@ -2,50 +2,26 @@
 
 import { InspectionScheduleDetail } from "@/constants/models/inspection-schedule.model";
 import { addDays, format, startOfWeek } from "date-fns";
-import { useState } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../../ui/tooltip";
 import { EventDetailDialog } from "../event-detail-dialog";
+import TimeBadgeComponent from "../time-badge";
 
 interface WeekViewProps {
+  statusClasses: Record<string, string>;
+  selectedEvent: InspectionScheduleDetail | null;
+  handleEventClick: (schedule: InspectionScheduleDetail | null) => void;
   schedules: InspectionScheduleDetail[];
   currentDate: Date;
   onDateChange: (date: Date) => void;
 }
 
-export function WeekView({ schedules, currentDate }: WeekViewProps) {
-  const [selectedEvent, setSelectedEvent] =
-    useState<InspectionScheduleDetail | null>(null);
+export function WeekView({ schedules, selectedEvent, handleEventClick, currentDate, statusClasses: statusClass }: WeekViewProps) {
   const weekStart = startOfWeek(currentDate);
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   // Only show hours from 7AM to 10PM
   const hours = Array.from({ length: 16 }, (_, i) => i + 7); // 7AM to 10PM
 
-  const getScheduleStyle = (schedule: InspectionScheduleDetail) => {
-    const baseStyle =
-      "absolute inset-0 m-0.5 rounded-md px-2 flex items-center text-xs text-white cursor-pointer truncate hover:opacity-90 transition-opacity";
-    switch (schedule.statusName) {
-      case "Pending":
-        return `${baseStyle} bg-yellow-500`;
-      case "InProgress":
-        return `${baseStyle} bg-blue-500`;
-      case "Approved":
-        return `${baseStyle} bg-green-500`;
-      default:
-        return `${baseStyle} bg-red-500`;
-    }
-  };
-
-  const handleEventClick = (event: InspectionScheduleDetail) => {
-    setSelectedEvent(event);
-  };
-
   return (
-    <TooltipProvider>
+    <>
       <div className="p-4">
         <div className="grid grid-cols-8 border-b">
           <div className="p-2 border-r"></div>
@@ -83,42 +59,7 @@ export function WeekView({ schedules, currentDate }: WeekViewProps) {
                       );
                     })
                     .map((schedule) => (
-                      <Tooltip key={schedule.id}>
-                        <TooltipTrigger className="h-full w-full">
-                          <div
-                            className={getScheduleStyle(schedule)}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              handleEventClick(schedule);
-                            }}
-                          >
-                            {format(new Date(schedule.inspectionDate), "HH:mm")}{" "}
-                            - {schedule.carOwnerName}
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <div className="text-sm space-y-1">
-                            <p>
-                              <strong>Time:</strong>{" "}
-                              {format(
-                                new Date(schedule.inspectionDate),
-                                "HH:mm"
-                              )}
-                            </p>
-                            <p>
-                              <strong>Owner:</strong> {schedule.carOwnerName}
-                            </p>
-                            <p>
-                              <strong>Address:</strong>{" "}
-                              {schedule.inspectionAddress}
-                            </p>
-                            <p>
-                              <strong>Status:</strong> {schedule.statusName}
-                            </p>
-                          </div>
-                        </TooltipContent>
-                      </Tooltip>
+                      <TimeBadgeComponent statusClasses={statusClass} schedule={schedule} onEventClick={handleEventClick} />
                     ))}
                 </div>
               ))}
@@ -130,9 +71,9 @@ export function WeekView({ schedules, currentDate }: WeekViewProps) {
         <EventDetailDialog
           event={selectedEvent}
           isOpen={!!selectedEvent}
-          onClose={() => setSelectedEvent(null)}
+          onClose={() => handleEventClick(null)}
         />
       )}
-    </TooltipProvider>
+    </>
   );
 }

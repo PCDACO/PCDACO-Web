@@ -2,28 +2,22 @@
 
 import { InspectionScheduleDetail } from "@/constants/models/inspection-schedule.model";
 import { format } from "date-fns";
-import { useState } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../../ui/tooltip";
 import { EventDetailDialog } from "../event-detail-dialog";
+import TimeBadgeComponent from "../time-badge";
 
 interface DayViewProps {
   schedules: InspectionScheduleDetail[];
+  selectedEvent: InspectionScheduleDetail | null;
+  handleEventClick: (schedule: InspectionScheduleDetail | null) => void;
   currentDate: Date;
+  statusClasses: Record<string, string>;
   onDateChange: (date: Date) => void;
 }
 
-export function DayView({ schedules, currentDate }: DayViewProps) {
-  const [selectedEvent, setSelectedEvent] =
-    useState<InspectionScheduleDetail | null>(null);
+export function DayView({ schedules, selectedEvent, handleEventClick, currentDate, statusClasses }: DayViewProps) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
-
   return (
-    <TooltipProvider>
+    <div>
       <div className="flex flex-col p-4">
         <div className="text-center p-4 border-b">
           <h2 className="text-xl font-semibold">
@@ -46,40 +40,7 @@ export function DayView({ schedules, currentDate }: DayViewProps) {
                     );
                   })
                   .map((schedule) => (
-                    <Tooltip key={schedule.id}>
-                      <TooltipTrigger className="h-full w-full">
-                        <div
-                          className={`absolute inset-0 m-0.5 rounded-md px-2 flex items-center text-xs text-white cursor-pointer truncate ${
-                            schedule.statusName === "Pending"
-                              ? "bg-yellow-500"
-                              : schedule.statusName === "InProgress"
-                              ? "bg-blue-500"
-                              : schedule.statusName === "Approved"
-                              ? "bg-green-500"
-                              : "bg-red-500"
-                          }`}
-                          onClick={() => setSelectedEvent(schedule)}
-                        >
-                          {format(new Date(schedule.inspectionDate), "HH:mm")} -{" "}
-                          {schedule.carOwnerName}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <div className="text-sm">
-                          <p>
-                            <strong>Time:</strong>{" "}
-                            {format(new Date(schedule.inspectionDate), "HH:mm")}
-                          </p>
-                          <p>
-                            <strong>Owner:</strong> {schedule.carOwnerName}
-                          </p>
-                          <p>
-                            <strong>Address:</strong>{" "}
-                            {schedule.inspectionAddress}
-                          </p>
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
+                    <TimeBadgeComponent key={schedule.id} statusClasses={statusClasses} schedule={schedule} onEventClick={handleEventClick} />
                   ))}
               </div>
             </div>
@@ -90,9 +51,9 @@ export function DayView({ schedules, currentDate }: DayViewProps) {
         <EventDetailDialog
           event={selectedEvent}
           isOpen={!!selectedEvent}
-          onClose={() => setSelectedEvent(null)}
+          onClose={() => handleEventClick(null)}
         />
       )}
-    </TooltipProvider>
+    </div>
   );
 }

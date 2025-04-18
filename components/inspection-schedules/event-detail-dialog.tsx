@@ -5,6 +5,7 @@ import { Car, MapPin, Tag, User } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { useRouter } from "next/navigation";
 
 interface EventDetailDialogProps {
   event: InspectionScheduleDetail;
@@ -17,6 +18,10 @@ export function EventDetailDialog({
   isOpen,
   onClose,
 }: EventDetailDialogProps) {
+  const { push } = useRouter();
+  const handleNavigateDetailClick = () => {
+    push(`/inspection-schedules/${event.id}/details`);
+  }
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
@@ -66,14 +71,7 @@ export function EventDetailDialog({
             </div>
           </div>
           <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={onClose}>
-              Đóng
-            </Button>
-            <Button
-              onClick={() =>
-                (window.location.href = `/inspection-schedules/${event.id}/details`)
-              }
-            >
+            <Button variant="ghost" onClick={handleNavigateDetailClick} >
               Chi tiết
             </Button>
           </div>

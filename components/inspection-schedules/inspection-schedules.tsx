@@ -22,6 +22,7 @@ import { useInspectionStore } from "./time-badge";
 import UpdateInspectionForm from "./update-inspection-form";
 import { DayView } from "./views/day-view";
 import { WeekView } from "./views/week-view";
+import { InspectionScheduleDetail } from "@/constants/models/inspection-schedule.model";
 
 type ViewType = "month" | "week" | "day";
 
@@ -36,6 +37,20 @@ export default function TechnicianCalendarPage() {
   const { id } = useIdStore();
   const { data } = useInspectionStore();
   const { push } = useRouter();
+  const [selectedEvent, setSelectedEvent] =
+    useState<InspectionScheduleDetail | null>(null);
+
+  const handleEventClick = (schedule: InspectionScheduleDetail | null) => {
+    setSelectedEvent(schedule);
+  }
+
+  const statusClasses: Record<string, string> = {
+    Pending: "bg-yellow-500",
+    InProgress: "bg-blue-500",
+    Expired: "bg-red-500",
+    Rejected: "bg-red-500",
+    Approved: "bg-green-500",
+  };
 
   // Get unique technicians
   const uniqueTechnicians = React.useMemo(() => {
@@ -98,11 +113,11 @@ export default function TechnicianCalendarPage() {
 
     switch (view) {
       case "month":
-        return <MonthCalendar {...viewProps} />;
+        return <MonthCalendar selectedEvent={selectedEvent} handleEventClick={handleEventClick} statusClasses={statusClasses} {...viewProps} />;
       case "week":
-        return <WeekView {...viewProps} />;
+        return <WeekView selectedEvent={selectedEvent} handleEventClick={handleEventClick} statusClasses={statusClasses} {...viewProps} />;
       case "day":
-        return <DayView {...viewProps} />;
+        return <DayView selectedEvent={selectedEvent} handleEventClick={handleEventClick} statusClasses={statusClasses} {...viewProps} />;
     }
   };
 
@@ -129,9 +144,10 @@ export default function TechnicianCalendarPage() {
                     <SelectValue placeholder="Select technician" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Tất cả</SelectItem>
+                    <SelectItem className="hover:cursor-pointer" value="all">Tất cả</SelectItem>
                     {uniqueTechnicians.map((tech) => (
                       <SelectItem
+                        className="hover:cursor-pointer"
                         key={tech.technicianId}
                         value={tech.technicianId}
                       >
@@ -141,13 +157,6 @@ export default function TechnicianCalendarPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button
-                onClick={() => push("/inspection-schedules/create")}
-                className="bg-black text-white hover:bg-gray-800"
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Tạo
-              </Button>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
@@ -160,19 +169,19 @@ export default function TechnicianCalendarPage() {
               </div>
               <div className="space-x-1">
                 <Button
-                  variant={view === "month" ? "default" : "ghost"}
+                  variant={view === "month" ? "default" : "outline"}
                   onClick={() => setView("month")}
                 >
                   Tháng
                 </Button>
                 <Button
-                  variant={view === "week" ? "default" : "ghost"}
+                  variant={view === "week" ? "default" : "outline"}
                   onClick={() => setView("week")}
                 >
                   Tuần
                 </Button>
                 <Button
-                  variant={view === "day" ? "default" : "ghost"}
+                  variant={view === "day" ? "default" : "outline"}
                   onClick={() => setView("day")}
                 >
                   Ngày
