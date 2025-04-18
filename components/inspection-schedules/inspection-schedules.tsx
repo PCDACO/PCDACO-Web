@@ -15,8 +15,7 @@ import {
   useIdStore,
   useInspectionScheduleParamStore,
 } from "@/stores/store";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useInspectionStore } from "./time-badge";
 import UpdateInspectionForm from "./update-inspection-form";
@@ -36,7 +35,6 @@ export default function TechnicianCalendarPage() {
   const { open, setOpen } = useDialogStore();
   const { id } = useIdStore();
   const { data } = useInspectionStore();
-  const { push } = useRouter();
   const [selectedEvent, setSelectedEvent] =
     useState<InspectionScheduleDetail | null>(null);
 
@@ -70,6 +68,7 @@ export default function TechnicianCalendarPage() {
       month: date.getMonth() + 1,
       year: date.getFullYear(),
     });
+    //eslint-disable-next-line
   }, [currentDate]);
 
   const handlePrevious = () => {

@@ -59,7 +59,7 @@ export function WeekView({ schedules, selectedEvent, handleEventClick, currentDa
                       );
                     })
                     .map((schedule) => (
-                      <TimeBadgeComponent statusClasses={statusClass} schedule={schedule} onEventClick={handleEventClick} />
+                      <TimeBadgeComponent key={schedule.id} statusClasses={statusClass} schedule={schedule} onEventClick={handleEventClick} />
                     ))}
                 </div>
               ))}
