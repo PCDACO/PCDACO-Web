@@ -22,7 +22,6 @@ interface MonthCalendarProps {
 
 export function MonthCalendar({
   currentDate,
-  onDateChange,
   selectedEvent,
   handleEventClick,
   statusClasses,
