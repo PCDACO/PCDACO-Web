@@ -8,7 +8,6 @@ import {
   ChevronRight,
   Clock,
   Eye,
-  MapPinnedIcon,
   ReceiptText,
   Star,
   User,
@@ -46,17 +45,14 @@ export default function CarDetailsComponent({ car }: Props) {
     back();
   };
 
-  const handleOpenContractClick = () => {
-    setOpen(true);
+  const handleNavigateContract = () => {
+    push(`/cars/${car.id}/contract-details`);
   }
 
   const handleActionClick = (id: string) => {
     push(`/bookings/${id}`);
   };
 
-  const handleViewLocationClick = () => {
-    push(`${car.id}/map`)
-  }
   return (
     <>
       <div className="container mx-auto py-6 space-y-6">
@@ -90,15 +86,8 @@ export default function CarDetailsComponent({ car }: Props) {
               <div>
                 {
                   car?.contract?.terms && car?.contract?.terms !== "" && (
-                    <Button onClick={handleOpenContractClick} variant="ghost">
+                    <Button onClick={handleNavigateContract} variant="ghost">
                       <ReceiptText />
-                    </Button>
-                  )
-                }
-                {
-                  car?.status === CarStatusString.Available && (
-                    <Button onClick={handleViewLocationClick} variant="ghost">
-                      <MapPinnedIcon />
                     </Button>
                   )
                 }
@@ -343,6 +332,5 @@ export default function CarDetailsComponent({ car }: Props) {
       </div>
       <CarContractDialog terms={car?.contract?.terms ?? ""} open={open} onOpenChange={() => setOpen(!open)} />
     </>
-
   );
 }

@@ -13,6 +13,7 @@ import { formatId } from "@/lib/format-uuid"
 import BookingContractDialog from "./contract-dialog"
 import { Button } from "../ui/button"
 import { useDialogStore } from "@/stores/store"
+import { useRouter } from "next/navigation"
 
 // Add these type definitions at the top of the file, before the bookingData
 enum FeedbackTypeEnum {
@@ -27,11 +28,12 @@ export default function BookingDetailComponent({
   bookingData
 }: Props) {
   const { id, car, driver, owner, booking, payment, trip, feedbacks, contract } = bookingData
+  const { push } = useRouter();
 
   const { open, setOpen } = useDialogStore();
 
   const handleOpenContractClick = () => {
-    setOpen(true);
+    push(`/bookings/${bookingData.id}/contract-details`);
   }
 
   const formatDate = (dateString: string) => {
