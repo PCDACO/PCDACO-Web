@@ -2,11 +2,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "../ui/badge";
 import { CarReportResponse } from "@/constants/models/car-report.model";
 import MenuAction from "./menu-action";
-import { CarReportEnum } from "@/constants/enums/car-report-type.enum";
+import { CarReportTypeEnum } from "@/constants/enums/car-report-type.enum";
 
 const carReportTypes = [
   {
-    name: CarReportEnum.ChangeGPS,
+    name: CarReportTypeEnum.ChangeGPS,
     value: (
       <Badge className="bg-yellow-400 text-black">
         Thay Thiết Bị
@@ -14,7 +14,7 @@ const carReportTypes = [
     ),
   },
   {
-    name: CarReportEnum.DeactivateCar,
+    name: CarReportTypeEnum.DeactivateCar,
     value: (
       <Badge className="bg-red-400 text-black">
         Rời Hệ Thống
@@ -22,7 +22,7 @@ const carReportTypes = [
     ),
   },
   {
-    name: CarReportEnum.Other,
+    name: CarReportTypeEnum.Other,
     value: (
       <Badge className="bg-green-400 text-black">
         Khác
@@ -51,10 +51,10 @@ export const CarReportColumns: ColumnDef<CarReportResponse>[] = [
     accessorKey: "reportType",
     header: "Loại",
     cell: ({ row }) => {
-      const getBadge = (type: string) => {
-        const result = carReportTypes.find(item => item.name.toString() === type);
+      const getBadge = (type: number) => {
+        const result = carReportTypes.find(item => item.name === type);
         if (!result) {
-          return <Badge></Badge>
+          return <Badge variant="outline"></Badge>
         }
         return result.value;
       }

@@ -1,5 +1,4 @@
 import { GetCarContract } from "@/app/(dashboard)/(technicians)/cars/[id]/contract/action";
-import ContractDetailComponent from "@/components/cars/contract-detail";
 import { redirect } from "next/navigation";
 
 const ContractDetailPage = async ({
@@ -9,10 +8,20 @@ const ContractDetailPage = async ({
 }) => {
   const { id } = await params;
   const response = await GetCarContract(id);
+  console.log(response);
   if (!response) {
     redirect("/not-found");
   }
-  return <ContractDetailComponent contractHtml={response} id={id} />
+  return (
+    <div>
+      <div
+        className="max-h-[85vh] overflow-y-auto"
+        dangerouslySetInnerHTML={{
+          __html: response.toString()
+        }}
+      />
+    </div>
+  )
 }
 
 export default ContractDetailPage;

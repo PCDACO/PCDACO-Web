@@ -72,8 +72,8 @@ export default function UnderReviewReportItem({
   const { push } = useRouter();
   const handleBtnClick = () => push(`/reports/${report.id}`)
 
-  const getTypeBadge = (reportType: string): JSX.Element => {
-    const found = ReportTypes.find((item) => item.value.toString() === reportType);
+  const getTypeBadge = (reportType: number): JSX.Element => {
+    const found = ReportTypes.find((item) => item.value === reportType);
     if (!found) {
       return <Badge variant="destructive">Unknown</Badge>;
     }

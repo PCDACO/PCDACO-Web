@@ -1,4 +1,3 @@
-import ContractDetailComponent from "@/components/bookings/contract-detail";
 import { GetBookingContract } from "./action";
 import { redirect } from "next/navigation";
 
@@ -12,7 +11,14 @@ const BookingContractDetail = async ({
   if (!response) {
     redirect("/not-found");
   }
-  return <ContractDetailComponent id={id} contractHtml={response} />
+  return (
+    <div
+      className="max-h-[70vh] overflow-y-auto"
+      dangerouslySetInnerHTML={{
+        __html: response.toString()
+      }}
+    />
+  )
 }
 
 export default BookingContractDetail;

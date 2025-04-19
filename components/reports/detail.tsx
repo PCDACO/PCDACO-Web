@@ -49,7 +49,7 @@ export default function ReportDetails({ report }: Props) {
   const handleCreateNewInspectionClick = () => {
     push(
       `/inspection-schedules/create?carId=${report?.carDetail?.id ?? ""
-      }&type=report&report=${report?.id}`
+      }&type=report&reportId=${report?.id}`
     );
   };
 
