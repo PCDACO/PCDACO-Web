@@ -62,8 +62,17 @@ export const GetRecentActivities = async (): Promise<RootResponse<null>> => {
 
 export const CreateInspectionSchedules =
   async (payload: InspectionSchedulePayload): Promise<RootResponse<InspectionScheduleCreateResponse>> => {
+    const request = {
+      technicianId: payload.technicianId,
+      carId: payload.carId,
+      inspectionAddress: payload.inspectionAddress,
+      type: payload.type,
+      inspectionDate: payload.inspectionDate,
+      reportId: (payload.reportId && payload.reportId !== '') ? payload.reportId : null,
+
+    }
     const response = await axiosInstance.post("/api/inspection-schedules", {
-      ...payload
+      ...request
     })
     return response.data;
   }

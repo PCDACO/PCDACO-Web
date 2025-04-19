@@ -183,7 +183,7 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
 
               <div>
                 <p className="text-sm text-muted-foreground">
-                  Created on {format(data.createdAt, "MMMM d, yyyy 'at' h:mm a")}
+                  Tạo vào lúc: {format(data.createdAt, "MMMM d, yyyy 'at' h:mm a")}
                 </p>
               </div>
             </CardContent>

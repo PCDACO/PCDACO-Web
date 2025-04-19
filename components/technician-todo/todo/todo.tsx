@@ -65,7 +65,7 @@ export default function TechnicianTodo() {
               <CardContent>
                 <ul className="space-y-6">
                   {listTechnicianTasks.data.value && listTechnicianTasks.data.value.cars?.map((car) => (
-                    <li key={car.inspectionScheduleId} className="border border-gray-300 p-4 rounded-lg ">
+                    <li key={car.inspectionScheduleId} className="my-4 border border-gray-300 p-4 rounded-lg ">
                       <div className="flex flex-col items-start justify-between mb-2" >
                         <div className="flex flex-row w-full justify-between">
                           <div className="hover:cursor-pointer" onClick={() => handleTodoClick(car)}>

@@ -6,7 +6,6 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -27,25 +26,14 @@ import {
   LucideProps,
   LucideIdCard,
   LocateIcon,
-  SquareUserRoundIcon,
   BadgeDollarSign,
   Newspaper,
-  ChevronDown,
   NewspaperIcon,
 } from 'lucide-react';
 // import Link from "next/link"
 import { LogoutButton } from './LogoutButton';
-import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
-import { GetCurrentUser } from '@/app/actions/shared/action';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 
 interface SideBarItem {
   title: string;
@@ -222,11 +210,10 @@ const items: SideBarItem[] = [
     group: 'Quản Lí Nền Tảng',
   },
 ];
-
-export async function AppSidebar() {
-  const cookieStore = await cookies();
-  const userRole = cookieStore.get('role');
-  const currentUser = await GetCurrentUser();
+interface Props {
+  userRole: string;
+}
+export async function AppSidebar({ userRole }: Props) {
   if (!userRole)
     return (
       <Sidebar className='shadow-sm '>
@@ -253,7 +240,7 @@ export async function AppSidebar() {
         </SidebarContent>
       </Sidebar>
     );
-  const filteredItems = items.filter((i) => i.role === userRole.value);
+  const filteredItems = items.filter((i) => i.role === userRole);
   // Group items by group
   const groupedItems: { [key: string]: SideBarItem[] } = filteredItems.reduce(
     (acc: { [key: string]: SideBarItem[] }, item) => {
@@ -268,44 +255,6 @@ export async function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton variant="outline" className='h-12'>
-                  <Avatar>
-                    <AvatarImage
-                      className="mr-1"
-                      alt="avatarUrl"
-                      src={currentUser.value?.avatarUrl}
-                      width={12}
-                      height={12}
-                    />
-                    <AvatarFallback>{Array.from(currentUser?.value?.name)[0].toUpperCase()} </AvatarFallback>
-                  </Avatar>
-                  {currentUser?.value?.name ?? ""}
-                  <ChevronDown className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-                <DropdownMenuItem>
-                  <Link href={"/profiles"} className='flex w-full' >
-                    <SquareUserRoundIcon className="ml-4 h-4 w-4 text-primary mr-2" />
-                    <span>Tài Khoản</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <LogoutButton />
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
       <SidebarContent className="flex flex-col justify-start">
         <SidebarMenu>
           {Object.entries(groupedItems).map(([group, items]) => (
@@ -331,8 +280,6 @@ export async function AppSidebar() {
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>
-      </SidebarFooter>
     </Sidebar>
   );
 }
