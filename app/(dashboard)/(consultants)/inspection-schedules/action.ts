@@ -55,6 +55,11 @@ export const GetSignedInspectionSchedule = async (): Promise<RootResponse<InProg
   return response.data;
 }
 
+export const GetSignedOrInProgressInspectionSchedule = async (): Promise<RootResponse<InProgressInspectionScheduleResponse>> => {
+  const response = await axiosInstance.get("/api/inspection-schedules/active");
+  return response.data;
+}
+
 export const GetRecentActivities = async (): Promise<RootResponse<null>> => {
   const response = await axiosInstance.get("");
   return response.data;

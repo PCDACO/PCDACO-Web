@@ -31,7 +31,6 @@ const CarReportTable = () => {
           />
         </div>
       </div>
-
       <DataTable
         columns={CarReportColumns}
         data={listCarReport.data?.value?.items ?? []}

@@ -1,4 +1,4 @@
-export enum CarReportEnum {
+export enum CarReportTypeEnum {
   ChangeGPS,
   DeactivateCar,
   Other

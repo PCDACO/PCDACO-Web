@@ -5,8 +5,8 @@ export interface CarReportResponse {
   reporterId: string;
   title: string;
   description: string;
-  reportType: string;
-  status: string;
+  reportType: number;
+  status: number;
   resolvedAt: string;
   resolvedById: string;
   resolutionComments: string;
@@ -20,8 +20,8 @@ export interface CarReportDetailResponse {
   reporterRole: string;
   title: string;
   description: string;
-  reportType: string;
-  status: string;
+  reportType: number;
+  status: number;
   resolvedAt: string;
   resolvedById: string;
   resolutionComments: string;

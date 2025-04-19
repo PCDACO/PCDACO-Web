@@ -3,17 +3,15 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { AvatarImage } from "@radix-ui/react-avatar"
-import { Calendar, CheckCircleIcon, MapPin, Shield, User, Wrench, XIcon } from "lucide-react"
+import { Calendar, MapPin, User, Wrench } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import { CarReportDetailResponse } from "@/constants/models/car-report.model"
 import { formatId } from "@/lib/format-uuid"
 import { useRouter } from "next/navigation"
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { useCarReportMutation } from "@/hooks/car-reports/use-car-reports"
-import { ChangeEvent, useState } from "react"
-import { Input } from "../ui/input"
-import { Label } from "../ui/label"
+import { CarReportStatus } from "@/constants/enums/car-report-status.enum"
+import { Badge } from "../ui/badge"
+import { CarReportTypeEnum } from "@/constants/enums/car-report-type.enum"
 
 interface Props {
   report: CarReportDetailResponse;
@@ -21,8 +19,6 @@ interface Props {
 
 const CarReportDetailComponent = ({ report }: Props) => {
   const { push } = useRouter();
-  const { approveCarReport, rejectCarReport } = useCarReportMutation();
-  const [note, setNote] = useState("");
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -35,53 +31,52 @@ const CarReportDetailComponent = ({ report }: Props) => {
     }).format(date)
   }
 
-  const handleNoteChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNote(e.currentTarget.value);
-  }
 
   const handleNavigateCreateInspectionDetail = () => {
     push(`/inspection-schedules/create?carId=${report.carDetail.id}&reportId=${report.id}&type=gps-unassign`);
   }
-  // Determine status color
-  // const getStatusColor = (status: string) => {
-  //   switch (status) {
-  //     case "Pending":
-  //       return "bg-yellow-100 text-yellow-800"
-  //     case "UnderReview":
-  //       return "bg-green-100 text-green-800"
-  //     case "Resolved":
-  //       return "bg-blue-100 text-blue-800"
-  //     case "Rejected":
-  //       return "bg-red-100 text-red-800"
-  //     default:
-  //       return "bg-gray-100 text-gray-800"
-  //   }
-  // }
-
-  const handleApproveCarReport = () => {
-    approveCarReport.mutate({
-      id: report.id,
-      note: note
-    });
-  }
-
-  const handleRejectCarReport = () => {
-    rejectCarReport.mutate({
-      id: report.id,
-      note: note
-    });
+  const getStatusColor = (status: number) => {
+    switch (status) {
+      case CarReportStatus.Pending:
+        return "bg-yellow-100 text-yellow-800"
+      case CarReportStatus.Rejected:
+        return "bg-red-100 text-red-800"
+      case CarReportStatus.Resolved:
+        return "bg-green-100 text-green-800"
+      case CarReportStatus.UnderReview:
+        return "bg-blue-100 text-blue-800"
+      default:
+        return "bg-gray-100 text-gray-800"
+    }
   }
   // Determine report type display
-  const getReportTypeDisplay = (type: string) => {
+  const getReportTypeDisplay = (type: number) => {
     switch (type) {
-      case "GPSChange":
+      case CarReportTypeEnum.ChangeGPS:
         return "Thay đổi GPS"
-      case "Deactivation":
+      case CarReportTypeEnum.DeactivateCar:
         return "Hủy kích hoạt xe"
-      case "BodyDamage":
+      case CarReportTypeEnum.Other:
         return "Hư hỏng thân xe"
       default:
         return "Báo cáo khác"
+    }
+  }
+
+  const getReportStatusDisplay = (status: number) => {
+    switch (status) {
+      case CarReportStatus.Pending: {
+        return "Đang chờ";
+      };
+      case CarReportStatus.Rejected: {
+        return "Đã từ chối";
+      };
+      case CarReportStatus.Resolved: {
+        return "Đã xử lí";
+      };
+      case CarReportStatus.UnderReview: {
+        return "Đang tiến hành";
+      };
     }
   }
 
@@ -91,12 +86,12 @@ const CarReportDetailComponent = ({ report }: Props) => {
         <div>
           <h1 className="text-3xl font-bold">{report.title}</h1>
           <div className="flex items-center gap-2 mt-2">
-            {/* <Badge className={getStatusColor(report.status)}>{report.status}</Badge> */}
+            <Badge className={getStatusColor(report.status)}>{getReportStatusDisplay(report.status)}</Badge>
             <span className="text-sm text-muted-foreground">ID: {formatId(report.id)}</span>
           </div>
         </div>
         <div className="flex gap-2">
-          {report.status === "Pending" && <Button>Xử lý báo cáo</Button>}
+          {report.status === CarReportStatus.Pending && <Button>Xử lý báo cáo</Button>}
         </div>
       </div>
 
@@ -286,57 +281,57 @@ const CarReportDetailComponent = ({ report }: Props) => {
               {/* Action buttons based on report type */}
               <div className="space-y-3">
                 <div className="space-y-2">
-                  {
-                    report.inspectionScheduleDetail && report.status === "UnderReview" && (
-                      <>
-                        <h3 className="font-medium">Hành động</h3>
-                        <Dialog >
-                          <DialogTrigger className="w-full">
-                            <Button className="w-full" variant="destructive">
-                              <XIcon className="mr-2 h-4 w-4" />
-                              Từ chối
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle> Từ chối thay đổi </DialogTitle>
-                            </DialogHeader>
-                            <h1 className="text-muted-foreground">Bạn có chắc chắn không ?</h1>
-                            <Label>Note</Label>
-                            <Input placeholder="Nhập note" value={note} onChange={handleNoteChange} />
-                            <DialogFooter>
-                              <Button onClick={handleRejectCarReport} variant="outline">
-                                <CheckCircleIcon className="mr-2 h-4 w-4" />
-                                Xác nhận
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                        <Dialog >
-                          <DialogTrigger className="w-full">
-                            <Button className="w-full" variant="outline">
-                              <Shield className="mr-2 h-4 w-4" />
-                              Xác nhận thay đổi GPS
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle> Xác nhận thay đổi </DialogTitle>
-                            </DialogHeader>
-                            <h1 className="text-muted-foreground">Bạn có chắc chắn không ?</h1>
-                            <Label>Note</Label>
-                            <Input placeholder="Nhập note" value={note} onChange={handleNoteChange} />
-                            <DialogFooter>
-                              <Button onClick={handleApproveCarReport} variant="outline">
-                                <CheckCircleIcon className="mr-2 h-4 w-4" />
-                                Xác nhận
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                      </>
-                    )
-                  }
+                  {/*     { */}
+                  {/*       report.inspectionScheduleDetail && report.status === CarReportStatus.UnderReview && ( */}
+                  {/*         <> */}
+                  {/*           <h3 className="font-medium">Hành động</h3> */}
+                  {/*           <Dialog > */}
+                  {/*             <DialogTrigger className="w-full"> */}
+                  {/*               <Button className="w-full" variant="destructive"> */}
+                  {/*                 <XIcon className="mr-2 h-4 w-4" /> */}
+                  {/*                 Từ chối */}
+                  {/*               </Button> */}
+                  {/*             </DialogTrigger> */}
+                  {/*             <DialogContent> */}
+                  {/*               <DialogHeader> */}
+                  {/*                 <DialogTitle> Từ chối thay đổi </DialogTitle> */}
+                  {/*               </DialogHeader> */}
+                  {/*               <h1 className="text-muted-foreground">Bạn có chắc chắn không ?</h1> */}
+                  {/*               <Label>Note</Label> */}
+                  {/*               <Input placeholder="Nhập note" value={note} onChange={handleNoteChange} /> */}
+                  {/*               <DialogFooter> */}
+                  {/*                 <Button onClick={handleRejectCarReport} variant="outline"> */}
+                  {/*                   <CheckCircleIcon className="mr-2 h-4 w-4" /> */}
+                  {/*                   Xác nhận */}
+                  {/*                 </Button> */}
+                  {/*               </DialogFooter> */}
+                  {/*             </DialogContent> */}
+                  {/*           </Dialog> */}
+                  {/*           <Dialog > */}
+                  {/*             <DialogTrigger className="w-full"> */}
+                  {/*               <Button className="w-full" variant="outline"> */}
+                  {/*                 <Shield className="mr-2 h-4 w-4" /> */}
+                  {/*                 Xác nhận thay đổi GPS */}
+                  {/*               </Button> */}
+                  {/*             </DialogTrigger> */}
+                  {/*             <DialogContent> */}
+                  {/*               <DialogHeader> */}
+                  {/*                 <DialogTitle> Xác nhận thay đổi </DialogTitle> */}
+                  {/*               </DialogHeader> */}
+                  {/*               <h1 className="text-muted-foreground">Bạn có chắc chắn không ?</h1> */}
+                  {/*               <Label>Note</Label> */}
+                  {/*               <Input placeholder="Nhập note" value={note} onChange={handleNoteChange} /> */}
+                  {/*               <DialogFooter> */}
+                  {/*                 <Button onClick={handleApproveCarReport} variant="outline"> */}
+                  {/*                   <CheckCircleIcon className="mr-2 h-4 w-4" /> */}
+                  {/*                   Xác nhận */}
+                  {/*                 </Button> */}
+                  {/*               </DialogFooter> */}
+                  {/*             </DialogContent> */}
+                  {/*           </Dialog> */}
+                  {/*         </> */}
+                  {/*       ) */}
+                  {/*     } */}
                   {
                     !report.inspectionScheduleDetail && (
                       <Button onClick={handleNavigateCreateInspectionDetail} className="w-full" variant="outline">
