@@ -7,7 +7,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { UserIcon } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
+import { CurrentUserResponse } from "@/constants/models/user.model";
+import { LogoutButton } from "../ui/LogoutButton";
+import { SidebarTrigger } from "../ui/sidebar";
 
 interface BreadcrumbItemType {
   label: string;
@@ -42,7 +50,8 @@ const routeMap: { [key: string]: string } = {
   profiles: "Hồ sơ",
   create: "Tạo",
   approve: "Phê duyệt",
-  "contract-detail": "contract-detail",
+  "contract-detail": "Hợp đồng",
+  "technician-todo": "Việc cần làm",
 };
 
 const generateBreadcrumbs = (pathname: string): BreadcrumbItemType[] => {
@@ -60,27 +69,67 @@ const generateBreadcrumbs = (pathname: string): BreadcrumbItemType[] => {
   return breadcrumbs;
 };
 
-const Breadcrumbs = () => {
+interface Props {
+  currentUser: CurrentUserResponse;
+}
+const Breadcrumbs = ({ currentUser }: Props) => {
   const pathname = usePathname();
   const breadcrumbs = generateBreadcrumbs(pathname);
-
+  const { push } = useRouter();
+  const handleNavigateToProfiles = () => {
+    push("/profiles");
+  }
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        {breadcrumbs.map((item, index) => (
-          <BreadcrumbItem key={index}>
-            {index === breadcrumbs.length - 1 ? (
-              <BreadcrumbPage>{item.label}</BreadcrumbPage>
-            ) : (
-              <>
-                <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
-                <BreadcrumbSeparator />
-              </>
-            )}
-          </BreadcrumbItem>
-        ))}
-      </BreadcrumbList>
-    </Breadcrumb>
+    <header className="flex h-16 justify-between items-center gap-2 border-b px-4 shadow-md shadow-cyan-300/20 ">
+      <div className="flex justify-start items-center gap-2">
+        <SidebarTrigger className="-ml-1" />
+        <Separator orientation="vertical" className="mr-2 h-4" />
+        <Breadcrumb>
+          <BreadcrumbList>
+            {breadcrumbs.map((item, index) => (
+              <BreadcrumbItem key={index}>
+                {index === breadcrumbs.length - 1 ? (
+                  <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                ) : (
+                  <>
+                    <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
+                    <BreadcrumbSeparator />
+                  </>
+                )}
+              </BreadcrumbItem>
+            ))}
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" className="relative h-8 w-8 rounded-full mx-8 my-auto">
+            <Avatar className="h-8 w-8" >
+              <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} />
+              <AvatarFallback>{Array.from(currentUser.name)[0].toUpperCase()} </AvatarFallback>
+            </Avatar >
+          </Button >
+        </DropdownMenuTrigger >
+        <DropdownMenuContent className="w-56" align="end" forceMount>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">{currentUser.name}</p>
+              <p className="text-xs leading-none text-muted-foreground">{currentUser.email}</p>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleNavigateToProfiles} className="w-full h-8 text-start hover:cursor-pointer" asChild>
+            <Button variant="ghost" className="w-full h-8 justify-start items-center" >
+              <UserIcon className="m-2 h-8 w-4" />
+              <span>Profiles</span>
+            </Button>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <LogoutButton />
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu >
+    </header >
   );
 };
 

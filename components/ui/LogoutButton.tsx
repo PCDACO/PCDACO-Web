@@ -19,7 +19,7 @@ export function LogoutButton() {
   }
 
   return (
-    <Button variant="ghost" className="w-full h-1 justify-start items-center" onClick={() => mutation()} disabled={isLoading}>
+    <Button variant="ghost" className="w-full h-8 justify-start items-center" onClick={() => mutation()} disabled={isLoading}>
       {isLoading ? <LoadingSpinner size={12} /> : <LogOut className="mr-2 h-2 w-4" />}
       <span>{isLoading ? "Logging out..." : "Logout"}</span>
     </Button>
