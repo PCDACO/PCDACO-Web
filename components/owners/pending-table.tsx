@@ -50,8 +50,8 @@ const PendingOwnerTable = () => {
             <Card className="sm:min-w-[500] md:min-w-[400] lg:min-w-[1000] ">
               <CardContent>
                 {listOwnerApprovalQuery.data?.value?.items?.length > 0 && (
-                  listOwnerApprovalQuery.data?.value?.items.map((driver) => (
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mx-auto">
+                  listOwnerApprovalQuery.data?.value?.items.map((driver, index) => (
+                    <div key={index} className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mx-auto">
                       <div key={driver.id}>
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex items-center">
