@@ -137,7 +137,6 @@ export default function TechnicianTodo() {
                       Bạn chưa chọn ngày nào. Vui lòng chọn một ngày để xem lịch làm việc của bạn.
                     </p>
                   </div>
-
                   <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg border border-dashed border-purple-200">
                     <div className="flex items-center gap-2 text-purple-600">
                       <CalendarDays className="h-5 w-5" />

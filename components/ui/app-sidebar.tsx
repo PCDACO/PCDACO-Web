@@ -1,4 +1,3 @@
-
 'use server';
 import {
   Sidebar,
@@ -230,7 +229,7 @@ export async function AppSidebar() {
   const currentUser = await GetCurrentUser();
   if (!userRole)
     return (
-      <Sidebar>
+      <Sidebar className='shadow-sm '>
         <SidebarContent className="flex flex-col justify-between">
           <SidebarGroup>
             <SidebarGroupLabel>PCDACO Admin Panel</SidebarGroupLabel>
@@ -274,7 +273,7 @@ export async function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
+                <SidebarMenuButton variant="outline" className='h-12'>
                   <Avatar>
                     <AvatarImage
                       className="mr-1"

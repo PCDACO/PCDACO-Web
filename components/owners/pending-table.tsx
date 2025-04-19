@@ -7,7 +7,7 @@ import {
 } from "@/stores/store";
 import { useOwnerQuery } from "@/hooks/owners/use-owner";
 import { Button } from "../ui/button";
-import { ChevronLeft, User } from "lucide-react";
+import { ChevronLeft, ReceiptText, User } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { formatDate } from "@/lib/utils";
@@ -26,7 +26,7 @@ const PendingOwnerTable = () => {
   return (
     <>
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="flex-1 overflow-auto p-6">
+        <div className="flex-1 overflow-auto px-6">
           <div>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
@@ -47,52 +47,67 @@ const PendingOwnerTable = () => {
               </div>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {listOwnerApprovalQuery.data?.value?.items.map((driver) => (
-                <div key={driver.id}>
-                  <Card
-                    key={driver.id}
-                    className="border-l-4 border-l-amber-500 shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start mb-3">
-                        <div className="flex items-center">
-                          <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center mr-3">
-                            <User className="h-5 w-5 text-slate-600" />
+            <Card className="sm:min-w-[500] md:min-w-[400] lg:min-w-[1000] ">
+              <CardContent>
+                {listOwnerApprovalQuery.data?.value?.items?.length > 0 && (
+                  listOwnerApprovalQuery.data?.value?.items.map((driver) => (
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mx-auto">
+                      <div key={driver.id}>
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="flex items-center">
+                            <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center mr-3">
+                              <User className="h-5 w-5 text-slate-600" />
+                            </div>
+                            <div>
+                              <h3 className="font-medium">{driver.name}</h3>
+                              <p className="text-sm text-slate-500">Submitted {formatDate(driver.licenseImageUploadedAt.toString())}</p>
+                            </div>
                           </div>
-                          <div>
-                            <h3 className="font-medium">{driver.name}</h3>
-                            <p className="text-sm text-slate-500">Submitted {formatDate(driver.licenseImageUploadedAt.toString())}</p>
-                          </div>
+                          <Badge className="bg-amber-100 text-amber-800">Pending</Badge>
                         </div>
-                        <Badge className="bg-amber-100 text-amber-800">Pending</Badge>
-                      </div>
 
-                      <div className="grid grid-cols-2 gap-2 text-sm mb-4">
-                        <div className="flex items-center text-slate-600">
-                          <span className="text-slate-400 mr-2">Phone:</span>
-                          <span>{driver.phone}</span>
+                        <div className="grid grid-cols-2 gap-2 text-sm mb-4">
+                          <div className="flex items-center text-slate-600">
+                            <span className="text-slate-400 mr-2">Phone:</span>
+                            <span>{driver.phone}</span>
+                          </div>
+                        </div>
+                        <CardFooter className="px-4 pb-4 pt-0">
+                          <Button
+                            className="w-full bg-slate-800 hover:bg-slate-900"
+                            onClick={() => {
+                              setData(driver);
+                              setOpen(true);
+                            }}
+                          >
+                            Review Application
+                          </Button>
+                        </CardFooter>
+                      </div>
+                    </div>
+                  ))
+                )}
+                {
+                  (!listOwnerApprovalQuery.data?.value?.items || listOwnerApprovalQuery.data?.value?.items.length === 0) && (
+                    <div className="flex flex-col items-center justify-center text-center space-y-6 py-8 ">
+                      <div className="relative">
+                        <div className="absolute -top-2 -right-2">
+                          <div className="bg-amber-100 text-amber-700 rounded-full p-1.5">
+                            <ReceiptText className="h-5 w-5" />
+                          </div>
                         </div>
                       </div>
-                    </CardContent>
-                    <CardFooter className="px-4 pb-4 pt-0">
-                      <Button
-                        className="w-full bg-slate-800 hover:bg-slate-900"
-                        onClick={() => {
-                          setData(driver);
-                          setOpen(true);
-                        }}
-                      >
-                        Review Application
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </div>
-              )) ?? []}
-            </div>
+                      <div className="space-y-2">
+                        <h3 className="text-xl font-semibold text-gray-800">Không tìm thấy</h3>
+                      </div>
+                    </div>
+                  )
+                }
+              </CardContent>
+            </Card>
           </div>
         </div>
-      </div >
+      </div>
       <LicenseDetailDialog approval={data} isOpen={open} onClose={() => setOpen(false)} />
     </>
   );

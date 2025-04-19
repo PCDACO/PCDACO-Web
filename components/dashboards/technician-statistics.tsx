@@ -89,8 +89,8 @@ export default function TechnicianStatistics({ inProgressInspectionSchedule, sta
           </CardHeader>
           <CardContent className="space-y-4">
             {
-              recentActivity?.activities?.map((item) => (
-                <>
+              recentActivity?.activities?.map((item, index) => (
+                <div key={index}>
                   <CustomActivityItem
                     name={item.name}
                     avatar={item.avatarUrl}
@@ -98,7 +98,7 @@ export default function TechnicianStatistics({ inProgressInspectionSchedule, sta
                     time={getTimeAgo(item.happenedAt)}
                   />
                   <Separator />
-                </>
+                </div>
               )) ?? []
             }
           </CardContent>
