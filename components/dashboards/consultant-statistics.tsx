@@ -1,7 +1,6 @@
 'use client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { StatisticResponse } from "@/constants/models/statistic.model";
-import { Separator } from "../ui/separator";
 import { UnderReviewResponse } from "@/constants/models/report.model";
 import UnderReviewReportItem from "./underreview-report-item";
 import { ConsultantRecentActivityResponse } from "@/constants/models/recent-activity.model";
@@ -18,7 +17,6 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
     <main className="flex-1 p-8 overflow-auto">
       {/* Statistics Cards */}
       <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-8">Số Liệu Tháng</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -90,7 +88,6 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
                     content={item.content}
                     time={getTimeAgo(item.happenedAt)}
                   />
-                  <Separator />
                 </div>
               ))
             }
