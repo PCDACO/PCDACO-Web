@@ -15,7 +15,6 @@ import { translate } from "@/lib/translate";
 
 const CarFilter: FunctionComponent = () => {
   const { setParams } = useCarParamsStore();
-
   return (
     <Select
       onValueChange={(value) =>
@@ -29,7 +28,7 @@ const CarFilter: FunctionComponent = () => {
       </SelectTrigger>
       <SelectContent>
         {Object.values(CarStatusString).map((status) => (
-          <SelectItem key={status} value={status}>
+          <SelectItem className="hover:cursor-pointer" key={status} value={status}>
             {translate.car.status[status]}
           </SelectItem>
         ))}

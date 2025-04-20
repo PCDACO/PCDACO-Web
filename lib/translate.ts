@@ -9,4 +9,12 @@ export const translate = {
       Rejected: "Từ Chối",
     },
   },
+  withdrawRequest: {
+    status: {
+      Pending: "Chờ xử lí",
+      Completed: "Hoàn thành",
+      Rejected: "Từ chối",
+      Cancelled: "Hủy",
+    }
+  }
 };

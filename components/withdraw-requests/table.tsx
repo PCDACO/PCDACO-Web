@@ -5,13 +5,16 @@ import SearchInput from "../input/search-input";
 import { WithdrawRequestColumn } from "./column";
 import PaginationTable from "../data-table/pagination";
 import { useParamStore } from "@/stores/store";
+import WithdrawRequestFilter from "./filter";
+import { useWithdrawRequestStore } from "@/stores/use-params";
 
 export default function WithdrawRequestTable() {
   const { value } = useParamStore();
+  const { params } = useWithdrawRequestStore();
   const { listWithdrawRequest } = useWithdrawRequestQuery({
     params: {
       ...value,
-      status: 0,
+      status: params?.status,
     }
   });
   return (
@@ -19,6 +22,7 @@ export default function WithdrawRequestTable() {
       <div className="flex justify-between items-center w-full">
         <SearchInput keyValue="manufacture" />
         <div className="flex items-center space-x-4">
+          <WithdrawRequestFilter />
           <PaginationTable
             value={
               listWithdrawRequest.data?.value ?? {
