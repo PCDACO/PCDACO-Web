@@ -1,4 +1,5 @@
 import { CarParams } from "@/constants/models/car.model";
+import { WithdrawRequestParams } from "@/constants/models/withdraw-request.model";
 import { create } from "zustand";
 
 type ParamsStore<T> = {
@@ -16,3 +17,4 @@ export function createParamsStore<T>(initialParams: T) {
 }
 
 export const useCarParamsStore = createParamsStore<Partial<CarParams>>({});
+export const useWithdrawRequestStore = createParamsStore<Partial<WithdrawRequestParams>>({});

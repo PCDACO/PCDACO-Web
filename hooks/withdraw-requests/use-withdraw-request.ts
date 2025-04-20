@@ -7,7 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 interface Props {
-  params?: WithdrawRequestParams;
+  params?: Partial<WithdrawRequestParams>;
 }
 export const useWithdrawRequestQuery = ({ params }: Props) => {
   if (!params) {
