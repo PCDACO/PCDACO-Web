@@ -91,7 +91,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
           </div>
         </div>
         <div className="flex gap-2">
-          {report.status === CarReportStatus.Pending && <Button>Xử lý báo cáo</Button>}
+          {/* {report.status === CarReportStatus.Pending && <Button>Xử lý báo cáo</Button>} */}
         </div>
       </div>
 

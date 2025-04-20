@@ -12,7 +12,6 @@ const CarReportDetailPage = async ({
   if (!response?.value) {
     redirect("/not-found");
   }
-  console.log(response.value);
   return <CarReportDetailComponent report={response.value} />
 }
 
