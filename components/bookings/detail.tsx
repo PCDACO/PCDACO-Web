@@ -2,7 +2,6 @@
 import Image from "next/image"
 import { format } from "date-fns"
 import { Car, Calendar, User, CreditCard, MapPin, Star, ReceiptTextIcon } from "lucide-react"
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -174,8 +173,8 @@ export default function BookingDetailComponent({
                     Người dùng
                   </CardTitle>
                   <TabsList>
-                    <TabsTrigger value="driver">Khách hàng</TabsTrigger>
-                    <TabsTrigger value="owner">Người thuê</TabsTrigger>
+                    <TabsTrigger value="driver">Người thuê</TabsTrigger>
+                    <TabsTrigger value="owner">Chủ xe</TabsTrigger>
                   </TabsList>
                 </div>
               </CardHeader>
