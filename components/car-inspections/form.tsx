@@ -192,7 +192,7 @@ export default function CarInspectionForm({ schedule }: Props) {
         onChange={(e) => handleNoteChange(e.target.value)}
       />
       <div className="mt-6 flex justify-end">
-        <Button disabled={schedule?.contractDetail?.ownerSignatureDate === undefined} type="submit" size="lg">
+        <Button disabled={schedule?.contractDetail?.ownerSignatureDate === undefined || schedule?.contractDetail?.ownerSignatureDate === null} type="submit" size="lg">
           Submit Inspection
         </Button>
       </div>
