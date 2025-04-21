@@ -1,6 +1,5 @@
 "use client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import InspectionTaskItem from "./inspection-task-item"
 import { format } from "date-fns"
 import { InProgressInspectionScheduleResponse } from "@/constants/models/inspection-schedule.model"
@@ -62,11 +61,11 @@ export default function TechnicianStatistics({ inProgressInspectionSchedule, sta
       {/* Activity Cards - Rearranged with Recent Activity on right */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Ongoing Inspection Schedule Tasks - Left side */}
-        <Card>
+        <Card className="min-h-[150]">
           <CardHeader className="pb-3">
             <CardTitle>Lịch Kiểm Tra Đang Diễn Ra</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 max-h-96 overflow-y-auto">
             {inProgressInspectionSchedule && (
               <div key={inProgressInspectionSchedule.id} className="mb-4">
                 <InspectionTaskItem
@@ -82,12 +81,12 @@ export default function TechnicianStatistics({ inProgressInspectionSchedule, sta
         </Card>
 
         {/* Recent Activity - Right side */}
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="min-h-[150]">
+          <CardHeader className="pb-3 ">
             <CardTitle>Recent Activity</CardTitle>
             <CardDescription>Latest updates from your team</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 max-h-96 overflow-y-auto">
             {
               recentActivity?.activities?.map((item, index) => (
                 <div key={index}>
@@ -97,7 +96,6 @@ export default function TechnicianStatistics({ inProgressInspectionSchedule, sta
                     content={item.content}
                     time={getTimeAgo(item.happenedAt)}
                   />
-                  <Separator />
                 </div>
               )) ?? []
             }

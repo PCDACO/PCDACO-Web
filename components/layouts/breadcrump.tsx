@@ -80,7 +80,7 @@ const Breadcrumbs = ({ currentUser }: Props) => {
     push("/profiles");
   }
   return (
-    <header className="flex h-16 justify-between items-center gap-2 border-b px-4 shadow-md shadow-cyan-300/20 ">
+    <header className="flex h-16 justify-between items-center gap-2 border-b px-4 shadow-md shadow-cyan-300/10 ">
       <div className="flex justify-start items-center gap-2">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />

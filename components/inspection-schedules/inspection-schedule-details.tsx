@@ -22,6 +22,7 @@ import { CarResponse } from "@/constants/models/car.model"
 import Image from "next/image"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { useRouter } from "next/navigation"
+import { InspectionScheduleStatusStrings } from "@/constants/enums/inspection-schedules.enum"
 
 
 interface Props {
@@ -83,6 +84,15 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev === 0 ? car.images.length - 1 : prev - 1))
   }
+
+  const isInProgressOrSigned = () => {
+    const status = data.status;
+    return (
+      status === InspectionScheduleStatusStrings.InProgress ||
+      status === InspectionScheduleStatusStrings.Signed
+    )
+  }
+
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="mb-6 flex items-center justify-between">
@@ -189,49 +199,55 @@ export default function InspectionDetailPage({ id, data, car }: Props) {
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
               <div className="flex w-full gap-4">
-                <Dialog open={isRejectDialogOpen} onOpenChange={setIsRejectDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="destructive" className="flex-1">
-                      <XCircle className="mr-2 h-4 w-4" />
-                      Từ chối
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Từ chối xác minh</DialogTitle>
-                      <DialogDescription>Hãy điền lí do từ chối lịch xác minh này</DialogDescription>
-                    </DialogHeader>
-                    <Textarea
-                      placeholder="Reason for rejection..."
-                      value={responseNote}
-                      onChange={(e) => setResponseNote(e.target.value)}
-                      className="min-h-[100px]"
-                    />
-                    <DialogFooter className="mt-4">
-                      <Button variant="outline" onClick={() => setIsRejectDialogOpen(false)}>
-                        <X />
-                      </Button>
-                      <Button variant="destructive" onClick={handleReject}>
-                        <CheckIcon />
-                        Hoàn thành
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
                 {
-                  !data?.isTechnicianSigned && (
-                    <Button disabled={(!data.hasGPSDevice)} variant="default" className="flex-1" onClick={handleApprove}>
-                      <CheckCircle className="mr-2 h-4 w-4" />
-                      Xem hợp đồng
-                    </Button>
-                  )
-                }
-                {
-                  data?.isTechnicianSigned && (
-                    <Button variant="default" className="flex-1" onClick={handleNavigateToApprove}>
-                      <CheckCircle className="mr-2 h-4 w-4" />
-                      Xác minh
-                    </Button>
+                  isInProgressOrSigned() && (
+                    <>
+                      <Dialog open={isRejectDialogOpen} onOpenChange={setIsRejectDialogOpen}>
+                        <DialogTrigger asChild>
+                          <Button variant="destructive" className="flex-1">
+                            <XCircle className="mr-2 h-4 w-4" />
+                            Từ chối
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Từ chối xác minh</DialogTitle>
+                            <DialogDescription>Hãy điền lí do từ chối lịch xác minh này</DialogDescription>
+                          </DialogHeader>
+                          <Textarea
+                            placeholder="Reason for rejection..."
+                            value={responseNote}
+                            onChange={(e) => setResponseNote(e.target.value)}
+                            className="min-h-[100px]"
+                          />
+                          <DialogFooter className="mt-4">
+                            <Button variant="outline" onClick={() => setIsRejectDialogOpen(false)}>
+                              <X />
+                            </Button>
+                            <Button variant="destructive" onClick={handleReject}>
+                              <CheckIcon />
+                              Hoàn thành
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                      {
+                        !data?.isTechnicianSigned && (
+                          <Button disabled={(!data.hasGPSDevice)} variant="default" className="flex-1" onClick={handleApprove}>
+                            <CheckCircle className="mr-2 h-4 w-4" />
+                            Xem hợp đồng
+                          </Button>
+                        )
+                      }
+                      {
+                        data?.isTechnicianSigned && (
+                          <Button variant="default" className="flex-1" onClick={handleNavigateToApprove}>
+                            <CheckCircle className="mr-2 h-4 w-4" />
+                            Xác minh
+                          </Button>
+                        )
+                      }
+                    </>
                   )
                 }
               </div>
