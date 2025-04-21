@@ -57,11 +57,11 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
       {/* Activity Cards - Rearranged with Recent Activity on right */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Ongoing Inspection Schedule Tasks - Left side */}
-        <Card>
+        <Card className="min-h-[150]">
           <CardHeader className="pb-3">
             <CardTitle>Đang Diễn Ra</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 max-h-96 overflow-y-auto">
             {underReviewReport &&
               underReviewReport.map((item) => (
                 <div key={item.id} className="mb-4">
@@ -73,12 +73,12 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
         </Card>
 
         {/* Recent Activity - Right side */}
-        <Card>
+        <Card className="min-h-[150px]">
           <CardHeader className="pb-3">
             <CardTitle>Recent Activity</CardTitle>
             <CardDescription>Latest updates from your team</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 max-h-96 overflow-y-auto">
             {
               consultantRecentActivity && consultantRecentActivity?.activities.map((item, index) => (
                 <div key={index}>

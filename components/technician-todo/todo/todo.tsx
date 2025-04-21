@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import CarDetailsDialog from "@/components/cars/detail-dialog";
 import { useTechnicianTaskMutation, useTechnicianTaskQuery } from "@/hooks/technician-tasks/use-technician-tasks";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,14 +7,12 @@ import { Label } from "@/components/ui/label";
 import { CalendarDays, Check, Clock, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { useDialogStore } from "@/stores/store";
-import { CarDetail } from "@/constants/models/technician-task.model";
 import { Card, CardContent } from "@/components/ui/card";
 import { CustomCalendar } from "@/components/ui/custom-calendar";
+import { useRouter } from "next/navigation";
 
 export default function TechnicianTodo() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
-  const { open, setOpen } = useDialogStore();
   const { listTechnicianTasks } = useTechnicianTaskQuery({
     inspectionDate: selectedDate === undefined ? undefined : new Date(new Date(selectedDate!).getTime() + (24 * 60 * 60 * 1000))
   });
@@ -23,16 +20,15 @@ export default function TechnicianTodo() {
   const [Note, SetNote] = useState<Record<string, string>>({
     dummy: "dummy",
   });
-  const [selectedCar, setSelectedCar] = useState<CarDetail | undefined>(undefined);
+  const { push } = useRouter();
   const handleNoteChange = (taskId: string, note: string) => {
     SetNote({
       ...Note,
       [taskId]: note,
     });
   };
-  const handleTodoClick = (car: CarDetail) => {
-    setOpen(true);
-    setSelectedCar(car);
+  const handleTodoClick = (id: string) => {
+    push(`/cars/${id}`);
   }
 
   return (
@@ -68,7 +64,7 @@ export default function TechnicianTodo() {
                     <li key={car.inspectionScheduleId} className="my-4 border border-gray-300 p-4 rounded-lg ">
                       <div className="flex flex-col items-start justify-between mb-2" >
                         <div className="flex flex-row w-full justify-between">
-                          <div className="hover:cursor-pointer" onClick={() => handleTodoClick(car)}>
+                          <div className="hover:cursor-pointer" onClick={() => handleTodoClick(car.id)}>
                             <h2 className="font-semibold">{car.modelName}-{car.licensePlate}</h2>
                             <p className="text-sm text-gray-600">{car.inspectionAddress}</p>
                           </div>
@@ -151,7 +147,6 @@ export default function TechnicianTodo() {
           }
         </Card >
       </div >
-      <CarDetailsDialog car={selectedCar} isOpen={open} onOpenChange={() => setOpen(!open)} />
     </>
   );
 }

@@ -89,6 +89,7 @@ export interface InspectionScheduleDetailResponse {
   isTechnicianSigned: boolean;
   isOwnerSigned: boolean;
   type: string;
+  status: string;
 }
 
 interface CarDetail {
@@ -103,7 +104,7 @@ interface CarDetail {
 interface AmenityDetail {
   id: string,
   name: string,
-  iconUrl: string
+  iconUrl: string,
 }
 
 interface OwnerDetail {
