@@ -4,6 +4,7 @@
 - [x] ban & unban the drivers
 - [x] done the flow of transfer owners money
 - [x] monitor all the transactions
+- [x] fix some bug
 ## Consultant
 - [x] view all reports 
 - [x] view report details 

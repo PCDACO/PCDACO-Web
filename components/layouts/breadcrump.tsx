@@ -102,11 +102,11 @@ const Breadcrumbs = ({ currentUser }: Props) => {
         </Breadcrumb>
       </div>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="relative h-8 w-8 rounded-full mx-8 my-auto">
+        <DropdownMenuTrigger className="shadow-cyan-300 shadow-md" asChild>
+          <Button variant="outline" className="relative h-8 w-8  rounded-full border border-gray-300 mx-8 my-auto">
             <Avatar className="h-8 w-8" >
               <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} />
-              <AvatarFallback>{Array.from(currentUser.name)[0].toUpperCase()} </AvatarFallback>
+              <AvatarFallback>{Array.from(currentUser.name)[0].toUpperCase()}</AvatarFallback>
             </Avatar >
           </Button >
         </DropdownMenuTrigger >
