@@ -20,12 +20,12 @@ export default async function RootLayout({
         <AppSidebar userRole={userRole} />
         <SidebarInset>
           <Breadcrumbs currentUser={currentUser.value} />
-          <main className="w-full py-2 px-8">
+          <main className="w-full py-2 px-8 flex-col">
             <ReactQueryProvider>{children}</ReactQueryProvider>
             <Toaster />
           </main>
         </SidebarInset>
       </SidebarProvider>
-    </main >
+    </main>
   );
 }

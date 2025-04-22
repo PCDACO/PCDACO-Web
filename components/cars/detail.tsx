@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Clock,
   Eye,
+  MapPin,
   ReceiptText,
   Star,
   User,
@@ -47,7 +48,7 @@ export default function CarDetailsComponent({ car }: Props) {
 
   const handleNavigateContract = () => {
     push(`/cars/${car.id}/contract-details`);
-  }
+  };
 
   const handleActionClick = (id: string) => {
     push(`/bookings/${id}`);
@@ -75,7 +76,9 @@ export default function CarDetailsComponent({ car }: Props) {
             </div>
             <div className="flex justify-between items-center w-full">
               <div>
-                <h1 className="text-3xl font-bold tracking-tight">{modelName}</h1>
+                <h1 className="text-3xl font-bold tracking-tight">
+                  {modelName}
+                </h1>
                 <div className="flex items-center gap-2">
                   <CarBadge status={car.status} />
                   <span className="text-muted-foreground">
@@ -84,13 +87,20 @@ export default function CarDetailsComponent({ car }: Props) {
                 </div>
               </div>
               <div>
-                {
-                  car?.contract?.terms && car?.contract?.terms !== "" && (
-                    <Button onClick={handleNavigateContract} variant="ghost">
-                      <ReceiptText />
-                    </Button>
-                  )
-                }
+                <Button
+                  onClick={() => {
+                    push(`/cars/${car.id}/map`);
+                  }}
+                >
+                  <MapPin />
+                  <span>Xem vị trí</span>
+                </Button>
+
+                {car?.contract?.terms && car?.contract?.terms !== "" && (
+                  <Button onClick={handleNavigateContract} variant="ghost">
+                    <ReceiptText />
+                  </Button>
+                )}
                 {car.status === CarStatusString.Pending && (
                   <Button
                     disabled={car.hasInspectionSchedule}
@@ -239,7 +249,9 @@ export default function CarDetailsComponent({ car }: Props) {
                   key={booking.bookingId}
                   className="grid grid-cols-6 p-4 border-b last:border-0"
                 >
-                  <div className="font-medium">{formatId(booking.bookingId)}</div>
+                  <div className="font-medium">
+                    {formatId(booking.bookingId)}
+                  </div>
                   <div>{booking.driverName}</div>
                   <div className="flex items-center gap-1">
                     <Clock className="h-4 w-4 text-muted-foreground" />
@@ -330,7 +342,11 @@ export default function CarDetailsComponent({ car }: Props) {
           </CardContent>
         </Card>
       </div>
-      <CarContractDialog terms={car?.contract?.terms ?? ""} open={open} onOpenChange={() => setOpen(!open)} />
+      <CarContractDialog
+        terms={car?.contract?.terms ?? ""}
+        open={open}
+        onOpenChange={() => setOpen(!open)}
+      />
     </>
   );
 }
