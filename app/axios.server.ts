@@ -17,6 +17,7 @@ const axiosInstance = axios.create({
     Accept: "*/*",
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 // Request interceptor
@@ -39,11 +40,13 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     if (error.status < 500) {
-      return error.response ?? {
-        value: null,
-        isSuccess: false,
-        message: "Error !",
-      };
+      return (
+        error.response ?? {
+          value: null,
+          isSuccess: false,
+          message: "Error !",
+        }
+      );
     }
     return Promise.reject(error);
   }
