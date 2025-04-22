@@ -45,7 +45,7 @@ const ModelForm = ({ id, value, manufacturers }: ModelsFormProps) => {
   const keywords: KeywordType[] = [
     {
       name: "create",
-      value: "Create Model",
+      value: "Tạo mẫu xe",
       form: (
         <>
           <FormField
@@ -140,7 +140,7 @@ const ModelForm = ({ id, value, manufacturers }: ModelsFormProps) => {
     },
     {
       name: "update",
-      value: "Update Model",
+      value: "Cập nhật mẫu xe",
       form: (
         <>
           <FormField
@@ -235,7 +235,7 @@ const ModelForm = ({ id, value, manufacturers }: ModelsFormProps) => {
     },
     {
       name: "delete",
-      value: "Delete Model",
+      value: "Xóa mẫu xe",
       form: <></>,
     },
   ]
@@ -261,7 +261,7 @@ const ModelForm = ({ id, value, manufacturers }: ModelsFormProps) => {
           <div className="px-6 space-y-4">{GetComponent(keyword)}</div>
           <CardFooter>
             <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? "Loading..." : keyword === "delete" ? "Xóa" : "Submit"}
+              {isLoading ? "Loading..." : keyword === "delete" ? "Xóa" : "Hoàn tất"}
             </Button>
           </CardFooter>
         </form>

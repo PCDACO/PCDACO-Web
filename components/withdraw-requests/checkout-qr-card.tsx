@@ -37,8 +37,8 @@ export default function CheckoutQRComponent({ id, qrInfo }: Props) {
     <Dialog>
       <Card className="w-full max-w-md mx-auto">
         <CardHeader className="text-center">
-          <CardTitle>Scan QR Code to Pay</CardTitle>
-          <CardDescription>Scan the QR code below to complete your payment</CardDescription>
+          <CardTitle>Quét QR để thanh toán</CardTitle>
+          <CardDescription>Quét QR này để hoàn tất thanh toán</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex justify-center">
@@ -46,26 +46,26 @@ export default function CheckoutQRComponent({ id, qrInfo }: Props) {
               {qrInfo.qrCodeUrl ? (
                 <Image src={qrInfo.qrCodeUrl || "/placeholder.svg"} alt="Payment QR Code" fill className="object-contain p-2" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-muted">QR Code not available</div>
+                <div className="w-full h-full flex items-center justify-center bg-muted">QR không khả dụng</div>
               )}
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Amount</span>
+              <span className="text-sm text-muted-foreground">Tổng cộng</span>
               <span className="font-semibold text-lg">{formatCurrency(qrInfo.amount)}</span>
             </div>
             <Separator />
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Bank</span>
+                <span className="text-sm text-muted-foreground">Ngân hàng</span>
                 <span>{qrInfo.bankName}</span>
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Account Name</span>
+                <span className="text-sm text-muted-foreground">Chủ tài khoản</span>
                 <div className="flex items-center gap-2">
                   <span>{qrInfo.accountName}</span>
                   <Button
@@ -80,7 +80,7 @@ export default function CheckoutQRComponent({ id, qrInfo }: Props) {
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Account Number</span>
+                <span className="text-sm text-muted-foreground">Số tài khoản</span>
                 <div className="flex items-center gap-2">
                   <span>{qrInfo.accountNumber}</span>
                   <Button
@@ -99,7 +99,7 @@ export default function CheckoutQRComponent({ id, qrInfo }: Props) {
               <>
                 <Separator />
                 <div className="space-y-1">
-                  <span className="text-sm text-muted-foreground">Description</span>
+                  <span className="text-sm text-muted-foreground">Chi tiết</span>
                   <p className="text-sm">{qrInfo.description}</p>
                 </div>
               </>

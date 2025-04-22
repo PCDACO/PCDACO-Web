@@ -39,7 +39,7 @@ const TransmissionForm = ({ id, value }: TransmissionFormProps) => {
   const keywords: KeywordType[] = [
     {
       name: "create",
-      value: "Create Transmission",
+      value: "Tạo loại hộp số",
       form: (
         <div>
           <FormField
@@ -67,7 +67,7 @@ const TransmissionForm = ({ id, value }: TransmissionFormProps) => {
     },
     {
       name: "update",
-      value: "Update Transmission",
+      value: "Cập nhật hộp số",
       form: (
         <div>
           <FormField
@@ -95,7 +95,7 @@ const TransmissionForm = ({ id, value }: TransmissionFormProps) => {
     },
     {
       name: "delete",
-      value: "Delete Transmission",
+      value: "Xóa loại hộp số",
       form: (
         <></>
       )
@@ -129,7 +129,7 @@ const TransmissionForm = ({ id, value }: TransmissionFormProps) => {
         {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Submit"}
+            {isLoading ? "Loading..." : "Hoàn tất"}
           </Button>
         </DialogFooter>
       </form>

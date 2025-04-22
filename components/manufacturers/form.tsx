@@ -1,29 +1,18 @@
 import { useManufacturerForm } from "@/hooks/manufacture/use-form-manufacturer";
 import { useKeywordStore } from "@/stores/store";
 import React, { useCallback, useState } from "react";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ManufacturePayload } from "@/constants/models/manufacture.model";
-import {
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogDescription, DialogFooter, DialogHeader, DialogTitle, } from "@/components/ui/dialog";
 import Image from "next/image";
 
 interface ManufacturerFormProps {
   id: string;
   value: ManufacturePayload;
 }
+
 type KeywordType = {
   name: string;
   value: string;
@@ -32,11 +21,13 @@ type KeywordType = {
 const ManufacturerForm = ({ id, value }: ManufacturerFormProps) => {
   const [localUrl, setLocalUrl] = useState<string>('');
   const { keyword } = useKeywordStore();
+
   const { form, onSubmit, isLoading } = useManufacturerForm({
     id,
     value,
     action: keyword
   });
+
   const handleFileChange = useCallback((file: File | null) => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
@@ -48,7 +39,7 @@ const ManufacturerForm = ({ id, value }: ManufacturerFormProps) => {
   const keywords: KeywordType[] = [
     {
       name: "create",
-      value: "Create Manufacturer",
+      value: "Tạo nhà sản xuất",
       form: (
         <>
           <FormField
@@ -108,7 +99,7 @@ const ManufacturerForm = ({ id, value }: ManufacturerFormProps) => {
     },
     {
       name: "update",
-      value: "Update Manufacturer",
+      value: "Cập nhật nhà sản xuất",
       form: (
         <>
           <FormField
@@ -168,7 +159,7 @@ const ManufacturerForm = ({ id, value }: ManufacturerFormProps) => {
     },
     {
       name: "delete",
-      value: "Delete Manufacturer",
+      value: "Xóa nhà sản xuất",
       form: (
         <></>
       )
@@ -202,7 +193,7 @@ const ManufacturerForm = ({ id, value }: ManufacturerFormProps) => {
         {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Submit"}
+            {isLoading ? "Loading..." : "Hoàn tất"}
           </Button>
         </DialogFooter>
       </form>

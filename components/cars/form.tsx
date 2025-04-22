@@ -67,7 +67,7 @@ const CarForm = ({ id, value }: CarFormProps) => {
         {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Submit"}
+            {isLoading ? "Loading..." : "Hoàn tất"}
           </Button>
         </DialogFooter>
       </form>

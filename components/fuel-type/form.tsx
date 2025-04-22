@@ -39,7 +39,7 @@ const FuelTypeForm = ({ id, value }: FuelTypeFormProps) => {
   const keywords: KeywordType[] = [
     {
       name: "create",
-      value: "Create Fuel Type",
+      value: "Tạo loại nhiên liệu",
       form: (
         <div>
           <FormField
@@ -67,7 +67,7 @@ const FuelTypeForm = ({ id, value }: FuelTypeFormProps) => {
     },
     {
       name: "update",
-      value: "Update Fuel Type",
+      value: "Cập nhật loại nhiên liệu",
       form: (
         <div>
           <FormField
@@ -95,7 +95,7 @@ const FuelTypeForm = ({ id, value }: FuelTypeFormProps) => {
     },
     {
       name: "delete",
-      value: "Delete Fuel Type",
+      value: "Xóa loại nhiên liệu",
       form: (
         <></>
       )
@@ -129,7 +129,7 @@ const FuelTypeForm = ({ id, value }: FuelTypeFormProps) => {
         {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Submit"}
+            {isLoading ? "Loading..." : "Hoàn tất"}
           </Button>
         </DialogFooter>
       </form>

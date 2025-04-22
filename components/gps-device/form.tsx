@@ -43,7 +43,7 @@ const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) 
   const keywords: KeywordType[] = [
     {
       name: "create",
-      value: "Create GPS Device",
+      value: "Tạo thiết bị",
       form: (
         <FormField
           control={form.control}
@@ -69,7 +69,7 @@ const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) 
     },
     {
       name: "update",
-      value: "Update GPS Device",
+      value: "Cập nhật thiết bị",
       form: (
         <FormField
           control={form.control}

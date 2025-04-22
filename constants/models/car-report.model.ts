@@ -1,4 +1,5 @@
 export type CarReportParams = RootRequest;
+
 export interface CarReportResponse {
   id: string;
   carId: string;
