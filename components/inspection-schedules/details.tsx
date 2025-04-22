@@ -154,7 +154,7 @@ export default function InspectionDetailComponent({ data, car }: Props) {
 
               <div>
                 <p className="text-sm text-muted-foreground">
-                  Created on {format(data.date, "MMMM d, yyyy 'at' h:mm a")}
+                  Tạo lúc: {format(data.date, "MMMM d, yyyy 'at' h:mm a")}
                 </p>
               </div>
             </CardContent>

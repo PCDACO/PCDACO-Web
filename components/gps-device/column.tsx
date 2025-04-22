@@ -6,32 +6,33 @@ import { GPSDeviceResponse } from "@/constants/models/gps-device.model";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 import MenuAction from "./menu-action";
+import { GPSDeviceStatusEnum } from "@/constants/enums/gps-device-status.enum";
 
 const GPSDeviceStatusValue = [
   {
-    name: "Khả dụng",
-    value: "Available",
-    color: "#C8E6C9", // same as "Đã giải quyết" / "Bảo dưỡng"
+    name: GPSDeviceStatusEnum.Available,
+    value: "Khả dụng",
+    color: "#C8E6C9",
   },
   {
-    name: "Đang sử dụng",
-    value: "InUsed",
-    color: "#FFE082", // similar to "Đang xem xét"/"Phạt giao thông"
+    name: GPSDeviceStatusEnum.InUsed,
+    value: "Đang sử dụng",
+    color: "#FFE082",
   },
   {
-    name: "Đang sửa chữa",
-    value: "Repairing",
-    color: "#B39DDB", // taken from "Hư hại"
+    name: GPSDeviceStatusEnum.Repairing,
+    value: "Đang sửa chữa",
+    color: "#B39DDB",
   },
   {
-    name: "Đang hỏng",
-    value: "Broken",
-    color: "#FFCDD2", // taken from "Đang chờ"/"Tai nạn"
+    name: GPSDeviceStatusEnum.Broken,
+    value: "Đang hỏng",
+    color: "#FFCDD2",
   },
   {
-    name: "Đã bỏ",
-    value: "Removed",
-    color: "#E0E0E0", // taken from ReportTypes "Khác"
+    name: GPSDeviceStatusEnum.Removed,
+    value: "Đã bỏ",
+    color: "#E0E0E0",
   },
 ]
 
@@ -51,10 +52,10 @@ export const GPSDeviceColumns: ColumnDef<GPSDeviceResponse>[] = [
     accessorKey: "status",
     header: "Trạng thái",
     cell: ({ row }) => {
-      const getBadgeByStatus = (status: string) => {
-        const result = GPSDeviceStatusValue.find((item) => item.value === status)
+      const getBadgeByStatus = (status: number) => {
+        const result = GPSDeviceStatusValue.find((item) => item.name === status)
         if (!result) return <Badge variant="outline">Unknown</Badge>
-        return <Badge style={{ backgroundColor: result.color, color: "black" }} >{result.name}</Badge >
+        return <Badge style={{ backgroundColor: result.color, color: "black" }} >{result.value}</Badge >
       }
       return getBadgeByStatus(row.original.status);
     }
@@ -71,7 +72,8 @@ export const GPSDeviceColumns: ColumnDef<GPSDeviceResponse>[] = [
     cell: ({ row }) => {
       return <MenuAction id={row.original.id} payload={
         {
-          name: row.original.name
+          name: row.original.name,
+          status: row.original.status,
         }
       } />
     }

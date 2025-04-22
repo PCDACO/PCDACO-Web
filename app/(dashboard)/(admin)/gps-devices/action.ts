@@ -18,7 +18,7 @@ export const CreateGPSDevice = async (payload: GPSDevicePayload): Promise<RootRe
 export const UpdateGPSDevice = async (id: string, payload: GPSDevicePayload): Promise<RootResponse<GPSDeviceEditResponse>> => {
   const response = await axiosInstance.put(`/api/gps-devices/${id}`,
     {
-      name: payload.name
+      ...payload
     });
   return response.data;
 }
