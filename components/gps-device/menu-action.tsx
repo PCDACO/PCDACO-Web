@@ -42,9 +42,9 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
           className="hover:cursor-pointer"
           onClick={() => {
             setKeyword("update");
-            setOpen(true);
             setId(id);
             setData(payload);
+            setOpen(true);
           }}
         >
           Cập nhật

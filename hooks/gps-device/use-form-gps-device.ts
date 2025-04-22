@@ -23,6 +23,7 @@ export const useGPSDeviceForm = ({ id, value, action }: GPSDeviceFormProps) => {
 
   // Memoize defaultValues to prevent recalculating it on each render
   const defaultValues = useMemo(() => {
+    console.log(value);
     return {
       name: value.name ?? "",
       status: value.status ?? 0,

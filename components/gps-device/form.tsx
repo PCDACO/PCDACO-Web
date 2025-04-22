@@ -1,11 +1,12 @@
 import { useKeywordStore } from "@/stores/store";
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { GPSDevicePayload } from "@/constants/models/gps-device.model";
 import { useGPSDeviceForm } from "@/hooks/gps-device/use-form-gps-device";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface GPSDeviceFormProps {
   id: string;
@@ -13,11 +14,13 @@ interface GPSDeviceFormProps {
   isOpen: boolean;
   onOpenChange: () => void;
 }
+
 type KeywordType = {
   name: string;
   value: string;
   form: React.JSX.Element;
 };
+
 const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) => {
   const { keyword } = useKeywordStore();
   const { form, onSubmit, isLoading } = useGPSDeviceForm({
@@ -25,6 +28,11 @@ const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) 
     value,
     action: keyword
   });
+
+  useEffect(() => {
+    form.setValue("name", value.name);
+    form.setValue("status", value.status);
+  }, [id, form])
 
   const keywords: KeywordType[] = [
     {
@@ -57,26 +65,59 @@ const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) 
       name: "update",
       value: "Cập nhật thiết bị",
       form: (
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="text"
-                    placeholder="Name"
-                    className="w-full"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
-        />
+        <>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Tên</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      placeholder="Name"
+                      className="w-full"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="status"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Trạng thái</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value.toString()}
+                      onValueChange={(value) => form.setValue("status", parseInt(value))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Chọn loại kiểm tra" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem className="hover:cursor-pointer" value="0">Khả dụng</SelectItem>
+                          <SelectItem className="hover:cursor-pointer" value="1">Đang sử dụng</SelectItem>
+                          <SelectItem className="hover:cursor-pointer" value="2">Đang sửa chữa</SelectItem>
+                          <SelectItem className="hover:cursor-pointer" value="3">Hư hỏng</SelectItem>
+                          <SelectItem className="hover:cursor-pointer" value="4">Đã bị tháo dỡ</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+        </>
       )
     },
     {
@@ -120,7 +161,7 @@ const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) 
             {GetComponent(keyword)}
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Loading..." : "Gỡ"}
+                {isLoading ? "Loading..." : "Hoàn tất"}
               </Button>
             </DialogFooter>
           </form>

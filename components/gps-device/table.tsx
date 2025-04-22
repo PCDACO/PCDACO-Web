@@ -23,7 +23,6 @@ const GPSDeviceTable = () => {
   const { id } = useIdStore();
   const { data } = useGPSDeviceStore();
   const { setKeyword } = useKeywordStore();
-
   const { open, setOpen } = useDialogStore();
 
   const handleOpenChange = () => {
@@ -57,7 +56,8 @@ const GPSDeviceTable = () => {
         />
       </div>
       <GPSDeviceForm id={id} value={data ?? {
-        name: ""
+        name: "",
+        status: 0,
       }} isOpen={open} onOpenChange={handleOpenChange} />
     </>
   );

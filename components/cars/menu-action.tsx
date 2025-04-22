@@ -16,7 +16,6 @@ interface MenuActionProps {
 
 const MenuAction: React.FC<MenuActionProps> = ({ id }) => {
   const { push } = useRouter();
-
   const handleNavigateClick = () => push(`/cars/${id}`);
 
   return (
