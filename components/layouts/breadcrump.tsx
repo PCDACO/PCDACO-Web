@@ -53,6 +53,7 @@ const routeMap: { [key: string]: string } = {
   "contract-detail": "Hợp đồng",
   "technician-todo": "Việc cần làm",
   "checkout": "Hoàn tất thanh toán",
+  "details": "Chi tiết",
 };
 
 const generateBreadcrumbs = (pathname: string): BreadcrumbItemType[] => {
@@ -122,7 +123,7 @@ const Breadcrumbs = ({ currentUser }: Props) => {
           <DropdownMenuItem onClick={handleNavigateToProfiles} className="w-full h-8 text-start hover:cursor-pointer" asChild>
             <Button variant="ghost" className="w-full h-8 justify-start items-center" >
               <UserIcon className="m-2 h-8 w-4" />
-              <span>Profiles</span>
+              <span>Hồ sơ</span>
             </Button>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
