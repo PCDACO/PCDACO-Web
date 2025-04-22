@@ -12,7 +12,7 @@ export interface GPSDeviceAssignPayload {
 export interface GPSDeviceResponse {
   id: string;
   name: string;
-  status: string;
+  status: number;
   createdAt: Date;
 }
 
