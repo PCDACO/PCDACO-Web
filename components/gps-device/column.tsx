@@ -72,6 +72,7 @@ export const GPSDeviceColumns: ColumnDef<GPSDeviceResponse>[] = [
       return <MenuAction id={row.original.id} payload={
         {
           name: row.original.name
+          status: row.original.status,
         }
       } />
     }

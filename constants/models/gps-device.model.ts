@@ -1,5 +1,6 @@
 export interface GPSDevicePayload {
   name: string;
+  status: number;
 }
 export interface GPSDeviceAssignPayload {
   carId: string;

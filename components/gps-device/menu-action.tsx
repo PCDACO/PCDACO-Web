@@ -39,6 +39,17 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Tùy chọn</DropdownMenuLabel>
         <DropdownMenuItem
+          className="hover:cursor-pointer"
+          onClick={() => {
+            setKeyword("update");
+            setOpen(true);
+            setId(id);
+            setData(payload);
+          }}
+        >
+          Cập nhật
+        </DropdownMenuItem>
+        <DropdownMenuItem
           className="hover:cursor-pointer bg-red-200"
           onClick={() => {
             setKeyword("delete");
