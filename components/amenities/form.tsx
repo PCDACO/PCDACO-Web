@@ -48,7 +48,7 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
   const keywords: KeywordType[] = [
     {
       name: "create",
-      value: "Create Amenity",
+      value: "Tạo tiện nghi",
       form: (
         <div>
           <FormField
@@ -127,7 +127,7 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
     },
     {
       name: "update",
-      value: "Update Amenity",
+      value: "Cập nhật tiện nghi",
       form: (
         <div>
           <FormField
@@ -207,7 +207,7 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
     },
     {
       name: "delete",
-      value: "Delete Amenity",
+      value: "Xóa tiện nghi",
       form: (
         <></>
       )
@@ -241,7 +241,7 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
         {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Submit"}
+            {isLoading ? "Loading..." : "Hoàn tất"}
           </Button>
         </DialogFooter>
       </form>

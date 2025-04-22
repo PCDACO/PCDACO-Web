@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { AvatarImage } from "@radix-ui/react-avatar"
-import { Calendar, MapPin, User, Wrench } from "lucide-react"
+import { Calendar, CheckCircle, MapPin, User, Wrench, XCircle } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import { CarReportDetailResponse } from "@/constants/models/car-report.model"
@@ -12,13 +12,25 @@ import { useRouter } from "next/navigation"
 import { CarReportStatus } from "@/constants/enums/car-report-status.enum"
 import { Badge } from "../ui/badge"
 import { CarReportTypeEnum } from "@/constants/enums/car-report-type.enum"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
+import { Textarea } from "../ui/textarea"
+import { useState } from "react"
+import { useCarReportMutation } from "@/hooks/car-reports/use-car-reports"
+import ApproveCarReportDialog from "./approve-report"
 
 interface Props {
   report: CarReportDetailResponse;
 }
 
 const CarReportDetailComponent = ({ report }: Props) => {
+  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
+  const { rejectCarReport } = useCarReportMutation();
+  const [resolutionComments, setResolutionComments] = useState("");
+  const [approveOpen, setApproveOpen] = useState(false);
   const { push } = useRouter();
+  const handleApproveReportClick = () => {
+    setApproveOpen(true);
+  };
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -31,10 +43,18 @@ const CarReportDetailComponent = ({ report }: Props) => {
     }).format(date)
   }
 
+  const handleReject = () => {
+    rejectCarReport.mutate({
+      id: report.id,
+      note: resolutionComments,
+    });
+    setIsRejectDialogOpen(false);
+  };
 
   const handleNavigateCreateInspectionDetail = () => {
     push(`/inspection-schedules/create?carId=${report.carDetail.id}&reportId=${report.id}&type=gps-unassign`);
   }
+
   const getStatusColor = (status: number) => {
     switch (status) {
       case CarReportStatus.Pending:
@@ -49,6 +69,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
         return "bg-gray-100 text-gray-800"
     }
   }
+
   // Determine report type display
   const getReportTypeDisplay = (type: number) => {
     switch (type) {
@@ -81,150 +102,53 @@ const CarReportDetailComponent = ({ report }: Props) => {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-6">
-        <div>
-          <h1 className="text-3xl font-bold">{report.title}</h1>
-          <div className="flex items-center gap-2 mt-2">
-            <Badge className={getStatusColor(report.status)}>{getReportStatusDisplay(report.status)}</Badge>
-            <span className="text-sm text-muted-foreground">ID: {formatId(report.id)}</span>
+    <>
+      <div className="container mx-auto py-8 px-4">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-6">
+          <div>
+            <h1 className="text-3xl font-bold">{report.title}</h1>
+            <div className="flex items-center gap-2 mt-2">
+              <Badge className={getStatusColor(report.status)}>{getReportStatusDisplay(report.status)}</Badge>
+              <span className="text-sm text-muted-foreground">ID: {formatId(report.id)}</span>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            {/* {report.status === CarReportStatus.Pending && <Button>Xử lý báo cáo</Button>} */}
           </div>
         </div>
-        <div className="flex gap-2">
-          {/* {report.status === CarReportStatus.Pending && <Button>Xử lý báo cáo</Button>} */}
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left column - Report details */}
-        <div className="lg:col-span-2 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Chi tiết báo cáo</CardTitle>
-              <CardDescription>Loại báo cáo: {getReportTypeDisplay(report.reportType)}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h3 className="font-medium mb-2">Mô tả</h3>
-                <p className="text-muted-foreground">{report.description}</p>
-              </div>
-
-              <div>
-                <h3 className="font-medium mb-2">Người báo cáo</h3>
-                <div className="flex items-center gap-3">
-                  <div className="bg-muted rounded-full p-2">
-                    <User className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="font-medium">{report.reporterName}</p>
-                    <p className="text-sm text-muted-foreground">{report.reporterRole}</p>
-                  </div>
-                </div>
-              </div>
-
-              {report.imageUrls && report.imageUrls.length > 0 && (
-                <div>
-                  <h3 className="font-medium mb-2">Hình ảnh báo cáo</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {report.imageUrls.map((url, index) => (
-                      <div key={index} className="relative aspect-square rounded-md overflow-hidden border">
-                        <Image
-                          src={url && (url !== "" ? url : "/placeholder.png")}
-                          alt={`Report image ${index + 1}`}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {report.resolvedAt && (
-                <div>
-                  <h3 className="font-medium mb-2">Thông tin xử lý</h3>
-                  <div className="bg-muted p-4 rounded-md">
-                    <p className="text-sm">
-                      <span className="font-medium">Thời gian xử lý:</span> {formatDate(report.resolvedAt)}
-                    </p>
-                    {report.resolutionComments && (
-                      <p className="text-sm mt-2">
-                        <span className="font-medium">Ghi chú:</span> {report.resolutionComments}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Inspection Schedule Details */}
-          {report.inspectionScheduleDetail && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left column - Report details */}
+          <div className="lg:col-span-2 space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Lịch kiểm tra</CardTitle>
-                <CardDescription>Trạng thái: {report.inspectionScheduleDetail.status}</CardDescription>
+                <CardTitle>Chi tiết báo cáo</CardTitle>
+                <CardDescription>Loại báo cáo: {getReportTypeDisplay(report.reportType)}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-muted rounded-full p-2">
-                      <Calendar className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Ngày kiểm tra</p>
-                      <p className="font-medium">{formatDate(report.inspectionScheduleDetail.inspectionDate)}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <div className="bg-muted rounded-full p-2">
-                      <MapPin className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Địa điểm</p>
-                      <p className="font-medium">{report.inspectionScheduleDetail.inspectionAddress}</p>
-                    </div>
-                  </div>
+                <div>
+                  <h3 className="font-medium mb-2">Mô tả</h3>
+                  <p className="text-muted-foreground">{report.description}</p>
                 </div>
-
-                <Separator />
 
                 <div>
-                  <h3 className="font-medium mb-2">Kỹ thuật viên</h3>
+                  <h3 className="font-medium mb-2">Người báo cáo</h3>
                   <div className="flex items-center gap-3">
-                    <div className="relative h-10 w-10 rounded-full overflow-hidden">
-                      <Avatar>
-                        <AvatarImage
-                          src={report?.inspectionScheduleDetail?.technicianAvatar}
-                          alt={report?.inspectionScheduleDetail?.technicianName ?? ""}
-                        />
-                        <AvatarFallback >
-                          {Array.from(report?.inspectionScheduleDetail?.technicianName)[0].toUpperCase()}
-                        </AvatarFallback >
-                      </Avatar>
+                    <div className="bg-muted rounded-full p-2">
+                      <User className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="font-medium">{report.inspectionScheduleDetail.technicianName}</p>
-                      <p className="text-sm text-muted-foreground">
-                        ID: {report.inspectionScheduleDetail.technicianId.substring(0, 8)}...
-                      </p>
+                      <p className="font-medium">{report.reporterName}</p>
+                      <p className="text-sm text-muted-foreground">{report.reporterRole}</p>
                     </div>
                   </div>
                 </div>
 
-                {report.inspectionScheduleDetail.note && (
+                {report.imageUrls && report.imageUrls.length > 0 && (
                   <div>
-                    <h3 className="font-medium mb-2">Ghi chú</h3>
-                    <p className="text-muted-foreground">{report.inspectionScheduleDetail.note}</p>
-                  </div>
-                )}
-
-                {report.inspectionScheduleDetail.photoUrls && report.inspectionScheduleDetail.photoUrls.length > 0 && (
-                  <div>
-                    <h3 className="font-medium mb-2">Hình ảnh kiểm tra</h3>
+                    <h3 className="font-medium mb-2">Hình ảnh báo cáo</h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      {report.inspectionScheduleDetail.photoUrls.map((url, index) => (
+                      {report.imageUrls.map((url, index) => (
                         <div key={index} className="relative aspect-square rounded-md overflow-hidden border">
                           <Image
                             src={url && (url !== "" ? url : "/placeholder.png")}
@@ -237,101 +161,187 @@ const CarReportDetailComponent = ({ report }: Props) => {
                     </div>
                   </div>
                 )}
+
+                {report.resolvedAt && (
+                  <div>
+                    <h3 className="font-medium mb-2">Thông tin xử lý</h3>
+                    <div className="bg-muted p-4 rounded-md">
+                      <p className="text-sm">
+                        <span className="font-medium">Thời gian xử lý:</span> {formatDate(report.resolvedAt)}
+                      </p>
+                      {report.resolutionComments && (
+                        <p className="text-sm mt-2">
+                          <span className="font-medium">Ghi chú:</span> {report.resolutionComments}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
-          )}
-        </div>
 
-        {/* Right column - Car details */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Thông tin xe</CardTitle>
-              <CardDescription>
-                {report.carDetail.manufacturerName} {report.carDetail.modelName}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="relative aspect-video rounded-md overflow-hidden border">
-                {
-                  report?.carDetail?.imageUrl && (
-                    <Image
-                      src={report?.carDetail?.imageUrl[0] ?? "/placeholder.svg"}
-                      alt={`Report image`}
-                      fill
-                      className="object-cover"
-                    />
-                  )
-                }
-              </div>
+            {/* Inspection Schedule Details */}
+            {report.inspectionScheduleDetail && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Lịch kiểm tra</CardTitle>
+                  <CardDescription>Trạng thái: {report.inspectionScheduleDetail.status}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-muted rounded-full p-2">
+                        <Calendar className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">Ngày kiểm tra</p>
+                        <p className="font-medium">{formatDate(report.inspectionScheduleDetail.inspectionDate)}</p>
+                      </div>
+                    </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Biển số xe</p>
-                  <p className="font-medium">{report.carDetail.licensePlate}</p>
+                    <div className="flex items-center gap-3">
+                      <div className="bg-muted rounded-full p-2">
+                        <MapPin className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">Địa điểm</p>
+                        <p className="font-medium">{report.inspectionScheduleDetail.inspectionAddress}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <Separator />
+                  <div>
+                    <h3 className="font-medium mb-2">Kỹ thuật viên</h3>
+                    <div className="flex items-center gap-3">
+                      <div className="relative h-10 w-10 rounded-full overflow-hidden">
+                        <Avatar>
+                          <AvatarImage
+                            src={report?.inspectionScheduleDetail?.technicianAvatar}
+                            alt={report?.inspectionScheduleDetail?.technicianName ?? ""}
+                          />
+                          <AvatarFallback >
+                            {Array.from(report?.inspectionScheduleDetail?.technicianName)[0].toUpperCase()}
+                          </AvatarFallback >
+                        </Avatar>
+                      </div>
+                      <div>
+                        <p className="font-medium">{report.inspectionScheduleDetail.technicianName}</p>
+                        <p className="text-sm text-muted-foreground">
+                          Id: {formatId(report.inspectionScheduleDetail.technicianId)}...
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {report.inspectionScheduleDetail.note && (
+                    <div>
+                      <h3 className="font-medium mb-2">Ghi chú</h3>
+                      <p className="text-muted-foreground">{report.inspectionScheduleDetail.note}</p>
+                    </div>
+                  )}
+
+                  {report.inspectionScheduleDetail.photoUrls && report.inspectionScheduleDetail.photoUrls.length > 0 && (
+                    <div>
+                      <h3 className="font-medium mb-2">Hình ảnh kiểm tra</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        {report.inspectionScheduleDetail.photoUrls.map((url, index) => (
+                          <div key={index} className="relative aspect-square rounded-md overflow-hidden border">
+                            <Image
+                              src={url && (url !== "" ? url : "/placeholder.png")}
+                              alt={`Report image ${index + 1}`}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          {/* Right column - Car details */}
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Thông tin xe</CardTitle>
+                <CardDescription>
+                  {report.carDetail.manufacturerName} {report.carDetail.modelName}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="relative aspect-video rounded-md overflow-hidden border">
+                  {
+                    report?.carDetail?.imageUrl && (
+                      <Image
+                        src={report?.carDetail?.imageUrl[0] ?? "/placeholder.svg"}
+                        alt={`Report image`}
+                        fill
+                        className="object-cover"
+                      />
+                    )
+                  }
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Màu sắc</p>
-                  <p className="font-medium">{report.carDetail.color}</p>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Biển số xe</p>
+                    <p className="font-medium">{report.carDetail.licensePlate}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Màu sắc</p>
+                    <p className="font-medium">{report.carDetail.color}</p>
+                  </div>
                 </div>
-              </div>
 
-              <Separator />
+                <Separator />
 
-              {/* Action buttons based on report type */}
-              <div className="space-y-3">
-                <div className="space-y-2">
-                  {/*     { */}
-                  {/*       report.inspectionScheduleDetail && report.status === CarReportStatus.UnderReview && ( */}
-                  {/*         <> */}
-                  {/*           <h3 className="font-medium">Hành động</h3> */}
-                  {/*           <Dialog > */}
-                  {/*             <DialogTrigger className="w-full"> */}
-                  {/*               <Button className="w-full" variant="destructive"> */}
-                  {/*                 <XIcon className="mr-2 h-4 w-4" /> */}
-                  {/*                 Từ chối */}
-                  {/*               </Button> */}
-                  {/*             </DialogTrigger> */}
-                  {/*             <DialogContent> */}
-                  {/*               <DialogHeader> */}
-                  {/*                 <DialogTitle> Từ chối thay đổi </DialogTitle> */}
-                  {/*               </DialogHeader> */}
-                  {/*               <h1 className="text-muted-foreground">Bạn có chắc chắn không ?</h1> */}
-                  {/*               <Label>Note</Label> */}
-                  {/*               <Input placeholder="Nhập note" value={note} onChange={handleNoteChange} /> */}
-                  {/*               <DialogFooter> */}
-                  {/*                 <Button onClick={handleRejectCarReport} variant="outline"> */}
-                  {/*                   <CheckCircleIcon className="mr-2 h-4 w-4" /> */}
-                  {/*                   Xác nhận */}
-                  {/*                 </Button> */}
-                  {/*               </DialogFooter> */}
-                  {/*             </DialogContent> */}
-                  {/*           </Dialog> */}
-                  {/*           <Dialog > */}
-                  {/*             <DialogTrigger className="w-full"> */}
-                  {/*               <Button className="w-full" variant="outline"> */}
-                  {/*                 <Shield className="mr-2 h-4 w-4" /> */}
-                  {/*                 Xác nhận thay đổi GPS */}
-                  {/*               </Button> */}
-                  {/*             </DialogTrigger> */}
-                  {/*             <DialogContent> */}
-                  {/*               <DialogHeader> */}
-                  {/*                 <DialogTitle> Xác nhận thay đổi </DialogTitle> */}
-                  {/*               </DialogHeader> */}
-                  {/*               <h1 className="text-muted-foreground">Bạn có chắc chắn không ?</h1> */}
-                  {/*               <Label>Note</Label> */}
-                  {/*               <Input placeholder="Nhập note" value={note} onChange={handleNoteChange} /> */}
-                  {/*               <DialogFooter> */}
-                  {/*                 <Button onClick={handleApproveCarReport} variant="outline"> */}
-                  {/*                   <CheckCircleIcon className="mr-2 h-4 w-4" /> */}
-                  {/*                   Xác nhận */}
-                  {/*                 </Button> */}
-                  {/*               </DialogFooter> */}
-                  {/*             </DialogContent> */}
-                  {/*           </Dialog> */}
-                  {/*         </> */}
-                  {/*       ) */}
-                  {/*     } */}
+                {/* Action buttons based on report type */}
+                <div className="flex justify-end">
+                  {
+                    (report.status === 0 || report.status === 1) && (
+                      <Dialog
+                        open={isRejectDialogOpen}
+                        onOpenChange={setIsRejectDialogOpen}
+                      >
+                        <DialogTrigger asChild>
+                          <Button variant="outline" className="gap-2">
+                            <XCircle className="h-4 w-4" />
+                            Từ chối báo cáo
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Từ chối báo cáo</DialogTitle>
+                            <DialogDescription>
+                              Vui lòng nhập lý do từ chối báo cáo này.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <Textarea
+                            placeholder="Nhập lý do từ chối..."
+                            value={resolutionComments}
+                            onChange={(e) =>
+                              setResolutionComments(e.target.value)
+                            }
+                            className="min-h-[100px]"
+                          />
+                          <DialogFooter>
+                            <Button
+                              variant="outline"
+                              onClick={() => setIsRejectDialogOpen(false)}
+                            >
+                              Hủy
+                            </Button>
+                            <Button variant="destructive" onClick={handleReject}>
+                              Xác nhận từ chối
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    )
+                  }
                   {
                     !report.inspectionScheduleDetail && (
                       <Button onClick={handleNavigateCreateInspectionDetail} className="w-full" variant="outline">
@@ -340,48 +350,65 @@ const CarReportDetailComponent = ({ report }: Props) => {
                       </Button>
                     )
                   }
+                  {
+                    report.status === 1 && (
+                      <Button
+                        disabled={false}
+                        onClick={handleApproveReportClick}
+                        className="gap-2 mx-4"
+                      >
+                        <CheckCircle className="h-4 w-4" />
+                        Chấp nhận
+                      </Button>
+                    )
+                  }
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Lịch sử báo cáo</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="bg-muted rounded-full p-2 mt-0.5">
-                    <User className="h-4 w-4" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Báo cáo được tạo</p>
-                    <p className="text-xs text-muted-foreground">17/04/2025, 10:17</p>
-                    <p className="text-sm mt-1">{report.reporterName} đã tạo báo cáo</p>
-                  </div>
-                </div>
-
-                {report.inspectionScheduleDetail && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Lịch sử báo cáo</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <div className="bg-muted rounded-full p-2 mt-0.5">
-                      <Calendar className="h-4 w-4" />
+                      <User className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium">Lịch kiểm tra được tạo</p>
-                      <p className="text-xs text-muted-foreground">17/04/2025, 11:30</p>
-                      <p className="text-sm mt-1">
-                        Lịch kiểm tra đã được lên với kỹ thuật viên {report.inspectionScheduleDetail.technicianName}
-                      </p>
+                      <p className="text-sm font-medium">Báo cáo được tạo</p>
+                      <p className="text-xs text-muted-foreground">17/04/2025, 10:17</p>
+                      <p className="text-sm mt-1">{report.reporterName} đã tạo báo cáo</p>
                     </div>
                   </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+
+                  {report.inspectionScheduleDetail && (
+                    <div className="flex items-start gap-3">
+                      <div className="bg-muted rounded-full p-2 mt-0.5">
+                        <Calendar className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Lịch kiểm tra được tạo</p>
+                        <p className="text-xs text-muted-foreground">17/04/2025, 11:30</p>
+                        <p className="text-sm mt-1">
+                          Lịch kiểm tra đã được lên với kỹ thuật viên {report.inspectionScheduleDetail.technicianName}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </div>
-    </div >
+      </div >
+      <ApproveCarReportDialog
+        id={report.id}
+        isOpen={approveOpen}
+        onOpenChange={() => setApproveOpen(!approveOpen)}
+      />
+    </>
   )
 }
 

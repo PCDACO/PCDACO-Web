@@ -33,11 +33,11 @@ const PendingOwnerTable = () => {
                 <Button variant="ghost" size="icon" className="h-8 w-8">
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
-                {
-                  listOwnerApprovalQuery.data?.value && (
-                    <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">{listOwnerApprovalQuery.data?.value.items.length} Pending</Badge>
-                  )
-                }
+                {/* { */}
+                {/*   listOwnerApprovalQuery.data?.value && ( */}
+                {/*     <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">{listOwnerApprovalQuery.data?.value.items.length} Pending</Badge> */}
+                {/*   ) */}
+                {/* } */}
               </div>
 
               <div className="flex items-center gap-3">

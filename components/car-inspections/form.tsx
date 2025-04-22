@@ -129,7 +129,7 @@ export default function CarInspectionForm({ schedule }: Props) {
     if (uploadedPhotos.length === 0) {
       console.log("NOPHOTO");
       toast({
-        title: "No photos uploaded",
+        title: "Không có ảnh",
         description: "Please upload at least one inspection photo.",
         variant: "destructive",
       })

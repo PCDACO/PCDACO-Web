@@ -36,7 +36,6 @@ export async function CreateAmenities({
     formData.append("icon", icon![0] as File);
   }
   const response = await axiosInstance.postForm("/api/amenities", formData);
-
   return response.data;
 }
 

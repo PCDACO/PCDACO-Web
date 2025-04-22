@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation"
 import { Dialog, DialogContent } from "../ui/dialog"
 import { useDialogStore, useIdStore } from "@/stores/store"
 import DriverForm from "@/components/drivers/form"
+import { userRoleVNStrings } from "@/constants/enums/user-roles.enum"
 
 interface Props {
   user: UserDetailResponse;
@@ -61,6 +62,14 @@ export default function UserDetailsComponent({ user }: Props) {
 
   const handleClick = () => {
     back();
+  }
+
+  const getUserVNName = (value: string): string => {
+    const result = userRoleVNStrings.find(item => item.name === value);
+    if (!result) {
+      return "";
+    }
+    return result.value;
   }
 
   const handleDialogChange = () => {
@@ -108,7 +117,7 @@ export default function UserDetailsComponent({ user }: Props) {
                     <User className="h-4 w-4" />
                     ID: {formatId(id)}
                   </span>
-                  <span className="flex items-center gap-1">Vai trò: {role}</span>
+                  <span className="flex items-center gap-1">Vai trò: {getUserVNName(role)}</span>
                 </CardDescription>
               </div>
               <div className="ml-auto">

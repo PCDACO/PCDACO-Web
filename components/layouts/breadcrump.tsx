@@ -52,6 +52,7 @@ const routeMap: { [key: string]: string } = {
   approve: "Phê duyệt",
   "contract-detail": "Hợp đồng",
   "technician-todo": "Việc cần làm",
+  "checkout": "Hoàn tất thanh toán",
 };
 
 const generateBreadcrumbs = (pathname: string): BreadcrumbItemType[] => {
