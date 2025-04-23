@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 const getUrl = () => {
   if (typeof window === "undefined") {
     // we are on the server
-    return process.env.NEXT_PRIVATE_API_URL || "";
+    return process.env.NEXT_PUBLIC_API_URL || "";
   }
 };
 
