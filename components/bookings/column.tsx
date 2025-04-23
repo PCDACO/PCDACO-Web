@@ -14,14 +14,14 @@ export const BookingColumns: ColumnDef<ListBookingResponse>[] = [
   },
   {
     accessorKey: "driverName",
-    header: "Driver",
+    header: "Người thuê",
   },
   {
     accessorKey: "ownerName",
-    header: "Owner",
+    header: "Chủ xe",
   },
   {
-    header: "Total",
+    header: "Tổng tiền",
     cell: ({ row }) => {
       const total = row.original.totalAmount;
       return <span>{formatCurrency(total)}</span>
