@@ -1,6 +1,13 @@
 import * as SignalR from "@microsoft/signalr";
 
-const API_URL = "http://144.91.64.170:8080";
+// Use NEXT_PUBLIC_ prefix for client-side access
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
+
+if (!API_URL) {
+  throw new Error(
+    "NEXT_PUBLIC_API_URL is not defined in environment variables"
+  );
+}
 
 class SignalRService {
   private static instance: SignalRService;
@@ -9,7 +16,7 @@ class SignalRService {
   private constructor() {
     this.connection = new SignalR.HubConnectionBuilder()
       .withUrl(`${API_URL}/location-hub`, { withCredentials: true })
-      .configureLogging(SignalR.LogLevel.Information)
+      .configureLogging(SignalR.LogLevel.None)
       .withAutomaticReconnect()
       .build();
   }
@@ -28,14 +35,12 @@ class SignalRService {
   public async startConnection(): Promise<void> {
     if (this.connection.state === SignalR.HubConnectionState.Disconnected) {
       await this.connection.start();
-      console.log("🔌 SignalR connection started");
     }
   }
 
   public async stopConnection(): Promise<void> {
     if (this.connection.state === SignalR.HubConnectionState.Connected) {
       await this.connection.stop();
-      console.log("🛑 SignalR connection stopped");
     }
   }
 }

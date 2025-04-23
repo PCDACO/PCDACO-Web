@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import * as SignalR from "@microsoft/signalr";
 
 import { CarLocationResponse } from "@/constants/models/car.model";
 import SignalRService from "@/lib/signalr/location-hub";
@@ -21,20 +22,30 @@ export const useGetLocationCar = (
       }
     };
 
-    connection.on("ReceiveCarLocation", handleReceive);
-
-    const start = async () => {
+    // Set up the connection and handlers
+    const setupConnection = async () => {
       try {
-        await signalR.startConnection();
+        // Remove any existing handlers to prevent duplicates
+        connection.off("ReceiveCarLocation");
+
+        // Add the new handler
+        connection.on("ReceiveCarLocation", handleReceive);
+
+        // Start the connection if not already started
+        if (connection.state === SignalR.HubConnectionState.Disconnected) {
+          await signalR.startConnection();
+        }
+
+        // Request initial location
         await connection.invoke("GetCarLocation", carId);
       } catch (error) {
-        console.log("🚨 SignalR error:");
-        throw error;
+        console.error("SignalR setup error:", error);
       }
     };
 
-    start();
+    setupConnection();
 
+    // Cleanup
     return () => {
       connection.off("ReceiveCarLocation", handleReceive);
     };

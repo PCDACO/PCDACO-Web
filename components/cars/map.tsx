@@ -4,7 +4,6 @@ import React, { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useGetLocationCar } from "@/hooks/plug-ins/use-gps-location";
-import { useInterval } from "@/hooks/plug-ins/use-interval";
 
 interface MapViewProps {
   id: string;
@@ -75,16 +74,32 @@ export default function MapView({ id }: MapViewProps) {
       marker.current.remove();
     }
 
-    // Add new marker
-    marker.current = new mapboxgl.Marker()
+    // Add new marker with a custom color
+    marker.current = new mapboxgl.Marker({
+      color: "#FF0000",
+      draggable: false,
+    })
       .setLngLat([coordinates.longitude, coordinates.latitude])
       .addTo(map.current);
 
-    // Only center map if it's the first location update
+    // Add a popup to show coordinates
+    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+        <div>
+          <strong>Location:</strong><br>
+          Lat: ${coordinates.latitude.toFixed(6)}<br>
+          Lng: ${coordinates.longitude.toFixed(6)}
+        </div>
+      `);
+
+    marker.current.setPopup(popup);
+
+    // Only center map on first load
     if (!marker.current) {
       map.current.flyTo({
         center: [coordinates.longitude, coordinates.latitude],
         essential: true,
+        duration: 2000,
+        zoom: 15,
       });
     }
   }, [coordinates]);
@@ -96,14 +111,6 @@ export default function MapView({ id }: MapViewProps) {
       longitude: location.longitude,
     });
   });
-
-  // Set up interval to refresh location every 5 seconds
-  useInterval(() => {
-    if (map.current) {
-      // This will trigger a new location update through SignalR
-      map.current.triggerRepaint();
-    }
-  }, 5000);
 
   return <div ref={mapContainer} className="w-full h-full" />;
 }
