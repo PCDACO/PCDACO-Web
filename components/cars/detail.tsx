@@ -87,15 +87,18 @@ export default function CarDetailsComponent({ car }: Props) {
                 </div>
               </div>
               <div>
-                <Button
-                  onClick={() => {
-                    push(`/cars/${car.id}/map`);
-                  }}
-                >
-                  <MapPin />
-                  <span>Xem vị trí</span>
-                </Button>
-
+                {
+                  car?.status === "Available" && (
+                    <Button
+                      onClick={() => {
+                        push(`/cars/${car.id}/map`);
+                      }}
+                    >
+                      <MapPin />
+                      <span>Xem vị trí</span>
+                    </Button>
+                  )
+                }
                 {car?.contract?.terms && car?.contract?.terms !== "" && (
                   <Button onClick={handleNavigateContract} variant="ghost">
                     <ReceiptText />
