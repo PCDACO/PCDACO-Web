@@ -32,6 +32,7 @@ const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) 
   useEffect(() => {
     form.setValue("name", value.name);
     form.setValue("status", value.status);
+    //eslint-disable-next-line
   }, [id, form])
 
   const keywords: KeywordType[] = [
