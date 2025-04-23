@@ -9,21 +9,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  useDialogStore,
-  useIdStore,
-  useKeywordStore,
-} from "@/stores/store";
+import { useRouter } from "next/navigation";
 
 interface MenuActionProps {
   id: string;
+  userId: string;
 }
 
 
-const MenuAction: React.FC<MenuActionProps> = ({ id }) => {
-  const { setKeyword } = useKeywordStore();
-  const { setOpen } = useDialogStore();
-  const { setId } = useIdStore();
+const MenuAction: React.FC<MenuActionProps> = ({ id, userId }) => {
+  const { push } = useRouter();
+  const handleNavigateToDetail = () => {
+    push(`/users/${userId}`);
+  }
+  const handleNavigateToCheckout = () => {
+    push(`${id}/checkout`);
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -35,22 +36,13 @@ const MenuAction: React.FC<MenuActionProps> = ({ id }) => {
       <DropdownMenuContent align="end" >
         <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
         <DropdownMenuItem
-          onClick={() => {
-            setKeyword("update");
-            setOpen(true);
-            setId(id);
-          }} >
-          Cập Nhật
+          onClick={handleNavigateToDetail} >
+          Chi tiết người dùng
         </DropdownMenuItem>
         <DropdownMenuItem
           className="bg-red-200"
-          onClick={() => {
-            setKeyword("delete");
-            setOpen(true);
-            setId(id);
-          }}
-        >
-          Xóa
+          onClick={handleNavigateToCheckout} >
+          Thanh toán
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu >

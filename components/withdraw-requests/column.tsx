@@ -5,9 +5,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { formatDate } from "@/lib/utils";
 import { WithdrawRequestResponse } from "@/constants/models/withdraw-request.model";
-import CheckoutButton from "./checkout-button";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { Badge } from "../ui/badge";
+import MenuAction from "./menu-action";
 
 const WithdrawalRequestStatus = [
   {
@@ -83,7 +83,8 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      return <CheckoutButton id={row.original.id} />
+      // return <CheckoutButton id={row.original.id} />
+      return <MenuAction id={row.original.id} userId={row.original.user.id} />
     },
   },
 ];
