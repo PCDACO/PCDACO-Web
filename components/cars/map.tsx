@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useGetLocationCar } from "@/hooks/plug-ins/use-gps-location";
+import { useInterval } from "@/hooks/plug-ins/use-interval";
 
 interface MapViewProps {
   id: string;
@@ -31,19 +32,13 @@ if (MAPBOX_TOKEN) {
 export default function MapView({ id }: MapViewProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const marker = useRef<mapboxgl.Marker | null>(null);
 
   const [coordinates, setCoordinates] = React.useState<Partial<Coordinates>>(
     {}
   );
 
-  useGetLocationCar(id, (value) => {
-    setCoordinates({
-      latitude: value.latitude,
-      longitude: value.longitude,
-      zoom: 12,
-    });
-  });
-
+  // Initialize map
   useEffect(() => {
     const currentCoordinates = {
       latitude: 10.762622,
@@ -63,20 +58,52 @@ export default function MapView({ id }: MapViewProps) {
     // Add navigation controls
     map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
 
-    if (!coordinates.latitude || !coordinates.longitude) return;
-
-    // Add marker
-    new mapboxgl.Marker()
-      .setLngLat([coordinates.longitude, coordinates.latitude])
-      .addTo(map.current);
-
     // Cleanup on unmount
     return () => {
       if (map.current) {
         map.current.remove();
       }
     };
-  }, [id, coordinates]);
+  }, [id]);
+
+  // Update marker when coordinates change
+  useEffect(() => {
+    if (!map.current || !coordinates.latitude || !coordinates.longitude) return;
+
+    // Remove existing marker if it exists
+    if (marker.current) {
+      marker.current.remove();
+    }
+
+    // Add new marker
+    marker.current = new mapboxgl.Marker()
+      .setLngLat([coordinates.longitude, coordinates.latitude])
+      .addTo(map.current);
+
+    // Only center map if it's the first location update
+    if (!marker.current) {
+      map.current.flyTo({
+        center: [coordinates.longitude, coordinates.latitude],
+        essential: true,
+      });
+    }
+  }, [coordinates]);
+
+  // Use SignalR to get car location
+  useGetLocationCar(id, (location) => {
+    setCoordinates({
+      latitude: location.latitude,
+      longitude: location.longitude,
+    });
+  });
+
+  // Set up interval to refresh location every 5 seconds
+  useInterval(() => {
+    if (map.current) {
+      // This will trigger a new location update through SignalR
+      map.current.triggerRepaint();
+    }
+  }, 5000);
 
   return <div ref={mapContainer} className="w-full h-full" />;
 }
