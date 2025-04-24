@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const GPSDeviceSchema = z.object({
-  name: z.string().min(1, ""),
+  name: z.string(),
   status: z.number(),
 });
 

@@ -19,6 +19,7 @@ export const useGPSDeviceForm = ({ id, value, action }: GPSDeviceFormProps) => {
     createGPSDeviceMutation,
     deleteGPSDeviceMutation,
     updateGPSDeviceMutation,
+    unassignGPSDeviceMutation,
   } = useGPSDeviceMutation();
 
   // Memoize defaultValues to prevent recalculating it on each render
@@ -38,7 +39,7 @@ export const useGPSDeviceForm = ({ id, value, action }: GPSDeviceFormProps) => {
   const onSubmit = form.handleSubmit((payload) => {
     switch (action) {
       case "create": {
-        createGPSDeviceMutation.mutate(payload);
+        deleteGPSDeviceMutation.mutate(id);
         break;
       }
       case "update": {
@@ -46,7 +47,7 @@ export const useGPSDeviceForm = ({ id, value, action }: GPSDeviceFormProps) => {
         break;
       }
       case "delete": {
-        deleteGPSDeviceMutation.mutate(id);
+        unassignGPSDeviceMutation.mutate(id);
         break;
       }
     }

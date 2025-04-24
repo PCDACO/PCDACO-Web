@@ -13,15 +13,24 @@ export const ModelColumns: ColumnDef<ModelResponse>[] = [
     }
   },
   {
-    accessorKey: "ownerName",
-    header: "Người thuê",
+    accessorKey: "name",
+    header: "Tên",
   },
   {
-    accessorKey: "driverName",
-    header: "Người thuê",
+    header: "Sản xuất tại",
+    cell: ({ row }) => {
+      const createdAt = row.original.releaseDate;
+      return formatDate(createdAt.toString());
+    }
   },
   {
-    accessorKey: "createdAt",
+    header: "NSX",
+    cell: ({ row }) => {
+      const manufacturer = row.original.manufacturer;
+      return manufacturer.name;
+    }
+  },
+  {
     header: "Ngày Tạo",
     cell: ({ row }) => {
       const createdAt = row.original.createdAt;

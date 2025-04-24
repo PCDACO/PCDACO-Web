@@ -5,7 +5,7 @@ import {
   GPSDevicePayload,
   GPSDeviceResponse,
 } from "@/constants/models/gps-device.model";
-import { CreateGPSDevice, GetGPSDevices, UnassignGPSDevice, UpdateGPSDevice } from "@/app/(dashboard)/(admin)/gps-devices/action";
+import { CreateGPSDevice, deleteGPSDevice, GetGPSDevices, UnassignGPSDevice, UpdateGPSDevice } from "@/app/(dashboard)/(admin)/gps-devices/action";
 import { BaseResponseWithPagination } from "@/constants/responses/base-response";
 import { toastError, toastResponse } from "@/lib/toast-error";
 
@@ -47,6 +47,22 @@ export const useGPSDeviceMutation = () => {
     },
   });
 
+  const deleteGPSDeviceMutation = useMutation({
+    mutationKey: [""],
+    mutationFn: (id: string) => deleteGPSDevice(id),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["gps-devices"] });
+      }
+    },
+    onError: (error: Error) => {
+      toastError(error);
+    }
+  });
+
+
   const updateGPSDeviceMutation = useMutation({
     mutationKey: ["updateGPSDevice"],
     mutationFn: async ({
@@ -68,7 +84,7 @@ export const useGPSDeviceMutation = () => {
     },
   });
 
-  const deleteGPSDeviceMutation = useMutation({
+  const unassignGPSDeviceMutation = useMutation({
     mutationKey: ["deleteGPSDevice"],
     mutationFn: (id: string) => UnassignGPSDevice(id),
     onSuccess: (response) => {
@@ -87,5 +103,6 @@ export const useGPSDeviceMutation = () => {
     createGPSDeviceMutation,
     updateGPSDeviceMutation,
     deleteGPSDeviceMutation,
+    unassignGPSDeviceMutation
   };
 };

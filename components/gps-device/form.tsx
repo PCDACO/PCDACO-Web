@@ -38,28 +38,9 @@ const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) 
   const keywords: KeywordType[] = [
     {
       name: "create",
-      value: "Tạo thiết bị",
+      value: "Xóa thiết bị",
       form: (
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="text"
-                    placeholder="Name"
-                    className="w-full"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
-        />
+        <></>
       )
     },
     {
@@ -157,6 +138,7 @@ const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) 
               {GetTitle(keyword)}
               <DialogDescription>
                 {keyword === 'delete' ? (<h1>Bạn có muốn gỡ không</h1>) : <></>}
+                {keyword === 'create' ? (<h1>Bạn có muốn gỡ không</h1>) : <></>}
               </DialogDescription>
             </DialogHeader>
             {GetComponent(keyword)}
