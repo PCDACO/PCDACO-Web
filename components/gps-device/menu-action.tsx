@@ -50,7 +50,7 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
           Cập nhật
         </DropdownMenuItem>
         <DropdownMenuItem
-          className="hover:cursor-pointer bg-red-200"
+          className="hover:cursor-pointer bg-orange-300"
           onClick={() => {
             setKeyword("delete");
             setOpen(true);
