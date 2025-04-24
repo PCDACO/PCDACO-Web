@@ -60,6 +60,17 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
         >
           Gỡ thiết bị
         </DropdownMenuItem>
+        <DropdownMenuItem
+          className="hover:cursor-pointer bg-red-200"
+          onClick={() => {
+            setKeyword("create");
+            setOpen(true);
+            setId(id);
+            setData(payload);
+          }}
+        >
+          Xóa thiết bị
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu >
   );
