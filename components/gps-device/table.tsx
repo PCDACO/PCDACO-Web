@@ -20,6 +20,8 @@ const GPSDeviceTable = () => {
     params: value,
   });
 
+  console.log(JSON.stringify(listGPSDeviceQuery.data.value));
+
   const { id } = useIdStore();
   const { data } = useGPSDeviceStore();
   const { setKeyword } = useKeywordStore();
@@ -58,6 +60,7 @@ const GPSDeviceTable = () => {
       <GPSDeviceForm id={id} value={data ?? {
         name: "",
         status: 0,
+        carId: "",
       }} isOpen={open} onOpenChange={handleOpenChange} />
     </>
   );

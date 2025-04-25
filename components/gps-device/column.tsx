@@ -74,6 +74,7 @@ export const GPSDeviceColumns: ColumnDef<GPSDeviceResponse>[] = [
         {
           name: row.original.name,
           status: row.original.status,
+          carId: row.original.car?.id ?? "",
         }
       } />
     }
