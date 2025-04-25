@@ -7,7 +7,7 @@ export interface ManufactureResponse {
   id: string;
   name: string;
   logoUrl: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export type ManufactureParams = RootRequest;

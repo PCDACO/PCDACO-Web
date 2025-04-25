@@ -177,7 +177,7 @@ export default function CarDetailsComponent({ car }: Props) {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="md:col-span-1">
             <CardHeader className="pb-2">
               <CardTitle className="text-base">Tổng chuyến</CardTitle>
@@ -213,19 +213,6 @@ export default function CarDetailsComponent({ car }: Props) {
                 <Star className="h-5 w-5 text-amber-500 mr-2 fill-amber-500" />
                 <span className="text-2xl font-bold">
                   {car.statistics.averageRating}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="md:col-span-1">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">Lần cuối thuê</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center">
-                <CalendarClock className="h-5 w-5 text-muted-foreground mr-2" />
-                <span className="text-2xl font-bold">
-                  {new Date(car.statistics.lastRented).toLocaleDateString()}
                 </span>
               </div>
             </CardContent>

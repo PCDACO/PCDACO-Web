@@ -73,7 +73,7 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
         </Card>
 
         {/* Recent Activity - Right side */}
-        <Card className="min-h-[150px]">
+        <Card className="h-50vh">
           <CardHeader className="pb-3">
             <CardTitle>Recent Activity</CardTitle>
             <CardDescription>Latest updates from your team</CardDescription>
