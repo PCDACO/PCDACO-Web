@@ -15,6 +15,7 @@ import {
   useKeywordStore,
 } from "@/stores/store";
 import { GPSDevicePayload } from "@/constants/models/gps-device.model";
+import { useRouter } from "next/navigation";
 
 interface MenuActionProps {
   id: string;
@@ -28,6 +29,9 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
   const { setOpen } = useDialogStore();
   const { setId } = useIdStore();
   const { setData } = useGPSDeviceStore();
+  const { push } = useRouter();
+
+  const handleDetailClick = () => push(`/cars/${payload.carId}`);
 
   return (
     <DropdownMenu>
@@ -38,6 +42,16 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Tùy chọn</DropdownMenuLabel>
+        {
+          payload.carId && (
+            <DropdownMenuItem
+              className="hover:cursor-pointer"
+              onClick={handleDetailClick}
+            >
+              Chi tiết xe
+            </DropdownMenuItem>
+          )
+        }
         <DropdownMenuItem
           className="hover:cursor-pointer"
           onClick={() => {

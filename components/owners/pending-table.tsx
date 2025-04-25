@@ -28,7 +28,7 @@ const PendingOwnerTable = () => {
       </div>
       {listOwnerApprovalQuery.data?.value?.items?.length > 0 && (
         listOwnerApprovalQuery.data?.value?.items.map((driver, index) => (
-          <Card >
+          <Card key={driver.id}>
             <CardContent>
               <div key={index} className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mx-auto">
                 <div key={driver.id}>

@@ -189,19 +189,6 @@ export default function CreateInspectionForm({
             />
             <FormField
               control={form.control}
-              name="inspectionAddress"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Địa Chỉ Xét Xe</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nhập Địa Chỉ" type="" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="inspectionDate"
               render={({ field }) => {
                 const selectedHour = field.value?.getHours() ?? 0;
@@ -235,7 +222,7 @@ export default function CreateInspectionForm({
                 };
                 return (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Enter your date & time (12h)</FormLabel>
+                    <FormLabel>Thời gian xác minh</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -334,6 +321,19 @@ export default function CreateInspectionForm({
                       disabled={!!reportId}
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="inspectionAddress"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Địa Chỉ Xét Xe</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nhập Địa Chỉ" type="" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
