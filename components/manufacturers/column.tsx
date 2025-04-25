@@ -7,6 +7,7 @@ import MenuAction from "./menu-action";
 import { formatDate } from "@/lib/utils";
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
+import { format } from "date-fns";
 
 export const ManufacturerColumns: ColumnDef<ManufactureResponse>[] = [
   {
@@ -34,7 +35,8 @@ export const ManufacturerColumns: ColumnDef<ManufactureResponse>[] = [
     header: "Ngày Tạo",
     cell: ({ row }) => {
       const createdAt = row.original.createdAt;
-      return formatDate(createdAt.toString());
+      // return formatDate(createdAt.toString());
+      return format(createdAt, "dd MMM yyyy | HH:mm");
     }
   },
   {

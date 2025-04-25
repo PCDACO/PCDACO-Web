@@ -38,7 +38,7 @@ import { ForwardRefExoticComponent, RefAttributes } from 'react';
 interface SideBarItem {
   title: string;
   url: string;
- icon: ForwardRefExoticComponent<
+  icon: ForwardRefExoticComponent<
     Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
   >;
   role: string;
