@@ -83,7 +83,7 @@ export function ImageUploader({ label, photoType, file, description, onChange, o
                 alt={label}
                 width={800}
                 height={400}
-                className="w-full h-[200px] object-cover rounded-md"
+                className="w-full h-[200px] object-contain rounded-md"
               />
               <Button variant="destructive" size="icon" className="absolute top-2 right-2" onClick={handleRemove}>
                 <X className="h-4 w-4" />
