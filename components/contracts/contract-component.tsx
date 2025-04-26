@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Check, X } from 'lucide-react'
 import { useContractMutation } from '@/hooks/contracts/use-contract'
 import SignaturePad from 'react-signature-canvas'
-import { Card, CardContent, CardFooter } from '../ui/card'
+import { Card, CardContent, CardFooter, CardTitle } from '../ui/card'
 
 interface Props {
   id: string;
@@ -32,7 +32,7 @@ export default function ContractViewer({ id, contractHtml }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-8 h-[200] m-4">
+    <div className="grid grid-cols-2 gap-8 h-[calc(100vh-150px)] m-4">
       {/* Contract Viewer */}
       <div className="bg-white rounded-lg shadow-lg overflow-y-auto p-4">
         <div className="contract-content p-6 max-h-3/4 overflow-y-auto">
@@ -51,10 +51,12 @@ export default function ContractViewer({ id, contractHtml }: Props) {
       <div className='flex items-center'>
         <Card>
           <CardContent className='mt-5'>
+            <CardTitle> Kí tên </CardTitle>
             <SignaturePad
               penColor='black'
               canvasProps={{
                 style: {
+                  marginTop: "10px",
                   width: "100%",
                   height: '600px',
                   border: 1,
