@@ -5,16 +5,27 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { CalendarDays, Check, Clock, X } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
-import { CustomCalendar } from "@/components/ui/custom-calendar";
 import { useRouter } from "next/navigation";
 
+const getCurrentUTCTime = () => {
+  const now = new Date();
+  const utcDate = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    now.getUTCHours() + 7,
+    now.getUTCMinutes(),
+    now.getUTCSeconds(),
+    now.getUTCMilliseconds()
+  ));
+  return utcDate;
+}
+
 export default function TechnicianTodo() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [date] = useState(getCurrentUTCTime());
   const { listTechnicianTasks } = useTechnicianTaskQuery({
-    inspectionDate: selectedDate === undefined ? undefined : new Date(new Date(selectedDate!).getTime() + (24 * 60 * 60 * 1000))
+    inspectionDate: date,
   });
   const { rejectTechnicianTask, inProgressTechnicianTask } = useTechnicianTaskMutation();
   const [Note, SetNote] = useState<Record<string, string>>({
@@ -36,23 +47,6 @@ export default function TechnicianTodo() {
       <div className="min-h-screen bg-white text-black p-4 md:p-8">
         <h1 className="text-2xl font-bold mb-4">Lịch Làm Việc</h1>
         {/* Picker chọn ngày */}
-        <div className="mb-4">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline">
-                {selectedDate ? format(selectedDate, "dd/MM/yyyy") : "Chọn ngày"}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <CustomCalendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={setSelectedDate}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
         <Card className="min-h-[500px]">
           {
             //eslint-disable-next-line
@@ -126,7 +120,6 @@ export default function TechnicianTodo() {
                       </div>
                     </div>
                   </div>
-
                   <div className="space-y-2">
                     <h3 className="text-xl font-semibold text-gray-800">Không tìm thấy ngày</h3>
                     <p className="text-gray-500 max-w-md">
