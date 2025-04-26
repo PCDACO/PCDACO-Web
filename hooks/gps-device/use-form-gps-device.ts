@@ -28,6 +28,7 @@ export const useGPSDeviceForm = ({ id, value, action }: GPSDeviceFormProps) => {
     return {
       name: value.name ?? "",
       status: value.status ?? 0,
+      carId: "",
     };
   }, [id, value]);
 
