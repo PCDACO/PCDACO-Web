@@ -31,13 +31,16 @@ export default function TechnicianTodo() {
   const [Note, SetNote] = useState<Record<string, string>>({
     dummy: "dummy",
   });
+
   const { push } = useRouter();
+
   const handleNoteChange = (taskId: string, note: string) => {
     SetNote({
       ...Note,
       [taskId]: note,
     });
   };
+
   const handleTodoClick = (id: string) => {
     push(`/cars/${id}`);
   }

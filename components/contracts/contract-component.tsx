@@ -1,11 +1,11 @@
 'use client'
-
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Check, X } from 'lucide-react'
 import { useContractMutation } from '@/hooks/contracts/use-contract'
 import SignaturePad from 'react-signature-canvas'
 import { Card, CardContent, CardFooter, CardTitle } from '../ui/card'
+import { LoadingSpinner } from '../ui/loading-spinner'
 
 interface Props {
   id: string;
@@ -14,20 +14,21 @@ interface Props {
 
 export default function ContractViewer({ id, contractHtml }: Props) {
   const { approveContract } = useContractMutation();
-  const [sign, setSign] = useState<SignaturePad | null>();
+  const signRef = useRef<SignaturePad>(null);
   const [disableClear, setDisableClear] = useState(true);
   const [disableSave, setDisableSave] = useState(true);
+
   const handleClearClick = () => {
     setDisableClear(true);
     setDisableSave(true);
-    if (sign) {
-      sign.clear();
+    if (signRef.current) {
+      signRef.current.clear();
     }
   }
 
   const handleSaveClick = () => {
-    if (sign) {
-      approveContract.mutate({ id, signature: sign.getTrimmedCanvas().toDataURL('image/png', 100) });
+    if (signRef.current) {
+      approveContract.mutate({ id, signature: signRef.current.getTrimmedCanvas().toDataURL('image/png', 100) });
     }
   }
 
@@ -68,7 +69,7 @@ export default function ContractViewer({ id, contractHtml }: Props) {
                 setDisableClear(false);
                 setDisableSave(false);
               }}
-              ref={data => setSign(data)}
+              ref={signRef}
             />
             <CardFooter>
               <div className='mt-8 flex justify-end w-full items-center'>
@@ -76,7 +77,10 @@ export default function ContractViewer({ id, contractHtml }: Props) {
                   <X size={18} /> Xóa
                 </Button>
                 <Button className='w-24 ml-6' disabled={disableSave} onClick={handleSaveClick}>
-                  <Check size={18} /> Kí
+                  {approveContract.isLoading ?
+                    <LoadingSpinner size={18} /> :
+                    <><Check size={18} /> Kí</>
+                  }
                 </Button>
               </div>
             </CardFooter>

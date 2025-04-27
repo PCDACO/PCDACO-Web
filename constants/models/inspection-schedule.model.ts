@@ -63,6 +63,7 @@ export interface InProgressInspectionScheduleResponse {
   address: string;
   licensePlate: string;
   contractDetail: ContractDetail;
+  type: number;
 }
 
 interface ContractDetail {

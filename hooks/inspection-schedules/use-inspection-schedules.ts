@@ -17,7 +17,7 @@ import {
 } from "@/constants/models/inspection-schedule.model";
 import { useDialogStore } from "@/stores/store";
 import { useRouter } from "next/navigation";
-import { ApproveInspectionScheduleAction } from "@/app/(dashboard)/(technicians)/technician-todo/approve/action";
+import { ApproveInspectionScheduleAction, approveInspectionScheduleIncidentAction, approveInspectionScheduleNoPhotoAction } from "@/app/(dashboard)/(technicians)/technician-todo/approve/action";
 import { BaseResponse } from "@/constants/responses/base-response";
 import { toastError, toastResponse } from "@/lib/toast-error";
 import { UpdateCarContractByScheduleInfo } from "@/app/(dashboard)/(technicians)/technician-todo/[id]/action";
@@ -134,7 +134,49 @@ export const useInspectionScheduleMutation = () => {
     onError: (error: Error) => {
       toastError(error);
     },
+  });
 
+  const approveInspectionScheduleNoPhotos = useMutation({
+    mutationKey: ["rejectInspectionSchedule"],
+    mutationFn: ({
+      id, note
+    }: {
+      id: string,
+      note: string
+    }) => approveInspectionScheduleNoPhotoAction({ id, note }),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
+        push("/statistics");
+      }
+    },
+    onError: (error: Error) => {
+      toastError(error);
+    },
+  });
+
+  const approveInspectionScheduleIncident = useMutation({
+    mutationKey: ["rejectInspectionSchedule"],
+    mutationFn: ({
+      id,
+      note,
+      images
+    }: {
+      id: string,
+      note: string,
+      images: FileList | null;
+    }) => approveInspectionScheduleIncidentAction({ id, note, images }),
+    onSuccess: (response) => {
+      toastResponse(response);
+      if (response.isSuccess) {
+        queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
+        push("/statistics");
+      }
+    },
+    onError: (error: Error) => {
+      toastError(error);
+    },
   });
 
   const updateContractFromScheduleInfo = useMutation({
@@ -168,6 +210,8 @@ export const useInspectionScheduleMutation = () => {
     updateContractFromScheduleInfo,
     deleteInspectionSchedule,
     updateInspectionSchedule,
+    approveInspectionScheduleNoPhotos,
+    approveInspectionScheduleIncident
   }
 }
 
