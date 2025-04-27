@@ -1,7 +1,7 @@
 "use client"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { format } from "date-fns"
-import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge } from "lucide-react"
+import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, X, CheckIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,7 +10,10 @@ import { InspectionScheduleDetailResponse } from "@/constants/models/inspection-
 import { CarResponse } from "@/constants/models/car.model"
 import Image from "next/image"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
-
+import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "../ui/dialog"
+import { Input } from "../ui/input"
+import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
+import { Label } from "../ui/label"
 
 interface Props {
   id: string,
@@ -18,8 +21,11 @@ interface Props {
   car: CarResponse;
 }
 
-export default function InspectionDetailComponent({ data, car }: Props) {
-
+export default function InspectionDetailComponent({ id, data, car }: Props) {
+  const [note, setNote] = useState("");
+  const [rejectNote, setRejectNote] = useState("");
+  const [images, setImages] = useState<FileList | null>(null);
+  const { approveInspectionScheduleNoPhotos, rejectInspectionSchedule, approveInspectionScheduleIncident } = useInspectionScheduleMutation();
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Pending":
@@ -54,6 +60,38 @@ export default function InspectionDetailComponent({ data, car }: Props) {
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev === 0 ? car.images.length - 1 : prev - 1))
   }
+
+  const handleRejectNoteChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setRejectNote(e.currentTarget.value);
+  }
+
+  const handleNoteChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNote(e.currentTarget.value);
+  }
+
+  const handleImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setImages(e.currentTarget.files);
+  }
+
+  const handleRejectNoteSubmit = () => {
+    rejectInspectionSchedule.mutate({
+      id: id,
+      note: rejectNote,
+    })
+  }
+
+  const handleApproveNoteSubmit = () => {
+    approveInspectionScheduleNoPhotos.mutate({
+      id: id,
+      note: note,
+    })
+  }
+
+  const handleApproveIncidentSubmit = () => {
+    approveInspectionScheduleIncident.mutate({ id, note, images });
+  }
+
+
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="mb-6 flex items-center justify-between">
@@ -127,6 +165,7 @@ export default function InspectionDetailComponent({ data, car }: Props) {
               <CardTitle>Người tham gia</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
+              {/* Owner Detail */}
               <div className="flex items-start gap-2">
                 <div className="mt-0.5 text-muted-foreground">
                   <User className="h-5 w-5" />
@@ -139,6 +178,7 @@ export default function InspectionDetailComponent({ data, car }: Props) {
                 </div>
               </div>
 
+              {/* Technician Detail */}
               <div className="flex items-start gap-2">
                 <div className="mt-0.5 text-muted-foreground">
                   <User className="h-5 w-5" />
@@ -156,6 +196,67 @@ export default function InspectionDetailComponent({ data, car }: Props) {
                 <p className="text-sm text-muted-foreground">
                   Tạo lúc: {format(data.createdAt, "MMMM d, yyyy 'at' h:mm a")}
                 </p>
+              </div>
+
+              <div className="flex justify-end gap-x-4">
+                {/* Reject Dialog */}
+                {
+                  (data.type === "ChangeGPS" || data.type === "Incident") && (
+                    <Dialog>
+                      <DialogTrigger>
+                        <Button variant="destructive">
+                          <X />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <Label>Nhập lí do</Label>
+                        <Input value={rejectNote} onChange={handleRejectNoteChange} />
+                        <DialogFooter>
+                          <Button onClick={handleRejectNoteSubmit}> Hoàn tất </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  )
+                }
+                {/* Approve Dialog */}
+                {
+                  data.type === "ChangeGPS" && (
+                    <Dialog>
+                      <DialogTrigger>
+                        <Button>
+                          <CheckIcon /> Hoàn thành
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <Label>Nhập lí do</Label>
+                        <Input value={note} onChange={handleNoteChange} />
+                        <DialogFooter>
+                          <Button onClick={handleApproveNoteSubmit}> Hoàn tất </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  )
+                }
+                {
+                  data.type === "Incident" && (
+                    <Dialog>
+                      <DialogTrigger>
+                        <Button>
+                          <CheckIcon /> Hoàn thành
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <Label>Nhập lí do</Label>
+                        <Input value={note} onChange={handleNoteChange} />
+                        <Label>Nhập ảnh</Label>
+                        <Input type="file" accept="file/*" onChange={handleImagesChange} />
+                        <DialogFooter>
+                          <Button onClick={handleApproveIncidentSubmit}> Hoàn tất </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  )
+                }
               </div>
             </CardContent>
           </Card>

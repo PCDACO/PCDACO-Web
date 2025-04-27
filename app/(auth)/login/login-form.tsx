@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { useAuthForm } from "@/hooks/auth/use-form-auth";
 import Image from "next/image";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function LoginForm({
   className,
@@ -63,7 +64,10 @@ export default function LoginForm({
                     )}
                   />
                   <Button type="submit" disabled={isLoading} className="w-full">
-                    Đăng Nhập
+                    {isLoading ?
+                      <LoadingSpinner /> :
+                      " Đăng Nhập "
+                    }
                   </Button>
                 </div>
               </div>

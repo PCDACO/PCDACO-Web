@@ -10,18 +10,20 @@ import { toast } from "@/hooks/use-toast"
 import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
 import { InspectionPhotoType } from "@/constants/enums/inspection-photo-type.enum"
 import { InProgressInspectionScheduleResponse } from "@/constants/models/inspection-schedule.model"
+import { LoadingSpinner } from "../ui/loading-spinner"
+import { CheckCircle } from "lucide-react"
 
 
 // Helper to get human-readable labels
 const getPhotoTypeLabel = (type: InspectionPhotoType): string => {
   const labels: Record<string, string> = {
-    [InspectionPhotoType.ExteriorCar.toString()]: "Photo of the car exterior",
-    [InspectionPhotoType.FuelGauge.toString()]: "Photo of the fuel gauge",
-    [InspectionPhotoType.ParkingLocation.toString()]: "Photo of the parking location",
-    [InspectionPhotoType.CarKey.toString()]: "Photo of the car key",
-    [InspectionPhotoType.TrunkSpace.toString()]: "Photo of the trunk space",
-    [InspectionPhotoType.Scratches.toString()]: "Photo of scratches",
-    [InspectionPhotoType.Cleanliness.toString()]: "Photo of the car cleanliness",
+    [InspectionPhotoType.ExteriorCar.toString()]: "Ngoại thất",
+    [InspectionPhotoType.FuelGauge.toString()]: "Kim xăng",
+    [InspectionPhotoType.ParkingLocation.toString()]: "Vị trí đậu",
+    [InspectionPhotoType.CarKey.toString()]: "Chìa khóa xe",
+    [InspectionPhotoType.TrunkSpace.toString()]: "Cốp xe",
+    [InspectionPhotoType.Scratches.toString()]: "Trầy xướt",
+    [InspectionPhotoType.Cleanliness.toString()]: "Chất lượng",
   }
   return labels[type]
 }
@@ -186,14 +188,21 @@ export default function CarInspectionForm({ schedule }: Props) {
         </CardContent>
       </Card>
       <textarea
-        className="w-full p-2 border rounded-md min-h-[80px] text-sm"
+        className="w-full my-4 p-2 border rounded-md min-h-[80px] text-sm"
         placeholder="Add notes about this photo (optional)"
         value={note}
         onChange={(e) => handleNoteChange(e.target.value)}
       />
-      <div className="mt-6 flex justify-end">
-        <Button disabled={schedule?.contractDetail?.ownerSignatureDate === undefined || schedule?.contractDetail?.ownerSignatureDate === null} type="submit" size="lg">
-          Submit Inspection
+      <div className="my-2 flex justify-end">
+        <Button disabled={schedule?.contractDetail?.ownerSignatureDate === undefined || schedule?.contractDetail?.ownerSignatureDate === null || approveInspectionSchedule.isLoading} type="submit" size="lg">
+          {
+            approveInspectionSchedule.isLoading ?
+              <LoadingSpinner /> :
+              <>
+                <CheckCircle size={18} />
+                Hoàn tất
+              </>
+          }
         </Button>
       </div>
     </form>

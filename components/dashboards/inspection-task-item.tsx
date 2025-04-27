@@ -8,6 +8,7 @@ interface InspectionTaskItemProps {
   ownerName: string
   licensePlate: string
   scheduledTime: string
+  type: number
 }
 
 export default function InspectionTaskItem({
@@ -16,9 +17,26 @@ export default function InspectionTaskItem({
   ownerName,
   licensePlate,
   scheduledTime,
+  type,
 }: InspectionTaskItemProps) {
   const { push } = useRouter();
-  const handleBtnClick = () => push(`/technician-todo/${id}`)
+
+  const handleBtnClick = () => {
+    switch (type) {
+      case 0: {
+        push(`/technician-todo/${id}`);
+        return;
+      };
+      case 1: {
+        push(`/inspection-schedules/${id}/details`);
+        return;
+      };
+      case 2: {
+        push(`/inspection-schedules/${id}/details`);
+        return;
+      };
+    }
+  }
 
   return (
     <Card onClick={handleBtnClick} className="border-l-4 border-l-yellow-400 hover:cursor-pointer hover:shadow-lg hover:animate-pulse">

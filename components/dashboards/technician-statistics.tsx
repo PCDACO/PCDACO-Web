@@ -74,6 +74,7 @@ export default function TechnicianStatistics({ inProgressInspectionSchedule, sta
                   ownerName={inProgressInspectionSchedule.ownerName}
                   licensePlate={inProgressInspectionSchedule.licensePlate}
                   scheduledTime={format(inProgressInspectionSchedule.date, 'MM/dd/yyyy hh:mm a')}
+                  type={inProgressInspectionSchedule.type}
                 />
               </div>
             )}

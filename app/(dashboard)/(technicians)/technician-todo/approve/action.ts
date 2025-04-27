@@ -64,3 +64,47 @@ export const ApproveInspectionScheduleAction = async (id: string, payload: CarIn
   })
   return response.data;
 }
+
+export const approveInspectionScheduleNoPhotoAction = async ({
+  id,
+  note,
+}: {
+  id: string,
+  note: string,
+}) => {
+  const response = await axiosInstance.patch(`/api/inspection-schedules/${id}/approve`, {
+    note: note,
+    isApproved: true
+  })
+  return response.data;
+}
+
+export const approveInspectionScheduleIncidentAction = async ({
+  id,
+  note,
+  images
+}: {
+  id: string,
+  note: string,
+  images: FileList | null
+}) => {
+  // Process the images
+  const formData = new FormData();
+  if (images) {
+    Array.from(images).forEach(item => {
+      formData.append("photos", item);
+    });
+  }
+  formData.append("description", "");
+  formData.append("photoType", `10`);
+  const uploadPhotoResponse = await axiosInstance.patchForm(`/api/inspection-schedules/${id}/photos`, formData);
+  if (uploadPhotoResponse.status > 400) {
+    throw new Error("Có lỗi trong quá trình xử lí ảnh");
+  }
+  // approve the schedule
+  const response = await axiosInstance.patch(`/api/inspection-schedules/${id}/approve`, {
+    note: note,
+    isApproved: true
+  })
+  return response.data;
+}
