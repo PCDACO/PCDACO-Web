@@ -201,7 +201,7 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
               <div className="flex justify-end gap-x-4">
                 {/* Reject Dialog */}
                 {
-                  (data.type === "ChangeGPS" || data.type === "Incident") && (
+                  ((data.type === "ChangeGPS" || data.type === "Incident") && data.status == "Pending") && (
                     <Dialog>
                       <DialogTrigger>
                         <Button variant="destructive">
@@ -220,7 +220,7 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
                 }
                 {/* Approve Dialog */}
                 {
-                  data.type === "ChangeGPS" && (
+                  (data.type === "ChangeGPS" && data.status == "Pending") && (
                     <Dialog>
                       <DialogTrigger>
                         <Button>
@@ -238,7 +238,7 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
                   )
                 }
                 {
-                  data.type === "Incident" && (
+                  (data.type === "Incident" && data.status == "Pending") && (
                     <Dialog>
                       <DialogTrigger>
                         <Button>
