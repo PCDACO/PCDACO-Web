@@ -19,6 +19,7 @@ import {
 import { useAmenityForm } from "@/hooks/amenities/use-form-amenities";
 import { AmenityPayLoad } from "@/constants/models/amenity.model";
 import Image from "next/image";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface AmenityFormProps {
   id: string;
@@ -241,7 +242,7 @@ const AmenityForm = ({ id, value }: AmenityFormProps) => {
         {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Hoàn tất"}
+            {isLoading ? <LoadingSpinner /> : "Hoàn tất"}
           </Button>
         </DialogFooter>
       </form>

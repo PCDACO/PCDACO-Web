@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import {
   DropdownMenu,
@@ -10,7 +11,7 @@ import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createGenericStore } from "@/stores/store";
 import { ManufacturePayload } from "@/constants/models/manufacture.model";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ReportProps {
   id: string;
@@ -19,6 +20,10 @@ interface ReportProps {
 export const useManuFactureStore = createGenericStore<ManufacturePayload>();
 
 const MenuAction: React.FC<ReportProps> = ({ id }) => {
+  const { push } = useRouter();
+  const handleNavigateDetail = () => {
+    push(`/reports/${id}`);
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,10 +34,8 @@ const MenuAction: React.FC<ReportProps> = ({ id }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
-        <DropdownMenuItem >
-          <Link href={`/reports/${id}`}>
-            Chi tiết
-          </Link>
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleNavigateDetail}>
+          Chi tiết
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu >

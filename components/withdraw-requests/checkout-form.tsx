@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import { useWithdrawRequestForm } from "@/hooks/withdraw-requests/use-withdraw-request-form";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface Props {
   id: string;
@@ -98,7 +99,7 @@ const WithdrawRequestForm = ({ id }: Props) => {
         />
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Submit"}
+            {isLoading ? <LoadingSpinner /> : "Submit"}
           </Button>
         </DialogFooter>
       </form>

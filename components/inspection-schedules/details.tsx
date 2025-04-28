@@ -41,19 +41,19 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
       case "Pending":
         return (
           <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-200">
-            Pending
+            Đang chờ
           </Badge>
         )
       case "Approved":
         return (
           <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
-            View Contract
+            Đã hoàn thành
           </Badge>
         )
       case "Rejected":
         return (
           <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">
-            Rejected
+            Đã từ chối
           </Badge>
         )
       default:
@@ -97,12 +97,11 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
     approveInspectionScheduleIncident.mutate({ id, note, images });
   }
 
-
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-3xl font-bold">Inspection Details</h1>
-        <div className="flex items-center gap-2">{getStatusBadge("Pending")}</div>
+        <div className="flex items-center gap-2">{getStatusBadge(data.status)}</div>
       </div>
       <div>
         <div className="grid gap-6 md:grid-cols-2">

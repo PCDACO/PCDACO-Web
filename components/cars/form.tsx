@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { CarPayload } from "@/constants/models/car.model";
 import { useCarForm } from "@/hooks/cars/use-form-car";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface CarFormProps {
   id: string;
@@ -67,7 +68,7 @@ const CarForm = ({ id, value }: CarFormProps) => {
         {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Hoàn tất"}
+            {isLoading ? <LoadingSpinner /> : "Hoàn tất"}
           </Button>
         </DialogFooter>
       </form>
