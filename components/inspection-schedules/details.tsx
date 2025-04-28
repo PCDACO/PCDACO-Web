@@ -1,7 +1,7 @@
 "use client"
 import { ChangeEvent, useCallback, useState } from "react"
 import { format } from "date-fns"
-import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, X, CheckIcon } from "lucide-react"
+import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, CheckIcon, CheckCircle, XCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,10 +10,13 @@ import { InspectionScheduleDetailResponse } from "@/constants/models/inspection-
 import { CarResponse } from "@/constants/models/car.model"
 import Image from "next/image"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
-import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "../ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Input } from "../ui/input"
 import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
 import { Label } from "../ui/label"
+import { InspectionScheduleStatusStrings } from "@/constants/enums/inspection-schedules.enum"
+import { useRouter } from "next/navigation"
+import { Textarea } from "../ui/textarea"
 
 interface Props {
   id: string,
@@ -25,8 +28,12 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
   const [note, setNote] = useState("");
   const [rejectNote, setRejectNote] = useState("");
   const [images, setImages] = useState<FileList | null>(null);
-  const { approveInspectionScheduleNoPhotos, rejectInspectionSchedule, approveInspectionScheduleIncident } = useInspectionScheduleMutation();
+  const { approveInspectionScheduleNoPhotos, rejectInspectionSchedule, approveInspectionScheduleIncident, updateContractFromScheduleInfo } = useInspectionScheduleMutation();
   const [localUrl, setLocalUrl] = useState("");
+  const { push } = useRouter();
+
+  const handleApprove = () => updateContractFromScheduleInfo.mutate(data.id);
+
   const handleFileChange = useCallback((files: FileList | null) => {
     if (files) {
       const objectUrl = URL.createObjectURL(files[0]);
@@ -36,6 +43,18 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
       setLocalUrl("");
     }
   }, []);
+
+  const handleNavigateToApprove = () => {
+    push("/technician-todo/approve");
+  }
+
+  const isInProgressOrSigned = () => {
+    const status = data.status;
+    return (
+      status === InspectionScheduleStatusStrings.InProgress ||
+      status === InspectionScheduleStatusStrings.Signed
+    )
+  }
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Pending":
@@ -89,7 +108,7 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
     setCurrentImageIndex((prev) => (prev === 0 ? car.images.length - 1 : prev - 1))
   }
 
-  const handleRejectNoteChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleRejectNoteChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setRejectNote(e.currentTarget.value);
   }
 
@@ -224,18 +243,29 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
               <div className="flex justify-end gap-x-4">
                 {/* Reject Dialog */}
                 {
-                  ((data.type === "ChangeGPS" || data.type === "Incident") && data.status == "Pending") && (
+                  (data.status === "InProgress" || data.status === "Signed") && (
                     <Dialog>
-                      <DialogTrigger>
-                        <Button variant="destructive">
-                          <X />
+                      <DialogTrigger asChild>
+                        <Button variant="destructive" className="flex-1">
+                          <XCircle className="mr-2 h-4 w-4" />
                         </Button>
                       </DialogTrigger>
                       <DialogContent>
-                        <Label>Nhập lí do</Label>
-                        <Input value={rejectNote} onChange={handleRejectNoteChange} />
-                        <DialogFooter>
-                          <Button onClick={handleRejectNoteSubmit}> Hoàn tất </Button>
+                        <DialogHeader>
+                          <DialogTitle>Từ chối xác minh</DialogTitle>
+                          <DialogDescription>Hãy điền lí do từ chối lịch xác minh này</DialogDescription>
+                        </DialogHeader>
+                        <Textarea
+                          placeholder="Reason for rejection..."
+                          value={rejectNote}
+                          onChange={handleRejectNoteChange}
+                          className="min-h-[100px]"
+                        />
+                        <DialogFooter className="mt-4">
+                          <Button variant="destructive" onClick={handleRejectNoteSubmit}>
+                            <CheckIcon />
+                            Hoàn thành
+                          </Button>
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>
@@ -243,7 +273,7 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
                 }
                 {/* Approve Dialog */}
                 {
-                  (data.type === "ChangeGPS" && data.status == "Pending") && (
+                  (data.type === "ChangeGPS" && data.status == "InProgress") && (
                     <Dialog>
                       <DialogTrigger>
                         <Button>
@@ -261,7 +291,7 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
                   )
                 }
                 {
-                  (data.type === "Incident" && data.status == "Pending") && (
+                  (data.type === "Incident" && data.status == "InProgress") && (
                     <Dialog>
                       <DialogTrigger>
                         <Button>
@@ -286,6 +316,28 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>
+                  )
+                }
+                {
+                  isInProgressOrSigned() && (
+                    <>
+                      {
+                        !data?.isTechnicianSigned && (
+                          <Button disabled={(!data.hasGPSDevice)} variant="default" className="flex-1" onClick={handleApprove}>
+                            <CheckCircle className="mr-2 h-4 w-4" />
+                            Xem hợp đồng
+                          </Button>
+                        )
+                      }
+                      {
+                        data?.isTechnicianSigned && (
+                          <Button variant="default" className="flex-1" onClick={handleNavigateToApprove}>
+                            <CheckCircle className="mr-2 h-4 w-4" />
+                            Xác minh
+                          </Button>
+                        )
+                      }
+                    </>
                   )
                 }
               </div>

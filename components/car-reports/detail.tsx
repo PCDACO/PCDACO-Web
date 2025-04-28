@@ -325,7 +325,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
                 <Separator />
 
                 {/* Action buttons based on report type */}
-                <div className="flex justify-end">
+                <div className="lg:grid-cols-2 md:grid-cols-1 space-x-2 mx-auto w-full">
                   {
                     (report.status === 0 || report.status === 1) && (
                       <Dialog
@@ -333,7 +333,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
                         onOpenChange={setIsRejectDialogOpen}
                       >
                         <DialogTrigger asChild>
-                          <Button variant="outline" className="gap-2">
+                          <Button variant="outline" >
                             <XCircle className="h-4 w-4" />
                             Từ chối báo cáo
                           </Button>
@@ -370,7 +370,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
                   }
                   {
                     !report.inspectionScheduleDetail && (
-                      <Button onClick={handleNavigateCreateInspectionDetail} className="w-full" variant="outline">
+                      <Button onClick={handleNavigateCreateInspectionDetail} variant="outline">
                         <Wrench className="mr-2 h-4 w-4" />
                         Lên lịch thay GPS
                       </Button>

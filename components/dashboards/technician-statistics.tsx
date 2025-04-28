@@ -15,7 +15,6 @@ interface Props {
 }
 
 export default function TechnicianStatistics({ inProgressInspectionSchedule, statisticData, recentActivity }: Props) {
-
   return (
     <main className="flex-1 p-8 overflow-auto">
       {/* Statistics Cards */}
@@ -74,7 +73,6 @@ export default function TechnicianStatistics({ inProgressInspectionSchedule, sta
                   ownerName={inProgressInspectionSchedule.ownerName}
                   licensePlate={inProgressInspectionSchedule.licensePlate}
                   scheduledTime={format(inProgressInspectionSchedule.date, 'MM/dd/yyyy hh:mm a')}
-                  type={inProgressInspectionSchedule.type}
                 />
               </div>
             )}
