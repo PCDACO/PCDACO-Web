@@ -30,7 +30,6 @@ export const GetModel = async (
 export const CreateModel = async (
   payload: ModelPayLoad
 ): Promise<RootResponse<ModelCreateResponse>> => {
-  console.log(payload)
   const response = await axiosInstance.post(`/api/models`, {
     name: payload.name,
     releaseDate: payload.releaseDate,

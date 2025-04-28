@@ -1,26 +1,8 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
-import {
-  Car,
-  ChevronLeft,
-  ChevronRight,
-  Clock,
-  Eye,
-  MapPin,
-  ReceiptText,
-  Star,
-  User,
-} from "lucide-react";
-
+import { Car, Clock, Eye, MapPin, ReceiptText, Star, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
@@ -38,13 +20,9 @@ interface Props {
 
 export default function CarDetailsComponent({ car }: Props) {
   const { color, manufacturer, modelName, owner, images, bookings } = car;
-  const { back, push } = useRouter();
+  const { push } = useRouter();
   const { open, setOpen } = useDialogStore();
   // This would typically come from a database or API
-  const handleClick = () => {
-    back();
-  };
-
   const handleNavigateContract = () => {
     push(`/cars/${car.id}/contract-details`);
   };
@@ -58,21 +36,6 @@ export default function CarDetailsComponent({ car }: Props) {
       <div className="container mx-auto py-6 space-y-6">
         <div className="flex items-center justify-between">
           <div className="space-y-1 w-full">
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Button
-                onClick={handleClick}
-                variant="ghost"
-                size="icon"
-                className="mr-2"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-              <Link href="/cars" className="hover:underline">
-                Xe
-              </Link>
-              <ChevronRight className="h-4 w-4 mx-1" />
-              <span>Chi tiết</span>
-            </div>
             <div className="flex justify-between items-center w-full">
               <div>
                 <h1 className="text-3xl font-bold tracking-tight">
@@ -89,12 +52,12 @@ export default function CarDetailsComponent({ car }: Props) {
                 {
                   car?.status === "Available" && (
                     <Button
+                      variant="outline"
                       onClick={() => {
                         push(`/cars/${car.id}/map`);
                       }}
                     >
                       <MapPin />
-                      <span>Xem vị trí</span>
                     </Button>
                   )
                 }

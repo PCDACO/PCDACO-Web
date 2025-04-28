@@ -39,7 +39,6 @@ export const useGetLocationCar = (
         // Request initial location
         await connection.invoke("GetCarLocation", carId);
       } catch (error) {
-        console.error("SignalR setup error:", error);
       }
     };
 

@@ -30,7 +30,6 @@ export const UpdateGPSDevice = async (id: string, payload: GPSDevicePayload): Pr
 }
 
 export const UnassignGPSDevice = async (id: string): Promise<RootResponse<GPSDeviceEditResponse>> => {
-  console.log(id);
   const response = await axiosInstance.delete(`/api/cars/devices/${id}/unassign-gps-device`);
   return response.data;
 }

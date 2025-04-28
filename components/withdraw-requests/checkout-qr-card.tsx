@@ -2,7 +2,7 @@
 import { WithdrawRequestQRResponse } from "@/constants/models/withdraw-request.model"
 import { useState } from "react";
 import Image from "next/image"
-import { Copy, Check } from "lucide-react"
+import { Copy, Check, CheckIcon } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -16,9 +16,6 @@ interface Props {
 export default function CheckoutQRComponent({ id, qrInfo }: Props) {
   const [copied, setCopied] = useState<string | null>(null)
 
-  const handleUpdateClick = () => {
-    console.log("Clicked !!");
-  }
 
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text)
@@ -108,7 +105,8 @@ export default function CheckoutQRComponent({ id, qrInfo }: Props) {
         </CardContent>
         <CardFooter className="w-full">
           <DialogTrigger className="w-full mx-auto">
-            <Button variant="outline" className="" onClick={handleUpdateClick}>
+            <Button variant="outline">
+              <CheckIcon />
               Hoàn Tất
             </Button>
           </DialogTrigger>

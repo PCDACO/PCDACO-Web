@@ -1,5 +1,5 @@
 "use client"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useCallback, useState } from "react"
 import { format } from "date-fns"
 import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, X, CheckIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -26,6 +26,16 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
   const [rejectNote, setRejectNote] = useState("");
   const [images, setImages] = useState<FileList | null>(null);
   const { approveInspectionScheduleNoPhotos, rejectInspectionSchedule, approveInspectionScheduleIncident } = useInspectionScheduleMutation();
+  const [localUrl, setLocalUrl] = useState("");
+  const handleFileChange = useCallback((files: FileList | null) => {
+    if (files) {
+      const objectUrl = URL.createObjectURL(files[0]);
+      setLocalUrl(objectUrl);
+      setImages(files);
+    } else {
+      setLocalUrl("");
+    }
+  }, []);
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Pending":
@@ -67,10 +77,6 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
 
   const handleNoteChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNote(e.currentTarget.value);
-  }
-
-  const handleImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setImages(e.currentTarget.files);
   }
 
   const handleRejectNoteSubmit = () => {
@@ -249,7 +255,15 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
                         <Label>Nhập lí do</Label>
                         <Input value={note} onChange={handleNoteChange} />
                         <Label>Nhập ảnh</Label>
-                        <Input type="file" accept="file/*" onChange={handleImagesChange} />
+                        <Input type="file" accept="file/*" onChange={(e) => handleFileChange(e.currentTarget.files)} />
+                        {localUrl !== "" && (
+                          <Image src={localUrl}
+                            alt="Preview"
+                            width={320}
+                            height={240}
+                            objectFit="contain"
+                            layout="responsive" />
+                        )}
                         <DialogFooter>
                           <Button onClick={handleApproveIncidentSubmit}> Hoàn tất </Button>
                         </DialogFooter>
