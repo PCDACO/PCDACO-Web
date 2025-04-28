@@ -100,7 +100,7 @@ interface InspectionScheduleDetail {
   technicianId: string;
   technicianName: string;
   technicianAvatar: string;
-  status: string;
+  status: number;
   inspectionAddress: string;
   inspectionDate: string;
   note: string;

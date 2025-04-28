@@ -34,7 +34,6 @@ import { useReportMutation } from "@/hooks/reports/use-report";
 import ReportDetailMenuAction from "./detail-menu-action";
 import CompensationForm from "../compensations/form";
 import ApproveReportForm from "./approve-form";
-import { formatId } from "@/lib/format-uuid";
 import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface Props {
@@ -53,6 +52,7 @@ export default function ReportDetails({ report }: Props) {
       }&type=report&reportId=${report?.id}`
     );
   };
+
 
   const handleApproveReportClick = () => {
     setApproveOpen(true);
@@ -76,6 +76,32 @@ export default function ReportDetails({ report }: Props) {
         return <Badge className="bg-gray-500 text-white">Error</Badge>;
     }
   };
+
+  const translateStatus = (value: number) => {
+    switch (value) {
+      case 0: {
+        return "Đang chờ";
+      };
+      case 1: {
+        return "Đã được duyệt"
+      };
+      case 2: {
+        return "Đã từ chối"
+      };
+      case 3: {
+        return "Đang xử lí"
+      };
+      case 4: {
+        return "Đã quá hạn"
+      };
+      case 5: {
+        return "Đã kí hợp đồng"
+      };
+      default: {
+        return "";
+      }
+    }
+  }
 
   const handleReject = () => {
     rejectReport.mutate({
@@ -114,7 +140,7 @@ export default function ReportDetails({ report }: Props) {
                   <div className="flex flex-col items-start w-full">
                     <h1 className="text-2xl font-bold">{report.title}</h1>
                     <p className="text-muted-foreground-foreground ml-2">
-                      Id: {formatId(report.id)}
+                      Được tạo bởi: {report.reporterName}
                     </p>
                   </div>
 
@@ -407,21 +433,20 @@ export default function ReportDetails({ report }: Props) {
                               )}
                             </p>
                           </div>
-                          {report?.compensationDetail?.isPaid && (
-                            <Badge
-                              variant={
-                                report.compensationDetail.isPaid
-                                  ? "default"
-                                  : "outline"
-                              }
-                            >
-                              {report.compensationDetail.isPaid
-                                ? "Đã thanh toán"
-                                : "Chưa thanh toán"}
-                            </Badge>
-                          )}
+                          {/* {report?.compensationDetail?.isPaid && ( */}
+                          {/*   <Badge */}
+                          {/*     variant={ */}
+                          {/*       report.compensationDetail.isPaid */}
+                          {/*         ? "default" */}
+                          {/*         : "outline" */}
+                          {/*     } */}
+                          {/*   > */}
+                          {/*     {report.compensationDetail.isPaid */}
+                          {/*       ? "Đã thanh toán" */}
+                          {/*       : "Chưa thanh toán"} */}
+                          {/*   </Badge> */}
+                          {/* )} */}
                         </div>
-
                         {report?.compensationDetail?.paidAt && (
                           <div>
                             <p className="text-sm text-muted-foreground">
@@ -482,7 +507,7 @@ export default function ReportDetails({ report }: Props) {
                             </p>
                           </div>
                           <Badge className="ml-auto" variant="outline">
-                            {report?.inspectionScheduleDetail?.status ?? ""}
+                            {translateStatus(report?.inspectionScheduleDetail?.status)}
                           </Badge>
                         </div>
 

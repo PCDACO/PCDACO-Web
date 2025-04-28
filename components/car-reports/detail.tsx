@@ -55,6 +55,32 @@ const CarReportDetailComponent = ({ report }: Props) => {
     push(`/inspection-schedules/create?carId=${report.carDetail.id}&reportId=${report.id}&type=gps-unassign`);
   }
 
+  const translateStatus = (value: number) => {
+    switch (value) {
+      case 0: {
+        return "Đang chờ";
+      };
+      case 1: {
+        return "Đã được duyệt"
+      };
+      case 2: {
+        return "Đã từ chối"
+      };
+      case 3: {
+        return "Đang xử lí"
+      };
+      case 4: {
+        return "Đã quá hạn"
+      };
+      case 5: {
+        return "Đã kí hợp đồng"
+      };
+      default: {
+        return "";
+      }
+    }
+  }
+
   const getStatusColor = (status: number) => {
     switch (status) {
       case CarReportStatus.Pending:
@@ -185,7 +211,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
               <Card>
                 <CardHeader>
                   <CardTitle>Lịch kiểm tra</CardTitle>
-                  <CardDescription>Trạng thái: {report.inspectionScheduleDetail.status}</CardDescription>
+                  <CardDescription>Trạng thái: {translateStatus(report.inspectionScheduleDetail.status)}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -227,7 +253,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
                       <div>
                         <p className="font-medium">{report.inspectionScheduleDetail.technicianName}</p>
                         <p className="text-sm text-muted-foreground">
-                          Id: {formatId(report.inspectionScheduleDetail.technicianId)}...
+                          Id: {formatId(report.inspectionScheduleDetail.technicianId)}
                         </p>
                       </div>
                     </div>
