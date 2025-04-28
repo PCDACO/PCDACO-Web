@@ -91,6 +91,7 @@ export interface InspectionScheduleDetailResponse {
   isOwnerSigned: boolean;
   type: string;
   status: string;
+  photos: string[];
 }
 
 interface CarDetail {
