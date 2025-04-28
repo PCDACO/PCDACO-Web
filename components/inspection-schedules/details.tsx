@@ -56,6 +56,24 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
             Đã từ chối
           </Badge>
         )
+      case "InProgress":
+        return (
+          <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-200">
+            Đang xử lí
+          </Badge>
+        )
+      case "Expired":
+        return (
+          <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">
+            Đang xử lí
+          </Badge>
+        )
+      case "Signed":
+        return (
+          <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
+            Đang xử lí
+          </Badge>
+        )
       default:
         return <Badge variant="outline">{status}</Badge>
     }
@@ -340,28 +358,11 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
                       </div>
                     </div>
                   </div>
-
                   <Separator />
-
                   <div>
                     <p className="text-sm font-medium">Mô tả</p>
                     <p className="text-sm text-muted-foreground mt-1">{car.description}</p>
                   </div>
-
-                  {car.location && (
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-muted-foreground" />
-                        <p className="text-sm font-medium">Vị trí</p>
-                      </div>
-                      {
-                        car.location &&
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Latitude: {car.location.latitude}, Longitude: {car.location.longtitude}
-                        </p>
-                      }
-                    </div>
-                  )}
                 </CardContent>
               </Card>
             </TabsContent>
