@@ -17,6 +17,7 @@ import { Label } from "../ui/label"
 import { InspectionScheduleStatusStrings } from "@/constants/enums/inspection-schedules.enum"
 import { useRouter } from "next/navigation"
 import { Textarea } from "../ui/textarea"
+import { InspectionPhotoKey } from "@/constants/enums/inspection-photo-type.enum"
 
 interface Props {
   id: string,
@@ -44,6 +45,7 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
       setLocalUrl("");
     }
   }, []);
+
 
   const handleNavigateToApprove = () => {
     push("/technician-todo/approve");
@@ -97,6 +99,64 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
       default:
         return <Badge variant="outline">{status}</Badge>
     }
+  }
+
+  const inspectionKeyBadgeConfig: Record<InspectionPhotoKey, { label: string; colorClass: string }> = {
+    ExteriorCar: {
+      label: "Ngoại thất",
+      colorClass: "bg-blue-400",
+    },
+    FuelGauge: {
+      label: "Kim xăng",
+      colorClass: "bg-yellow-400",
+    },
+    ParkingLocation: {
+      label: "Vị trí đậu",
+      colorClass: "bg-purple-400",
+    },
+    CarKey: {
+      label: "Chìa khóa xe",
+      colorClass: "bg-indigo-400",
+    },
+    TrunkSpace: {
+      label: "Cốp xe",
+      colorClass: "bg-orange-400",
+    },
+    FuelGaugeFinal: {
+      label: "Kim xăng",
+      colorClass: "bg-amber-600",
+    },
+    Scratches: {
+      label: "Trầy",
+      colorClass: "bg-red-400",
+    },
+    Cleanliness: {
+      label: "Độ sạch sẽ",
+      colorClass: "bg-green-400",
+    },
+    TollFees: {
+      label: "Phí xa lộ",
+      colorClass: "bg-amber-400",
+    },
+    VehicleInspectionCertificate: {
+      label: "Giấy tờ đăng kiểm",
+      colorClass: "bg-teal-400",
+    },
+    Other: {
+      label: "Khác",
+      colorClass: "bg-gray-400",
+    },
+  };
+
+  const mapBadgeComponent = (value: InspectionPhotoKey): JSX.Element => {
+    const { label, colorClass } = inspectionKeyBadgeConfig[value] ?? inspectionKeyBadgeConfig["Other"];
+    return (
+      <Badge
+        className={`${colorClass} text-white px-2 py-1 rounded-md`}
+      >
+        {label}
+      </Badge>
+    );
   }
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -537,13 +597,16 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
           {/* Inspection Schedule */}
           {
             !!data.photos && data.photos.length > 0 && (
-              <Card>
-                <CardContent>
-                  <CardHeader>
-                    <CardTitle> Lịch kiểm tra </CardTitle>
-                  </CardHeader>
+              <Card className="mt-4">
+                <CardHeader>
+                  <CardTitle> Lịch kiểm tra </CardTitle>
+                </CardHeader>
+                <CardContent className="relative space-y-8 h-96" >
+                  <Label className="font-semibold">
+                    {mapBadgeComponent(data.photos[currentInspectionImageIndex].type as InspectionPhotoKey)}
+                  </Label>
                   <Image
-                    src={data.photos[currentInspectionImageIndex] ?? "/placeholder.png"}
+                    src={data.photos[currentInspectionImageIndex].url ?? "/placeholder.png"}
                     alt={`${car.manufacturer.name} ${car.modelName}`}
                     fill
                     className="object-contain"

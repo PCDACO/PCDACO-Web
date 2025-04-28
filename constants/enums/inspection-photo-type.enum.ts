@@ -1,4 +1,3 @@
-
 export enum InspectionPhotoType {
   ExteriorCar = "ExteriorCar",
   FuelGauge = "FuelGauge",
@@ -11,3 +10,16 @@ export enum InspectionPhotoType {
   TollFees = "TollFees",
   VehicleInspectionCertificate = "VehicleInspectionCertificate",
 }
+
+export type InspectionPhotoKey =
+  | "ExteriorCar"
+  | "FuelGauge"
+  | "ParkingLocation"
+  | "CarKey"
+  | "TrunkSpace"
+  | "FuelGaugeFinal"
+  | "Scratches"
+  | "Cleanliness"
+  | "TollFees"
+  | "VehicleInspectionCertificate"
+  | "Other";
