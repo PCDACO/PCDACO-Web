@@ -3,7 +3,7 @@ import { ChangeEvent, useCallback, useState } from "react"
 import { format } from "date-fns"
 import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, CheckIcon, CheckCircle, XCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { InspectionScheduleDetailResponse } from "@/constants/models/inspection-schedule.model"
@@ -22,9 +22,10 @@ interface Props {
   id: string,
   data: InspectionScheduleDetailResponse;
   car: CarResponse;
+  role: string;
 }
 
-export default function InspectionDetailComponent({ id, data, car }: Props) {
+export default function InspectionDetailComponent({ id, data, car, role }: Props) {
   const [note, setNote] = useState("");
   const [rejectNote, setRejectNote] = useState("");
   const [images, setImages] = useState<FileList | null>(null);
@@ -99,13 +100,22 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
   }
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [currentInspectionImageIndex, setCurrentInspectionImageIndex] = useState(0)
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev === car.images.length - 1 ? 0 : prev + 1))
   }
 
+  const nextInspectionImage = () => {
+    setCurrentInspectionImageIndex((prev) => (prev === car.images.length - 1 ? 0 : prev + 1))
+  }
+
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev === 0 ? car.images.length - 1 : prev - 1))
+  }
+
+  const prevInspectionImage = () => {
+    setCurrentInspectionImageIndex((prev) => (prev === 0 ? car.images.length - 1 : prev - 1))
   }
 
   const handleRejectNoteChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -240,257 +250,310 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
                 </p>
               </div>
 
-              <div className="flex justify-end gap-x-4">
-                {/* Reject Dialog */}
-                {
-                  (data.status === "InProgress" || data.status === "Signed") && (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="destructive" className="flex-1">
-                          <XCircle className="mr-2 h-4 w-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Từ chối xác minh</DialogTitle>
-                          <DialogDescription>Hãy điền lí do từ chối lịch xác minh này</DialogDescription>
-                        </DialogHeader>
-                        <Textarea
-                          placeholder="Reason for rejection..."
-                          value={rejectNote}
-                          onChange={handleRejectNoteChange}
-                          className="min-h-[100px]"
-                        />
-                        <DialogFooter className="mt-4">
-                          <Button variant="destructive" onClick={handleRejectNoteSubmit}>
-                            <CheckIcon />
-                            Hoàn thành
-                          </Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  )
-                }
-                {/* Approve Dialog */}
-                {
-                  (data.type === "ChangeGPS" && data.status == "InProgress") && (
-                    <Dialog>
-                      <DialogTrigger>
-                        <Button>
-                          <CheckIcon /> Hoàn thành
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <Label>Nhập lí do</Label>
-                        <Input value={note} onChange={handleNoteChange} />
-                        <DialogFooter>
-                          <Button onClick={handleApproveNoteSubmit}> Hoàn tất </Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  )
-                }
-                {
-                  (data.type === "Incident" && data.status == "InProgress") && (
-                    <Dialog>
-                      <DialogTrigger>
-                        <Button>
-                          <CheckIcon /> Hoàn thành
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <Label>Nhập lí do</Label>
-                        <Input value={note} onChange={handleNoteChange} />
-                        <Label>Nhập ảnh</Label>
-                        <Input type="file" accept="file/*" onChange={(e) => handleFileChange(e.currentTarget.files)} />
-                        {localUrl !== "" && (
-                          <Image src={localUrl}
-                            alt="Preview"
-                            width={320}
-                            height={240}
-                            objectFit="contain"
-                            layout="responsive" />
-                        )}
-                        <DialogFooter>
-                          <Button onClick={handleApproveIncidentSubmit}> Hoàn tất </Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  )
-                }
-                {
-                  isInProgressOrSigned() && (
-                    <>
-                      {
-                        !data?.isTechnicianSigned && (
-                          <Button disabled={(!data.hasGPSDevice)} variant="default" className="flex-1" onClick={handleApprove}>
-                            <CheckCircle className="mr-2 h-4 w-4" />
-                            Xem hợp đồng
-                          </Button>
-                        )
-                      }
-                      {
-                        data?.isTechnicianSigned && (
-                          <Button variant="default" className="flex-1" onClick={handleNavigateToApprove}>
-                            <CheckCircle className="mr-2 h-4 w-4" />
-                            Xác minh
-                          </Button>
-                        )
-                      }
-                    </>
-                  )
-                }
-              </div>
+              {
+                role === "Technician" && (
+                  <div className="flex justify-end gap-x-4">
+                    {/* Reject Dialog */}
+                    {
+                      (data.status === "InProgress" || data.status === "Signed") && (
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="destructive" className="flex-1">
+                              <XCircle className="mr-2 h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Từ chối xác minh</DialogTitle>
+                              <DialogDescription>Hãy điền lí do từ chối lịch xác minh này</DialogDescription>
+                            </DialogHeader>
+                            <Textarea
+                              placeholder="Reason for rejection..."
+                              value={rejectNote}
+                              onChange={handleRejectNoteChange}
+                              className="min-h-[100px]"
+                            />
+                            <DialogFooter className="mt-4">
+                              <Button variant="destructive" onClick={handleRejectNoteSubmit}>
+                                <CheckIcon />
+                                Hoàn thành
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      )
+                    }
+                    {/* Approve Dialog */}
+                    {
+                      (data.type === "ChangeGPS" && data.status == "InProgress") && (
+                        <Dialog>
+                          <DialogTrigger>
+                            <Button>
+                              <CheckIcon /> Hoàn thành
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <Label>Nhập lí do</Label>
+                            <Input value={note} onChange={handleNoteChange} />
+                            <DialogFooter>
+                              <Button onClick={handleApproveNoteSubmit}> Hoàn tất </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      )
+                    }
+                    {
+                      (data.type === "Incident" && data.status == "InProgress") && (
+                        <Dialog>
+                          <DialogTrigger>
+                            <Button>
+                              <CheckIcon /> Hoàn thành
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <Label>Nhập lí do</Label>
+                            <Input value={note} onChange={handleNoteChange} />
+                            <Label>Nhập ảnh</Label>
+                            <Input type="file" accept="file/*" onChange={(e) => handleFileChange(e.currentTarget.files)} />
+                            {localUrl !== "" && (
+                              <Image src={localUrl}
+                                alt="Preview"
+                                width={320}
+                                height={240}
+                                objectFit="contain"
+                                layout="responsive" />
+                            )}
+                            <DialogFooter>
+                              <Button onClick={handleApproveIncidentSubmit}> Hoàn tất </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      )
+                    }
+                    {
+                      (isInProgressOrSigned() || data.type === "NewCar") && (
+                        <>
+                          {
+                            !data?.isTechnicianSigned && (
+                              <Button disabled={(!data.hasGPSDevice)} variant="default" className="flex-1" onClick={handleApprove}>
+                                <CheckCircle className="mr-2 h-4 w-4" />
+                                Xem hợp đồng
+                              </Button>
+                            )
+                          }
+                          {
+                            data?.isTechnicianSigned && data?.type === "NewCar" && data?.status !== "Approved" && data?.status !== "Rejected" && (
+                              <Button variant="default" className="flex-1" onClick={handleNavigateToApprove}>
+                                <CheckCircle className="mr-2 h-4 w-4" />
+                                Xác minh
+                              </Button>
+                            )
+                          }
+                        </>
+                      )
+                    }
+                  </div>
+                )
+              }
             </CardContent>
           </Card>
         </div>
-      </div>
-      <div className="mt-10 w-full">
-        {/* Car Images */}
-        <div className="md:col-span-2">
-          <Tabs defaultValue="details" className="mt-6">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="details">Chi tiết</TabsTrigger>
-              <TabsTrigger value="specifications">Thông số</TabsTrigger>
-              <TabsTrigger value="amenities">Tiện nghi</TabsTrigger>
-              <TabsTrigger value="images">Hình ảnh</TabsTrigger>
-            </TabsList>
-            <TabsContent value="details" className="mt-4 min-h-[480px]">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Car Details</CardTitle>
-                </CardHeader>
-                <CardContent className="grid gap-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center gap-2">
-                      <Car className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Mã xe</p>
-                        <p className="text-sm text-muted-foreground">{car.modelName}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Building className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Nhà sản xuất</p>
-                        <p className="text-sm text-muted-foreground">{car.manufacturer.name}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Tag className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Biển số</p>
-                        <p className="text-sm text-muted-foreground">{car.licensePlate}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Palette className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Màu</p>
-                        <p className="text-sm text-muted-foreground">{car.color}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Số ghế</p>
-                        <p className="text-sm text-muted-foreground">{car.seat}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Chủ xe</p>
-                        <p className="text-sm text-muted-foreground">{car.ownerName}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <Separator />
-                  <div>
-                    <p className="text-sm font-medium">Mô tả</p>
-                    <p className="text-sm text-muted-foreground mt-1">{car.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="specifications" className="mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Thông số</CardTitle>
-                </CardHeader>
-                <CardContent className="grid gap-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center gap-2">
-                      <Cog className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Hộp số</p>
-                        <p className="text-sm text-muted-foreground">{car.transmissionType}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Fuel className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Kiểu nhiên liệu</p>
-                        <p className="text-sm text-muted-foreground">{car.fuelType}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Gauge className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Mức tiêu thụ</p>
-                        <p className="text-sm text-muted-foreground">{car.fuelComsumption} L/100km</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="amenities" className="mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Tiện nghi</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-4 gap-y-4">
-                    {
-                      car?.amenities?.map((item) => (
-                        <div key={item.id} className="flex flex-row">
-                          <Image width={16} height={16} src={item.icon} alt={item.name} />
-                          <p className="ml-4 text-sm text-muted-foreground">{item.name}</p>
+        <div className="mt-10 w-full grid grid-cols-2 space-x-4">
+          {/* Car Images */}
+          <div className="md:col-span-1">
+            <Tabs defaultValue="details" className="mt-6">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="details">Chi tiết</TabsTrigger>
+                <TabsTrigger value="specifications">Thông số</TabsTrigger>
+                <TabsTrigger value="amenities">Tiện nghi</TabsTrigger>
+                <TabsTrigger value="images">Hình ảnh</TabsTrigger>
+              </TabsList>
+              <TabsContent value="details" className="mt-4 min-h-[480px]">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Car Details</CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="flex items-center gap-2">
+                        <Car className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">Mã xe</p>
+                          <p className="text-sm text-muted-foreground">{car.modelName}</p>
                         </div>
-                      )) ?? []
-                    }
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="images" className="mt-4 ">
-              <Card className="min-h-[500px]">
-                <CardHeader>
-                  <CardTitle>Hình ảnh</CardTitle>
-                </CardHeader>
-                <CardContent className="relative h-96">
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Building className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">Nhà sản xuất</p>
+                          <p className="text-sm text-muted-foreground">{car.manufacturer.name}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Tag className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">Biển số</p>
+                          <p className="text-sm text-muted-foreground">{car.licensePlate}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Palette className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">Màu</p>
+                          <p className="text-sm text-muted-foreground">{car.color}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <User className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">Số ghế</p>
+                          <p className="text-sm text-muted-foreground">{car.seat}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <User className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">Chủ xe</p>
+                          <p className="text-sm text-muted-foreground">{car.ownerName}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <Separator />
+                    <div>
+                      <p className="text-sm font-medium">Mô tả</p>
+                      <p className="text-sm text-muted-foreground mt-1">{car.description}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="specifications" className="mt-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Thông số</CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="flex items-center gap-2">
+                        <Cog className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">Hộp số</p>
+                          <p className="text-sm text-muted-foreground">{car.transmissionType}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Fuel className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">Kiểu nhiên liệu</p>
+                          <p className="text-sm text-muted-foreground">{car.fuelType}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Gauge className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">Mức tiêu thụ</p>
+                          <p className="text-sm text-muted-foreground">{car.fuelComsumption} L/100km</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="amenities" className="mt-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Tiện nghi</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-4 gap-y-4">
+                      {
+                        car?.amenities?.map((item) => (
+                          <div key={item.id} className="flex flex-row">
+                            <Image width={16} height={16} src={item.icon} alt={item.name} />
+                            <p className="ml-4 text-sm text-muted-foreground">{item.name}</p>
+                          </div>
+                        )) ?? []
+                      }
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value="images" className="mt-4 ">
+                <Card className="min-h-[500px]">
+                  <CardHeader>
+                    <CardTitle>Hình ảnh</CardTitle>
+                  </CardHeader>
+                  <CardContent className="relative h-96">
+                    <Image
+                      src={car?.images[currentImageIndex]?.url ?? "/placeholder.png"}
+                      alt={`${car.manufacturer.name} ${car.modelName}`}
+                      fill
+                      className="object-contain"
+                    />
+                    <div className="flex items-center justify-between mx-4 h-full">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="rounded-full bg-background/80 backdrop-blur-sm"
+                        onClick={prevImage}
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="rounded-full bg-background/80 backdrop-blur-sm"
+                        onClick={nextImage}
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
+                      {car.images.map((_, index) => (
+                        <Button
+                          key={index}
+                          variant="outline"
+                          size="icon"
+                          className={`h-2 w-2 rounded-full p-0 ${index === currentImageIndex ? "bg-primary" : "bg-background/80"}`}
+                          onClick={() => setCurrentImageIndex(index)}
+                        >
+                          <span className="sr-only">Xem thêm {index + 1}</span>
+                        </Button>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
+          {/* Inspection Schedule */}
+          {
+            !!data.photos && data.photos.length > 0 && (
+              <Card>
+                <CardContent>
+                  <CardHeader>
+                    <CardTitle> Lịch kiểm tra </CardTitle>
+                  </CardHeader>
                   <Image
-                    src={car?.images[currentImageIndex]?.url ?? "/placeholder.svg"}
+                    src={data.photos[currentInspectionImageIndex] ?? "/placeholder.png"}
                     alt={`${car.manufacturer.name} ${car.modelName}`}
                     fill
-                    className="object-contain "
+                    className="object-contain"
                   />
                   <div className="flex items-center justify-between mx-4 h-full">
                     <Button
                       variant="outline"
                       size="icon"
                       className="rounded-full bg-background/80 backdrop-blur-sm"
-                      onClick={prevImage}
+                      onClick={prevInspectionImage}
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
@@ -498,29 +561,31 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
                       variant="outline"
                       size="icon"
                       className="rounded-full bg-background/80 backdrop-blur-sm"
-                      onClick={nextImage}
+                      onClick={nextInspectionImage}
                     >
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
                   <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
-                    {car.images.map((_, index) => (
+                    {data.photos.map((_, index) => (
                       <Button
                         key={index}
                         variant="outline"
                         size="icon"
-                        className={`h-2 w-2 rounded-full p-0 ${index === currentImageIndex ? "bg-primary" : "bg-background/80"}`}
-                        onClick={() => setCurrentImageIndex(index)}
+                        className={`h-2 w-2 rounded-full p-0 ${index === currentInspectionImageIndex ? "bg-primary" : "bg-background/80"}`}
+                        onClick={() => setCurrentInspectionImageIndex(index)}
                       >
                         <span className="sr-only">Xem thêm {index + 1}</span>
                       </Button>
                     ))}
                   </div>
+                  <CardFooter>
+                  </CardFooter>
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
+            )
+          }
+        </div >
       </div >
     </div >
   )
