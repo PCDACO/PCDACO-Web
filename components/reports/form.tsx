@@ -15,9 +15,6 @@ const ReportForm = () => {
         </DialogDescription>
       </DialogHeader>
       <DialogFooter>
-        {/* <Button type="submit" disabled={isLoading}> */}
-        {/*   {isLoading ? "Loading..." : "Submit"} */}
-        {/* </Button> */}
       </DialogFooter>
     </>
   );

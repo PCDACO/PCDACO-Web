@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Input } from "../ui/input";
 import { useReportForm } from "@/hooks/reports/use-form-report";
 import { ApproveReportPayload } from "@/constants/models/report.model";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface Props {
   id: string;
@@ -47,7 +48,7 @@ export default function ApproveReportForm({ id, value, isOpen, onOpenChange }: P
               }} />
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Loading..." : "Submit"}
+                {isLoading ? <LoadingSpinner /> : "Submit"}
               </Button>
             </DialogFooter>
           </form>

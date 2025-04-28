@@ -12,6 +12,7 @@ import { Calendar } from "../ui/calendar";
 import { Input } from "../ui/input";
 import { useUserRoleQuery } from "@/hooks/user-roles/use-user-roles";
 import { Card, CardContent, CardHeader } from "../ui/card";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface TechnicianFormProps {
   id: string;
@@ -203,7 +204,7 @@ const TechnicianForm = ({ id, value }: TechnicianFormProps) => {
           <form onSubmit={onSubmit} className="space-y-8">
             {GetComponent(keyword)}
             <Button className="mx-auto w-full" type="submit" disabled={isLoading}>
-              {isLoading ? "Loading..." : "Submit"}
+              {isLoading ? <LoadingSpinner /> : "Submit"}
             </Button>
           </form>
         </Form>

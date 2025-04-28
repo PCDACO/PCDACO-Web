@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { useEffect } from "react";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface Props {
   id: string;
@@ -77,7 +78,7 @@ export default function CompensationForm({ id, userId, isOpen, onOpenChange }: P
               }} />
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Loading..." : "Tạo"}
+                {isLoading ? <LoadingSpinner /> : "Tạo"}
               </Button>
             </DialogFooter>
           </form>
