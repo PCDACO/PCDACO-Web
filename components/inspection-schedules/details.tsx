@@ -31,6 +31,7 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
     if (files) {
       const objectUrl = URL.createObjectURL(files[0]);
       setLocalUrl(objectUrl);
+      setImages(files);
     } else {
       setLocalUrl("");
     }
@@ -76,10 +77,6 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
 
   const handleNoteChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNote(e.currentTarget.value);
-  }
-
-  const handleImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setImages(e.currentTarget.files);
   }
 
   const handleRejectNoteSubmit = () => {
@@ -258,7 +255,7 @@ export default function InspectionDetailComponent({ id, data, car }: Props) {
                         <Label>Nhập lí do</Label>
                         <Input value={note} onChange={handleNoteChange} />
                         <Label>Nhập ảnh</Label>
-                        <Input type="file" accept="file/*" onChange={handleImagesChange} />
+                        <Input type="file" accept="file/*" onChange={(e) => handleFileChange(e.currentTarget.files)} />
                         {localUrl !== "" && (
                           <Image src={localUrl}
                             alt="Preview"

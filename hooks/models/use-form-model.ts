@@ -38,7 +38,6 @@ export const useModelForm = ({ id, value, action }: ModelFormProps) => {
   });
 
   const onSubmit = form.handleSubmit((payload) => {
-    console.log("logged");
     switch (action) {
       case "create": {
         createModelMutation.mutate(payload);

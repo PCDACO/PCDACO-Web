@@ -52,7 +52,6 @@ export const useReportMutation = () => {
       reason: string
     }) => RejectReport(id, reason),
     onSuccess: (response) => {
-      console.log(response);
       toastResponse(response);
       if (response.isSuccess) {
         queryClient.invalidateQueries({ queryKey: ["reports"] });
@@ -61,7 +60,6 @@ export const useReportMutation = () => {
       }
     },
     onError: (error: Error) => {
-      console.log(error);
       toastError(error);
     }
   });

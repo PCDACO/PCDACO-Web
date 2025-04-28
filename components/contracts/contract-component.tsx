@@ -28,7 +28,7 @@ export default function ContractViewer({ id, contractHtml }: Props) {
 
   const handleSaveClick = () => {
     if (signRef.current) {
-      approveContract.mutate({ id, signature: signRef.current.getTrimmedCanvas().toDataURL('image/png', 100) });
+      approveContract.mutate({ id, signature: signRef.current.toDataURL('image/png', 100) });
     }
   }
 

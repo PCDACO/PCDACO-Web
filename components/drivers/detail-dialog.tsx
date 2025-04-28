@@ -7,11 +7,7 @@ interface OwnerDetailProps {
   onClose: () => void
 }
 
-export default function OwnerDetailsDialog({ id, isOpen, onClose }: OwnerDetailProps) {
-  console.log(id);
-  // const { ownerQuery } = useOwnerQuery({
-  //   id: id,
-  // });
+export default function OwnerDetailsDialog({ isOpen, onClose }: OwnerDetailProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh]">
@@ -28,19 +24,7 @@ export default function OwnerDetailsDialog({ id, isOpen, onClose }: OwnerDetailP
                 height={64}
                 className="rounded-full"
               />
-              {/* <div> */}
-              {/*   <h3 className="font-semibold text-lg">Owner</h3> */}
-              {/*   <p>{ownerQuery.data.value.name}</p> */}
-              {/* </div> */}
             </section>
-
-            {/* <section> */}
-            {/*   <h3 className="font-semibold text-lg mb-2">Car Details</h3> */}
-            {/*   <div className="grid grid-cols-2 gap-4"> */}
-            {/*     <DetailItem label="Biển Số Xe" value="" /> */}
-            {/*   </div> */}
-            {/* </section> */}
-
             <section>
               <h3 className="font-semibold text-lg mb-2">Mặt Trước</h3>
               {/* <Image src={ownerQuery.data.value.}/> */}
