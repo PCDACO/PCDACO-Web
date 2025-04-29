@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image"
 import { format } from "date-fns"
-import { Car, Calendar, User, CreditCard, MapPin, Star, ReceiptTextIcon } from "lucide-react"
+import { Car, Calendar, User, CreditCard, MapPin, Star, ReceiptTextIcon, ImageIcon } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -30,6 +30,8 @@ export default function BookingDetailComponent({
   const { push } = useRouter();
 
   const { open, setOpen } = useDialogStore();
+
+  console.log(bookingData);
 
   const handleOpenContractClick = () => {
     push(`/bookings/${bookingData.id}/contract-details`);
@@ -297,7 +299,7 @@ export default function BookingDetailComponent({
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center">
                 <MapPin className="mr-2 h-5 w-5" />
-                Trip Details & Feedback
+                Chi tiết và phản hồi
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -386,6 +388,120 @@ export default function BookingDetailComponent({
                     </TabsContent>
                   </Tabs>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-6">
+          <Card className="col-span-1">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center">
+                <ImageIcon className="mr-2 h-5 w-5" /> Hình ảnh trước chuyến đi
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-2">
+                {bookingData.booking.preInspectionPhotos.carKey.map((url, index) => (
+                  <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
+                    <Image
+                      src={url || "/placeholder.svg"}
+                      alt={`${car.modelName} image ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ))}
+                {bookingData.booking.preInspectionPhotos.parkingLocation.map((url, index) => (
+                  <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
+                    <Image
+                      src={url || "/placeholder.svg"}
+                      alt={`${car.modelName} image ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ))}
+                {bookingData.booking.preInspectionPhotos.fuelGauge.map((url, index) => (
+                  <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
+                    <Image
+                      src={url || "/placeholder.svg"}
+                      alt={`${car.modelName} image ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ))}
+                {bookingData.booking.preInspectionPhotos.trunkSpace.map((url, index) => (
+                  <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
+                    <Image
+                      src={url || "/placeholder.svg"}
+                      alt={`${car.modelName} image ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ))}
+                {bookingData.booking.preInspectionPhotos.exteriorCar.map((url, index) => (
+                  <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
+                    <Image
+                      src={url || "/placeholder.svg"}
+                      alt={`${car.modelName} image ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="col-span-1">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center">
+                <ImageIcon className="mr-2 h-5 w-5" /> Hình ảnh sau chuyến đi
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-2">
+                {bookingData.booking.postInspectionPhotos.cleanliness.map((url, index) => (
+                  <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
+                    <Image
+                      src={url || "/placeholder.svg"}
+                      alt={`${car.modelName} image ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ))}
+                {bookingData.booking.postInspectionPhotos.scratches.map((url, index) => (
+                  <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
+                    <Image
+                      src={url || "/placeholder.svg"}
+                      alt={`${car.modelName} image ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ))}
+                {bookingData.booking.postInspectionPhotos.tollFees.map((url, index) => (
+                  <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
+                    <Image
+                      src={url || "/placeholder.svg"}
+                      alt={`${car.modelName} image ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ))}
+                {bookingData.booking.postInspectionPhotos.fuelGaugeFinal.map((url, index) => (
+                  <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
+                    <Image
+                      src={url || "/placeholder.svg"}
+                      alt={`${car.modelName} image ${index + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>

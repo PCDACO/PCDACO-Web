@@ -60,6 +60,19 @@ interface BookingDetail {
   isRefund: boolean;
   refundAmount: number;
   refundDate: Date;
+  preInspectionPhotos: {
+    exteriorCar: string[];
+    fuelGauge: string[];
+    parkingLocation: string[];
+    carKey: string[];
+    trunkSpace: string[];
+  };
+  postInspectionPhotos: {
+    fuelGaugeFinal: string[];
+    scratches: string[];
+    cleanliness: string[];
+    tollFees: string[];
+  };
 }
 
 interface PaymentDetail {
