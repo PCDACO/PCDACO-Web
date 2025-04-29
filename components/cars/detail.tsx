@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Car, Clock, Eye, MapPin, ReceiptText, Star, User } from "lucide-react";
+import { Car, Clock, Eye, ReceiptText, Star, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,9 +16,10 @@ import CarContractDialog from "./contract-dialog";
 
 interface Props {
   car: CarDetailResponse;
+  role: string;
 }
 
-export default function CarDetailsComponent({ car }: Props) {
+export default function CarDetailsComponent({ car, role }: Props) {
   const { color, manufacturer, modelName, owner, images, bookings } = car;
   const { push } = useRouter();
   const { open, setOpen } = useDialogStore();
@@ -41,7 +42,7 @@ export default function CarDetailsComponent({ car }: Props) {
                 <h1 className="text-3xl font-bold tracking-tight">
                   {modelName}
                 </h1>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 mt-2">
                   <CarBadge status={car.status} />
                   <span className="text-muted-foreground">
                     License: {car.licensePlate}
@@ -49,24 +50,24 @@ export default function CarDetailsComponent({ car }: Props) {
                 </div>
               </div>
               <div>
-                {
-                  car?.status === "Available" && (
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        push(`/cars/${car.id}/map`);
-                      }}
-                    >
-                      <MapPin />
-                    </Button>
-                  )
-                }
+                {/* { */}
+                {/*   car?.status === "Available" && ( */}
+                {/*     <Button */}
+                {/*       variant="outline" */}
+                {/*       onClick={() => { */}
+                {/*         push(`/cars/${car.id}/map`); */}
+                {/*       }} */}
+                {/*     > */}
+                {/*       <MapPin /> */}
+                {/*     </Button> */}
+                {/*   ) */}
+                {/* } */}
                 {car?.contract?.terms && car?.contract?.terms !== "" && (
-                  <Button onClick={handleNavigateContract} variant="ghost">
+                  <Button onClick={handleNavigateContract} variant="outline" className="mx-2">
                     <ReceiptText />
                   </Button>
                 )}
-                {car.status === CarStatusString.Pending && (
+                {car.status === CarStatusString.Pending && role === "Consultant" && (
                   <Button
                     disabled={car.hasInspectionSchedule}
                     className="mx-4"
