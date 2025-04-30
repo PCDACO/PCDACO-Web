@@ -13,17 +13,18 @@ import { useRouter } from "next/navigation";
 
 interface MenuActionProps {
   id: string;
+  status: string;
   userId: string;
 }
 
 
-const MenuAction: React.FC<MenuActionProps> = ({ id, userId }) => {
+const MenuAction: React.FC<MenuActionProps> = ({ id, userId, status }) => {
   const { push } = useRouter();
   const handleNavigateToDetail = () => {
     push(`/users/${userId}`);
   }
   const handleNavigateToCheckout = () => {
-    push(`${id}/checkout`);
+    push(`/withdraw-requests/${id}/checkout`);
   }
   return (
     <DropdownMenu>
@@ -39,11 +40,15 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, userId }) => {
           onClick={handleNavigateToDetail} >
           Chi tiết người dùng
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="bg-red-200"
-          onClick={handleNavigateToCheckout} >
-          Thanh toán
-        </DropdownMenuItem>
+        {
+          status === "Pending" && (
+            <DropdownMenuItem
+              className="bg-red-200"
+              onClick={handleNavigateToCheckout} >
+              Thanh toán
+            </DropdownMenuItem>
+          )
+        }
       </DropdownMenuContent>
     </DropdownMenu >
   )
