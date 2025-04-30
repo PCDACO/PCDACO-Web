@@ -6,6 +6,7 @@ import { Check, X } from "lucide-react";
 import { useContractMutation } from "@/hooks/contracts/use-contract";
 import SignaturePad from "react-signature-canvas";
 import { Card, CardContent, CardFooter, CardTitle } from "../ui/card";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface Props {
   id: string;
@@ -47,9 +48,8 @@ export default function ContractViewer({ id, contractHtml }: Props) {
 
   return (
     <div
-      className={`grid ${
-        isMobile ? "grid-cols-1" : "grid-cols-2"
-      } gap-8 h-[calc(100vh-150px)] m-4`}
+      className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2"
+        } gap-8 h-[calc(100vh-150px)] m-4`}
     >
       {/* Contract Viewer */}
       <div className="bg-white rounded-lg shadow-lg overflow-y-auto p-4">

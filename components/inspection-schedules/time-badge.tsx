@@ -42,23 +42,46 @@ const TimeBadgeComponent = ({
   }
   // Component
   return <>
-    <ContextMenu >
-      <ContextMenuTrigger >
+    {
+      schedule.statusName !== "Approved" &&
+      schedule.statusName !== "Rejected" &&
+      schedule.statusName !== "Expired" &&
+      schedule.statusName !== "Signed" &&
+      (
+        <ContextMenu >
+          <ContextMenuTrigger >
+            <Badge
+              onClick={() => onEventClick(schedule)}
+              className={`w-full justify-start truncate bg-black ${statusClasses[schedule.statusName] || "bg-slate-300"}  cursor-pointer text-xs hover:${statusClasses}`}>
+              {formatDateToHour(schedule.inspectionDate.toString())} - {schedule.carOwnerName}
+            </Badge>
+          </ContextMenuTrigger>
+          <ContextMenuContent className="w-64">
+            <ContextMenuItem onClick={handleEditClick} className="hover:cursor-pointer">
+              Cập nhật
+            </ContextMenuItem>
+            <ContextMenuItem onClick={handleDeleteClick} className="hover:cursor-pointer">
+              Hủy
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
+      )
+    }
+    {
+      (
+        schedule.statusName === "Approved" ||
+        schedule.statusName === "Rejected" ||
+        schedule.statusName === "Expired" ||
+        schedule.statusName === "Signed"
+      ) &&
+      (
         <Badge
           onClick={() => onEventClick(schedule)}
           className={`w-full justify-start truncate bg-black ${statusClasses[schedule.statusName] || "bg-slate-300"}  cursor-pointer text-xs hover:${statusClasses}`}>
           {formatDateToHour(schedule.inspectionDate.toString())} - {schedule.carOwnerName}
         </Badge>
-      </ContextMenuTrigger>
-      <ContextMenuContent className="w-64">
-        <ContextMenuItem onClick={handleEditClick} className="hover:cursor-pointer">
-          Cập nhật
-        </ContextMenuItem>
-        <ContextMenuItem onClick={handleDeleteClick} className="hover:cursor-pointer">
-          Hủy
-        </ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+      )
+    }
   </>
 }
 
