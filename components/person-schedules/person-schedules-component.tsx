@@ -11,10 +11,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useInspectionStore } from "./time-badge";
 import { InspectionScheduleDetail } from "@/constants/models/inspection-schedule.model";
-import { WeekView } from "../inspection-schedules/views/week-view";
-import { DayView } from "../inspection-schedules/views/day-view";
-import { MonthCalendar } from "../inspection-schedules/month-calendar";
 import UpdateInspectionForm from "../inspection-schedules/update-inspection-form";
+import { MonthCalendar } from "./month-calendar";
+import { WeekView } from "./view/week-view";
+import { DayView } from "./view/day-view";
 
 type ViewType = "month" | "week" | "day";
 
