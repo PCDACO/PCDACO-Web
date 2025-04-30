@@ -100,12 +100,11 @@ export default function ContractViewer({ id, contractHtml }: Props) {
                 >
                   <X size={18} /> Xóa
                 </Button>
-                <Button
-                  className="w-24 ml-6"
-                  disabled={disableSave}
-                  onClick={handleSaveClick}
-                >
-                  <Check size={18} /> Kí
+                <Button className='w-24 ml-6' disabled={disableSave || approveContract.isLoading} onClick={handleSaveClick}>
+                  {approveContract.isLoading ?
+                    <LoadingSpinner size={18} /> :
+                    <><Check size={18} /> Kí</>
+                  }
                 </Button>
               </div>
             </CardFooter>

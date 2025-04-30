@@ -67,7 +67,6 @@ export const useInspectionScheduleMutation = () => {
     onSuccess: (response) => {
       toastResponse(response);
       if (response.isSuccess) {
-        setOpen(false);
         queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
         push("/inspection-schedules");
       }
@@ -89,6 +88,7 @@ export const useInspectionScheduleMutation = () => {
       toastResponse(response);
       if (response.isSuccess) {
         queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
+        setOpen(false);
       }
     },
     onError: (error: Error) => {
@@ -186,6 +186,7 @@ export const useInspectionScheduleMutation = () => {
       toastResponse(response);
       if (response.isSuccess) {
         push(`/cars/${response.value.carId}/contract`);
+        setOpen(false);
       }
     },
     onError(error: Error) {
@@ -200,6 +201,7 @@ export const useInspectionScheduleMutation = () => {
       toastResponse(response);
       if (response.isSuccess) {
         queryClient.invalidateQueries({ queryKey: ["inspection-schedules"] });
+        setOpen(false);
       }
     }
   });

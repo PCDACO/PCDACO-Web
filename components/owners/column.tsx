@@ -2,8 +2,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { OwnerResponse } from "@/constants/models/owner.model";
 import { formatDate } from "@/lib/utils";
-import Image from "next/image";
 import MenuAction from "./menu-action";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export const OwnerColumns: ColumnDef<OwnerResponse>[] = [
   {
@@ -14,11 +14,17 @@ export const OwnerColumns: ColumnDef<OwnerResponse>[] = [
     }
   },
   {
-    accessorKey: "avatarUrl",
-    header: "",
+    header: "Avatar",
     cell: ({ row }) => {
       const avatarUrl = row.original.avatarUrl;
-      return <Image width={32} height={32} src={avatarUrl !== "" ? avatarUrl : "/dummy-avatar.webp"} alt={row.original.name} />;
+      return (
+        <Avatar>
+          <AvatarImage src={avatarUrl} alt={row.original.id} />
+          <AvatarFallback>
+            {Array.from(row.original.name)[0].toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+      )
     }
   },
   {
