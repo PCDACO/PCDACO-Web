@@ -366,7 +366,7 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
                       (data.type === "Incident" && data.status == "InProgress") && (
                         <Dialog>
                           <DialogTrigger>
-                            <Button>
+                            <Button className="flex-1">
                               <CheckIcon /> Hoàn thành
                             </Button>
                           </DialogTrigger>
@@ -391,7 +391,7 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
                       )
                     }
                     {
-                      (isInProgressOrSigned() || data.type === "NewCar") && (
+                      ((isInProgressOrSigned() || data.type === "NewCar") && data?.status !== "Pending") && (
                         <>
                           {
                             !data?.isTechnicianSigned && (
@@ -402,7 +402,7 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
                             )
                           }
                           {
-                            data?.isTechnicianSigned && data?.type === "NewCar" && data?.status !== "Approved" && data?.status !== "Rejected" && (
+                            data?.isTechnicianSigned && data?.type === "NewCar" && data?.status !== "Approved" && data?.status !== "Rejected" && data?.status !== "Pending" && (
                               <Button variant="default" className="flex-1" onClick={handleNavigateToApprove}>
                                 <CheckCircle className="mr-2 h-4 w-4" />
                                 Xác minh

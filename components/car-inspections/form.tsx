@@ -74,7 +74,6 @@ export default function CarInspectionForm({ schedule }: Props) {
   })
   const [note, setNote] = useState<string>("");
 
-
   const isDatesValid = () => {
     // eslint-disable-next-line
     Object.entries(dates).forEach(([_, date]) => {
@@ -120,16 +119,12 @@ export default function CarInspectionForm({ schedule }: Props) {
   const handleNoteChange = (note: string) => setNote(note);
 
   const handleSubmit = async (e: React.FormEvent) => {
-
     e.preventDefault()
-    console.log("SUBMITTED");
-
     // Check if at least one photo is uploaded
     // eslint-disable-next-line
     const uploadedPhotos = Object.entries(photos).filter(([_, file]) => file !== null)
 
     if (uploadedPhotos.length === 0) {
-      console.log("NOPHOTO");
       toast({
         title: "Không có ảnh",
         description: "Please upload at least one inspection photo.",
@@ -147,7 +142,6 @@ export default function CarInspectionForm({ schedule }: Props) {
       return;
     }
     if (!isDatesValid) {
-      console.log("THIEU DATE")
       toast({
         title: "Not enough dates",
         description: "Please upload all dates.",
@@ -166,7 +160,7 @@ export default function CarInspectionForm({ schedule }: Props) {
     });
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <Card>
         <CardHeader>
           <CardTitle>Car Inspection Photos</CardTitle>
@@ -194,7 +188,7 @@ export default function CarInspectionForm({ schedule }: Props) {
         onChange={(e) => handleNoteChange(e.target.value)}
       />
       <div className="my-2 flex justify-end">
-        <Button disabled={schedule?.contractDetail?.ownerSignatureDate === undefined || schedule?.contractDetail?.ownerSignatureDate === null || approveInspectionSchedule.isLoading} type="submit" size="lg">
+        <Button disabled={schedule?.contractDetail?.ownerSignatureDate === undefined || schedule?.contractDetail?.ownerSignatureDate === null || approveInspectionSchedule.isLoading} onClick={handleSubmit} size="lg">
           {
             approveInspectionSchedule.isLoading ?
               <LoadingSpinner /> :
@@ -205,6 +199,6 @@ export default function CarInspectionForm({ schedule }: Props) {
           }
         </Button>
       </div>
-    </form>
+    </>
   )
 }

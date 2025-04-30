@@ -25,7 +25,7 @@ const ApproveCarReportDialog = ({ id, isOpen, onOpenChange }: Props) => {
   return <>
     <Dialog open={isOpen} onOpenChange={onOpenChange} >
       <DialogContent>
-        <DialogTitle> Xác nhận đơn phạt </DialogTitle>
+        <DialogTitle> Xác nhận báo cáo</DialogTitle>
         <DialogHeader>
         </DialogHeader>
         <Label> Note </Label>
