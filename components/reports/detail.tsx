@@ -48,11 +48,11 @@ export default function ReportDetails({ report }: Props) {
   const { push } = useRouter();
   const handleCreateNewInspectionClick = () => {
     push(
-      `/inspection-schedules/create?carId=${report?.carDetail?.id ?? ""
+      `/inspection-schedules/create?carId=${
+        report?.carDetail?.id ?? ""
       }&type=report&reportId=${report?.id}`
     );
   };
-
 
   const handleApproveReportClick = () => {
     setApproveOpen(true);
@@ -81,27 +81,27 @@ export default function ReportDetails({ report }: Props) {
     switch (value) {
       case 0: {
         return "Đang chờ";
-      };
+      }
       case 1: {
-        return "Đã được duyệt"
-      };
+        return "Đã được duyệt";
+      }
       case 2: {
-        return "Đã từ chối"
-      };
+        return "Đã từ chối";
+      }
       case 3: {
-        return "Đang xử lí"
-      };
+        return "Đang xử lí";
+      }
       case 4: {
-        return "Đã quá hạn"
-      };
+        return "Đã quá hạn";
+      }
       case 5: {
-        return "Đã kí hợp đồng"
-      };
+        return "Đã kí hợp đồng";
+      }
       default: {
         return "";
       }
     }
-  }
+  };
 
   const handleReject = () => {
     rejectReport.mutate({
@@ -144,14 +144,11 @@ export default function ReportDetails({ report }: Props) {
                     </p>
                   </div>
 
-                  {
-                    !report?.compensationDetail && (
-                      <ReportDetailMenuAction
-                        setOpen={() => setCompensationOpen(true)}
-                      />
-                    )
-                  }
-
+                  {!report?.compensationDetail && (
+                    <ReportDetailMenuAction
+                      setOpen={() => setCompensationOpen(true)}
+                    />
+                  )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Report Information */}
@@ -458,17 +455,15 @@ export default function ReportDetails({ report }: Props) {
                           </div>
                         )}
                         {/* <Label className="mt-4">Ảnh bồi thường</Label> */}
-                        {
-                          !!report.compensationDetail.imageUrl && (
-                            <Image
-                              width={120}
-                              height={120}
-                              src={report.compensationDetail.imageUrl}
-                              alt={report.compensationDetail.imageUrl}
-                              className="object-cover absolute right-8 bottom-6 shadow-xl border-l-2 border-b-2 border-blue-200 rounded-2xl "
-                            />
-                          )
-                        }
+                        {!!report.compensationDetail.imageUrl && (
+                          <Image
+                            width={120}
+                            height={120}
+                            src={report.compensationDetail.imageUrl}
+                            alt={report.compensationDetail.imageUrl}
+                            className="object-cover absolute right-8 bottom-6 shadow-xl border-l-2 border-b-2 border-blue-200 rounded-2xl "
+                          />
+                        )}
                       </CardContent>
                     </Card>
                   )}
@@ -507,7 +502,9 @@ export default function ReportDetails({ report }: Props) {
                             </p>
                           </div>
                           <Badge className="ml-auto" variant="outline">
-                            {translateStatus(report?.inspectionScheduleDetail?.status)}
+                            {translateStatus(
+                              report?.inspectionScheduleDetail?.status
+                            )}
                           </Badge>
                         </div>
 
@@ -529,13 +526,13 @@ export default function ReportDetails({ report }: Props) {
                             </p>
                             {report?.inspectionScheduleDetail
                               ?.inspectionDate && (
-                                <p className="font-medium">
-                                  {formatDate(
-                                    report?.inspectionScheduleDetail
-                                      ?.inspectionDate ?? ""
-                                  )}
-                                </p>
-                              )}
+                              <p className="font-medium">
+                                {formatDate(
+                                  report?.inspectionScheduleDetail
+                                    ?.inspectionDate ?? ""
+                                )}
+                              </p>
+                            )}
                           </div>
                         </div>
 
@@ -550,7 +547,7 @@ export default function ReportDetails({ report }: Props) {
 
                         {report?.inspectionScheduleDetail?.photoUrls &&
                           report.inspectionScheduleDetail.photoUrls.length >
-                          0 && (
+                            0 && (
                             <div>
                               <p className="font-medium mb-2 flex items-center gap-1">
                                 <ImageIcon className="h-4 w-4" />
@@ -585,55 +582,59 @@ export default function ReportDetails({ report }: Props) {
                 </div>
                 <div className="flex flex-row justify-end w-full items-center mt-4">
                   <div className="flex w-full justify-end gap-4 mt-4">
-                    {
-                      report.status !== 2 && (
-                        <Dialog
-                          open={isRejectDialogOpen}
-                          onOpenChange={setIsRejectDialogOpen}
-                        >
-                          <DialogTrigger asChild>
-                            <Button variant="outline" className="gap-2">
-                              <XCircle className="h-4 w-4" />
-                              Từ chối báo cáo
+                    {report.status !== 2 && (
+                      <Dialog
+                        open={isRejectDialogOpen}
+                        onOpenChange={setIsRejectDialogOpen}
+                      >
+                        <DialogTrigger asChild>
+                          <Button variant="outline" className="gap-2">
+                            <XCircle className="h-4 w-4" />
+                            Từ chối báo cáo
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Từ chối báo cáo</DialogTitle>
+                            <DialogDescription>
+                              Vui lòng nhập lý do từ chối báo cáo này.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <Textarea
+                            placeholder="Nhập lý do từ chối..."
+                            value={resolutionComments}
+                            onChange={(e) =>
+                              setResolutionComments(e.target.value)
+                            }
+                            className="min-h-[100px]"
+                          />
+                          <DialogFooter>
+                            <Button
+                              variant="outline"
+                              onClick={() => setIsRejectDialogOpen(false)}
+                            >
+                              {rejectReport.isLoading ? (
+                                <LoadingSpinner />
+                              ) : (
+                                "Hủy"
+                              )}
                             </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Từ chối báo cáo</DialogTitle>
-                              <DialogDescription>
-                                Vui lòng nhập lý do từ chối báo cáo này.
-                              </DialogDescription>
-                            </DialogHeader>
-                            <Textarea
-                              placeholder="Nhập lý do từ chối..."
-                              value={resolutionComments}
-                              onChange={(e) =>
-                                setResolutionComments(e.target.value)
-                              }
-                              className="min-h-[100px]"
-                            />
-                            <DialogFooter>
-                              <Button
-                                variant="outline"
-                                onClick={() => setIsRejectDialogOpen(false)}
-                              >
-                                {
-                                  rejectReport.isLoading ?
-                                    <LoadingSpinner /> :
-                                    "Hủy"
-                                }
-                              </Button>
-                              <Button variant="destructive" onClick={handleReject}>
-                                Xác nhận từ chối
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                      )
-                    }
+                            <Button
+                              variant="destructive"
+                              onClick={handleReject}
+                            >
+                              Xác nhận từ chối
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    )}
                     {report.compensationDetail && report.status !== 2 && (
                       <Button
-                        disabled={!report?.compensationDetail?.imageUrl && report?.compensationDetail?.imageUrl !== ""}
+                        disabled={
+                          !report?.compensationDetail?.imageUrl &&
+                          report?.compensationDetail?.imageUrl !== ""
+                        }
                         onClick={handleApproveReportClick}
                         className="gap-2"
                       >
@@ -669,8 +670,7 @@ export default function ReportDetails({ report }: Props) {
             onOpenChange={() => setApproveOpen(!approveOpen)}
           />
         </>
-      )
-      }
+      )}
     </>
   );
 }
