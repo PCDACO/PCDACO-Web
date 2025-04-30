@@ -84,7 +84,7 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
     id: "actions",
     cell: ({ row }) => {
       // return <CheckoutButton id={row.original.id} />
-      return <MenuAction id={row.original.id} userId={row.original.user.id} />
+      return <MenuAction id={row.original.id} userId={row.original.user.id} status={row.original.status} />
     },
   },
 ];
