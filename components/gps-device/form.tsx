@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { GPSDevicePayload } from "@/constants/models/gps-device.model";
 import { useGPSDeviceForm } from "@/hooks/gps-device/use-form-gps-device";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface GPSDeviceFormProps {
   id: string;
@@ -144,7 +145,7 @@ const GPSDeviceForm = ({ id, value, isOpen, onOpenChange }: GPSDeviceFormProps) 
             {GetComponent(keyword)}
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Loading..." : "Hoàn tất"}
+                {isLoading ? <LoadingSpinner /> : "Hoàn tất"}
               </Button>
             </DialogFooter>
           </form>

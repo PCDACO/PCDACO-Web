@@ -5,6 +5,7 @@ import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog"
 import { useModelMutation } from "@/hooks/models/use-model"
+import { LoadingSpinner } from "../ui/loading-spinner"
 
 interface ModelsFormProps {
   id: string;
@@ -33,7 +34,7 @@ const DialogModelForm = ({ id, isOpen, onOpenChange }: ModelsFormProps) => {
         </DialogHeader>
         <DialogFooter>
           <Button onClick={handleClick} disabled={deleteModelMutation.isLoading} className="w-full">
-            {deleteModelMutation.isLoading ? "Loading..." : "Xóa"}
+            {deleteModelMutation.isLoading ? <LoadingSpinner /> : "Xóa"}
           </Button>
         </DialogFooter>
       </DialogContent >

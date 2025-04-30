@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import {
   DropdownMenu,
@@ -8,13 +9,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ReportProps {
   id: string;
 }
 
 const MenuAction: React.FC<ReportProps> = ({ id }) => {
+  const { push } = useRouter();
+  const handleDetailNavigation = () => push(`/car-reports/${id}`);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -25,10 +28,8 @@ const MenuAction: React.FC<ReportProps> = ({ id }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Tùy Chọn</DropdownMenuLabel>
-        <DropdownMenuItem >
-          <Link href={`/car-reports/${id}`}>
-            Chi tiết
-          </Link>
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleDetailNavigation} >
+          Chi tiết
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu >

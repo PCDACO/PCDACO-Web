@@ -8,6 +8,7 @@ import { useUserMutation } from "@/hooks/users/use-user";
 import { Input } from "../ui/input";
 import { useBanStore, useIdStore } from "@/stores/store";
 import { Label } from "../ui/label";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 const OwnerForm = () => {
   const { isBanned } = useBanStore();
@@ -42,7 +43,7 @@ const OwnerForm = () => {
       {isBanned ? (<h1>Bạn có muốn gỡ cấm không</h1>) : (<h1>Bạn có muốn cấm không</h1>)}
       <DialogFooter>
         <Button onClick={handleSubmit} disabled={isLoading}>
-          {isLoading ? "Loading..." : (isBanned ? "Gỡ Chặn" : "Chặn")}
+          {isLoading ? <LoadingSpinner /> : (isBanned ? "Gỡ Chặn" : "Chặn")}
         </Button>
       </DialogFooter>
     </>

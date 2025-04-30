@@ -7,7 +7,6 @@ interface Location {
 }
 
 export const useGeolocation = (): Location => {
-  console.log("executed");
   const [location, setLocation] = useState<Location>({
     latitude: null,
     longitude: null,

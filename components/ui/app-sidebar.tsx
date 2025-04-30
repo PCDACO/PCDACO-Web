@@ -182,7 +182,7 @@ const items: SideBarItem[] = [
     group: 'Thống Kê',
   },
   {
-    title: 'Lịch Kiểm Định',
+    title: 'Lịch Xác Minh',
     url: '/inspection-schedules',
     icon: Calendar,
     role: 'Consultant',

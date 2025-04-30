@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { FuelTypePayload } from "@/constants/models/fuelType.model";
 import { useFuelTypeForm } from "@/hooks/fuel-type/use-form-fuel-type";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface FuelTypeFormProps {
   id: string;
@@ -129,7 +130,7 @@ const FuelTypeForm = ({ id, value }: FuelTypeFormProps) => {
         {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Hoàn tất"}
+            {isLoading ? <LoadingSpinner /> : "Hoàn tất"}
           </Button>
         </DialogFooter>
       </form>

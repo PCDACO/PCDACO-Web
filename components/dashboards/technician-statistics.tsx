@@ -15,7 +15,6 @@ interface Props {
 }
 
 export default function TechnicianStatistics({ inProgressInspectionSchedule, statisticData, recentActivity }: Props) {
-
   return (
     <main className="flex-1 p-8 overflow-auto">
       {/* Statistics Cards */}

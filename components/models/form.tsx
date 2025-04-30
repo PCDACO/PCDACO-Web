@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import SelectWithSearch from "../ui/select-search"
 import { ModelPayLoad } from "@/constants/models/model.model"
+import { LoadingSpinner } from "../ui/loading-spinner"
 
 interface ModelsFormProps {
   id: string
@@ -261,7 +262,7 @@ const ModelForm = ({ id, value, manufacturers }: ModelsFormProps) => {
           <div className="px-6 space-y-4">{GetComponent(keyword)}</div>
           <CardFooter>
             <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? "Loading..." : keyword === "delete" ? "Xóa" : "Hoàn tất"}
+              {isLoading ? <LoadingSpinner /> : keyword === "delete" ? "Xóa" : "Hoàn tất"}
             </Button>
           </CardFooter>
         </form>

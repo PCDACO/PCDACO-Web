@@ -3,7 +3,7 @@ import ConsultantStatistics from "@/components/dashboards/consultant-statistics"
 import TechnicianStatistics from "@/components/dashboards/technician-statistics";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { GetInProgressInspectionSchedule } from "../(consultants)/inspection-schedules/action";
+import { GetSignedOrInProgressInspectionSchedule } from "../(consultants)/inspection-schedules/action";
 import { GetConsultantRecentActivity, GetStatistics, GetSystemStatistics, GetTechnicianRecentActivity } from "./action";
 import { GetUnderReviewReports } from "../(consultants)/reports/action";
 
@@ -18,7 +18,7 @@ export default async function DashboardPage() {
       return <AdminStatistics statistics={response.value} />
     };
     case "Technician": {
-      const inProgressInspectionScheduleResponse = await GetInProgressInspectionSchedule();
+      const inProgressInspectionScheduleResponse = await GetSignedOrInProgressInspectionSchedule();
       const recentActivityResponse = await GetTechnicianRecentActivity();
       return <TechnicianStatistics recentActivity={recentActivityResponse.value} statisticData={statisticRepsonse.value} inProgressInspectionSchedule={inProgressInspectionScheduleResponse.value} />
     };

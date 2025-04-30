@@ -63,6 +63,7 @@ export interface InProgressInspectionScheduleResponse {
   address: string;
   licensePlate: string;
   contractDetail: ContractDetail;
+  type: number;
 }
 
 interface ContractDetail {
@@ -90,6 +91,11 @@ export interface InspectionScheduleDetailResponse {
   isOwnerSigned: boolean;
   type: string;
   status: string;
+  photos: {
+    id: string;
+    url: string;
+    type: string;
+  }[];
 }
 
 interface CarDetail {

@@ -8,7 +8,6 @@ const ContractDetailPage = async ({
 }) => {
   const { id } = await params;
   const response = await GetCarContract(id);
-  console.log(response);
   if (!response) {
     redirect("/not-found");
   }

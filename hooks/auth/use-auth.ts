@@ -10,7 +10,6 @@ export const useAuthMutation = () => {
     mutationKey: ["auth-login"],
     mutationFn: ({ email, password }: LoginPayload) => Login({ email, password }),
     onSuccess: (response) => {
-      console.log("success")
       toastResponse(response);
       if (response.isSuccess) {
         push("/statistics");

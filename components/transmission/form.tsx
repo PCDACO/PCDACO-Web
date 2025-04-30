@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { TransmissionPayload } from "@/constants/models/transmission.model";
 import { useTransmissionForm } from "@/hooks/transmission/use-form-transmission";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface TransmissionFormProps {
   id: string;
@@ -129,7 +130,7 @@ const TransmissionForm = ({ id, value }: TransmissionFormProps) => {
         {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Hoàn tất"}
+            {isLoading ? <LoadingSpinner /> : "Hoàn tất"}
           </Button>
         </DialogFooter>
       </form>

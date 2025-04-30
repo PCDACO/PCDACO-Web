@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ManufacturePayload } from "@/constants/models/manufacture.model";
 import { DialogDescription, DialogFooter, DialogHeader, DialogTitle, } from "@/components/ui/dialog";
 import Image from "next/image";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface ManufacturerFormProps {
   id: string;
@@ -193,7 +194,7 @@ const ManufacturerForm = ({ id, value }: ManufacturerFormProps) => {
         {GetComponent(keyword)}
         <DialogFooter>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Hoàn tất"}
+            {isLoading ? <LoadingSpinner /> : "Hoàn tất"}
           </Button>
         </DialogFooter>
       </form>

@@ -4,7 +4,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
@@ -51,7 +50,6 @@ const MenuAction: React.FC<MenuActionProps> = ({ id, payload }) => {
         >
           Cập nhật
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem
           className="bg-red-200 hover:cursor-pointer"
           onClick={() => {

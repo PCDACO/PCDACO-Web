@@ -24,3 +24,5 @@
 - [x] view currently reviewing reports 
 - [x] submit the proof
 ## Fixing bug stage
+- [ ] schedule detail - add some image of inspection details + its type
+

@@ -18,7 +18,8 @@ export default function InspectionTaskItem({
   scheduledTime,
 }: InspectionTaskItemProps) {
   const { push } = useRouter();
-  const handleBtnClick = () => push(`/technician-todo/${id}`)
+
+  const handleBtnClick = () => push(`/inspection-schedules/${id}/details`);
 
   return (
     <Card onClick={handleBtnClick} className="border-l-4 border-l-yellow-400 hover:cursor-pointer hover:shadow-lg hover:animate-pulse">

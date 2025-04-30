@@ -1,339 +1,242 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Car, User, Shield, FileText, Clock, CreditCard, AlertTriangle } from "lucide-react"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function PolicyComponent() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold mb-2">Chính Sách & Điều Khoản</h1>
-        <p className="text-muted-foreground">Các quy định và điều khoản sử dụng nền tảng cho thuê xe</p>
-      </div>
+    <div className="container mx-auto py-8 px-4">
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">CHÍNH SÁCH & QUY ĐỊNH</CardTitle>
+          <CardDescription>
+            Free Driver xin thông báo về việc triển khai nền tảng cho thuê xe tự lái. Chúng tôi cam kết đảm bảo quyền
+            lợi và trách nhiệm của các bên tham gia theo quy định của pháp luật Việt Nam.
+          </CardDescription>
+        </CardHeader>
+      </Card>
 
-      <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="overview">Tổng Quan</TabsTrigger>
-          <TabsTrigger value="renter">Người Thuê</TabsTrigger>
-          <TabsTrigger value="owner">Chủ Xe</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                Tổng Quan Chính Sách
-              </CardTitle>
-              <CardDescription>Thông tin chung về các chính sách và quy định của nền tảng</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p>
-                Chào mừng bạn đến với nền tảng cho thuê xe của chúng tôi. Tài liệu này quy định các điều khoản và điều
-                kiện chi phối việc sử dụng dịch vụ của chúng tôi.
-              </p>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Shield className="h-5 w-5" />
-                      Cam Kết Của Chúng Tôi
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Đảm bảo tính minh bạch trong mọi giao dịch</li>
-                      <li>Bảo vệ thông tin cá nhân của người dùng</li>
-                      <li>Hỗ trợ giải quyết tranh chấp công bằng</li>
-                      <li>Cung cấp nền tảng an toàn và đáng tin cậy</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <AlertTriangle className="h-5 w-5" />
-                      Quy Định Chung
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Tuân thủ pháp luật Việt Nam</li>
-                      <li>Cung cấp thông tin chính xác và đầy đủ</li>
-                      <li>Không sử dụng dịch vụ cho mục đích bất hợp pháp</li>
-                      <li>Tôn trọng quyền riêng tư của người dùng khác</li>
-                    </ul>
-                  </CardContent>
-                </Card>
+      <Accordion type="single" collapsible className="space-y-4">
+        <AccordionItem value="section-1" className="border rounded-lg p-2">
+          <AccordionTrigger className="text-lg font-semibold px-4">1. Quy định về Đăng ký & Xác thực</AccordionTrigger>
+          <AccordionContent className="px-4 pt-2">
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-medium text-base mb-2">A. Đối với Chủ xe</h3>
+                <p className="mb-2">Phải cung cấp đầy đủ và chính xác thông tin:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Họ tên, địa chỉ, email, số điện thoại</li>
+                  <li>CCCD/CMND</li>
+                  <li>Mã số thuế (nếu có)</li>
+                  <li>Thông tin tài khoản ngân hàng</li>
+                </ul>
+                <p className="mt-2">Chịu trách nhiệm về nguồn gốc và quyền sở hữu xe</p>
+                <p>Đảm bảo xe có đầy đủ giấy tờ pháp lý và trong tình trạng an toàn</p>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
 
-        <TabsContent value="renter" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="h-5 w-5" />
-                Chính Sách Cho Người Thuê Xe
-              </CardTitle>
-              <CardDescription>Quy định và hướng dẫn dành cho người thuê xe</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>Điều Kiện Đăng Ký & Xác Minh</AccordionTrigger>
-                  <AccordionContent className="space-y-2">
-                    <p>Để đăng ký làm người thuê xe, bạn cần:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Đủ 18 tuổi trở lên</li>
-                      <li>Có giấy phép lái xe hợp lệ (tối thiểu 12 tháng)</li>
-                      <li>Cung cấp CMND/CCCD để xác minh danh tính</li>
-                      <li>Hoàn thành quy trình xác minh số điện thoại và email</li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
+              <div>
+                <h3 className="font-medium text-base mb-2">B. Đối với Khách thuê</h3>
+                <p className="mb-2">Phải cung cấp đầy đủ và chính xác thông tin:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Họ tên, địa chỉ, email, số điện thoại</li>
+                  <li>CCCD/CMND</li>
+                  <li>Giấy phép lái xe ô tô còn hiệu lực</li>
+                  <li>Thông tin thanh toán</li>
+                </ul>
+                <p className="mt-2">Phải đủ 18 tuổi trở lên</p>
+                <p>Có giấy phép lái xe hợp lệ với hạng xe thuê</p>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
 
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>Quy Trình Đặt Xe & Thanh Toán</AccordionTrigger>
-                  <AccordionContent className="space-y-2">
-                    <p>Quy trình đặt xe bao gồm:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Tìm kiếm và chọn xe phù hợp</li>
-                      <li>Gửi yêu cầu đặt xe với thời gian thuê cụ thể</li>
-                      <li>Chờ chủ xe xác nhận (tối đa 24 giờ)</li>
-                      <li>Thanh toán đặt cọc (30% giá trị đơn hàng)</li>
-                      <li>Thanh toán số tiền còn lại khi nhận xe</li>
-                    </ul>
-                    <p className="mt-2">Các phương thức thanh toán được chấp nhận:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Thẻ tín dụng/ghi nợ</li>
-                      <li>Chuyển khoản ngân hàng</li>
-                      <li>Ví điện tử (MoMo, ZaloPay, VNPay)</li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
+        <AccordionItem value="section-2" className="border rounded-lg p-2">
+          <AccordionTrigger className="text-lg font-semibold px-4">2. Quy định về Đặt xe & Thanh toán</AccordionTrigger>
+          <AccordionContent className="px-4 pt-2">
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-medium text-base mb-2">A. Quy định Đặt xe</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Đặt xe trước tối thiểu 1.5 giờ</li>
+                  <li>Thời gian thuê từ 1-30 ngày</li>
+                  <li>Mỗi khách hàng được phép có tối đa 1 đơn đặt xe đang hoạt động</li>
+                  <li>Xe phải còn trống và không có lịch đặt trùng</li>
+                </ul>
+              </div>
 
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>Nhận & Trả Xe</AccordionTrigger>
-                  <AccordionContent className="space-y-2">
-                    <p>Khi nhận xe:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Kiểm tra kỹ tình trạng xe và ghi nhận bằng hình ảnh</li>
-                      <li>Xác nhận mức nhiên liệu và số km ban đầu</li>
-                      <li>Ký biên bản bàn giao xe với chủ xe</li>
-                    </ul>
-                    <p className="mt-2">Khi trả xe:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Trả xe đúng thời gian và địa điểm đã thỏa thuận</li>
-                      <li>Đảm bảo xe sạch sẽ và mức nhiên liệu như khi nhận</li>
-                      <li>Ký biên bản trả xe với chủ xe</li>
-                      <li>Thanh toán các chi phí phát sinh (nếu có)</li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
+              <div>
+                <h3 className="font-medium text-base mb-2">B. Cơ cấu Giá & Thanh toán</h3>
+                <p className="mb-2">Giá thuê xe được tính theo ngày</p>
+                <p className="mb-2">Cấu trúc giá bao gồm:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Giá thuê cơ bản</li>
+                  <li>Phí nền tảng (10% giá thuê)</li>
+                </ul>
+                <p className="mt-2">Phương thức thanh toán:</p>
+                <ul className="list-disc pl-6">
+                  <li>Thanh toán 100% giá trị chuyến xe khi được chủ xe phê duyệt</li>
+                </ul>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
 
-                <AccordionItem value="item-4">
-                  <AccordionTrigger>Chính Sách Hủy Đơn</AccordionTrigger>
-                  <AccordionContent className="space-y-2">
-                    <p>Quy định hủy đơn đặt xe:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Hủy trước 72 giờ: Hoàn trả 100% tiền cọc</li>
-                      <li>Hủy trước 48-72 giờ: Hoàn trả 70% tiền cọc</li>
-                      <li>Hủy trước 24-48 giờ: Hoàn trả 50% tiền cọc</li>
-                      <li>Hủy trong vòng 24 giờ: Không hoàn trả tiền cọc</li>
-                    </ul>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Lưu ý: Trường hợp bất khả kháng sẽ được xem xét riêng.
-                    </p>
-                  </AccordionContent>
-                </AccordionItem>
+        <AccordionItem value="section-3" className="border rounded-lg p-2">
+          <AccordionTrigger className="text-lg font-semibold px-4">3. Quy định về Giao nhận xe</AccordionTrigger>
+          <AccordionContent className="px-4 pt-2">
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-medium text-base mb-2">A. Kiểm tra & Xác nhận</h3>
+                <p className="mb-2">Chủ xe phải cung cấp:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Giấy đăng ký xe (bản photo công chứng)</li>
+                  <li>Giấy kiểm định</li>
+                  <li>Giấy bảo hiểm xe</li>
+                </ul>
+                <p className="mt-2 mb-2">Khách thuê phải xuất trình:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>CCCD gắn chip</li>
+                  <li>Giấy phép lái xe (bản gốc)</li>
+                  <li>Tài sản thế chấp (20 triệu hoặc xe máy tương đương)</li>
+                </ul>
+              </div>
 
-                <AccordionItem value="item-5">
-                  <AccordionTrigger>Bảo Hiểm & Xử Lý Sự Cố</AccordionTrigger>
-                  <AccordionContent className="space-y-2">
-                    <p>Quy định về bảo hiểm:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Mọi xe đều có bảo hiểm trách nhiệm dân sự cơ bản</li>
-                      <li>Người thuê có thể mua thêm gói bảo hiểm toàn diện</li>
-                      <li>Mức khấu trừ bảo hiểm: 20% giá trị thiệt hại (tối thiểu 2 triệu đồng)</li>
-                    </ul>
-                    <p className="mt-2">Xử lý sự cố:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Tai nạn: Thông báo ngay cho chủ xe và cơ quan chức năng</li>
-                      <li>Hỏng hóc: Liên hệ đường dây hỗ trợ 24/7</li>
-                      <li>Mất cắp: Báo công an và thông báo cho nền tảng trong vòng 2 giờ</li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </CardContent>
-          </Card>
-        </TabsContent>
+              <div>
+                <h3 className="font-medium text-base mb-2">B. Yêu cầu về Hình ảnh</h3>
+                <p className="mb-2">Bắt buộc chụp ảnh khi giao/nhận xe:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Ngoại thất xe</li>
+                  <li>Mức xăng</li>
+                  <li>Vị trí đỗ xe</li>
+                  <li>Chìa khóa xe</li>
+                  <li>Cốp xe</li>
+                </ul>
+                <p className="mt-2 mb-2">Quy định về ảnh:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Kích thước tối đa: 10MB/ảnh</li>
+                  <li>Định dạng: jpg, jpeg, png</li>
+                  <li>Số lượng: tối thiểu 1 ảnh/loại</li>
+                </ul>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
 
-        <TabsContent value="owner" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Car className="h-5 w-5" />
-                Chính Sách Cho Chủ Xe
-              </CardTitle>
-              <CardDescription>Quy định và hướng dẫn dành cho chủ xe</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>Điều Kiện Đăng Ký Xe</AccordionTrigger>
-                  <AccordionContent className="space-y-2">
-                    <p>Để đăng ký xe cho thuê, bạn cần:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Sở hữu xe hợp pháp (có đăng ký xe chính chủ)</li>
-                      <li>Xe có đăng kiểm còn hiệu lực (tối thiểu 3 tháng)</li>
-                      <li>Xe có bảo hiểm trách nhiệm dân sự bắt buộc</li>
-                      <li>Xe không quá 10 năm tuổi tính từ năm sản xuất</li>
-                      <li>Hoàn thành quy trình xác minh danh tính chủ xe</li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
+        <AccordionItem value="section-4" className="border rounded-lg p-2">
+          <AccordionTrigger className="text-lg font-semibold px-4">
+            4. Quy định về Bảo hiểm & Bồi thường
+          </AccordionTrigger>
+          <AccordionContent className="px-4 pt-2">
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-medium text-base mb-2">A. Trách nhiệm của Khách thuê</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Đền bù 100% giá trị phụ tùng chính hãng nếu phát hiện thay đổi</li>
+                  <li>Chịu 100% chi phí sửa chữa nếu có hư hỏng do lỗi của khách</li>
+                  <li>Thanh toán chi phí vệ sinh xe (nếu cần)</li>
+                  <li>Bồi thường ngày xe không hoạt động (theo giá thuê)</li>
+                </ul>
+              </div>
 
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>Đăng Ký & Quản Lý Xe</AccordionTrigger>
-                  <AccordionContent className="space-y-2">
-                    <p>Quy trình đăng ký xe:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Cung cấp thông tin và hình ảnh đầy đủ về xe</li>
-                      <li>Tải lên giấy tờ xe hợp lệ (đăng ký, đăng kiểm, bảo hiểm)</li>
-                      <li>Thiết lập giá cho thuê và các điều kiện kèm theo</li>
-                      <li>Chờ phê duyệt từ nền tảng (1-3 ngày làm việc)</li>
-                    </ul>
-                    <p className="mt-2">Quản lý lịch xe:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Cập nhật lịch trống/bận của xe</li>
-                      <li>Phản hồi yêu cầu đặt xe trong vòng 24 giờ</li>
-                      <li>Quản lý đơn hàng và lịch sử cho thuê</li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
+              <div>
+                <h3 className="font-medium text-base mb-2">B. Trách nhiệm của Chủ xe</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Đảm bảo xe trong tình trạng an toàn</li>
+                  <li>Bảo dưỡng xe định kỳ</li>
+                  <li>Mua bảo hiểm xe theo quy định</li>
+                  <li>Hỗ trợ xử lý sự cố trong khả năng</li>
+                </ul>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
 
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>Bàn Giao & Nhận Xe</AccordionTrigger>
-                  <AccordionContent className="space-y-2">
-                    <p>Khi bàn giao xe:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Kiểm tra giấy phép lái xe của người thuê</li>
-                      <li>Chụp ảnh tình trạng xe trước khi giao</li>
-                      <li>Ghi nhận mức nhiên liệu và số km ban đầu</li>
-                      <li>Ký biên bản bàn giao xe với người thuê</li>
-                      <li>Hướng dẫn sử dụng các tính năng đặc biệt của xe</li>
-                    </ul>
-                    <p className="mt-2">Khi nhận lại xe:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Kiểm tra kỹ tình trạng xe so với lúc giao</li>
-                      <li>Xác nhận mức nhiên liệu và số km khi trả</li>
-                      <li>Ghi nhận các hư hỏng hoặc vấn đề (nếu có)</li>
-                      <li>Ký biên bản nhận xe với người thuê</li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
+        <AccordionItem value="section-5" className="border rounded-lg p-2">
+          <AccordionTrigger className="text-lg font-semibold px-4">5. Chính sách Hủy chuyến</AccordionTrigger>
+          <AccordionContent className="px-4 pt-2">
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-medium text-base mb-2">A. Phí hủy chuyến</h3>
+                <p className="mb-2">Đối với người thuê:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Hủy chuyến trước 7 ngày: hoàn 100%</li>
+                  <li>Hủy chuyến trước 5 ngày: hoàn 50%</li>
+                  <li>Hủy chuyến trước 3 ngày: hoàn 30%</li>
+                  <li>Hủy chuyến nhỏ hơn 3 ngày: hoàn 0%</li>
+                </ul>
+                <p className="mt-2 mb-2">Đối với chủ xe:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Hủy chuyến trước 24h: đền 50%</li>
+                  <li>Hủy chuyến trong vòng 3 ngày: đền 30%</li>
+                  <li>Hủy chuyến trong vòng 7 ngày: đền 10%</li>
+                </ul>
+              </div>
 
-                <AccordionItem value="item-4">
-                  <AccordionTrigger>Chính Sách Thanh Toán & Hoa Hồng</AccordionTrigger>
-                  <AccordionContent className="space-y-2">
-                    <p>Quy định thanh toán:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Nhận 70% tiền cọc ngay sau khi người thuê đặt cọc</li>
-                      <li>Nhận phần còn lại sau khi hoàn thành chuyến đi</li>
-                      <li>Thanh toán được chuyển vào tài khoản đã đăng ký trong vòng 24 giờ</li>
-                    </ul>
-                    <p className="mt-2">Phí hoa hồng nền tảng:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Phí cơ bản: 15% trên tổng giá trị đơn hàng</li>
-                      <li>Chủ xe VIP (trên 20 chuyến/tháng): 12%</li>
-                      <li>Chủ xe Platinum (trên 50 chuyến/tháng): 10%</li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
+              <div>
+                <h3 className="font-medium text-base mb-2">B. Xử lý vi phạm</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Khóa tài khoản nếu hủy chuyến nhiều lần</li>
+                  <li>Hoàn trả 100% tiền cọc nếu chủ xe hủy chuyến</li>
+                  <li>Bồi thường theo quy định nếu vi phạm cam kết</li>
+                </ul>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
 
-                <AccordionItem value="item-5">
-                  <AccordionTrigger>Xử Lý Sự Cố & Bồi Thường</AccordionTrigger>
-                  <AccordionContent className="space-y-2">
-                    <p>Quy trình xử lý sự cố:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Tiếp nhận thông báo từ người thuê</li>
-                      <li>Cung cấp hỗ trợ kỹ thuật hoặc hướng dẫn xử lý</li>
-                      <li>Phối hợp với bảo hiểm và đơn vị cứu hộ khi cần</li>
-                    </ul>
-                    <p className="mt-2">Chính sách bồi thường:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Hư hỏng nhỏ: Người thuê chịu 100% chi phí sửa chữa</li>
-                      <li>Hư hỏng lớn: Áp dụng theo quy định bảo hiểm</li>
-                      <li>Mất xe: Bồi thường theo giá trị thị trường của xe</li>
-                      <li>Thời gian không hoạt động: Được bồi thường theo giá thuê trung bình</li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+        <AccordionItem value="section-6" className="border rounded-lg p-2">
+          <AccordionTrigger className="text-lg font-semibold px-4">6. Quy định về Kiểm định</AccordionTrigger>
+          <AccordionContent className="px-4 pt-2">
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-medium text-base mb-2">A. Trách nhiệm của Chủ xe</h3>
+                <p>
+                  Chịu trách nhiệm cung cấp đầy đủ thông tin, giấy tờ pháp lý và đảm bảo xe trong tình trạng an toàn
+                  trước khi đưa lên hệ thống cho thuê.
+                </p>
+                <p className="mt-2">
+                  Phải thực hiện đăng kiểm định kỳ cho xe để cung cấp trong quá trình kiểm định xe của hệ thống
+                </p>
+              </div>
 
-      <div className="mt-10 border-t pt-6">
-        <div className="grid gap-6 md:grid-cols-3">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Clock className="h-5 w-5" />
-                Thời Gian Hỗ Trợ
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm">Thứ 2 - Thứ 6: 8:00 - 20:00</p>
-              <p className="text-sm">Thứ 7 - Chủ nhật: 9:00 - 18:00</p>
-              <p className="text-sm mt-2">Đường dây nóng 24/7: 1900 xxxx</p>
-            </CardContent>
-          </Card>
+              <div>
+                <h3 className="font-medium text-base mb-2">B. Trách nhiệm của Kỹ thuật viên</h3>
+                <p>
+                  Khi nhận được lịch kiểm định trong trạng thái chờ, phải đánh dấu đang thực hiện kiểm định thông qua hệ
+                  thống chậm nhất là 15 phút sau thời điểm kiểm định được đề ra trong lịch kiểm định.
+                </p>
+                <p className="mt-2">
+                  Phải hoàn thành xử lý kiểm định chậm nhất là 60 phút sau thời điểm kiểm định được đề ra trong lịch
+                  kiểm định.
+                </p>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <CreditCard className="h-5 w-5" />
-                Phương Thức Thanh Toán
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <p className="text-sm">Chúng tôi chấp nhận:</p>
-              <ul className="text-sm list-disc pl-5">
-                <li>Thẻ tín dụng/ghi nợ</li>
-                <li>Chuyển khoản ngân hàng</li>
-                <li>Ví điện tử (MoMo, ZaloPay, VNPay)</li>
-              </ul>
-            </CardContent>
-          </Card>
+        <AccordionItem value="section-7" className="border rounded-lg p-2">
+          <AccordionTrigger className="text-lg font-semibold px-4">7. Quy định về Bảo mật thông tin</AccordionTrigger>
+          <AccordionContent className="px-4 pt-2">
+            <ul className="list-disc pl-6 space-y-1">
+              <li>Mã hóa thông tin nhạy cảm (số điện thoại, tài khoản ngân hàng)</li>
+              <li>Chỉ chia sẻ thông tin theo yêu cầu pháp luật</li>
+              <li>Lưu trữ dữ liệu theo quy định hiện hành</li>
+              <li>Cho phép người dùng yêu cầu xóa dữ liệu</li>
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                Bảo Mật & Quyền Riêng Tư
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm">
-                Chúng tôi cam kết bảo vệ thông tin cá nhân của bạn theo quy định pháp luật hiện hành.
-              </p>
-              <p className="text-sm mt-2">
-                Xem đầy đủ{" "}
-                <a href="#" className="text-primary underline">
-                  Chính sách bảo mật
-                </a>
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+        <AccordionItem value="section-8" className="border rounded-lg p-2">
+          <AccordionTrigger className="text-lg font-semibold px-4">8. Giải quyết Tranh chấp</AccordionTrigger>
+          <AccordionContent className="px-4 pt-2">
+            <ul className="list-disc pl-6 space-y-1">
+              <li>Ưu tiên giải quyết thông qua thương lượng</li>
+              <li>Hỗ trợ hòa giải giữa các bên</li>
+              <li>Tuân thủ quy định pháp luật hiện hành</li>
+              <li>Có thể nhờ cơ quan chức năng can thiệp</li>
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   )
 }
+

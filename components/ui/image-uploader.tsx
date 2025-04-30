@@ -104,9 +104,9 @@ export function ImageUploader({ label, photoType, file, description, onChange, o
         </CardContent>
       </Card>
       {file && (
-        <div className="*:not-first:mt-2">
-          <Label >Simple textarea</Label>
-          <Textarea value={description} onChange={(e) => onDescriptionChange(e.currentTarget.value)} placeholder="Leave a comment" />
+        <div className="*:not-first:mt-4">
+          <Label className="text-muted-foreground">Mô tả</Label>
+          <Textarea value={description} onChange={(e) => onDescriptionChange(e.currentTarget.value)} />
         </div>
       )}
     </div>
