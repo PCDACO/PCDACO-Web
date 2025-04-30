@@ -1,5 +1,11 @@
-'use client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+"use client";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import { StatisticResponse } from "@/constants/models/statistic.model";
 import { UnderReviewResponse } from "@/constants/models/report.model";
 import UnderReviewReportItem from "./underreview-report-item";
@@ -12,13 +18,17 @@ interface Props {
   underReviewReport: UnderReviewResponse[];
   consultantRecentActivity: ConsultantRecentActivityResponse;
 }
-export default function ConsultantStatistics({ statisticData, underReviewReport, consultantRecentActivity }: Props) {
+export default function ConsultantStatistics({
+  statisticData,
+  underReviewReport,
+  consultantRecentActivity,
+}: Props) {
   return (
     <main className="flex-1 p-8 overflow-auto">
       {/* Statistics Cards */}
       <div className="mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card>
+          {/* <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Lương Tháng</CardTitle>
             </CardHeader>
@@ -28,7 +38,7 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
               </div>
               <p className="text-xs text-gray-500"></p>
             </CardContent>
-          </Card>
+          </Card> */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Đã Duyệt</CardTitle>
@@ -67,8 +77,7 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
                 <div key={item.id} className="mb-4">
                   <UnderReviewReportItem report={item} />
                 </div>
-              ))
-            }
+              ))}
           </CardContent>
         </Card>
 
@@ -79,8 +88,8 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
             <CardDescription>Latest updates from your team</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 max-h-96 overflow-y-auto">
-            {
-              consultantRecentActivity && consultantRecentActivity?.activities.map((item, index) => (
+            {consultantRecentActivity &&
+              consultantRecentActivity?.activities.map((item, index) => (
                 <div key={index}>
                   <CustomActivityItem
                     name={item.name}
@@ -89,12 +98,10 @@ export default function ConsultantStatistics({ statisticData, underReviewReport,
                     time={getTimeAgo(item.happenedAt)}
                   />
                 </div>
-              ))
-            }
+              ))}
           </CardContent>
         </Card>
       </div>
     </main>
-  )
-    ;
+  );
 }

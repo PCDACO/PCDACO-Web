@@ -2,7 +2,13 @@
 import Image from "next/image";
 import { Car, Clock, Eye, ReceiptText, Star, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
@@ -45,7 +51,7 @@ export default function CarDetailsComponent({ car, role }: Props) {
                 <div className="flex items-center gap-2 mt-2">
                   <CarBadge status={car.status} />
                   <span className="text-muted-foreground">
-                    License: {car.licensePlate}
+                    Biển số xe: {car.licensePlate}
                   </span>
                 </div>
               </div>
@@ -63,23 +69,28 @@ export default function CarDetailsComponent({ car, role }: Props) {
                 {/*   ) */}
                 {/* } */}
                 {car?.contract?.terms && car?.contract?.terms !== "" && (
-                  <Button onClick={handleNavigateContract} variant="outline" className="mx-2">
+                  <Button
+                    onClick={handleNavigateContract}
+                    variant="outline"
+                    className="mx-2"
+                  >
                     <ReceiptText />
                   </Button>
                 )}
-                {car.status === CarStatusString.Pending && role === "Consultant" && (
-                  <Button
-                    disabled={car.hasInspectionSchedule}
-                    className="mx-4"
-                    onClick={() => {
-                      push(
-                        `/inspection-schedules/create?carId=${car.id}&type=Edit`
-                      );
-                    }}
-                  >
-                    Tạo lịch kiểm định
-                  </Button>
-                )}
+                {car.status === CarStatusString.Pending &&
+                  role === "Consultant" && (
+                    <Button
+                      disabled={car.hasInspectionSchedule}
+                      className="mx-4"
+                      onClick={() => {
+                        push(
+                          `/inspection-schedules/create?carId=${car.id}&type=Edit`
+                        );
+                      }}
+                    >
+                      Tạo lịch kiểm định
+                    </Button>
+                  )}
               </div>
             </div>
           </div>
