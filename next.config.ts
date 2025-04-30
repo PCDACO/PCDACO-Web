@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
       bodySizeLimit: "100mb",
-    }
+    },
   },
   output: "standalone",
   productionBrowserSourceMaps: false, // Disable source maps in development
@@ -25,13 +25,13 @@ const nextConfig: NextConfig = {
         hostname: "inkythuatso.com",
       },
       {
-        protocol: "http",
+        protocol: "https",
         hostname: "res.cloudinary.com",
       },
       {
         protocol: "https",
         hostname: "img.vietqr.io",
-      }
+      },
     ],
   },
 };
