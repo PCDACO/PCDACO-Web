@@ -1,7 +1,7 @@
 "use client"
 import { ChangeEvent, useCallback, useState } from "react"
 import { format } from "date-fns"
-import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, CheckIcon, CheckCircle, XCircle } from "lucide-react"
+import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, CheckIcon, CheckCircle, XCircle, PlusCircleIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -348,7 +348,7 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
                       (data.type === "ChangeGPS" && data.status == "InProgress") && (
                         <Dialog>
                           <DialogTrigger>
-                            <Button>
+                            <Button className="flex-1">
                               <CheckIcon /> Hoàn thành
                             </Button>
                           </DialogTrigger>
@@ -384,7 +384,10 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
                                 layout="responsive" />
                             )}
                             <DialogFooter>
-                              <Button onClick={handleApproveIncidentSubmit}> Hoàn tất </Button>
+                              <Button onClick={handleApproveIncidentSubmit}>
+                                <CheckCircle className="mr-2 h-4 w-4" />
+                                Hoàn tất
+                              </Button>
                             </DialogFooter>
                           </DialogContent>
                         </Dialog>
@@ -638,7 +641,9 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
                         className={`h-2 w-2 rounded-full p-0 ${index === currentInspectionImageIndex ? "bg-primary" : "bg-background/80"}`}
                         onClick={() => setCurrentInspectionImageIndex(index)}
                       >
-                        <span className="sr-only">Xem thêm {index + 1}</span>
+                        <span className="sr-only">
+                          <PlusCircleIcon />
+                          Xem thêm {index + 1}</span>
                       </Button>
                     ))}
                   </div>

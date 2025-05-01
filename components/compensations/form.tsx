@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "../ui/input";
 import { useEffect } from "react";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import { CheckCircle } from "lucide-react";
 
 interface Props {
   id: string;
@@ -78,7 +79,10 @@ export default function CompensationForm({ id, userId, isOpen, onOpenChange }: P
               }} />
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? <LoadingSpinner /> : "Tạo"}
+                {isLoading ? <LoadingSpinner /> : <>
+                  <CheckCircle />
+                  Tạo
+                </>}
               </Button>
             </DialogFooter>
           </form>
