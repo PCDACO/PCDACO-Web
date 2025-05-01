@@ -59,6 +59,7 @@ export const useGPSDeviceForm = ({ id, value, action }: GPSDeviceFormProps) => {
     isLoading:
       createGPSDeviceMutation.isLoading ||
       updateGPSDeviceMutation.isLoading ||
-      deleteGPSDeviceMutation.isLoading,
+      deleteGPSDeviceMutation.isLoading ||
+      unassignGPSDeviceMutation.isLoading
   };
 };
