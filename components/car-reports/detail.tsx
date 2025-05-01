@@ -358,9 +358,11 @@ const CarReportDetailComponent = ({ report }: Props) => {
                               variant="outline"
                               onClick={() => setIsRejectDialogOpen(false)}
                             >
+                            <XCircle className="h-4 w-4" />
                               Hủy
                             </Button>
                             <Button variant="destructive" onClick={handleReject}>
+                            <CheckCircle className="h-4 w-4" />
                               Xác nhận từ chối
                             </Button>
                           </DialogFooter>

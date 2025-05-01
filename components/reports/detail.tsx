@@ -10,6 +10,7 @@ import {
   ImageIcon,
   MapPin,
   Phone,
+  PlusCircleIcon,
   XCircle,
 } from "lucide-react";
 import Image from "next/image";
@@ -48,8 +49,7 @@ export default function ReportDetails({ report }: Props) {
   const { push } = useRouter();
   const handleCreateNewInspectionClick = () => {
     push(
-      `/inspection-schedules/create?carId=${
-        report?.carDetail?.id ?? ""
+      `/inspection-schedules/create?carId=${report?.carDetail?.id ?? ""
       }&type=report&reportId=${report?.id}`
     );
   };
@@ -430,19 +430,6 @@ export default function ReportDetails({ report }: Props) {
                               )}
                             </p>
                           </div>
-                          {/* {report?.compensationDetail?.isPaid && ( */}
-                          {/*   <Badge */}
-                          {/*     variant={ */}
-                          {/*       report.compensationDetail.isPaid */}
-                          {/*         ? "default" */}
-                          {/*         : "outline" */}
-                          {/*     } */}
-                          {/*   > */}
-                          {/*     {report.compensationDetail.isPaid */}
-                          {/*       ? "Đã thanh toán" */}
-                          {/*       : "Chưa thanh toán"} */}
-                          {/*   </Badge> */}
-                          {/* )} */}
                         </div>
                         {report?.compensationDetail?.paidAt && (
                           <div>
@@ -526,13 +513,13 @@ export default function ReportDetails({ report }: Props) {
                             </p>
                             {report?.inspectionScheduleDetail
                               ?.inspectionDate && (
-                              <p className="font-medium">
-                                {formatDate(
-                                  report?.inspectionScheduleDetail
-                                    ?.inspectionDate ?? ""
-                                )}
-                              </p>
-                            )}
+                                <p className="font-medium">
+                                  {formatDate(
+                                    report?.inspectionScheduleDetail
+                                      ?.inspectionDate ?? ""
+                                  )}
+                                </p>
+                              )}
                           </div>
                         </div>
 
@@ -547,7 +534,7 @@ export default function ReportDetails({ report }: Props) {
 
                         {report?.inspectionScheduleDetail?.photoUrls &&
                           report.inspectionScheduleDetail.photoUrls.length >
-                            0 && (
+                          0 && (
                             <div>
                               <p className="font-medium mb-2 flex items-center gap-1">
                                 <ImageIcon className="h-4 w-4" />
@@ -616,13 +603,17 @@ export default function ReportDetails({ report }: Props) {
                               {rejectReport.isLoading ? (
                                 <LoadingSpinner />
                               ) : (
-                                "Hủy"
+                                <>
+                                  <XCircle />
+                                  Hủy
+                                </>
                               )}
                             </Button>
                             <Button
                               variant="destructive"
                               onClick={handleReject}
                             >
+                              <CheckCircle />
                               Xác nhận từ chối
                             </Button>
                           </DialogFooter>
@@ -647,6 +638,7 @@ export default function ReportDetails({ report }: Props) {
                         onClick={handleCreateNewInspectionClick}
                         className="gap-2"
                       >
+                        <PlusCircleIcon />
                         Tạo lịch
                       </Button>
                     )}
