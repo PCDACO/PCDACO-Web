@@ -33,5 +33,5 @@ jobs:
           platforms: linux/arm64,linux/amd64
           build-args: |
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NEXT_PRIVATE_API_URL=${{ secrets.NEXT_PRIVATE_API_URL }}
             NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=${{ secrets.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN }}  
-            NEXT_PRIVATE_API_KEY=${{ secrets.NEXT_PRIVATE_API_KEY }}
