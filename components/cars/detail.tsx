@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Car, Clock, Eye, ReceiptText, Star, User } from "lucide-react";
+import { Car, Clock, Eye, MapPin, ReceiptText, Star, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -56,18 +56,18 @@ export default function CarDetailsComponent({ car, role }: Props) {
                 </div>
               </div>
               <div>
-                {/* { */}
-                {/*   car?.status === "Available" && ( */}
-                {/*     <Button */}
-                {/*       variant="outline" */}
-                {/*       onClick={() => { */}
-                {/*         push(`/cars/${car.id}/map`); */}
-                {/*       }} */}
-                {/*     > */}
-                {/*       <MapPin /> */}
-                {/*     </Button> */}
-                {/*   ) */}
-                {/* } */}
+                {
+                  car?.status === "Available" && (
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        push(`/cars/${car.id}/map`);
+                      }}
+                    >
+                      <MapPin />
+                    </Button>
+                  )
+                }
                 {car?.contract?.terms && car?.contract?.terms !== "" && (
                   <Button
                     onClick={handleNavigateContract}
