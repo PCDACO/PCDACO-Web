@@ -105,6 +105,10 @@ export interface CarDetailResponse {
     latitude: number;
     address: string;
   };
+  location: {
+    longtitude: number;
+    latitude: number;
+  }
   manufacturer: {
     id: string;
     name: string;
