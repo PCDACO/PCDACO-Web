@@ -54,6 +54,7 @@ const routeMap: { [key: string]: string } = {
   "technician-todo": "Việc cần làm",
   "checkout": "Hoàn tất thanh toán",
   "details": "Chi tiết",
+  "map": "Bản đồ",
 };
 
 const generateBreadcrumbs = (pathname: string): BreadcrumbItemType[] => {
