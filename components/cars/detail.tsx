@@ -26,13 +26,11 @@ interface Props {
 }
 
 export default function CarDetailsComponent({ car, role }: Props) {
-  const { color, manufacturer, modelName, owner, images, bookings } = car;
+  const { color, manufacturer, modelName, owner, images, bookings, location } = car;
   const { push } = useRouter();
   const { open, setOpen } = useDialogStore();
   // This would typically come from a database or API
-  const handleNavigateContract = () => {
-    push(`/cars/${car.id}/contract-details`);
-  };
+  const handleNavigateContract = () => push(`/cars/${car.id}/contract-details`);
 
   const handleActionClick = (id: string) => {
     push(`/bookings/${id}`);
@@ -57,7 +55,7 @@ export default function CarDetailsComponent({ car, role }: Props) {
               </div>
               <div>
                 {
-                  car?.status === "Available" && (
+                  !!location && (
                     <Button
                       variant="outline"
                       onClick={() => {
