@@ -2,12 +2,12 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import Image from "next/image";
 import { formatDate } from "@/lib/utils";
 import { WithdrawRequestResponse } from "@/constants/models/withdraw-request.model";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { Badge } from "../ui/badge";
 import MenuAction from "./menu-action";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const WithdrawalRequestStatus = [
   {
@@ -47,7 +47,10 @@ export const WithdrawRequestColumn: ColumnDef<WithdrawRequestResponse>[] = [
       const user = row.original.user;
       return (
         <div className="flex w-full justify-start items-center">
-          <Image width={24} height={24} src={user.avatarUrl !== "" ? user.avatarUrl : "/dummy-avatar.webp"} alt={user.name} />
+          <Avatar  >
+            <AvatarImage src={user.avatarUrl} alt={user.name} />
+            <AvatarFallback>{Array.from(user.name)[0].toUpperCase()}</AvatarFallback>
+          </Avatar  >
           <span className="ml-4 text-sm">{user.name}</span>
         </div>
       );

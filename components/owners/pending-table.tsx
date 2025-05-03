@@ -38,14 +38,14 @@ const PendingOwnerTable = () => {
 
                     <div>
                       <h3 className="font-medium">{driver.name}</h3>
-                      <p className="text-sm text-slate-500">Submitted {formatDate(driver.licenseImageUploadedAt.toString())}</p>
+                      <p className="text-sm text-slate-500">Đã nộp {formatDate(driver.licenseImageUploadedAt.toString())}</p>
                     </div>
                   </div>
 
-                  <div className="inline-block px-2 py-1 bg-amber-100 text-amber-800 rounded text-sm w-fit">Pending</div>
+                  <div className="inline-block px-2 py-1 bg-amber-100 text-amber-800 rounded text-sm w-fit">Đang chờ</div>
 
                   <div className="flex items-center text-sm">
-                    <span className="text-slate-400 mr-2">Phone:</span>
+                    <span className="text-slate-400 mr-2">SDT:</span>
                     <span className="text-slate-700">{driver.phone}</span>
                   </div>
                 </div>
@@ -59,7 +59,7 @@ const PendingOwnerTable = () => {
                     setOpen(true);
                   }}
                 >
-                  Review Application
+                  Xem xét đơn duyệt
                 </Button>
               </div>
             </div>
