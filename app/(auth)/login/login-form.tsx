@@ -2,10 +2,7 @@
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent, } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { useAuthForm } from "@/hooks/auth/use-form-auth";
@@ -86,7 +83,7 @@ export default function LoginForm({
       </Card>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
         Khi đăng nhập, bạn đã đồng ý với{" "}
-        <a href="#">Điều kiện dịch vụ</a> and <a href="#">Chính sách bảo mật</a>.
+        <a href="/policy">Điều kiện dịch vụ</a> and <a href="/policy">Chính sách bảo mật</a>.
       </div>
     </div >
   );
