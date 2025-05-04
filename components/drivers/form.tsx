@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  DialogFooter,
-  DialogHeader,
-} from "@/components/ui/dialog";
+import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { useUserMutation } from "@/hooks/users/use-user";
 import { Input } from "../ui/input";
@@ -38,12 +35,12 @@ const OwnerForm = () => {
           {isBanned ? "Gỡ Chặn Người Dùng" : "Chặn Người Dùng"}
         </Label>
       </DialogHeader>
-      {!isBanned && <Label className="text-md">Lí do chặn</Label>}
+      {!isBanned && <Label className="text-md text-muted-foreground mt-4">Lí do chặn</Label>}
       {!isBanned && <Input value={bannedReason} onChange={(e) => handleChange(e.currentTarget.value)} />}
-      {isBanned ? (<h1>Bạn có muốn gỡ cấm không</h1>) : (<h1>Bạn có muốn cấm không</h1>)}
-      <DialogFooter>
-        <Button onClick={handleSubmit} disabled={isLoading}>
-          {isLoading ? <LoadingSpinner /> : (isBanned ? "Gỡ Chặn" : "Chặn")}
+      {isBanned ? (<h1>Bạn có muốn gỡ cấm không</h1>) : (<></>)}
+      <DialogFooter className="mt-6">
+        <Button variant={isBanned ? "default" : "destructive"} onClick={handleSubmit} disabled={isLoading}>
+          {isLoading ? <LoadingSpinner /> : (isBanned ? "Gỡ Chặn" : "")}
         </Button>
       </DialogFooter>
     </>
