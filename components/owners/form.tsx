@@ -42,7 +42,7 @@ const OwnerForm = () => {
       {!isBanned && <Input value={bannedReason} onChange={(e) => handleChange(e.currentTarget.value)} />}
       {isBanned ? (<h1>Bạn có muốn gỡ cấm không</h1>) : (<h1>Bạn có muốn cấm không</h1>)}
       <DialogFooter>
-        <Button onClick={handleSubmit} disabled={isLoading}>
+        <Button variant={isBanned ? "default" : "destructive"} onClick={handleSubmit} disabled={isLoading}>
           {isLoading ? <LoadingSpinner /> : (isBanned ? "Gỡ Chặn" : "Chặn")}
         </Button>
       </DialogFooter>

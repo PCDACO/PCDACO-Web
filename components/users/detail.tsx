@@ -13,7 +13,6 @@ import { UserDetailResponse } from "@/constants/models/user.model"
 import { formatDate } from "@/lib/utils"
 import { formatCurrency } from "@/lib/formatCurrency"
 import { formatId } from "@/lib/format-uuid"
-import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Dialog, DialogContent } from "../ui/dialog"
@@ -28,7 +27,6 @@ export default function UserDetailsComponent({ user }: Props) {
 
   const { id, balance, bookings, cars, dateOfBirth, phone, reports, role } = user;
   const { open, setOpen } = useDialogStore();
-  const [url, setUrl] = useState("");
   const { back } = useRouter();
   const { setId } = useIdStore();
 
@@ -55,15 +53,6 @@ export default function UserDetailsComponent({ user }: Props) {
     }
   }
 
-  useEffect(() => {
-    setUrl(() => mapUrl());
-    //eslint-disable-next-line
-  }, [])
-
-  const handleClick = () => {
-    back();
-  }
-
   const getUserVNName = (value: string): string => {
     const result = userRoleVNStrings.find(item => item.name === value);
     if (!result) {
@@ -84,28 +73,11 @@ export default function UserDetailsComponent({ user }: Props) {
       onOpenChange={handleDialogChange}
     >
       <div className="container mx-auto py-6 space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center text-sm text-muted-foreground">
-            <Button onClick={handleClick} variant="ghost" size="icon" className="mr-2">
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            <Link href={`${url}`} className="hover:underline">
-              Người dùng
-            </Link>
-            <ChevronRight className="h-4 w-4 mx-1" />
-            <span>Chi tiết</span>
-          </div>
-          <div className="flex gap-2">
-            <Button onClick={handleDialogChange} variant={user.isBanned ? "default" : "destructive"}>
-              {user.isBanned ? "Gỡ cấm" : "Cấm"}
-            </Button>
-          </div>
-        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* User Profile Card */}
           <Card className="md:col-span-2">
-            <CardHeader className="flex flex-row items-center gap-4">
+            <CardHeader className="flex flex-row items-start gap-4">
               <Avatar className="h-20 w-20">
                 <AvatarImage src={user.avatarUrl} alt={user.name} />
                 <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
@@ -120,10 +92,17 @@ export default function UserDetailsComponent({ user }: Props) {
                   <span className="flex items-center gap-1">Vai trò: {getUserVNName(role)}</span>
                 </CardDescription>
               </div>
+              <Badge variant={user.isBanned ? "destructive" : "outline"} className="text-sm">
+                {user.isBanned ? "Đã bị cấm" : "Hoạt động"}
+              </Badge>
               <div className="ml-auto">
-                <Badge variant={user.isBanned ? "destructive" : "outline"} className="text-sm">
-                  {user.isBanned ? "Đã bị cấm" : "Hoạt động"}
-                </Badge>
+                <div className="flex items-center justify-end">
+                  <div className="flex gap-2">
+                    <Button onClick={handleDialogChange} variant={user.isBanned ? "default" : "destructive"}>
+                      {user.isBanned ? "Gỡ cấm" : "Cấm"}
+                    </Button>
+                  </div>
+                </div>
               </div>
             </CardHeader>
             <CardContent className="grid gap-4">
