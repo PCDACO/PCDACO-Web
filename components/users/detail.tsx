@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CalendarDays, Car, ChevronLeft, ChevronRight, Clock, Flag, MapPin, Phone, User } from "lucide-react"
+import { CalendarDays, Car, Clock, Flag, MapPin, Phone, User } from "lucide-react"
 import { ReportsTable } from "./reports-table"
 import { CarsTable } from "./cars-table"
 import { BookingsTable } from "./bookings-table"
@@ -13,8 +13,6 @@ import { UserDetailResponse } from "@/constants/models/user.model"
 import { formatDate } from "@/lib/utils"
 import { formatCurrency } from "@/lib/formatCurrency"
 import { formatId } from "@/lib/format-uuid"
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 import { Dialog, DialogContent } from "../ui/dialog"
 import { useDialogStore, useIdStore } from "@/stores/store"
 import DriverForm from "@/components/drivers/form"
@@ -27,31 +25,7 @@ export default function UserDetailsComponent({ user }: Props) {
 
   const { id, balance, bookings, cars, dateOfBirth, phone, reports, role } = user;
   const { open, setOpen } = useDialogStore();
-  const { back } = useRouter();
   const { setId } = useIdStore();
-
-  const mapUrl = () => {
-    switch (role) {
-      case "Admin": {
-        return "#";
-      };
-      case "Owner": {
-        return "/owners";
-      };
-      case "Driver": {
-        return "/drivers";
-      };
-      case "Technician": {
-        return "/technicians";
-      };
-      case "Consultant": {
-        return "/consultants";
-      };
-      default: {
-        return "#";
-      }
-    }
-  }
 
   const getUserVNName = (value: string): string => {
     const result = userRoleVNStrings.find(item => item.name === value);
