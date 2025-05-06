@@ -235,6 +235,16 @@ export default function PolicyComponent() {
             </ul>
           </AccordionContent>
         </AccordionItem>
+
+        <AccordionItem value="section-8" className="border rounded-lg p-2">
+          <AccordionTrigger className="text-lg font-semibold px-4">9. Quy định về rút tiền</AccordionTrigger>
+          <AccordionContent className="px-4 pt-2">
+            <ul className="list-disc pl-6 space-y-1">
+              <li>Chủ xe, người thuê cần kiểm tra kỹ thông tin tài khoản ngân hàng đúng chính xác tài khoản nhận tiền.</li>
+              <li>Mọi sai sót trong việc nhập sai thông tin tài khoản nhận tiền, hệ thống sẽ không chịu trách nhiệm.</li>
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
     </div>
   )
