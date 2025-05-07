@@ -36,11 +36,14 @@ import ReportDetailMenuAction from "./detail-menu-action";
 import CompensationForm from "../compensations/form";
 import ApproveReportForm from "./approve-form";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import ImageModal from "components/ui/image-modal";
 
 interface Props {
   report: ReportDetailResponse;
 }
 export default function ReportDetails({ report }: Props) {
+  const [selectedImageUrl, setSelectedImageUrl] = useState("");
+  const [imageModal, setImageModalOpen] = useState(false);
   const [compensationOpen, setCompensationOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
@@ -121,6 +124,11 @@ export default function ReportDetails({ report }: Props) {
     }).format(date);
   };
 
+  const handleImageOpen = (url: string) => {
+    setSelectedImageUrl(url);
+    setImageModalOpen(true);
+  }
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -199,16 +207,17 @@ export default function ReportDetails({ report }: Props) {
                             {report.imageUrls.map((imageUrl, index) => (
                               <div
                                 key={index}
-                                className="relative aspect-video rounded-md overflow-hidden border"
+                                className="relative aspect-video rounded-md overflow-hidden border shadow-md hover:cursor-pointer "
                               >
                                 <Image
                                   src={
                                     imageUrl ??
                                     "/placeholder.svg?height=120&width=200"
                                   }
+                                  onClick={() => handleImageOpen(imageUrl)}
                                   alt={`Report image ${index + 1}`}
                                   fill
-                                  className="object-cover"
+                                  className="object-contain"
                                 />
                               </div>
                             ))}
@@ -227,7 +236,7 @@ export default function ReportDetails({ report }: Props) {
                     </CardHeader>
                     <CardContent className="grid gap-4">
                       {report?.carDetail?.imageUrl?.length > 0 && (
-                        <div className="aspect-video rounded-md overflow-hidden border">
+                        <div className="aspect-video rounded-md overflow-hidden border shadow-sm">
                           {report?.carDetail?.imageUrl?.map((url) => (
                             <Image
                               key={url}
@@ -448,7 +457,8 @@ export default function ReportDetails({ report }: Props) {
                             height={120}
                             src={report.compensationDetail.imageUrl}
                             alt={report.compensationDetail.imageUrl}
-                            className="object-cover absolute right-8 bottom-6 shadow-xl border-l-2 border-b-2 border-blue-200 rounded-2xl "
+                            onClick={() => handleImageOpen(report.compensationDetail.imageUrl ?? "")}
+                            className="object-cover absolute right-8 bottom-6 shadow-xl border-l-2 border-b-2 border-blue-200 rounded-2xl hover:cursor-pointer"
                           />
                         )}
                       </CardContent>
@@ -545,13 +555,11 @@ export default function ReportDetails({ report }: Props) {
                                   (imageUrl, index) => (
                                     <div
                                       key={index}
-                                      className="relative aspect-video rounded-md overflow-hidden border"
+                                      className="relative aspect-video rounded-md overflow-hidden border hover:cursor-pointer"
                                     >
                                       <Image
-                                        src={
-                                          imageUrl ??
-                                          "/placeholder.svg?height=120&width=200"
-                                        }
+                                        src={imageUrl}
+                                        onClick={() => handleImageOpen(imageUrl)}
                                         alt={`Inspection image ${index + 1}`}
                                         width={200}
                                         height={120}
@@ -620,7 +628,7 @@ export default function ReportDetails({ report }: Props) {
                         </DialogContent>
                       </Dialog>
                     )}
-                    {report.compensationDetail && report.status !== 2 && (
+                    {report.compensationDetail && (report.status !== 2 && report.status !== 3) && (
                       <Button
                         disabled={
                           !report?.compensationDetail?.imageUrl &&
@@ -633,7 +641,7 @@ export default function ReportDetails({ report }: Props) {
                         Chấp nhận đền bù
                       </Button>
                     )}
-                    {!report.compensationDetail && report.status !== 2 && (
+                    {!report.compensationDetail && report.status === 0 && (
                       <Button
                         onClick={handleCreateNewInspectionClick}
                         className="gap-2"
@@ -642,6 +650,13 @@ export default function ReportDetails({ report }: Props) {
                         Tạo lịch
                       </Button>
                     )}
+                    {
+                      !report.compensationDetail && (report.status !== 2 && report.status !== 3) && (
+                        <Button onClick={handleApproveReportClick} className="gap-2">
+                          Chấp thuận
+                        </Button>
+                      )
+                    }
                   </div>
                 </div>
               </div>
@@ -663,6 +678,7 @@ export default function ReportDetails({ report }: Props) {
           />
         </>
       )}
+      <ImageModal src={selectedImageUrl} open={imageModal} onClose={() => setImageModalOpen(!imageModal)} />
     </>
   );
 }
