@@ -189,7 +189,7 @@ const items: SideBarItem[] = [
     group: 'Lịch',
   },
   {
-    title: 'Xe Mới Tạo',
+    title: 'Xe',
     url: '/pending-cars',
     icon: CarIcon,
     role: 'Consultant',

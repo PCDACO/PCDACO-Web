@@ -13,7 +13,7 @@ const BookingContractDetail = async ({
   }
   return (
     <div
-      className="max-h-[85vh] overflow-y-auto"
+      className="max-h-[calc(100vh-90px)] overflow-y-auto"
       dangerouslySetInnerHTML={{
         __html: response.toString()
       }}
