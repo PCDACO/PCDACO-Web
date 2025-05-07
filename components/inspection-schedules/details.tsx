@@ -18,6 +18,7 @@ import { InspectionPhotoKey } from "@/constants/enums/inspection-photo-type.enum
 import RejectInspectionDialog from "./reject-inspection-dialog"
 import ApproveChangeGPSInspectionDialog from "./approve-changegps-inspection-dialog"
 import ApproveIncidentInspectionDialog from "./approve-incident-inspection-dialog"
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
 
 interface Props {
   id: string,
@@ -179,20 +180,10 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
       </Badge>
     );
   }
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [currentInspectionImageIndex, setCurrentInspectionImageIndex] = useState(0)
-
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev === car.images.length - 1 ? 0 : prev + 1))
-  }
 
   const nextInspectionImage = () => {
     setCurrentInspectionImageIndex((prev) => (prev === car.images.length - 1 ? 0 : prev + 1))
-  }
-
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev === 0 ? car.images.length - 1 : prev - 1))
   }
 
   const prevInspectionImage = () => {
@@ -532,49 +523,31 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
                   </CardContent>
                 </Card>
               </TabsContent>
+              {/* image of the cars */}
               <TabsContent value="images" className="mt-4 ">
-                <Card className="min-h-[500px]">
+                <Card>
                   <CardHeader>
                     <CardTitle>Hình ảnh</CardTitle>
                   </CardHeader>
-                  <CardContent className="relative h-96">
-                    <Image
-                      src={car?.images[currentImageIndex]?.url ?? "/placeholder.png"}
-                      alt={`${car.manufacturer.name} ${car.modelName}`}
-                      fill
-                      className="object-contain"
-                    />
-                    <div className="flex items-center justify-between mx-4 h-full">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="rounded-full bg-background/80 backdrop-blur-sm"
-                        onClick={prevImage}
-                      >
-                        <ChevronLeft className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="rounded-full bg-background/80 backdrop-blur-sm"
-                        onClick={nextImage}
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
-                      {car.images.map((_, index) => (
-                        <Button
-                          key={index}
-                          variant="outline"
-                          size="icon"
-                          className={`h-2 w-2 rounded-full p-0 ${index === currentImageIndex ? "bg-primary" : "bg-background/80"}`}
-                          onClick={() => setCurrentImageIndex(index)}
-                        >
-                          <span className="sr-only">Xem thêm {index + 1}</span>
-                        </Button>
-                      ))}
-                    </div>
+                  <CardContent>
+                    <Carousel>
+                      <CarouselContent>
+                        {
+                          car?.images.map((item, index) => (
+                            <CarouselItem key={index} className="relative w-full h-96" >
+                              <div >
+                                <Image
+                                  alt={item.id}
+                                  src={item.url}
+                                  fill
+                                  className="object-contain"
+                                />
+                              </div>
+                            </CarouselItem>
+                          ))
+                        }
+                      </CarouselContent>
+                    </Carousel>
                   </CardContent>
                 </Card>
               </TabsContent>
