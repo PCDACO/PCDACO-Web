@@ -25,8 +25,8 @@ export default function ApproveReportForm({ id, value, isOpen, onOpenChange }: P
     >
       <DialogContent>
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-6">
-            <DialogTitle> Xác nhận đơn phạt </DialogTitle>
+          <form onSubmit={onSubmit} className="space-y-4">
+            <DialogTitle> Xác nhận </DialogTitle>
             <DialogHeader>
             </DialogHeader>
             <FormField
@@ -48,7 +48,7 @@ export default function ApproveReportForm({ id, value, isOpen, onOpenChange }: P
               }} />
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? <LoadingSpinner /> : "Submit"}
+                {isLoading ? <LoadingSpinner /> : "Hoàn thành"}
               </Button>
             </DialogFooter>
           </form>
