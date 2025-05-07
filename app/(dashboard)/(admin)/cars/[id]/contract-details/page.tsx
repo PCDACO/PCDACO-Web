@@ -12,14 +12,12 @@ const ContractDetailPage = async ({
     redirect("/not-found");
   }
   return (
-    <div>
-      <div
-        className="max-h-[85vh] overflow-y-auto"
-        dangerouslySetInnerHTML={{
-          __html: response.toString()
-        }}
-      />
-    </div>
+    <div
+      className="max-h-[calc(100vh-90px)] overflow-y-auto"
+      dangerouslySetInnerHTML={{
+        __html: response.toString()
+      }}
+    />
   )
 }
 
