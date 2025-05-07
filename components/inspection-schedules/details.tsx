@@ -1,7 +1,7 @@
 "use client"
 import { ChangeEvent, useCallback, useState } from "react"
 import { format } from "date-fns"
-import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, CheckIcon, CheckCircle, XCircle, PlusCircleIcon } from "lucide-react"
+import { Calendar, Clock, MapPin, User, Clipboard, AlertCircle, ChevronRight, ChevronLeft, Car, Building, Tag, Palette, Cog, Fuel, Gauge, CheckCircle, XCircle, PlusCircleIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,14 +10,14 @@ import { InspectionScheduleDetailResponse } from "@/constants/models/inspection-
 import { CarResponse } from "@/constants/models/car.model"
 import Image from "next/image"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { Input } from "../ui/input"
 import { useInspectionScheduleMutation } from "@/hooks/inspection-schedules/use-inspection-schedules"
 import { Label } from "../ui/label"
 import { InspectionScheduleStatusStrings } from "@/constants/enums/inspection-schedules.enum"
 import { useRouter } from "next/navigation"
-import { Textarea } from "../ui/textarea"
 import { InspectionPhotoKey } from "@/constants/enums/inspection-photo-type.enum"
+import RejectInspectionDialog from "./reject-inspection-dialog"
+import ApproveChangeGPSInspectionDialog from "./approve-changegps-inspection-dialog"
+import ApproveIncidentInspectionDialog from "./approve-incident-inspection-dialog"
 
 interface Props {
   id: string,
@@ -26,26 +26,47 @@ interface Props {
   role: string;
 }
 
+export type Preview = {
+  file: File;
+  url: string;
+};
+
 export default function InspectionDetailComponent({ id, data, car, role }: Props) {
+  const [rejectOpen, setRejectOpen] = useState(false);
+  const [approveIncidentOpen, setApproveIncidentOpen] = useState(false);
+  const [approveChangeGPSOpen, setApproveChangeGPSOpen] = useState(false);
   const [note, setNote] = useState("");
   const [rejectNote, setRejectNote] = useState("");
-  const [images, setImages] = useState<FileList | null>(null);
   const { approveInspectionScheduleNoPhotos, rejectInspectionSchedule, approveInspectionScheduleIncident, updateContractFromScheduleInfo } = useInspectionScheduleMutation();
-  const [localUrl, setLocalUrl] = useState("");
+  const [previews, setPreviews] = useState<Preview[]>([]);
   const { push } = useRouter();
 
   const handleApprove = () => updateContractFromScheduleInfo.mutate(data.id);
 
-  const handleFileChange = useCallback((files: FileList | null) => {
-    if (files) {
-      const objectUrl = URL.createObjectURL(files[0]);
-      setLocalUrl(objectUrl);
-      setImages(files);
-    } else {
-      setLocalUrl("");
-    }
-  }, []);
+  const handleFileChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>): void => {
+      const files = e.currentTarget.files;
+      if (!files) return;
+      const newPreviews: Preview[] = Array.from(files).map((file) => ({
+        file,
+        url: URL.createObjectURL(file),
+      }));
+      setPreviews((prev) => [...prev, ...newPreviews]);
+    },
+    []
+  );
 
+  const handleRemove = useCallback(
+    (index: number) => {
+      setPreviews((prev) => {
+        const toRevoke = prev[index].url;
+        URL.revokeObjectURL(toRevoke);
+
+        return prev.filter((_, i) => i !== index);
+      });
+    },
+    []
+  );
 
   const handleNavigateToApprove = () => {
     push("/technician-todo/approve");
@@ -200,14 +221,33 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
     })
   }
 
+  const handleRejectDialogOpen = () => {
+    setRejectOpen(true);
+  }
+
+  const handleApproveIncidentDialogOpen = () => {
+    setApproveIncidentOpen(true);
+  }
+
+  const handleApproveChangeGPSDialogOpen = () => {
+    setApproveChangeGPSOpen(true);
+  }
+
+  const previewsToFileList = (previews: Preview[]): FileList => {
+    const dt = new DataTransfer();
+    previews.forEach((p) => dt.items.add(p.file));
+    return dt.files;
+  }
+
   const handleApproveIncidentSubmit = () => {
-    approveInspectionScheduleIncident.mutate({ id, note, images });
+    approveInspectionScheduleIncident.mutate({
+      id, note, images: previewsToFileList(previews)
+    });
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Inspection Details</h1>
+    <>
+      <div className="mb-6 flex items-center justify-end">
         <div className="flex items-center gap-2">{getStatusBadge(data.status)}</div>
       </div>
       <div>
@@ -316,86 +356,29 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
                     {/* Reject Dialog */}
                     {
                       (data.status === "InProgress" || data.status === "Signed") && (
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant="destructive" className="flex-1">
-                              <XCircle className="mr-2 h-4 w-4" />
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Từ chối xác minh</DialogTitle>
-                              <DialogDescription>Hãy điền lí do từ chối lịch xác minh này</DialogDescription>
-                            </DialogHeader>
-                            <Textarea
-                              placeholder="Reason for rejection..."
-                              value={rejectNote}
-                              onChange={handleRejectNoteChange}
-                              className="min-h-[100px]"
-                            />
-                            <DialogFooter className="mt-4">
-                              <Button variant="destructive" onClick={handleRejectNoteSubmit}>
-                                <CheckIcon />
-                                Hoàn thành
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
+                        <Button onClick={handleRejectDialogOpen} variant="destructive" className="flex-1">
+                          <XCircle className="mr-2 h-4 w-4" />
+                        </Button>
                       )
                     }
                     {/* Approve Dialog */}
                     {
                       (data.type === "ChangeGPS" && data.status == "InProgress") && (
-                        <Dialog>
-                          <DialogTrigger>
-                            <Button className="flex-1">
-                              <CheckIcon /> Hoàn thành
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <Label>Nhập lí do</Label>
-                            <Input value={note} onChange={handleNoteChange} />
-                            <DialogFooter>
-                              <Button onClick={handleApproveNoteSubmit}> Hoàn tất </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
+                        <Button className="flex-1" onClick={handleApproveChangeGPSDialogOpen}>
+                          <CheckCircle /> Hoàn thành
+                        </Button>
                       )
                     }
                     {
                       (data.type === "Incident" && data.status == "InProgress") && (
-                        <Dialog>
-                          <DialogTrigger>
-                            <Button className="flex-1">
-                              <CheckIcon /> Hoàn thành
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <Label>Nhập lí do</Label>
-                            <Input value={note} onChange={handleNoteChange} />
-                            <Label>Nhập ảnh</Label>
-                            <Input type="file" accept="file/*" onChange={(e) => handleFileChange(e.currentTarget.files)} />
-                            {localUrl !== "" && (
-                              <Image src={localUrl}
-                                alt="Preview"
-                                width={320}
-                                height={240}
-                                objectFit="contain"
-                                layout="responsive" />
-                            )}
-                            <DialogFooter>
-                              <Button onClick={handleApproveIncidentSubmit}>
-                                <CheckCircle className="mr-2 h-4 w-4" />
-                                Hoàn tất
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
+                        <Button className="flex-1" onClick={handleApproveIncidentDialogOpen}>
+                          <CheckCircle /> Hoàn thành
+                        </Button>
                       )
                     }
                     {
                       ((isInProgressOrSigned() || data.type === "NewCar") && data?.status !== "Pending") && (
-                        <>
+                        <div className="flex">
                           {
                             !data?.isTechnicianSigned && (
                               <Button disabled={(!data.hasGPSDevice)} variant="default" className="flex-1" onClick={handleApprove}>
@@ -412,7 +395,7 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
                               </Button>
                             )
                           }
-                        </>
+                        </div>
                       )
                     }
                   </div>
@@ -655,6 +638,31 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
           }
         </div >
       </div >
-    </div >
+
+      <RejectInspectionDialog
+        open={rejectOpen}
+        onClose={() => setRejectOpen(!rejectOpen)}
+        rejectNote={rejectNote}
+        handleRejectNoteChange={handleRejectNoteChange}
+        handleRejectNoteSubmit={handleRejectNoteSubmit}
+      />
+
+      <ApproveIncidentInspectionDialog
+        open={approveIncidentOpen}
+        onClose={() => setApproveIncidentOpen(!approveIncidentOpen)}
+        note={note}
+        handleNoteChange={handleNoteChange}
+        previews={previews}
+        handleFileChange={handleFileChange}
+        handleRemove={handleRemove}
+        handleApproveIncidentSubmit={handleApproveIncidentSubmit}
+      />
+      <ApproveChangeGPSInspectionDialog
+        open={approveChangeGPSOpen}
+        onClose={() => setApproveChangeGPSOpen(!approveChangeGPSOpen)}
+        note={note}
+        handleNoteChange={handleNoteChange}
+        handleApproveNoteSubmit={handleApproveNoteSubmit} />
+    </>
   )
 }
