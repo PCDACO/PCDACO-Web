@@ -16,7 +16,6 @@ import { ChangeEvent, useState } from "react"
 import { useCarReportMutation } from "@/hooks/car-reports/use-car-reports"
 import ApproveCarReportDialog from "./approve-report"
 import { RejectReportDialog } from "./reject-report-dialog"
-import ImageModal from "../ui/image-modal"
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
 
 interface Props {
@@ -32,9 +31,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
   const handleApproveReportClick = () => {
     setApproveOpen(true);
   };
-  const [selectedImageUrl, setSelectedImageUrl] = useState("");
-  const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
-  // Format date for display
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return new Intl.DateTimeFormat("vi-VN", {
@@ -58,11 +55,6 @@ const CarReportDetailComponent = ({ report }: Props) => {
 
   const handleRejectOpen = () => {
     setIsRejectDialogOpen(true);
-  }
-
-  const handleImageClick = (value: string) => {
-    setSelectedImageUrl(value);
-    setIsImageDialogOpen(true);
   }
 
   const handleResolutionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -198,8 +190,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
                             src={url && (url !== "" ? url : "/placeholder.png")}
                             alt={`Report image ${index + 1}`}
                             fill
-                            onClick={() => handleImageClick(url)}
-                            className="object-cover hover:cursor-pointer"
+                            className="object-cover"
                           />
                         </div>
                       ))}
@@ -324,13 +315,12 @@ const CarReportDetailComponent = ({ report }: Props) => {
                         <CarouselContent>
                           {
                             report?.carDetail.imageUrls.map((url, index) => (
-                              <CarouselItem key={index} className="relative w-full h-56 hover:cursor-pointer" >
+                              <CarouselItem key={index} className="relative w-full h-56">
                                 <div >
                                   <Image
                                     src={url}
                                     alt={index.toString()}
                                     fill
-                                    onClick={() => handleImageClick(url)}
                                     className="object-contain"
                                   />
                                 </div>
@@ -441,10 +431,6 @@ const CarReportDetailComponent = ({ report }: Props) => {
         resolutionComments={resolutionComments}
         setResolutionComments={handleResolutionChange}
         handleReject={handleReject} />
-      <ImageModal
-        src={selectedImageUrl}
-        open={isImageDialogOpen}
-        onClose={() => setIsImageDialogOpen(false)} />
     </>
   )
 }
