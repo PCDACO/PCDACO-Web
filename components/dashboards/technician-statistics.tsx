@@ -30,18 +30,7 @@ export default function TechnicianStatistics({
       {/* Statistics Cards */}
       <div className="mb-8">
         <h2 className="text-3xl font-bold mb-8">Số Liệu Tháng</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Lương Tháng</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {statisticData?.staffSalary?.toLocaleString() ?? 0} Đồng
-              </div>
-              <p className="text-xs text-gray-500"></p>
-            </CardContent>
-          </Card> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Đã Duyệt</CardTitle>
