@@ -80,6 +80,7 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
       status === InspectionScheduleStatusStrings.Signed
     )
   }
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Pending":
@@ -116,6 +117,31 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
         return (
           <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
             Đang xử lí
+          </Badge>
+        )
+      default:
+        return <Badge variant="outline">{status}</Badge>
+    }
+  }
+
+  const getTypeBadge = (status: string) => {
+    switch (status) {
+      case "NewCar":
+        return (
+          <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
+            Xác minh
+          </Badge>
+        );
+      case "Incident":
+        return (
+          <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-200">
+            Sự cố
+          </Badge>
+        );
+      case "ChangeGPS":
+        return (
+          <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">
+            Đổi GPS
           </Badge>
         )
       default:
@@ -239,7 +265,6 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
   return (
     <>
       <div className="mb-6 flex items-center justify-end">
-        <div className="flex items-center gap-2">{getStatusBadge(data.status)}</div>
       </div>
       <div>
         <div className="grid gap-6 md:grid-cols-2">
@@ -247,6 +272,8 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
             <CardHeader>
               <CardTitle>Thông tin xác minh</CardTitle>
               <CardDescription>Các chi tiết về lịch xác minh</CardDescription>
+              <span className="text-muted-foreground my-1">Loại: {getTypeBadge(data.type)}</span>
+              <span className="text-muted-foreground my-1">Trạng thái: {getStatusBadge(data.status)}</span>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="flex items-start gap-2">
