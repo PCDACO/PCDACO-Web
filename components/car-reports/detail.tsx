@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { AvatarImage } from "@radix-ui/react-avatar"
-import { Calendar, CheckCircle, MapPin, User, Wrench, XCircle } from "lucide-react"
+import { Calendar, CheckCircle, Clock2, MapPin, User, XCircle } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import { CarReportDetailResponse } from "@/constants/models/car-report.model"
@@ -12,11 +12,12 @@ import { useRouter } from "next/navigation"
 import { CarReportStatus } from "@/constants/enums/car-report-status.enum"
 import { Badge } from "../ui/badge"
 import { CarReportTypeEnum } from "@/constants/enums/car-report-type.enum"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { Textarea } from "../ui/textarea"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { useCarReportMutation } from "@/hooks/car-reports/use-car-reports"
 import ApproveCarReportDialog from "./approve-report"
+import { RejectReportDialog } from "./reject-report-dialog"
+import ImageModal from "../ui/image-modal"
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
 
 interface Props {
   report: CarReportDetailResponse;
@@ -31,6 +32,8 @@ const CarReportDetailComponent = ({ report }: Props) => {
   const handleApproveReportClick = () => {
     setApproveOpen(true);
   };
+  const [selectedImageUrl, setSelectedImageUrl] = useState("");
+  const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -43,6 +46,8 @@ const CarReportDetailComponent = ({ report }: Props) => {
     }).format(date)
   }
 
+
+  console.log(report);
   const handleReject = () => {
     rejectCarReport.mutate({
       id: report.id,
@@ -50,6 +55,19 @@ const CarReportDetailComponent = ({ report }: Props) => {
     });
     setIsRejectDialogOpen(false);
   };
+
+  const handleRejectOpen = () => {
+    setIsRejectDialogOpen(true);
+  }
+
+  const handleImageClick = (value: string) => {
+    setSelectedImageUrl(value);
+    setIsImageDialogOpen(true);
+  }
+
+  const handleResolutionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setResolutionComments(e.currentTarget.value);
+  }
 
   const handleNavigateCreateInspectionDetail = () => {
     push(`/inspection-schedules/create?carId=${report.carDetail.id}&reportId=${report.id}&type=gps-unassign`);
@@ -180,7 +198,8 @@ const CarReportDetailComponent = ({ report }: Props) => {
                             src={url && (url !== "" ? url : "/placeholder.png")}
                             alt={`Report image ${index + 1}`}
                             fill
-                            className="object-cover"
+                            onClick={() => handleImageClick(url)}
+                            className="object-cover hover:cursor-pointer"
                           />
                         </div>
                       ))}
@@ -300,15 +319,27 @@ const CarReportDetailComponent = ({ report }: Props) => {
               <CardContent className="space-y-4">
                 <div className="relative aspect-video rounded-md overflow-hidden border">
                   {
-                    report?.carDetail?.imageUrl && (
-                      <Image
-                        src={report?.carDetail?.imageUrl[0] ?? "/placeholder.svg"}
-                        alt={`Report image`}
-                        fill
-                        className="object-cover"
-                      />
-                    )
-                  }
+                    report?.carDetail?.imageUrls && (
+                      <Carousel>
+                        <CarouselContent>
+                          {
+                            report?.carDetail.imageUrls.map((url, index) => (
+                              <CarouselItem key={index} className="relative w-full h-56 hover:cursor-pointer" >
+                                <div >
+                                  <Image
+                                    src={url}
+                                    alt={index.toString()}
+                                    fill
+                                    onClick={() => handleImageClick(url)}
+                                    className="object-contain"
+                                  />
+                                </div>
+                              </CarouselItem>
+                            ))
+                          }
+                        </CarouselContent>
+                      </Carousel>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -322,58 +353,25 @@ const CarReportDetailComponent = ({ report }: Props) => {
                   </div>
                 </div>
 
-                <Separator />
-
+                {
+                  report.status !== 2 && report.status !== 3 && (
+                    <Separator />
+                  )
+                }
                 {/* Action buttons based on report type */}
-                <div className="lg:grid-cols-2 md:grid-cols-1 space-x-2 mx-auto w-full">
+                <div className="flex space-x-4 mx-auto w-full">
                   {
                     (report.status === 0 || report.status === 1) && (
-                      <Dialog
-                        open={isRejectDialogOpen}
-                        onOpenChange={setIsRejectDialogOpen}
-                      >
-                        <DialogTrigger asChild>
-                          <Button variant="outline" >
-                            <XCircle className="h-4 w-4" />
-                            Từ chối báo cáo
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Từ chối báo cáo</DialogTitle>
-                            <DialogDescription>
-                              Vui lòng nhập lý do từ chối báo cáo này.
-                            </DialogDescription>
-                          </DialogHeader>
-                          <Textarea
-                            placeholder="Nhập lý do từ chối..."
-                            value={resolutionComments}
-                            onChange={(e) =>
-                              setResolutionComments(e.target.value)
-                            }
-                            className="min-h-[100px]"
-                          />
-                          <DialogFooter>
-                            <Button
-                              variant="outline"
-                              onClick={() => setIsRejectDialogOpen(false)}
-                            >
-                            <XCircle className="h-4 w-4" />
-                              Hủy
-                            </Button>
-                            <Button variant="destructive" onClick={handleReject}>
-                            <CheckCircle className="h-4 w-4" />
-                              Xác nhận từ chối
-                            </Button>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
+                      <Button onClick={handleRejectOpen} variant="destructive" className="flex-1" >
+                        <XCircle className="h-4 w-4" />
+                        Từ chối báo cáo
+                      </Button>
                     )
                   }
                   {
-                    !report.inspectionScheduleDetail && (
-                      <Button onClick={handleNavigateCreateInspectionDetail} variant="outline">
-                        <Wrench className="mr-2 h-4 w-4" />
+                    !report.inspectionScheduleDetail && report.status === 0 && (
+                      <Button onClick={handleNavigateCreateInspectionDetail} variant="default" className="flex-1">
+                        <Clock2 />
                         Lên lịch thay GPS
                       </Button>
                     )
@@ -385,7 +383,7 @@ const CarReportDetailComponent = ({ report }: Props) => {
                         onClick={handleApproveReportClick}
                         className="gap-2 mx-4"
                       >
-                        <CheckCircle className="h-4 w-4" />
+                        <CheckCircle className="flex-1" />
                         Chấp nhận
                       </Button>
                     )
@@ -436,6 +434,17 @@ const CarReportDetailComponent = ({ report }: Props) => {
         isOpen={approveOpen}
         onOpenChange={() => setApproveOpen(!approveOpen)}
       />
+      <RejectReportDialog
+        isLoading={rejectCarReport.isLoading}
+        open={isRejectDialogOpen}
+        onClose={() => setIsRejectDialogOpen(false)}
+        resolutionComments={resolutionComments}
+        setResolutionComments={handleResolutionChange}
+        handleReject={handleReject} />
+      <ImageModal
+        src={selectedImageUrl}
+        open={isImageDialogOpen}
+        onClose={() => setIsImageDialogOpen(false)} />
     </>
   )
 }

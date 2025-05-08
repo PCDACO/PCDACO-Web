@@ -33,7 +33,7 @@ export interface CarReportDetailResponse {
     modelName: string;
     manufacturerName: string;
     color: string;
-    imageUrl: string[];
+    imageUrls: string[];
   };
   inspectionScheduleDetail: {
     id: string;
