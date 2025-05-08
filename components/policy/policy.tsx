@@ -24,12 +24,12 @@ export default function PolicyComponent() {
                 <p className="mb-2">Phải cung cấp đầy đủ và chính xác thông tin:</p>
                 <ul className="list-disc pl-6 space-y-1">
                   <li>Họ tên, địa chỉ, email, số điện thoại</li>
-                  <li>CCCD/CMND</li>
-                  <li>Mã số thuế (nếu có)</li>
+                  <li>Giấy phép lái xe ô tô còn hiệu lực</li>
                   <li>Thông tin tài khoản ngân hàng</li>
                 </ul>
+                <p className="mt-2">Phải đủ 18 tuổi trở lên</p>
                 <p className="mt-2">Chịu trách nhiệm về nguồn gốc và quyền sở hữu xe</p>
-                <p>Đảm bảo xe có đầy đủ giấy tờ pháp lý và trong tình trạng an toàn</p>
+                <p>Đảm bảo xe có đầy đủ giấy tờ pháp lý và trong tình trạng an toàn (Giấy tờ sở hữu xe, bảo hiểm xe, giấy đăng kiểm)</p>
               </div>
 
               <div>
@@ -37,7 +37,6 @@ export default function PolicyComponent() {
                 <p className="mb-2">Phải cung cấp đầy đủ và chính xác thông tin:</p>
                 <ul className="list-disc pl-6 space-y-1">
                   <li>Họ tên, địa chỉ, email, số điện thoại</li>
-                  <li>CCCD/CMND</li>
                   <li>Giấy phép lái xe ô tô còn hiệu lực</li>
                   <li>Thông tin thanh toán</li>
                 </ul>
@@ -157,25 +156,25 @@ export default function PolicyComponent() {
                 <h3 className="font-medium text-base mb-2">A. Phí hủy chuyến</h3>
                 <p className="mb-2">Đối với người thuê:</p>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li>Hủy chuyến trước 7 ngày: hoàn 100%</li>
-                  <li>Hủy chuyến trước 5 ngày: hoàn 50%</li>
-                  <li>Hủy chuyến trước 3 ngày: hoàn 30%</li>
-                  <li>Hủy chuyến nhỏ hơn 3 ngày: hoàn 0%</li>
+                  <li>Hủy chuyến trước 7 ngày giao xe: hoàn 100%</li>
+                  <li>Hủy chuyến trước 5 ngày giao xe: hoàn 50%</li>
+                  <li>Hủy chuyến trước 3 ngày giao xe: hoàn 30%</li>
+                  <li>Hủy chuyến nhỏ hơn 3 ngày giao xe: hoàn 0%</li>
                 </ul>
                 <p className="mt-2 mb-2">Đối với chủ xe:</p>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li>Hủy chuyến trước 24h: đền 50%</li>
-                  <li>Hủy chuyến trong vòng 3 ngày: đền 30%</li>
-                  <li>Hủy chuyến trong vòng 7 ngày: đền 10%</li>
+                  <li>Hủy chuyến trước 24h giao xe: đền 50%</li>
+                  <li>hủy chuyến trong vòng 3 ngày giao xe: đền 30%</li>
+                  <li>hủy chuyến trong vòng 7 ngày giao xe: đền 10%</li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-medium text-base mb-2">B. Xử lý vi phạm</h3>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li>Khóa tài khoản nếu hủy chuyến nhiều lần</li>
-                  <li>Hoàn trả 100% tiền cọc nếu chủ xe hủy chuyến</li>
-                  <li>Bồi thường theo quy định nếu vi phạm cam kết</li>
+                  <li>Khóa tài khoản nếu hủy chuyến 5 lần</li>
+                  <li>Hoàn trả 100% tiền nếu chủ xe hủy chuyến</li>
+                  <li>Bồi thường theo quy định nếu vi phạm cam kết trong hợp đồng</li>
                 </ul>
               </div>
             </div>
@@ -193,7 +192,7 @@ export default function PolicyComponent() {
                   trước khi đưa lên hệ thống cho thuê.
                 </p>
                 <p className="mt-2">
-                  Phải thực hiện đăng kiểm định kỳ cho xe để cung cấp trong quá trình kiểm định xe của hệ thống
+                  Phải thực hiện đăng kiểm định kỳ cho xe theo quy định của Pháp Luật để cung cấp trong quá trình kiểm định xe của hệ thống
                 </p>
               </div>
 
@@ -201,7 +200,7 @@ export default function PolicyComponent() {
                 <h3 className="font-medium text-base mb-2">B. Trách nhiệm của Kỹ thuật viên</h3>
                 <p>
                   Khi nhận được lịch kiểm định trong trạng thái chờ, phải đánh dấu đang thực hiện kiểm định thông qua hệ
-                  thống chậm nhất là 15 phút sau thời điểm kiểm định được đề ra trong lịch kiểm định.
+                  thống chậm nhất là 15 phút sau thời điểm xác minh được đề ra trong lịch kiểm định.
                 </p>
                 <p className="mt-2">
                   Phải hoàn thành xử lý kiểm định chậm nhất là 60 phút sau thời điểm kiểm định được đề ra trong lịch
@@ -216,9 +215,9 @@ export default function PolicyComponent() {
           <AccordionTrigger className="text-lg font-semibold px-4">7. Quy định về Bảo mật thông tin</AccordionTrigger>
           <AccordionContent className="px-4 pt-2">
             <ul className="list-disc pl-6 space-y-1">
-              <li>Mã hóa thông tin nhạy cảm (số điện thoại, tài khoản ngân hàng)</li>
+              <li>Mã hóa thông tin nhạy cảm (số điện thoại, tài khoản ngân hàng ,số giấy phép lái xe)</li>
               <li>Chỉ chia sẻ thông tin theo yêu cầu pháp luật</li>
-              <li>Lưu trữ dữ liệu theo quy định hiện hành</li>
+              <li>Lưu trữ dữ liệu theo pháp luật hiện hành</li>
               <li>Cho phép người dùng yêu cầu xóa dữ liệu</li>
             </ul>
           </AccordionContent>
@@ -241,7 +240,7 @@ export default function PolicyComponent() {
           <AccordionContent className="px-4 pt-2">
             <ul className="list-disc pl-6 space-y-1">
               <li>Chủ xe, người thuê cần kiểm tra kỹ thông tin tài khoản ngân hàng đúng chính xác tài khoản nhận tiền.</li>
-              <li>Mọi sai sót trong việc nhập sai thông tin tài khoản nhận tiền, hệ thống sẽ không chịu trách nhiệm.</li>
+              <li>Mọi sai sót trong quá trình nhập thông tin tài khoản nhận tiền, hệ thống sẽ không chịu trách nhiệm.</li>
             </ul>
           </AccordionContent>
         </AccordionItem>
