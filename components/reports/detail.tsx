@@ -1,32 +1,12 @@
 "use client";
 import { useState } from "react";
-import {
-  Calendar,
-  Car,
-  CheckCircle,
-  Clock,
-  DollarSign,
-  FileText,
-  ImageIcon,
-  MapPin,
-  Phone,
-  PlusCircleIcon,
-  XCircle,
-} from "lucide-react";
+import { Calendar, Car, CheckCircle, Clock, DollarSign, FileText, ImageIcon, MapPin, Phone, PlusCircleIcon, XCircle } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
@@ -36,14 +16,11 @@ import ReportDetailMenuAction from "./detail-menu-action";
 import CompensationForm from "../compensations/form";
 import ApproveReportForm from "./approve-form";
 import { LoadingSpinner } from "../ui/loading-spinner";
-import ImageModal from "components/ui/image-modal";
 
 interface Props {
   report: ReportDetailResponse;
 }
 export default function ReportDetails({ report }: Props) {
-  const [selectedImageUrl, setSelectedImageUrl] = useState("");
-  const [imageModal, setImageModalOpen] = useState(false);
   const [compensationOpen, setCompensationOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
@@ -124,11 +101,6 @@ export default function ReportDetails({ report }: Props) {
     }).format(date);
   };
 
-  const handleImageOpen = (url: string) => {
-    setSelectedImageUrl(url);
-    setImageModalOpen(true);
-  }
-
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -207,14 +179,13 @@ export default function ReportDetails({ report }: Props) {
                             {report.imageUrls.map((imageUrl, index) => (
                               <div
                                 key={index}
-                                className="relative aspect-video rounded-md overflow-hidden border shadow-md hover:cursor-pointer "
+                                className="relative aspect-video rounded-md overflow-hidden border shadow-md"
                               >
                                 <Image
                                   src={
                                     imageUrl ??
                                     "/placeholder.svg?height=120&width=200"
                                   }
-                                  onClick={() => handleImageOpen(imageUrl)}
                                   alt={`Report image ${index + 1}`}
                                   fill
                                   className="object-contain"
@@ -457,8 +428,7 @@ export default function ReportDetails({ report }: Props) {
                             height={120}
                             src={report.compensationDetail.imageUrl}
                             alt={report.compensationDetail.imageUrl}
-                            onClick={() => handleImageOpen(report.compensationDetail.imageUrl ?? "")}
-                            className="object-cover absolute right-8 bottom-6 shadow-xl border-l-2 border-b-2 border-blue-200 rounded-2xl hover:cursor-pointer"
+                            className="object-cover absolute right-8 bottom-6 shadow-xl border-l-2 border-b-2 border-blue-200 rounded-2xl"
                           />
                         )}
                       </CardContent>
@@ -555,11 +525,10 @@ export default function ReportDetails({ report }: Props) {
                                   (imageUrl, index) => (
                                     <div
                                       key={index}
-                                      className="relative aspect-video rounded-md overflow-hidden border hover:cursor-pointer"
+                                      className="relative aspect-video rounded-md overflow-hidden border"
                                     >
                                       <Image
                                         src={imageUrl}
-                                        onClick={() => handleImageOpen(imageUrl)}
                                         alt={`Inspection image ${index + 1}`}
                                         width={200}
                                         height={120}
@@ -678,7 +647,6 @@ export default function ReportDetails({ report }: Props) {
           />
         </>
       )}
-      <ImageModal src={selectedImageUrl} open={imageModal} onClose={() => setImageModalOpen(!imageModal)} />
     </>
   );
 }

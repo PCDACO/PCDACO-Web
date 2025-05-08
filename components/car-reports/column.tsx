@@ -3,6 +3,7 @@ import { Badge } from "../ui/badge";
 import { CarReportResponse } from "@/constants/models/car-report.model";
 import MenuAction from "./menu-action";
 import { CarReportTypeEnum } from "@/constants/enums/car-report-type.enum";
+import { CarReportStatus } from "@/constants/enums/car-report-status.enum";
 
 const carReportTypes = [
   {
@@ -26,6 +27,41 @@ const carReportTypes = [
     value: (
       <Badge className="bg-green-400 text-black">
         Khác
+      </Badge>
+    ),
+  },
+]
+
+const carReportStatuses = [
+  {
+    name: CarReportStatus.UnderReview,
+    value: (
+      <Badge className="bg-yellow-400 text-black">
+        Đang thực hiện
+      </Badge>
+    ),
+  },
+  {
+    name: CarReportStatus.Pending,
+    value: (
+      <Badge className="bg-yellow-400 text-black">
+        Đang chờ
+      </Badge>
+    ),
+  },
+  {
+    name: CarReportStatus.Resolved,
+    value: (
+      <Badge className="bg-green-400 text-black">
+        Đã giải quyết
+      </Badge>
+    ),
+  },
+  {
+    name: CarReportStatus.Rejected,
+    value: (
+      <Badge className="bg-red-400 text-black">
+        Đã từ chối
       </Badge>
     ),
   },
@@ -59,6 +95,19 @@ export const CarReportColumns: ColumnDef<CarReportResponse>[] = [
         return result.value;
       }
       return getBadge(row.original.reportType);
+    }
+  },
+  {
+    header: "Trạng thái",
+    cell: ({ row }) => {
+      const getBadge = (type: number) => {
+        const result = carReportStatuses.find(item => item.name === type);
+        if (!result) {
+          return <Badge variant="outline"></Badge>
+        }
+        return result.value;
+      }
+      return getBadge(row.original.status);
     }
   },
   {

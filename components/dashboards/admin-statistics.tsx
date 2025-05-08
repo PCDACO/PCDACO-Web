@@ -29,7 +29,7 @@ export default function AdminStatistics({ statistics }: Props) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Đang hoạt động
+              Tổng người dùng
             </CardTitle>
           </CardHeader>
           <CardContent>
