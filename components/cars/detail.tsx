@@ -19,6 +19,8 @@ import { CarBadge } from "./car-badge";
 import { CarStatusString } from "@/constants/enums/car-status.enum";
 import { useDialogStore } from "@/stores/store";
 import CarContractDialog from "./contract-dialog";
+import ImageModal from "../ui/image-modal";
+import { useState } from "react";
 
 interface Props {
   car: CarDetailResponse;
@@ -29,12 +31,19 @@ export default function CarDetailsComponent({ car, role }: Props) {
   const { color, manufacturer, modelName, owner, images, bookings, location } = car;
   const { push } = useRouter();
   const { open, setOpen } = useDialogStore();
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
+  const [selectedImageUrl, setSelectedImageUrl] = useState("");
   // This would typically come from a database or API
   const handleNavigateContract = () => push(`/cars/${car.id}/contract-details`);
 
   const handleActionClick = (id: string) => {
     push(`/bookings/${id}`);
   };
+
+  const handleImageClick = (url: string) => {
+    setSelectedImageUrl(url);
+    setImageDialogOpen(true);
+  }
 
   return (
     <>
@@ -257,7 +266,8 @@ export default function CarDetailsComponent({ car, role }: Props) {
                     .map((item) => (
                       <div
                         key={item.id}
-                        className="aspect-video rounded-md overflow-hidden border"
+                        className="aspect-video rounded-md overflow-hidden border hover:cursor-pointer"
+                        onClick={() => handleImageClick(item.url)}
                       >
                         <Image
                           key={item.id}
@@ -282,7 +292,8 @@ export default function CarDetailsComponent({ car, role }: Props) {
                     .map((item) => (
                       <div
                         key={item.id}
-                        className="aspect-video rounded-md overflow-hidden border"
+                        className="aspect-video rounded-md overflow-hidden border hover:cursor-pointer"
+                        onClick={() => handleImageClick(item.url)}
                       >
                         <Image
                           key={item.id}
@@ -309,6 +320,10 @@ export default function CarDetailsComponent({ car, role }: Props) {
         open={open}
         onOpenChange={() => setOpen(!open)}
       />
+      <ImageModal
+        src={selectedImageUrl}
+        open={imageDialogOpen}
+        onClose={() => setImageDialogOpen(!imageDialogOpen)} />
     </>
   );
 }
