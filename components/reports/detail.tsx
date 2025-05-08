@@ -37,7 +37,6 @@ import CompensationForm from "../compensations/form";
 import ApproveReportForm from "./approve-form";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import ImageModal from "components/ui/image-modal";
-import { Carousel } from "../ui/carousel";
 
 interface Props {
   report: ReportDetailResponse;
