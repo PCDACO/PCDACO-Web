@@ -6,6 +6,7 @@ import { useCarReportMutation } from "@/hooks/car-reports/use-car-reports";
 import { ChangeEvent, useState } from "react";
 import { CheckCircle2Icon } from "lucide-react";
 import { Label } from "../ui/label";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface Props {
   id: string;
@@ -31,9 +32,13 @@ const ApproveCarReportDialog = ({ id, isOpen, onOpenChange }: Props) => {
         <Label> Note </Label>
         <Input onChange={handleSetNote} />
         <DialogFooter>
-          <Button className="shadow-md" variant="outline" onClick={handleSubmit} >
-            <CheckCircle2Icon />
-            Hoàn tất
+          <Button disabled={approveCarReport.isLoading} className="shadow-md" variant="outline" onClick={handleSubmit} >
+            {
+              approveCarReport.isLoading ? <LoadingSpinner /> : <>
+                <CheckCircle2Icon />
+                Hoàn tất
+              </>
+            }
           </Button>
         </DialogFooter>
       </DialogContent >
