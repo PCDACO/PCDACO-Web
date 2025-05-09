@@ -313,7 +313,7 @@ export default function CreateInspectionForm({
               name="reportId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{reportId !== undefined ? "Địa Chỉ Xét Xe" : ""}</FormLabel>
+                  <FormLabel>{reportId !== undefined ? "Báo cáo" : ""}</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Nhập Địa Chỉ"

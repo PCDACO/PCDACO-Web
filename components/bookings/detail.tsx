@@ -401,7 +401,7 @@ export default function BookingDetailComponent({
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-3 gap-2">
-                {bookingData.booking.preInspectionPhotos.carKey.map((url, index) => (
+                {bookingData.booking.preInspectionPhotos && bookingData.booking.preInspectionPhotos.carKey.map((url, index) => (
                   <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
                     <Image
                       src={url || "/placeholder.svg"}
@@ -411,7 +411,7 @@ export default function BookingDetailComponent({
                     />
                   </div>
                 ))}
-                {bookingData.booking.preInspectionPhotos.parkingLocation.map((url, index) => (
+                {bookingData.booking.preInspectionPhotos && bookingData.booking.preInspectionPhotos.parkingLocation.map((url, index) => (
                   <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
                     <Image
                       src={url || "/placeholder.svg"}
@@ -421,7 +421,7 @@ export default function BookingDetailComponent({
                     />
                   </div>
                 ))}
-                {bookingData.booking.preInspectionPhotos.fuelGauge.map((url, index) => (
+                {bookingData.booking.preInspectionPhotos && bookingData.booking.preInspectionPhotos.fuelGauge.map((url, index) => (
                   <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
                     <Image
                       src={url || "/placeholder.svg"}
@@ -431,7 +431,7 @@ export default function BookingDetailComponent({
                     />
                   </div>
                 ))}
-                {bookingData.booking.preInspectionPhotos.trunkSpace.map((url, index) => (
+                {bookingData.booking.preInspectionPhotos && bookingData.booking.preInspectionPhotos.trunkSpace.map((url, index) => (
                   <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
                     <Image
                       src={url || "/placeholder.svg"}
@@ -441,7 +441,7 @@ export default function BookingDetailComponent({
                     />
                   </div>
                 ))}
-                {bookingData.booking.preInspectionPhotos.exteriorCar.map((url, index) => (
+                {bookingData.booking.preInspectionPhotos && bookingData.booking.preInspectionPhotos.exteriorCar.map((url, index) => (
                   <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
                     <Image
                       src={url || "/placeholder.svg"}
@@ -462,7 +462,7 @@ export default function BookingDetailComponent({
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-3 gap-2">
-                {bookingData.booking.postInspectionPhotos.cleanliness.map((url, index) => (
+                {bookingData.booking.postInspectionPhotos && bookingData.booking.postInspectionPhotos.cleanliness?.map((url, index) => (
                   <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
                     <Image
                       src={url || "/placeholder.svg"}
@@ -472,7 +472,7 @@ export default function BookingDetailComponent({
                     />
                   </div>
                 ))}
-                {bookingData.booking.postInspectionPhotos.scratches.map((url, index) => (
+                {bookingData.booking.postInspectionPhotos && bookingData.booking.postInspectionPhotos.scratches.map((url, index) => (
                   <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
                     <Image
                       src={url || "/placeholder.svg"}
@@ -482,7 +482,7 @@ export default function BookingDetailComponent({
                     />
                   </div>
                 ))}
-                {bookingData.booking.postInspectionPhotos.tollFees.map((url, index) => (
+                {bookingData.booking.postInspectionPhotos && bookingData.booking.postInspectionPhotos.tollFees.map((url, index) => (
                   <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
                     <Image
                       src={url || "/placeholder.svg"}
@@ -492,7 +492,7 @@ export default function BookingDetailComponent({
                     />
                   </div>
                 ))}
-                {bookingData.booking.postInspectionPhotos.fuelGaugeFinal.map((url, index) => (
+                {bookingData.booking.postInspectionPhotos && bookingData.booking.postInspectionPhotos.fuelGaugeFinal.map((url, index) => (
                   <div key={index} className="relative aspect-[4/3] rounded-md overflow-hidden">
                     <Image
                       src={url || "/placeholder.svg"}
