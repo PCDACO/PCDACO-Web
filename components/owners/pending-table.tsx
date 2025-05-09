@@ -20,17 +20,18 @@ const PendingOwnerTable = () => {
   });
   const { data, setData } = usePendingApprovalStore();
   const { open, setOpen } = useDialogStore();
+  console.log(listOwnerApprovalQuery.data.value.items);
 
   return (
     <>
-      {
-        listOwnerApprovalQuery.data?.value?.items?.length > 0 && (
-          listOwnerApprovalQuery.data?.value?.items.map((driver) => (
-            <div key={driver.id} className="flex flex-col h-screen ">
-              <div className="flex items-start justify-between my-6">
-                <SearchInput className="w-1/4" keyValue={"pending-approval"} />
-              </div>
-              <div className="grid grid-cols-3 gap-4 h-full">
+      <div className="flex flex-col justify-start h-[calc(100vh-150px)] ">
+        <div className="flex items-start justify-between my-6">
+          <SearchInput className="w-1/4" keyValue={"pending-approval"} />
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          {
+            listOwnerApprovalQuery.data?.value?.items?.length > 0 && (
+              listOwnerApprovalQuery.data?.value?.items.map((driver) => (
                 <div key={driver.id} className="card flex flex-col h-56 border rounded-lg shadow-sm">
                   <div className="card-content p-4">
                     <div className="grid gap-4 grid-cols-1">
@@ -67,30 +68,29 @@ const PendingOwnerTable = () => {
                     </Button>
                   </div>
                 </div>
-              </div>
-            </div>
-          )))
-      }
-      {
-        (!listOwnerApprovalQuery.data?.value?.items || listOwnerApprovalQuery.data?.value?.items.length === 0) && (
-          <Card className="flex h-full" >
-            <CardContent className="flex-1" >
-              <div className="flex flex-col items-center h-full justify-center text-center space-y-6 py-8">
-                <div className="relative">
-                  <div className="absolute -top-2 -right-2">
-                    <div className="bg-amber-100 text-amber-700 rounded-full p-1.5">
-                      <ReceiptText className="h-5 w-5" />
+              )))}
+        </div>
+        {
+          (!listOwnerApprovalQuery.data?.value?.items || listOwnerApprovalQuery.data?.value?.items.length === 0) && (
+            <Card className="flex h-full" >
+              <CardContent className="flex-1" >
+                <div className="flex flex-col items-center h-full justify-center text-center space-y-6 py-8">
+                  <div className="relative">
+                    <div className="absolute -top-2 -right-2">
+                      <div className="bg-amber-100 text-amber-700 rounded-full p-1.5">
+                        <ReceiptText className="h-5 w-5" />
+                      </div>
                     </div>
                   </div>
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-gray-800">Không tìm thấy</h3>
+                  </div>
                 </div>
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold text-gray-800">Không tìm thấy</h3>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )
-      }
+              </CardContent>
+            </Card>
+          )
+        }
+      </div>
       <LicenseDetailDialog approval={data} isOpen={open} onClose={() => setOpen(false)} />
     </>
   );
