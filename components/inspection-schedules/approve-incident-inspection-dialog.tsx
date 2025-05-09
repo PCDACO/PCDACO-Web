@@ -33,7 +33,7 @@ const ApproveIncidentInspectionDialog = ({
         <Label>Nhập lí do</Label>
         <Input value={note} onChange={handleNoteChange} />
         <Label>Nhập ảnh</Label>
-        <Input type="file" accept="file/*" onChange={handleFileChange} />
+        <Input type="file" accept="file/*" multiple onChange={handleFileChange} />
         {
           !!previews && previews.length > 0 && (
             <div className="flex flex-wrap gap-4 border ">
