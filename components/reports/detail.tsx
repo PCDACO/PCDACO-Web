@@ -16,6 +16,7 @@ import ReportDetailMenuAction from "./detail-menu-action";
 import CompensationForm from "../compensations/form";
 import ApproveReportForm from "./approve-form";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 
 interface Props {
   report: ReportDetailResponse;
@@ -207,20 +208,24 @@ export default function ReportDetails({ report }: Props) {
                     </CardHeader>
                     <CardContent className="grid gap-4">
                       {report?.carDetail?.imageUrl?.length > 0 && (
-                        <div className="aspect-video rounded-md overflow-hidden border shadow-sm">
-                          {report?.carDetail?.imageUrl?.map((url) => (
-                            <Image
-                              key={url}
-                              src={
-                                url ?? "/placeholder.svg?height=200&width=400"
-                              }
-                              alt={report.carDetail.modelName}
-                              width={400}
-                              height={200}
-                              className="object-cover w-full h-full"
-                            />
-                          ))}
-                        </div>
+                        <Carousel>
+                          <CarouselContent>
+                            {
+                              report?.carDetail.imageUrl.map((item, index) => (
+                                <CarouselItem key={index} className="relative w-full h-64" >
+                                  <div >
+                                    <Image
+                                      alt={item}
+                                      src={item}
+                                      fill
+                                      className="object-contain"
+                                    />
+                                  </div>
+                                </CarouselItem>
+                              ))
+                            }
+                          </CarouselContent>
+                        </Carousel>
                       )}
                       <div className="grid grid-cols-2 gap-4">
                         <div>
