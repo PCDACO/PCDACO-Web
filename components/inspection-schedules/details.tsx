@@ -656,13 +656,15 @@ export default function InspectionDetailComponent({ id, data, car, role }: Props
         handleFileChange={handleFileChange}
         handleRemove={handleRemove}
         handleApproveIncidentSubmit={handleApproveIncidentSubmit}
-      />
+        isLoading={approveInspectionScheduleIncident.isLoading} />
       <ApproveChangeGPSInspectionDialog
         open={approveChangeGPSOpen}
         onClose={() => setApproveChangeGPSOpen(!approveChangeGPSOpen)}
         note={note}
         handleNoteChange={handleNoteChange}
-        handleApproveNoteSubmit={handleApproveNoteSubmit} />
+        handleApproveNoteSubmit={handleApproveNoteSubmit}
+        isLoading={approveInspectionScheduleNoPhotos.isLoading}
+      />
     </>
   )
 }

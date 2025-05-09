@@ -6,6 +6,7 @@ import Image from "next/image"
 import { Button } from "../ui/button"
 import { Preview } from "./details"
 import { ChangeEvent } from "react"
+import { LoadingSpinner } from "../ui/loading-spinner"
 
 interface Props {
   open: boolean;
@@ -16,6 +17,7 @@ interface Props {
   handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleRemove: (index: number) => void;
   handleApproveIncidentSubmit: () => void;
+  isLoading: boolean;
 }
 const ApproveIncidentInspectionDialog = ({
   open,
@@ -25,7 +27,8 @@ const ApproveIncidentInspectionDialog = ({
   handleRemove,
   handleFileChange,
   handleNoteChange,
-  handleApproveIncidentSubmit
+  handleApproveIncidentSubmit,
+  isLoading,
 }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -71,9 +74,11 @@ const ApproveIncidentInspectionDialog = ({
           )
         }
         <DialogFooter>
-          <Button onClick={handleApproveIncidentSubmit}>
-            <CheckCircle className="mr-2 h-4 w-4" />
-            Hoàn tất
+          <Button disabled={isLoading} onClick={handleApproveIncidentSubmit}>
+            {isLoading ? <LoadingSpinner /> : <>
+              <CheckCircle className="mr-2 h-4 w-4" />
+              Hoàn tất
+            </>}
           </Button>
         </DialogFooter>
       </DialogContent>

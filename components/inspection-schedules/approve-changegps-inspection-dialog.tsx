@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogFooter } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { LoadingSpinner } from "../ui/loading-spinner";
+import { CheckCircle } from "lucide-react";
 
 interface Props {
   open: boolean;
@@ -10,13 +12,15 @@ interface Props {
   note: string;
   handleNoteChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleApproveNoteSubmit: () => void;
+  isLoading: boolean;
 }
 const ApproveChangeGPSInspectionDialog = ({
   open,
   onClose,
   note,
   handleNoteChange,
-  handleApproveNoteSubmit
+  handleApproveNoteSubmit,
+  isLoading
 }: Props) => {
   return (
     <Dialog
@@ -27,7 +31,12 @@ const ApproveChangeGPSInspectionDialog = ({
         <Label>Nhập lí do</Label>
         <Input value={note} onChange={handleNoteChange} />
         <DialogFooter>
-          <Button onClick={handleApproveNoteSubmit}> Hoàn tất </Button>
+          <Button disabled={isLoading} onClick={handleApproveNoteSubmit}>
+            {isLoading ? <LoadingSpinner /> : <>
+              <CheckCircle className="mr-2 h-4 w-4" />
+              Hoàn tất
+            </>}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
