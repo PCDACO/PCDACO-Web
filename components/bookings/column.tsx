@@ -31,7 +31,7 @@ const bookingStatusBadges = [
     )
   },
   {
-    name: "OnGoing",
+    name: "Ongoing",
     value: (
       <Badge className="bg-purple-800 text-white">Sẵn sàng giao xe</Badge>
     )
